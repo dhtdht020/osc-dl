@@ -54,30 +54,35 @@ metadata.add_argument(
 get.add_argument(
     "-c",
     "--noconfirm",
+    help="Don't ask for confirmation after metadata displays.",
     action="store_true"
 )
 
 get.add_argument(
     "-o",
     "--output",
+    help="Output file name",
     action="store"
 )
 
 get.add_argument(
     "-e",
     "--extract",
+    help="Extract downloaded zip file to the ExtractedApps directory.",
     action="store_true"
 )
 
 getall.add_argument(
     "-o",
     "--output",
+    help="Not implemented.",
     action="store"
 )
 
 getall.add_argument(
     "-e",
     "--extract",
+    help="Extract downloaded zip files to the ExtractedApps directory.",
     action="store_true"
 )
 
