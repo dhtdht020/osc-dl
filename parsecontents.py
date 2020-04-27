@@ -45,6 +45,8 @@ def query(term, repo="hbb1.oscwii.org"):
     except Exception:
         print("[Error P001] Cannot delete metadata.json. Please delete it yourself. D:")
 
+    return True
+
 
 def get_list(repo="hbb1.oscwii.org"):
     print("Getting list of all packages from " + repo + "..")

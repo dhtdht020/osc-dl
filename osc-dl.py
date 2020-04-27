@@ -4,7 +4,7 @@ import download
 import os
 
 
-version = "1.1.0"
+version = "1.1.1"
 build = "0"
 
 parser = argparse.ArgumentParser(
@@ -86,7 +86,11 @@ if args.cmd == 'list':
     parsecontents.get()
 
 if args.cmd == 'query':
-    parsecontents.query(args.name)
+    if parsecontents.query(args.name) is True:
+        exit(0)
+    else:
+        os.remove("metadata.json")
+        exit(1)
 
 if args.cmd == 'meta':
     if args.type is None:
