@@ -25,11 +25,25 @@ def query(term, repo="hbb1.oscwii.org"):
 
     if found == "true":
         print("Found package!")
+        return True
     else:
         print('Could not find "' + term + '" on the repository. :(')
-        return False
 
-    return True
+def query_verify(term, repo="hbb1.oscwii.org"):
+    u = requests.get("https://" + repo + "/metadata.json")
+
+    data = json.loads(u.content)
+
+    found = "false"
+
+    for key in data.keys():
+        if key == term:
+            found = "true"
+
+    if found == "true":
+        return print("True")
+    else:
+        return print("False")
 
 
 def get_list(repo="hbb1.oscwii.org"):

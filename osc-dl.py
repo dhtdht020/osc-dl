@@ -3,7 +3,7 @@ import argparse
 import download
 
 
-beta_number = "3"
+beta_number = "4"
 build = "0"
 version = "1.1." + beta_number
 
@@ -26,6 +26,13 @@ query.add_argument(
     "--name",
     help="Name of homebrew app",
     required=True
+)
+
+query.add_argument(
+    "-v",
+    "--verify",
+    help="Check if app exists and return True or False",
+    action="store_true"
 )
 
 get.add_argument(
@@ -91,10 +98,10 @@ if args.cmd == 'list':
     parsecontents.get()
 
 if args.cmd == 'query':
-    if parsecontents.query(args.name) is True:
-        exit(0)
+    if args.verify is False:
+        parsecontents.query(args.name)
     else:
-        exit(1)
+        parsecontents.query_verify(args.name)
 
 if args.cmd == 'meta':
     if args.type is None:
