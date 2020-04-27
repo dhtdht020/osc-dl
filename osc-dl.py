@@ -4,7 +4,7 @@ import download
 import os
 
 
-beta_number = "1"
+beta_number = "2"
 build = "0"
 version = "1.1." + beta_number
 
