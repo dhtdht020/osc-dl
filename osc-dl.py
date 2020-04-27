@@ -4,7 +4,7 @@ import download
 import os
 
 
-version = "1.0"
+version = "1.1.0"
 build = "0"
 
 parser = argparse.ArgumentParser(
@@ -62,10 +62,22 @@ get.add_argument(
     action="store"
 )
 
+get.add_argument(
+    "-e",
+    "--extract",
+    action="store_true"
+)
+
 getall.add_argument(
     "-o",
     "--output",
     action="store"
+)
+
+getall.add_argument(
+    "-e",
+    "--extract",
+    action="store_true"
 )
 
 
@@ -83,26 +95,30 @@ if args.cmd == 'meta':
     download.metadata(args.name, args.type)
 
 if args.cmd == 'get-all':
-    #if args.output is None:
     args.output = "default"
+    if args.extract is None:
+        args.extract = False
 
-    download.everything(args.output)
+    download.everything(args.output, args.extract)
 
 if args.cmd == 'get':
     # Skip manual approval if specified
     if args.output is None:
         args.output = "default"
 
+    if args.extract is None:
+        args.extract = False
+
     if args.noconfirm is True:
         if parsecontents.query(args.name) is False:
             os.remove("metadata.json")
             exit(0)
         download.metadata(args.name, "default")
-        download.get(args.name, args.output)
+        download.get(args.name, args.output, args.extract)
 
     if args.noconfirm is False:
         if parsecontents.query(args.name) is False:
             os.remove("metadata.json")
             exit(0)
         download.confirm(args.name)
-        download.get(args.name, args.output)
+        download.get(args.name, args.output, args.extract)
