@@ -95,7 +95,6 @@ if args.cmd == 'query':
     if parsecontents.query(args.name) is True:
         exit(0)
     else:
-        os.remove("metadata.json")
         exit(1)
 
 if args.cmd == 'meta':
@@ -121,14 +120,12 @@ if args.cmd == 'get':
 
     if args.noconfirm is True:
         if parsecontents.query(args.name) is False:
-            os.remove("metadata.json")
             exit(0)
         download.metadata(args.name, "default")
         download.get(args.name, args.output, args.extract)
 
     if args.noconfirm is False:
         if parsecontents.query(args.name) is False:
-            os.remove("metadata.json")
             exit(0)
         download.confirm(args.name)
         download.get(args.name, args.output, args.extract)
