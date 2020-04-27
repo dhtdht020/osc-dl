@@ -1,10 +1,9 @@
 import parsecontents
 import argparse
 import download
-import os
 
 
-beta_number = "2"
+beta_number = "3"
 build = "0"
 version = "1.1." + beta_number
 
