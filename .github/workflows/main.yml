@@ -17,7 +17,7 @@ jobs:
       with:
         python-version: '3.7.6'
     - name: Install requirements with PIP
-      run: pip install requirements.txt
+      run: pip install -r requirements.txt
     - name: Build Open Shop Channel Downloader
       run: pyinstaller.exe --onefile --icon=oscicon.ico osc-dl.py
     - name: Publish Build Artifacts
