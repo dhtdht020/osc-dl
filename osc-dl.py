@@ -4,9 +4,9 @@ import download
 import localcontents
 
 
-beta_number = "5"
+beta_number = "0"
 build = 0
-version = "1.1." + beta_number
+version = "1.2." + beta_number
 
 parser = argparse.ArgumentParser(
     description="Open Shop Channel Package Downloader"
