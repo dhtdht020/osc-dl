@@ -4,7 +4,7 @@ import download
 
 
 beta_number = "4"
-build = "0"
+build = 0
 version = "1.1." + beta_number
 
 parser = argparse.ArgumentParser(
@@ -19,7 +19,10 @@ getall = subparser.add_parser('get-all')
 metadata = subparser.add_parser('meta')
 
 
-parser.add_argument('--version', action='version', version='%(prog)s ' + version + ' Developed by dhtdht020. Open Source Software.')
+if build > 0:
+    parser.add_argument('-v', '--version', action='version', version='%(prog)s ' + version + ' (Build: ' + str(build) + ') Developed by dhtdht020. Open Source Software.')
+else:
+    parser.add_argument('--version', action='version', version='%(prog)s ' + version + ' Developed by dhtdht020. Open Source Software.')
 
 query.add_argument(
     "-n",
