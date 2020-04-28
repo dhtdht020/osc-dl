@@ -2,7 +2,7 @@ import download
 import parsecontents
 
 
-def dl_list(file):
+def dl_list(file, display="False"):
     for line in open(file):  # if anyone has any idea how to make this less hacky then please help
         try:
             line = line.rstrip("\n\r")
@@ -17,6 +17,9 @@ def dl_list(file):
         if line is "":
             pass
         else:
-            if parsecontents.query(line) is True:
-                download.metadata(line, "default")
-                download.get(line)
+            if display is True:
+                print(line)
+            else:
+                if parsecontents.query(line) is True:
+                    download.metadata(line, "default")
+                    download.get(line)

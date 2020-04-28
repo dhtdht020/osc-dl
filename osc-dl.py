@@ -105,6 +105,13 @@ getlist.add_argument(
     required=True
 )
 
+getlist.add_argument(
+    "-d",
+    "--display",
+    help="Prints list and doesn't download",
+    action="store_true"
+)
+
 args = parser.parse_args()
 if args.cmd == 'list':
     parsecontents.get()
@@ -129,7 +136,10 @@ if args.cmd == 'get-all':
     download.everything(args.output, args.extract)
 
 if args.cmd == 'get-list':
-    localcontents.dl_list(args.file)
+    if args.display is True:
+        localcontents.dl_list(args.file, True)
+    else:
+        localcontents.dl_list(args.file)
 
 if args.cmd == 'get':
     # Skip manual approval if specified
