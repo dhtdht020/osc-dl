@@ -22,7 +22,7 @@ metadata = subparser.add_parser('meta')
 if build > 0:
     parser.add_argument('-v', '--version', action='version', version='%(prog)s ' + version + ' (Build: ' + str(build) + ') Developed by dhtdht020. Open Source Software.')
 else:
-    parser.add_argument('--version', action='version', version='%(prog)s ' + version + ' Developed by dhtdht020. Open Source Software.')
+    parser.add_argument('-v', '--version', action='version', version='%(prog)s ' + version + ' Developed by dhtdht020. Open Source Software.')
 
 query.add_argument(
     "-n",
