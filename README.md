@@ -71,6 +71,11 @@ Example usage: `osc-dl query -n wiixplorer`
 
 This command is unfinished, and can currently only check for exact matches.
 
+The following arguments can be used
+
+- `-n / --name` Required. Name of homebrew app to query.
+- `-v / --verify` Caused query to return "True" if the app is present and "False" if it isn't.
+
 ## Download Everything (get-all command)
 
 This command was intended for debugging, and we don't recommend using it, as it might have an unexpected behaviour.

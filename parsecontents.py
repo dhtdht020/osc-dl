@@ -29,6 +29,7 @@ def query(term, repo="hbb1.oscwii.org"):
     else:
         print('Could not find "' + term + '" on the repository. :(')
 
+
 def query_verify(term, repo="hbb1.oscwii.org"):
     u = requests.get("https://" + repo + "/metadata.json")
 
