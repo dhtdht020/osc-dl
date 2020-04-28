@@ -1,9 +1,10 @@
 import parsecontents
 import argparse
 import download
+import localcontents
 
 
-beta_number = "4"
+beta_number = "5"
 build = 0
 version = "1.1." + beta_number
 
@@ -16,6 +17,7 @@ subparser.add_parser('list')
 query = subparser.add_parser('query')
 get = subparser.add_parser('get')
 getall = subparser.add_parser('get-all')
+getlist = subparser.add_parser('get-list')
 metadata = subparser.add_parser('meta')
 
 
@@ -95,6 +97,13 @@ getall.add_argument(
     action="store_true"
 )
 
+getlist.add_argument(
+    "-f",
+    "--file",
+    help="List of apps to download",
+    action="store",
+    required=True
+)
 
 args = parser.parse_args()
 if args.cmd == 'list':
@@ -118,6 +127,9 @@ if args.cmd == 'get-all':
         args.extract = False
 
     download.everything(args.output, args.extract)
+
+if args.cmd == 'get-list':
+    localcontents.dl_list(args.file)
 
 if args.cmd == 'get':
     # Skip manual approval if specified
