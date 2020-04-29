@@ -4,7 +4,7 @@ import download
 import localcontents
 
 
-beta_number = "0"
+beta_number = "1"
 build = 0
 version = "1.2." + beta_number
 
@@ -83,6 +83,13 @@ get.add_argument(
     action="store_true"
 )
 
+get.add_argument(
+    "-p",
+    "--part",
+    help="Part of app to download",
+    action="store_true"
+)
+
 getall.add_argument(
     "-o",
     "--output",
@@ -149,14 +156,17 @@ if args.cmd == 'get':
     if args.extract is None:
         args.extract = False
 
+    if args.part is None:
+        args.part = "default"
+
     if args.noconfirm is True:
         if parsecontents.query(args.name) is False:
             exit(0)
-        download.metadata(args.name, "default")
-        download.get(args.name, args.output, args.extract)
+        download.metadata(args.name)
+        download.get(args.name, args.part, args.output, args.extract)
 
     if args.noconfirm is False:
         if parsecontents.query(args.name) is False:
             exit(0)
         download.confirm(args.name)
-        download.get(args.name, args.output, args.extract)
+        download.get(args.name, args.part, args.output, args.extract)
