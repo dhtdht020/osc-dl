@@ -4,12 +4,8 @@ import parsecontents
 import zipfile
 
 
-def get(app_name, part="default", output="default", extract=False, repo="hbb1.oscwii.org"):
+def get(app_name, output="default", extract=False, repo="hbb1.oscwii.org"):
 
-    # obtain part
-    if part is not "default":
-        partial(app_name, part, output)
-    # obtain app
     if output == "default":
         output = app_name + ".zip"
 
@@ -52,7 +48,7 @@ def confirm(app_name, repo="hbb1.oscwii.org"):
         print("Please reply with 'y' to continue or 'n' to cancel.")
 
 
-def metadata(app_name, type="default", repo="hbb1.oscwii.org"):
+def metadata(app_name, type, repo="hbb1.oscwii.org"):
     # https://hbb1.oscwii.org/unzipped_apps/wiixplorer/apps/wiixplorer/
     xml = requests.get("https://" + repo + "/unzipped_apps/" + app_name + "/apps/" + app_name + "/meta.xml").text
 
@@ -137,38 +133,6 @@ def everything(output, extract=False, repo="hbb1.oscwii.org"):
 
     for key in data.keys():
         metadata(key, "default")
-        get(key, "default", "default", extract)  # remember to implement output or it's gonna be very sad
+        get(key, "default", extract)  # remember to implement output or it's gonna be very sad
         progress = progress+1
         print("[Progress] Downloaded " + str(progress) + " out of " + str(amount) + " apps.")
-
-
-def partial(app_name, part, output, repo="hbb1.oscwii.org"):
-    # obtain part of app
-
-    print("Obtaining a part of " + app_name + " from " + repo + "..")
-    if part == "meta":
-        if output == "default":
-            output = app_name + ".xml"
-        u = requests.get("https://" + repo + "/unzipped_apps/" + app_name + "/apps/" + app_name + "/meta.xml")
-        with open(output, "wb") as f:
-            f.write(u.content)
-
-        print("Download success! Output: " + output)
-
-    if part == "icon":
-        if output == "default":
-            output = app_name + ".png"
-        u = requests.get("https://" + repo + "/unzipped_apps/" + app_name + "/apps/" + app_name + "/icon.png")
-        with open(output, "wb") as f:
-            f.write(u.content)
-
-        print("Download success! Output: " + output)
-
-    if part == "dol":
-        if output == "default":
-            output = app_name + ".dol"
-        u = requests.get("https://" + repo + "/unzipped_apps/" + app_name + "/apps/" + app_name + "/boot.dol")
-        with open(output, "wb") as f:
-            f.write(u.content)
-
-        print("Download success! Output: " + output)
