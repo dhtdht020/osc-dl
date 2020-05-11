@@ -3,7 +3,7 @@ name: Check
 on: [push]
 
 jobs:
-  Build:
+  Check:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
