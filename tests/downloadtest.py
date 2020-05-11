@@ -19,7 +19,7 @@ else:
     print("[INFO] Running on Linux (UNIX)")
     os_name = "UNIX"
 
-if os_name is "NT":
+if os_name == "NT":
     filename = "osc-dl.exe"
 else:
     filename = "osc-dl"
@@ -38,7 +38,7 @@ copyfile("./dist/" + filename, "./" + filename)
 print("\n\n[INFO] GET TEST: Trying to get -n WiiVNC..")
 get_test = subprocess.Popen(filename + " get -n WiiVNC", stdin=subprocess.PIPE, shell=True)
 get_test.stdin.write(b"y\n")
-get_test.stdin.flush()
+# get_test.stdin.flush()
 stdout, stderr = get_test.communicate()
 if get_test.returncode != 0:
     failed = True
