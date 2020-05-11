@@ -2,6 +2,7 @@ import requests
 import lxml.etree
 import parsecontents
 import zipfile
+from sys import exit
 
 
 def get(app_name, output="default", extract=False, repo="hbb1.oscwii.org"):
