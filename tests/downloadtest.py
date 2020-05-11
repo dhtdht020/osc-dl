@@ -27,7 +27,7 @@ else:
 
 # Copy binary to tests dir
 print("Moving osc-dl to tests directory..")
-copyfile("../dist/" + filename, "./" + filename)
+copyfile("./dist/" + filename, "./" + filename)
 
 
 # Check if server is online
