@@ -34,7 +34,11 @@ def confirm(app_name, repo="hbb1.oscwii.org"):
 
     # get information from XML
     root = lxml.etree.fromstring(xml)
-    display_name = root.find('name').text
+    try:
+        display_name = root.find('name').text
+    except AttributeError:
+        print("[Error D002] Could not find application on the server. Cannot continue.")
+        exit(1)
 
     metadata(app_name, "default")
 
