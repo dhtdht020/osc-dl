@@ -22,7 +22,7 @@ else:
 if os_name == "NT":
     filename = "osc-dl.exe"
 else:
-    filename = "osc-dl"
+    filename = "./osc-dl"
 
 
 # Copy binary to tests dir
@@ -53,7 +53,7 @@ else:
 print("\n\n[INFO] QUERY TEST: Trying to query -n WiiVNC..")
 query_test = subprocess.Popen(filename + " query -n WiiVNC", stdin=subprocess.PIPE, shell=True)
 query_test.stdin.write(b"y\n")
-query_test.stdin.flush()
+# query_test.stdin.flush()
 stdout, stderr = query_test.communicate()
 if query_test.returncode != 0:
     failed = True
