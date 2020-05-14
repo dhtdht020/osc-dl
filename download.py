@@ -1,7 +1,7 @@
 import requests
 import lxml.etree
 import parsecontents
-import zipfile
+from zipfile import ZipFile
 from sys import exit
 
 
@@ -20,7 +20,7 @@ def get(app_name, output="default", extract=False, repo="hbb1.oscwii.org"):
     print("Download success! Output: " + output)
 
     if extract is True:
-        with zipfile.ZipFile(output, 'r') as zip_ref:
+        with ZipFile(output, 'r') as zip_ref:
             print("Extracting..")
             zip_ref.extractall("ExtractedApps")
             print("Extracted to ExtractedApps!")
