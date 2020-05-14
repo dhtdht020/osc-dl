@@ -19,6 +19,7 @@ get = subparser.add_parser('get')
 getall = subparser.add_parser('get-all')
 getlist = subparser.add_parser('get-list')
 metadata = subparser.add_parser('meta')
+repolist = subparser.add_parser('repo-list')
 
 
 if build > 0:
@@ -127,6 +128,9 @@ if args.cmd == 'meta':
         args.type = "default"
 
     download.metadata(args.name, args.type)
+
+if args.cmd == 'repo-list':
+    parsecontents.repository_list()
 
 if args.cmd == 'get-all':
     args.output = "default"

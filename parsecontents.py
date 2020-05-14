@@ -54,3 +54,10 @@ def get_list(repo="hbb1.oscwii.org"):
     data = json.loads(u.content)
 
     return data
+
+
+def repository_list(repo="hbb1.oscwii.org"):
+    print("Getting raw list of all repositories from " + repo + "..\n\n")
+    u = requests.get("https://" + repo + "/hbb/repo_list.txt").text
+
+    print(u)
