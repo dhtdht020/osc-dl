@@ -4,7 +4,7 @@ import download
 import localcontents
 
 
-beta_number = "0"
+beta_number = "1"
 build = 0
 version = "1.2." + beta_number
 
