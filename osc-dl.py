@@ -41,6 +41,13 @@ query.add_argument(
     action="store_true"
 )
 
+query.add_argument(
+    "-r",
+    "--host",
+    help="Repository URL",
+    action="store"
+)
+
 get.add_argument(
     "-n",
     "--name",
@@ -137,10 +144,13 @@ if args.cmd == 'list':
 
 # query app command
 if args.cmd == 'query':
+    if args.host is None:
+        args.host = "hbb1.oscwii.org"
+
     if args.verify is False:
-        parsecontents.query(args.name)
+        parsecontents.query(args.name, repo=args.host)
     else:
-        parsecontents.query_verify(args.name)
+        parsecontents.query_verify(args.name, repo=args.host)
 
 
 # get metadata command
