@@ -4,7 +4,7 @@ import download
 import localcontents
 
 
-beta_number = "1"
+beta_number = "2"
 build = 0
 version = "1.2." + beta_number
 
@@ -46,6 +46,13 @@ get.add_argument(
     "--name",
     help="Name of homebrew app",
     required=True
+)
+
+get.add_argument(
+    "-r",
+    "--host",
+    help="Repository URL",
+    action="store"
 )
 
 metadata.add_argument(
@@ -150,17 +157,20 @@ if args.cmd == 'get':
     if args.output is None:
         args.output = "default"
 
+    if args.host is None:
+        args.host = "hbb1.oscwii.org"
+
     if args.extract is None:
         args.extract = False
 
     if args.noconfirm is True:
-        if parsecontents.query(args.name) is False:
+        if parsecontents.query(args.name, repo=args.host) is False:
             exit(0)
-        download.metadata(args.name, "default")
-        download.get(args.name, args.output, args.extract)
+        download.metadata(args.name, "default", repo=args.host)
+        download.get(args.name, args.output, args.extract, repo=args.host)
 
     if args.noconfirm is False:
-        if parsecontents.query(args.name) is False:
+        if parsecontents.query(args.name, repo=args.host) is False:
             exit(0)
-        download.confirm(args.name)
-        download.get(args.name, args.output, args.extract)
+        download.confirm(args.name, repo=args.host)
+        download.get(args.name, args.output, repo=args.host)

@@ -15,7 +15,11 @@ def query(term, repo="hbb1.oscwii.org"):
     print("Searching for package on " + repo + "..")
     u = requests.get("https://" + repo + "/metadata.json")
 
-    data = json.loads(u.content)
+    try:
+        data = json.loads(u.content)
+    except json.decoder.JSONDecodeError:
+        print("[Error P001] Could not parse list from metadata JSON.")
+        exit(1)
 
     found = "false"
 
