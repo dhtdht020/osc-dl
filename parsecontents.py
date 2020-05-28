@@ -18,7 +18,7 @@ def query(term, repo="hbb1.oscwii.org"):
     try:
         data = json.loads(u.content)
     except json.decoder.JSONDecodeError:
-        print("[Error P001] Could not parse list from metadata JSON.")
+        print("[Error P:001] Could not parse list from metadata JSON.")
         exit(1)
 
     found = "false"
@@ -55,7 +55,11 @@ def get_list(repo="hbb1.oscwii.org"):
     print("Getting list of all packages from " + repo + "..")
     u = requests.get("https://" + repo + "/metadata.json")
 
-    data = json.loads(u.content)
+    try:
+        data = json.loads(u.content)
+    except json.decoder.JSONDecodeError:
+        print("[Error P:001:2] Could not parse list from metadata JSON.")
+        exit(1)
 
     return data
 

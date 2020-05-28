@@ -112,6 +112,13 @@ getall.add_argument(
     action="store_true"
 )
 
+getall.add_argument(
+    "-r",
+    "--host",
+    help="Repository URL",
+    action="store"
+)
+
 getlist.add_argument(
     "-f",
     "--file",
@@ -169,10 +176,14 @@ if args.cmd == 'repo-list':
 # get the entire repo command
 if args.cmd == 'get-all':
     args.output = "default"
+
+    if args.host is None:
+        args.host = "hbb1.oscwii.org"
+
     if args.extract is None:
         args.extract = False
 
-    download.everything(output=args.output, extract=args.extract)
+    download.everything(output=args.output, extract=args.extract, repo=args.host)
 
 
 # get list file command

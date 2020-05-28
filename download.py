@@ -38,7 +38,7 @@ def confirm(app_name, repo="hbb1.oscwii.org"):
     try:
         display_name = root.find('name').text
     except AttributeError:
-        print("[Error D002] Could not find application on the server. Cannot continue.")
+        print("[Error D:002] Could not find application on the server. Cannot continue.")
         exit(1)
 
     metadata(app_name, "default")
@@ -64,7 +64,7 @@ def metadata(app_name, type, repo="hbb1.oscwii.org"):
     try:
         root = lxml.etree.fromstring(xml)
     except lxml.etree.XMLSyntaxError:
-        print("[Error D001] The meta.xml file for " + app_name + " seems to be broken. Oh no. Preparing for the worst..")
+        print("[Error D:001] The meta.xml file for " + app_name + " seems to be broken. Oh no. Preparing for the worst..")
 
     try:
         display_name = root.find('name').text
@@ -132,12 +132,12 @@ def metadata(app_name, type, repo="hbb1.oscwii.org"):
 
 
 def everything(output, extract=False, repo="hbb1.oscwii.org"):
-    data = parsecontents.get_list()
+    data = parsecontents.get_list(repo=repo)
     progress = 0
     amount = len(data.keys())
 
     for key in data.keys():
-        metadata(key, "default")
-        get(key, "default", extract)  # remember to implement output or it's gonna be very sad
+        metadata(app_name=key, type="default", repo=repo)
+        get(app_name=key, output="default", extract=extract, repo=repo)  # remember to implement output or it's gonna be very sad
         progress = progress+1
         print("[Progress] Downloaded " + str(progress) + " out of " + str(amount) + " apps.")
