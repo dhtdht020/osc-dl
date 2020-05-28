@@ -4,7 +4,7 @@ import download
 import localcontents
 
 
-beta_number = "3"
+beta_number = "4"
 build = 0
 version = "1.2." + beta_number
 
@@ -13,7 +13,7 @@ parser = argparse.ArgumentParser(
 )
 
 subparser = parser.add_subparsers(dest='cmd')
-subparser.add_parser('list')
+applist = subparser.add_parser('list')
 query = subparser.add_parser('query')
 get = subparser.add_parser('get')
 getall = subparser.add_parser('get-all')
@@ -148,12 +148,21 @@ getlist.add_argument(
     action="store"
 )
 
+applist.add_argument(
+    "-r",
+    "--host",
+    help="Repository URL",
+    action="store"
+)
+
 args = parser.parse_args()
 
 
 # list of apps on server command
 if args.cmd == 'list':
-    parsecontents.get()
+    if args.host is None:
+        args.host = "hbb1.oscwii.org"
+    parsecontents.get(repo=args.host)
 
 
 # query app command
