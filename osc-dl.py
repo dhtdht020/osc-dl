@@ -120,38 +120,63 @@ getlist.add_argument(
     action="store_true"
 )
 
+getlist.add_argument(
+    "-r",
+    "--host",
+    help="Repository URL",
+    action="store"
+)
+
 args = parser.parse_args()
+
+
+# list of apps on server command
 if args.cmd == 'list':
     parsecontents.get()
 
+
+# query app command
 if args.cmd == 'query':
     if args.verify is False:
         parsecontents.query(args.name)
     else:
         parsecontents.query_verify(args.name)
 
+
+# get metadata command
 if args.cmd == 'meta':
     if args.type is None:
         args.type = "default"
 
     download.metadata(args.name, args.type)
 
+
+# get list of repos on server command
 if args.cmd == 'repo-list':
     parsecontents.repository_list()
 
+
+# get the entire repo command
 if args.cmd == 'get-all':
     args.output = "default"
     if args.extract is None:
         args.extract = False
 
-    download.everything(args.output, args.extract)
+    download.everything(output=args.output, extract=args.extract)
 
+
+# get list file command
 if args.cmd == 'get-list':
-    if args.display is True:
-        localcontents.dl_list(args.file, True)
-    else:
-        localcontents.dl_list(args.file)
+    if args.host is None:
+        args.host = "hbb1.oscwii.org"
 
+    if args.display is True:
+        localcontents.dl_list(file=args.file, display=True, repo=args.host)
+    else:
+        localcontents.dl_list(file=args.file, repo=args.host)
+
+
+# get command
 if args.cmd == 'get':
     # Skip manual approval if specified
     if args.output is None:
