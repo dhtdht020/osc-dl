@@ -1,6 +1,6 @@
 # Open Shop Channel DL [![Actions Status](https://github.com/dhtdht020/osc-dl/workflows/Build/badge.svg)](https://github.com/dhtdht020/osc-dl/actions) [![Discord Server](https://img.shields.io/discord/426478571389976577.svg)](https://discord.gg/by6mR5N) [![Downloads](https://img.shields.io/github/downloads/dhtdht020/osc-dl/total)](https://github.com/dhtdht020/osc-dl/releases) [![License](https://img.shields.io/badge/Open%20Source-GPL--3.0-lightgrey.svg)](https://github.com/dhtdht020/osc-dl/blob/master/LICENSE)
 
-OSC-DL is an advanced command line utility for obtaining homebrew from the Open Shop Channel repository, and scraping it's contents.
+OSC-DL is an advanced Python 3 command line utility for obtaining homebrew from the Open Shop Channel repository, and scraping it's contents.
 
 Soon, it will be available as a PIP package for use in other projects that require obtaining homebrew applications.
 
@@ -11,6 +11,20 @@ Currently, the following features are implemented:
 - Downloading individual apps or the entire repository.
 
 ![Preview](https://cdn.discordapp.com/attachments/539096161831616523/704315841696497804/cmd_qOe9l3mnc9.png "Preview")
+
+## Installing OSC-DL
+
+I recommend using the latest [release build](https://github.com/dhtdht020/osc-dl/releases), as it's a onefile variation of the program useful for avoiding dependency hell.
+
+#####Manual Download:
+
+Make sure Python 3 is installed and used.
+
+1. `git clone https://github.com/dhtdht020/osc-dl.git`
+2. `cd osc-dl`
+2. `pip3 install -r requirements.txt`
+3. `python3 osc-dl.py`
+
 
 ## Downloading Homebrew (get command)
 
