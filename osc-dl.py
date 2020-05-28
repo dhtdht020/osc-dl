@@ -4,7 +4,7 @@ import download
 import localcontents
 
 
-beta_number = "2"
+beta_number = "3"
 build = 0
 version = "1.2." + beta_number
 
@@ -74,6 +74,13 @@ metadata.add_argument(
     "--type",
     help="Type of metadata to obtain "
          "(display_name, developer, version, short_description, long_description, release_date, contributors)",
+    action="store"
+)
+
+metadata.add_argument(
+    "-r",
+    "--host",
+    help="Repository URL",
     action="store"
 )
 
@@ -162,10 +169,13 @@ if args.cmd == 'query':
 
 # get metadata command
 if args.cmd == 'meta':
+    if args.host is None:
+        args.host = "hbb1.oscwii.org"
+
     if args.type is None:
         args.type = "default"
 
-    download.metadata(args.name, args.type)
+    download.metadata(app_name=args.name, type=args.type, repo=args.host)
 
 
 # get list of repos on server command
