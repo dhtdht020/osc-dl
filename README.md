@@ -16,7 +16,7 @@ Currently, the following features are implemented:
 
 I recommend using the latest [release build](https://github.com/dhtdht020/osc-dl/releases), as it's a onefile variation of the program useful for avoiding dependency hell.
 
-####Manual Download:
+##### Manual Download:
 
 Make sure Python 3 is installed and used.
 
