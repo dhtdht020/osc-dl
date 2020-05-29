@@ -4,10 +4,14 @@ import download
 import localcontents
 import os
 
-os.system('color')
+if os.name == 'nt':
+    # Initialize color on Windows
+    os.system('color')
+else:
+    pass
 
 
-beta_number = "4"
+beta_number = "5"
 build = 0
 version = "1.2." + beta_number
 year = "2020"

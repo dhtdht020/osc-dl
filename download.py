@@ -13,7 +13,7 @@ def get(app_name, output="default", extract=False, repo="hbb1.oscwii.org"):
 
     # https://hbb1.oscwii.org/hbb/fceugx/fceugx.zip
     # print("Obtaining " + app_name + " from " + repo + "..")
-    with Halo(text="Obtaining " + app_name + " from " + repo + "..", color="white"):
+    with Halo(text="Obtaining " + app_name + " from " + repo + "..", color="blue", text_color="blue"):
         u = requests.get("https://" + repo + "/hbb/" + app_name + "/" + app_name + ".zip")
 
     with open(output, "wb") as f:
