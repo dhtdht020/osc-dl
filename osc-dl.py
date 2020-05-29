@@ -4,6 +4,8 @@ import download
 import localcontents
 import os
 
+os.system('color')
+
 
 beta_number = "4"
 build = 0

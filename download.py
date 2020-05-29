@@ -3,6 +3,7 @@ import lxml.etree
 import parsecontents
 from zipfile import ZipFile
 from sys import exit
+from halo import Halo
 
 
 def get(app_name, output="default", extract=False, repo="hbb1.oscwii.org"):
@@ -11,8 +12,9 @@ def get(app_name, output="default", extract=False, repo="hbb1.oscwii.org"):
         output = app_name + ".zip"
 
     # https://hbb1.oscwii.org/hbb/fceugx/fceugx.zip
-    print("Obtaining " + app_name + " from " + repo + "..")
-    u = requests.get("https://" + repo + "/hbb/" + app_name + "/" + app_name + ".zip")
+    # print("Obtaining " + app_name + " from " + repo + "..")
+    with Halo(text="Obtaining " + app_name + " from " + repo + "..", color="white"):
+        u = requests.get("https://" + repo + "/hbb/" + app_name + "/" + app_name + ".zip")
 
     with open(output, "wb") as f:
         f.write(u.content)
