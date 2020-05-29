@@ -5,6 +5,7 @@ from zipfile import ZipFile
 from sys import exit
 from halo import Halo
 
+GREEN = '\033[92m'
 
 def get(app_name, output="default", extract=False, repo="hbb1.oscwii.org"):
 
@@ -13,13 +14,13 @@ def get(app_name, output="default", extract=False, repo="hbb1.oscwii.org"):
 
     # https://hbb1.oscwii.org/hbb/fceugx/fceugx.zip
     # print("Obtaining " + app_name + " from " + repo + "..")
-    with Halo(text="Obtaining " + app_name + " from " + repo + "..", color="blue", text_color="blue"):
+    with Halo(text="Obtaining " + app_name + " from " + repo + "..", color="yellow", text_color="yellow"):
         u = requests.get("https://" + repo + "/hbb/" + app_name + "/" + app_name + ".zip")
 
     with open(output, "wb") as f:
         f.write(u.content)
 
-    print("Download success! Output: " + output)
+    print(GREEN + "Download success! Output: " + output)
 
     if extract is True:
         with ZipFile(output, 'r') as zip_ref:
