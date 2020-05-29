@@ -2,11 +2,15 @@ import parsecontents
 import argparse
 import download
 import localcontents
+import os
 
 
 beta_number = "4"
 build = 0
 version = "1.2." + beta_number
+year = "2020"
+
+osc_dl = os.path.basename(__file__)
 
 parser = argparse.ArgumentParser(
     description="Open Shop Channel Package Downloader"
@@ -155,7 +159,24 @@ applist.add_argument(
     action="store"
 )
 
+ascii_logo = """                                                                                                    
+    `.----.   .--`----.     `....`   ---.-:::.    
+   :++/-:/++- :///---///` `---...--` +oo+:::oo+`  
+  :++-    :++.://`   `///`--.```.---`+oo    :oo.  
+  :++`    -++-://`    ///`----....`` +oo    :oo.  
+  .++/.``./+/`://:```://- ---`` ``-. +oo    :oo.  
+   `-//++/:-  ://::///:.   `.-----.` ///    -//.  
+              ://`                                
+              ---       Downloader Version """ + version + """                                                                   
+"""
+
 args = parser.parse_args()
+
+# if no argument
+if args.cmd is None:
+    print(ascii_logo)
+    print("Open Source Software, "+year+". Developed by dhtdht020 @ GitHub.")
+    print("\nRun \""+osc_dl+" --help\" for help.")
 
 
 # list of apps on server command
@@ -229,13 +250,13 @@ if args.cmd == 'get':
         args.extract = False
 
     if args.noconfirm is True:
-        if parsecontents.query(args.name, repo=args.host) is False:
+        if parsecontents.query(term=args.name, repo=args.host) is False:
             exit(0)
-        download.metadata(args.name, "default", repo=args.host)
-        download.get(args.name, args.output, args.extract, repo=args.host)
+        download.metadata(app_name=args.name, type="default", repo=args.host)
+        download.get(app_name=args.name, output=args.output, extract=args.extract, repo=args.host)
 
     if args.noconfirm is False:
-        if parsecontents.query(args.name, repo=args.host) is False:
+        if parsecontents.query(term=args.name, repo=args.host) is False:
             exit(0)
-        download.confirm(args.name, repo=args.host)
-        download.get(args.name, args.output, repo=args.host)
+        download.confirm(app_name=args.name, repo=args.host)
+        download.get(app_name=args.name, output=args.output, repo=args.host)
