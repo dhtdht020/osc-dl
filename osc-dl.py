@@ -7,9 +7,6 @@ import os
 if os.name == 'nt':
     # Initialize color on Windows
     os.system('color')
-else:
-    pass
-
 
 beta_number = "5"
 build = 0
