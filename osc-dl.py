@@ -2,6 +2,7 @@ import parsecontents
 import argparse
 import download
 import localcontents
+import updater
 import os
 
 if os.name == 'nt':
@@ -27,6 +28,7 @@ getall = subparser.add_parser('get-all')
 getlist = subparser.add_parser('get-list')
 metadata = subparser.add_parser('meta')
 repolist = subparser.add_parser('repo-list')
+update = subparser.add_parser('update')
 
 
 if build > 0:
@@ -187,6 +189,11 @@ if args.cmd == 'list':
     if args.host is None:
         args.host = "hbb1.oscwii.org"
     parsecontents.get(repo=args.host)
+
+
+# update osc-dl command
+if args.cmd == 'update':
+    updater.init_update()
 
 
 # query app command
