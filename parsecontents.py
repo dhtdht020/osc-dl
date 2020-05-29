@@ -1,10 +1,12 @@
 import requests
 import json
+from halo import Halo
 
 
 # Get list of apps from repo metadata
 def get(repo="hbb1.oscwii.org"):
-    u = requests.get("https://" + repo + "/metadata.json")
+    with Halo(text="Getting list..", color="white"):
+        u = requests.get("https://" + repo + "/metadata.json")
 
     data = json.loads(u.content)
     for key in data.keys():
@@ -13,7 +15,8 @@ def get(repo="hbb1.oscwii.org"):
 
 def query(term, repo="hbb1.oscwii.org"):
     print("Searching for package on " + repo + "..")
-    u = requests.get("https://" + repo + "/metadata.json")
+    with Halo(text="Searching..", color="white"):
+        u = requests.get("https://" + repo + "/metadata.json")
 
     try:
         data = json.loads(u.content)
@@ -53,7 +56,8 @@ def query_verify(term, repo="hbb1.oscwii.org"):
 
 def get_list(repo="hbb1.oscwii.org"):
     print("Getting list of all packages from " + repo + "..")
-    u = requests.get("https://" + repo + "/metadata.json")
+    with Halo(text="Getting list..", color="white"):
+        u = requests.get("https://" + repo + "/metadata.json")
 
     try:
         data = json.loads(u.content)
@@ -66,6 +70,7 @@ def get_list(repo="hbb1.oscwii.org"):
 
 def repository_list(repo="hbb1.oscwii.org"):
     print("Getting raw list of all repositories from " + repo + "..\n\n")
-    u = requests.get("https://" + repo + "/hbb/repo_list.txt").text
+    with Halo(text="Loading Secondary Repositories..", color="white"):
+        u = requests.get("https://" + repo + "/hbb/repo_list.txt").text
 
     print(u)

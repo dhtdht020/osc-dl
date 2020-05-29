@@ -7,6 +7,7 @@ from halo import Halo
 
 GREEN = '\033[92m'
 
+
 def get(app_name, output="default", extract=False, repo="hbb1.oscwii.org"):
 
     if output == "default":
@@ -31,7 +32,8 @@ def get(app_name, output="default", extract=False, repo="hbb1.oscwii.org"):
 
 def confirm(app_name, repo="hbb1.oscwii.org"):
     # https://hbb1.oscwii.org/unzipped_apps/wiixplorer/apps/wiixplorer/
-    xml = requests.get("https://" + repo + "/unzipped_apps/" + app_name + "/apps/" + app_name + "/meta.xml").text
+    with Halo(text="Loading Metadata..", color="white"):
+        xml = requests.get("https://" + repo + "/unzipped_apps/" + app_name + "/apps/" + app_name + "/meta.xml").text
 
     # remove unicode declaration
     xml = xml.split("\n", 1)[1]
