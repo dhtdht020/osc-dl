@@ -6,6 +6,7 @@ from sys import exit
 from halo import Halo
 
 GREEN = '\033[92m'
+FAIL = '\033[91m'
 
 
 def get(app_name, output="default", extract=False, repo="hbb1.oscwii.org"):
@@ -59,6 +60,10 @@ def confirm(app_name, repo="hbb1.oscwii.org"):
 
 
 def metadata(app_name, type, repo="hbb1.oscwii.org"):
+    if parsecontents.query_verify(term=app_name, repo=repo, internal=True) is False:
+        print(FAIL+"Failure: App "+app_name+" could not be found on "+repo)
+        exit(1)
+
     # https://hbb1.oscwii.org/unzipped_apps/wiixplorer/apps/wiixplorer/
     xml = requests.get("https://" + repo + "/unzipped_apps/" + app_name + "/apps/" + app_name + "/meta.xml").text
 

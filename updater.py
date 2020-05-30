@@ -4,7 +4,7 @@ from halo import Halo
 def init_update():
     print("Get the latest version from https://github.com/dhtdht020/osc-dl/")
 
-    with Halo(text="Checking for updates..", color="white"):
+    with Halo(text="Checking for updates..", color="yellow", text_color="yellow"):
         check_update()
 
 

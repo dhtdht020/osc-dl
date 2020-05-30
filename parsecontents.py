@@ -5,7 +5,7 @@ from halo import Halo
 
 # Get list of apps from repo metadata
 def get(repo="hbb1.oscwii.org"):
-    with Halo(text="Getting list..", color="white"):
+    with Halo(text="Getting list..", color="yellow", text_color="yellow"):
         u = requests.get("https://" + repo + "/metadata.json")
 
     data = json.loads(u.content)
@@ -15,7 +15,7 @@ def get(repo="hbb1.oscwii.org"):
 
 def query(term, repo="hbb1.oscwii.org"):
     print("Searching for package on " + repo + "..")
-    with Halo(text="Searching..", color="white"):
+    with Halo(text="Searching..", color="yellow", text_color="yellow"):
         u = requests.get("https://" + repo + "/metadata.json")
 
     try:
@@ -37,7 +37,7 @@ def query(term, repo="hbb1.oscwii.org"):
         print('Could not find "' + term + '" on the repository. :(')
 
 
-def query_verify(term, repo="hbb1.oscwii.org"):
+def query_verify(term, repo="hbb1.oscwii.org", internal=False):
     u = requests.get("https://" + repo + "/metadata.json")
 
     data = json.loads(u.content)
@@ -48,15 +48,21 @@ def query_verify(term, repo="hbb1.oscwii.org"):
         if key == term:
             found = "true"
 
-    if found == "true":
-        return print("True")
+    if internal is False:
+        if found == "true":
+            return print("True")
+        else:
+            return print("False")
     else:
-        return print("False")
+        if found == "true":
+            return True
+        else:
+            return False
 
 
 def get_list(repo="hbb1.oscwii.org"):
     print("Getting list of all packages from " + repo + "..")
-    with Halo(text="Getting list..", color="white"):
+    with Halo(text="Getting list..", color="yellow", text_color="yellow"):
         u = requests.get("https://" + repo + "/metadata.json")
 
     try:
@@ -70,7 +76,7 @@ def get_list(repo="hbb1.oscwii.org"):
 
 def repository_list(repo="hbb1.oscwii.org"):
     print("Getting raw list of all repositories from " + repo + "..\n\n")
-    with Halo(text="Loading Secondary Repositories..", color="white"):
+    with Halo(text="Loading Secondary Repositories..", color="yellow", text_color="yellow"):
         u = requests.get("https://" + repo + "/hbb/repo_list.txt").text
 
     print(u)
