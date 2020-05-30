@@ -2,6 +2,8 @@ import requests
 import json
 from halo import Halo
 
+FAIL = '\033[91m'
+
 
 # Get list of apps from repo metadata
 def get(repo="hbb1.oscwii.org"):
@@ -34,7 +36,7 @@ def query(term, repo="hbb1.oscwii.org"):
         print("Found package!")
         return True
     else:
-        print('Could not find "' + term + '" on the repository. :(')
+        print(FAIL+'Could not find "' + term + '" on the repository. :(')
 
 
 def query_verify(term, repo="hbb1.oscwii.org", internal=False):
