@@ -10,7 +10,7 @@ Currently, the following features are implemented:
 - Obtaining and parsing metadata.
 - Downloading individual apps or the entire repository.
 
-![Preview](https://cdn.discordapp.com/attachments/539096161831616523/704315841696497804/cmd_qOe9l3mnc9.png "Preview")
+![Preview](https://raw.githubusercontent.com/dhtdht020/osc-dl/master/assets/readme-image1.svg?sanitize=true)
 
 ## Installing OSC-DL
 
