@@ -10,9 +10,7 @@ if os.name == 'nt':
     # Initialize color on Windows
     os.system('color')
 
-beta_number = "5"
 build = 0
-version = "1.2." + beta_number
 year = "2020"
 
 osc_dl = os.path.basename(__file__)
@@ -33,9 +31,9 @@ update = subparser.add_parser('update')
 
 
 if build > 0:
-    parser.add_argument('-v', '--version', action='version', version='%(prog)s ' + version + ' (Build: ' + str(build) + ') Developed by dhtdht020. Open Source Software.')
+    parser.add_argument('-v', '--version', action='version', version='%(prog)s ' + updater.current_version() + ' (Build: ' + str(build) + ') Developed by dhtdht020. Open Source Software.')
 else:
-    parser.add_argument('-v', '--version', action='version', version='%(prog)s ' + version + ' Developed by dhtdht020. Open Source Software.')
+    parser.add_argument('-v', '--version', action='version', version='%(prog)s ' + updater.current_version() + ' Developed by dhtdht020. Open Source Software.')
 
 query.add_argument(
     "-n",
@@ -173,7 +171,7 @@ ascii_logo = """
   .++/.``./+/`://:```://- ---`` ``-. +oo    :oo.  
    `-//++/:-  ://::///:.   `.-----.` ///    -//.  
               ://`                                
-              ---       Downloader Version """ + version + """                                                                   
+              ---       Downloader Version """ + updater.current_version() + """                                                                   
 """
 
 args = parser.parse_args()

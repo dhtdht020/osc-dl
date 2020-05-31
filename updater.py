@@ -1,5 +1,22 @@
-from halo import Halo
 import sys
+import requests
+import platform
+import json
+from packaging import version
+
+
+def current_version():
+    beta_number = "5"
+    version = "1.2." + beta_number
+    return version
+
+
+def latest_version():
+    u = requests.get("https://api.github.com/repos/dhtdht020/osc-dl/releases/latest")
+    data = json.loads(u.content)
+    for key, value in data.items():
+        if key == "tag_name":
+            return value
 
 
 def is_frozen():
@@ -17,11 +34,45 @@ def init_update():
     else:
         print('Running in a normal Python script, not packaged by PyInstaller.')
 
-    print("Get the latest version from https://github.com/dhtdht020/osc-dl/")
+    print("Get the latest version from https://github.com/dhtdht020/osc-dl/\n")
 
-    with Halo(text="Checking for updates..", color="yellow", text_color="yellow"):
-        check_update()
+    check_update()
 
 
 def check_update():
-    print("Automatic updater for your operating system, version, or executable is not yet implemented.")
+    latest = latest_version()
+    current = current_version()
+    if version.parse(latest) > version.parse(current_version()):
+        print("OUT OF DATE")
+    else:
+        print("You are up to date.")
+        print("Latest released version: " + latest)
+        print("Current version: " + current)
+
+
+def get_update():
+    if is_frozen() is True and platform.system() == 'Windows':
+        print('Checking updates for Windows NT, with PyInstaller EXE.')
+
+    if is_frozen() is False and platform.system() == 'Windows':
+        print('Checking updates for Windows NT, as script.')
+        latest_version()
+        update_win32_script()
+
+    if is_frozen() is True and platform.system() == 'Linux':
+        print('Checking updates for Linux, with PyInstaller binary.')
+
+    if is_frozen() is False and platform.system() == 'Linux':
+        print('Checking updates for Linux, as script.')
+
+    if is_frozen() is True and platform.system() == 'Darwin':
+        print('Checking updates for Mac, with PyInstaller binary.')
+
+    if is_frozen() is False and platform.system() == 'Darwin':
+        print('Checking updates for Mac, as script.')
+
+    print("\nAutomatic updater for your operating system, version, or executable is not yet implemented.")
+
+
+def update_win32_script():
+    print('oop')
