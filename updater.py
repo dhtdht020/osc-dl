@@ -1,5 +1,4 @@
 from halo import Halo
-import os
 import sys
 
 
@@ -25,4 +24,4 @@ def init_update():
 
 
 def check_update():
-    print("Automatic updater is not yet implemented.")
+    print("Automatic updater for your operating system, version, or executable is not yet implemented.")

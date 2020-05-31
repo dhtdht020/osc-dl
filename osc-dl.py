@@ -252,7 +252,7 @@ if args.cmd == 'get-list':
 if args.cmd == 'get':
     # Skip manual approval if specified
     if args.output is None:
-        args.output = "default"
+        args.output = None
 
     if args.host is None:
         args.host = "hbb1.oscwii.org"
