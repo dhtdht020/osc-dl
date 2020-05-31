@@ -3,6 +3,7 @@ import argparse
 import download
 import localcontents
 import updater
+import metadata
 import os
 
 if os.name == 'nt':
@@ -26,7 +27,7 @@ query = subparser.add_parser('query')
 get = subparser.add_parser('get')
 getall = subparser.add_parser('get-all')
 getlist = subparser.add_parser('get-list')
-metadata = subparser.add_parser('meta')
+meta = subparser.add_parser('meta')
 repolist = subparser.add_parser('repo-list')
 update = subparser.add_parser('update')
 
@@ -71,14 +72,14 @@ get.add_argument(
     action="store"
 )
 
-metadata.add_argument(
+meta.add_argument(
     "-n",
     "--name",
     help="Name of homebrew app",
     required=True
 )
 
-metadata.add_argument(
+meta.add_argument(
     "-t",
     "--type",
     help="Type of metadata to obtain "
@@ -86,7 +87,7 @@ metadata.add_argument(
     action="store"
 )
 
-metadata.add_argument(
+meta.add_argument(
     "-r",
     "--host",
     help="Repository URL",
@@ -215,7 +216,7 @@ if args.cmd == 'meta':
     if args.type is None:
         args.type = "default"
 
-    download.metadata(app_name=args.name, type=args.type, repo=args.host)
+    metadata.get(app_name=args.name, type=args.type, repo=args.host)
 
 
 # get list of repos on server command
@@ -262,7 +263,7 @@ if args.cmd == 'get':
     if args.noconfirm is True:
         if parsecontents.query(term=args.name, repo=args.host) is False:
             exit(0)
-        download.metadata(app_name=args.name, type="default", repo=args.host)
+        metadata.get(app_name=args.name, type="default", repo=args.host)
         download.get(app_name=args.name, output=args.output, extract=args.extract, repo=args.host)
 
     if args.noconfirm is False:
