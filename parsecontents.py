@@ -6,8 +6,11 @@ FAIL = '\033[91m'
 
 
 # Get list of apps from repo metadata
-def get(repo="hbb1.oscwii.org"):
-    with Halo(text="Getting list..", color="yellow", text_color="yellow"):
+def get(repo="hbb1.oscwii.org", raw=False):
+    if raw is False:
+        with Halo(text="Getting list..", color="yellow", text_color="yellow"):
+            u = requests.get("https://" + repo + "/metadata.json")
+    else:
         u = requests.get("https://" + repo + "/metadata.json")
 
     data = json.loads(u.content)
@@ -64,8 +67,9 @@ def query_verify(term, repo="hbb1.oscwii.org", internal=False):
 
 def get_list(repo="hbb1.oscwii.org"):
     print("Getting list of all packages from " + repo + "..")
+
     with Halo(text="Getting list..", color="yellow", text_color="yellow"):
-        u = requests.get("https://" + repo + "/metadata.json")
+            u = requests.get("https://" + repo + "/metadata.json")
 
     try:
         data = json.loads(u.content)

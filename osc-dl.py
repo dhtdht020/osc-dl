@@ -163,6 +163,12 @@ applist.add_argument(
     action="store"
 )
 
+applist.add_argument(
+    "--raw",
+    help="No spinner.",
+    action="store_true"
+)
+
 ascii_logo = """                                                                                                    
     `.----.   .--`----.     `....`   ---.-:::.    
    :++/-:/++- :///---///` `---...--` +oo+:::oo+`  
@@ -187,7 +193,8 @@ if args.cmd is None:
 if args.cmd == 'list':
     if args.host is None:
         args.host = "hbb1.oscwii.org"
-    parsecontents.get(repo=args.host)
+
+    parsecontents.get(repo=args.host, raw=args.raw)
 
 
 # update osc-dl command
