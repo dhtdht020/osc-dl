@@ -221,7 +221,9 @@ if args.cmd == 'meta':
     if args.type is None:
         args.type = "default"
 
-    metadata.get(app_name=args.name, type=args.type, repo=args.host)
+    appmeta = metadata.get(app_name=args.name, type=args.type, repo=args.host)
+    if appmeta is not None:
+        print(appmeta)
 
 
 # get list of repos on server command

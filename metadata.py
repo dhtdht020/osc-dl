@@ -60,25 +60,25 @@ def get(app_name, type=None, repo="hbb1.oscwii.org"):
 
     # check for requested information
     if type == "display_name":
-        return print(display_name)
+        return display_name
 
     if type == "coder":
-        return print(developer)
+        return developer
 
     if type == "version":
-        return print(version)
+        return version
 
     if type == "short_description":
-        return print(short_description)
+        return short_description
 
     if type == "long_description":
-        return print(long_description)
+        return long_description
 
     if type == "release_date":
-        return print(release_date)
+        return release_date
 
     if type == "contributors":
-        return print(contributors)
+        return contributors
 
     print("\n=========== Application Metadata ===========")
     print("Application: " + display_name + "\n")
