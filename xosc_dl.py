@@ -46,11 +46,16 @@ class MetadataWindow(gui.ui_meta.Ui_Metadata, QMainWindow):
         self.ui.developer.setText(info.get("coder"))
         self.ui.FileNameLineEdit.setText(app_name + ".zip")
         self.ui.DownloadAppBtn.clicked.connect(self.download_button)
+        self.ui.CloseBtn.clicked.connect(self.close_button)
 
     def download_button(self):
         output = self.ui.FileNameLineEdit.text()
+        extract = self.ui.ExtractAppCheckbox.isChecked()
         window.close()
-        download.get(app_name=app_name, output=output)
+        download.get(app_name=app_name, output=output, extract=extract)
+
+    def close_button(self):
+        window.close()
 
 
 if __name__ == "__main__":
