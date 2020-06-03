@@ -27,3 +27,28 @@ jobs:
       with:
         name: ${{ matrix.os }}
         path: dist
+
+  BuildGUI:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [windows-latest, ubuntu-latest, macOS-latest]
+
+    steps:
+    - name: Obtain latest version of the repository
+      uses: actions/checkout@v1
+    - name: Set up Python 3
+      uses: actions/setup-python@v1
+      with:
+        python-version: '3.x'
+    - name: Install requirements with PIP
+      run: pip install -r requirements_GUI.txt
+    - name: Install pyinstaller
+      run: pip install pyinstaller
+    - name: Build Graphical Open Shop Channel Downloader
+      run: pyinstaller --onefile --icon=oscicon.ico xosc-dl.py
+    - name: Publish Build Artifacts
+      uses: actions/upload-artifact@master
+      with:
+        name: '${{ matrix.os }}-GUI'
+        path: dist

@@ -1,6 +1,7 @@
 import argparse
 import metadata
 import download
+import gui.ui_main
 import gui.ui_meta
 import sys
 from PySide2.QtWidgets import QApplication, QMainWindow
@@ -30,15 +31,34 @@ else:
     app_name = "WiiVNC"
 
 
+class MainWindow(gui.ui_main.Ui_MainWindow, QMainWindow):
+    def __init__(self):
+        super(MainWindow, self).__init__()
+        self.ui = gui.ui_main.Ui_MainWindow()
+        self.ui.setupUi(self)
+        self.populate()
+
+    def populate(self):
+        self.ui.ViewMetadataBtn.clicked.connect(self.view_metadata)
+
+    def app_name(self):
+        return self.ui.listAppsWidget.currentItem().text()
+
+    def view_metadata(self):
+        self.app_name = self.ui.listAppsWidget.currentItem().text()
+        metawindow.show()
+
+
 class MetadataWindow(gui.ui_meta.Ui_Metadata, QMainWindow):
     def __init__(self):
         super(MetadataWindow, self).__init__()
         self.ui = gui.ui_meta.Ui_Metadata()
         self.ui.setupUi(self)
         self.setWindowTitle("bruh")
-        self.populate_lineedits()
+        self.populate()
+        yes = MainWindow.app_name
 
-    def populate_lineedits(self):
+    def populate(self):
         info = metadata.dictionary(app_name)
         self.ui.appname.setText(info.get("display_name"))
         self.ui.version.setText(info.get("version"))
@@ -51,16 +71,18 @@ class MetadataWindow(gui.ui_meta.Ui_Metadata, QMainWindow):
     def download_button(self):
         output = self.ui.FileNameLineEdit.text()
         extract = self.ui.ExtractAppCheckbox.isChecked()
-        window.close()
+        metawindow.close()
         download.get(app_name=app_name, output=output, extract=extract)
 
     def close_button(self):
-        window.close()
+        metawindow.close()
 
 
 if __name__ == "__main__":
     app = QApplication()
-    window = MetadataWindow()
+    metawindow = MetadataWindow()
+    window = MainWindow()
+    #metawindow.show()
     window.show()
     app.exec_()
 

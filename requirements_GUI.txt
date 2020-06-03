@@ -1,0 +1,5 @@
+lxml~=4.5.1
+requests~=2.23.0
+halo~=0.0.29
+packaging~=20.4
+PySide2~=5.15.0
