@@ -41,9 +41,6 @@ class MainWindow(gui.ui_main.Ui_MainWindow, QMainWindow):
     def populate(self):
         self.ui.ViewMetadataBtn.clicked.connect(self.view_metadata)
 
-    def app_name(self):
-        return self.ui.listAppsWidget.currentItem().text()
-
     def view_metadata(self):
         self.app_name = self.ui.listAppsWidget.currentItem().text()
         metawindow.show()
