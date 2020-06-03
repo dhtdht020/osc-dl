@@ -46,7 +46,7 @@ jobs:
     - name: Install pyinstaller
       run: pip install pyinstaller
     - name: Build Graphical Open Shop Channel Downloader
-      run: pyinstaller --onefile --icon=oscicon.ico xosc-dl.py
+      run: pyinstaller --onefile --icon=oscicon.ico xosc_dl.py
     - name: Publish Build Artifacts
       uses: actions/upload-artifact@master
       with:
