@@ -2,8 +2,12 @@ import metadata
 import download
 import parsecontents
 import gui.ui_united
+import gui.ui_about
 import updater
 from PySide2.QtWidgets import QApplication, QMainWindow
+
+
+version = updater.current_version()
 
 
 class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
@@ -11,13 +15,14 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         super(MainWindow, self).__init__()
         self.ui = gui.ui_united.Ui_MainWindow()
         self.ui.setupUi(self)
-        self.setWindowTitle("Open Shop Channel Downloader v"+updater.current_version()+" - Library")
+        self.setWindowTitle("Open Shop Channel Downloader v"+version+" - Library")
         self.populate()
         self.populate_meta()
 
     def populate(self):
         self.ui.ViewMetadataBtn.clicked.connect(self.view_metadata)
         self.applist = parsecontents.list()
+        self.ui.actionAbout_OSC_DL.setText("osc-dl Version v" + version)
         for item in self.applist:
             self.ui.listAppsWidget.addItem(item)
 
@@ -42,7 +47,6 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         self.ui.FileNameLineEdit.setText(app_name + ".zip")
         self.ui.progressBar.setValue(0)
 
-
     def view_metadata(self):
         self.app_name = self.ui.listAppsWidget.currentItem().text()
 
@@ -53,6 +57,14 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         self.ui.progressBar.setValue(25)
         download.get(app_name=self.app_name, output=output, extract=extract)
         self.ui.progressBar.setValue(100)
+
+
+class AboutDialog(gui.ui_about.QDialog):
+    def __init__(self):
+        super(AboutDialog, self).__init__()
+        self.ui = gui.ui_about.QDialog
+        self.ui.setupUi(self)
+        self.setWindowTitle("bruh")
 
 
 if __name__ == "__main__":

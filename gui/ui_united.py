@@ -31,6 +31,7 @@ class Ui_MainWindow(object):
         MainWindow.setDockOptions(QMainWindow.AllowTabbedDocks|QMainWindow.AnimatedDocks)
         self.actionAbout_OSC_DL = QAction(MainWindow)
         self.actionAbout_OSC_DL.setObjectName(u"actionAbout_OSC_DL")
+        self.actionAbout_OSC_DL.setEnabled(False)
         self.centralwidget = QWidget(MainWindow)
         self.centralwidget.setObjectName(u"centralwidget")
         self.AppsLibraryBox = QGroupBox(self.centralwidget)

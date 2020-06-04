@@ -339,6 +339,9 @@ p, li { white-space: pre-wrap; }
    <addaction name="menuAbout"/>
   </widget>
   <action name="actionAbout_OSC_DL">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
    <property name="text">
     <string>About OSC-DL</string>
    </property>
