@@ -80,6 +80,18 @@ def get_list(repo="hbb1.oscwii.org"):
     return data
 
 
+def list(repo="hbb1.oscwii.org"):
+    u = requests.get("https://" + repo + "/metadata.json")
+
+    applist = []
+
+    data = json.loads(u.content)
+    for key in data.keys():
+        applist.append(key)
+
+    return applist
+
+
 def repository_list(repo="hbb1.oscwii.org"):
     print("Getting raw list of all repositories from " + repo + "..\n\n")
     with Halo(text="Loading Secondary Repositories..", color="yellow", text_color="yellow"):

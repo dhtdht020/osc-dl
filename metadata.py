@@ -103,7 +103,10 @@ def dictionary(app_name, repo="hbb1.oscwii.org"):
     xml = xml.split("\n", 1)[1]
 
     # get information from XML
-    root = lxml.etree.fromstring(xml)
+    try:
+        root = lxml.etree.fromstring(xml)
+    except Exception:
+        pass
 
     try:
         display_name = root.find('name').text

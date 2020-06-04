@@ -1,128 +1,57 @@
-import argparse
 import metadata
 import download
-import gui.ui_main
-import gui.ui_meta
-import sys
+import parsecontents
+import gui.ui_united
+import updater
 from PySide2.QtWidgets import QApplication, QMainWindow
-from PySide2.QtCore import QFile
 
 
-parser = argparse.ArgumentParser(
-    description="Open Shop Channel Package DL Graphical"
-)
-
-subparser = parser.add_subparsers(dest='cmd')
-meta = subparser.add_parser('meta')
-
-meta.add_argument(
-    "-n",
-    "--name",
-    help="Name of homebrew app",
-    required=True
-)
-
-args = parser.parse_args()
-
-# get metadata command
-if args.cmd == 'meta':
-    app_name = args.name
-else:
-    app_name = "WiiVNC"
-
-
-class MainWindow(gui.ui_main.Ui_MainWindow, QMainWindow):
+class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
     def __init__(self):
         super(MainWindow, self).__init__()
-        self.ui = gui.ui_main.Ui_MainWindow()
+        self.ui = gui.ui_united.Ui_MainWindow()
         self.ui.setupUi(self)
+        self.setWindowTitle("Open Shop Channel Downloader v"+updater.current_version()+" - Library")
         self.populate()
+        self.populate_meta()
 
     def populate(self):
         self.ui.ViewMetadataBtn.clicked.connect(self.view_metadata)
+        self.applist = parsecontents.list()
+        for item in self.applist:
+            self.ui.listAppsWidget.addItem(item)
 
-    def view_metadata(self):
-        self.app_name = self.ui.listAppsWidget.currentItem().text()
-        metawindow.show()
+    def populate_meta(self):
+        self.ui.ViewMetadataBtn.clicked.connect(self.download_button)
 
+        self.ui.listAppsWidget.currentItemChanged.connect(self.selection_changed)
 
-class MetadataWindow(gui.ui_meta.Ui_Metadata, QMainWindow):
-    def __init__(self):
-        super(MetadataWindow, self).__init__()
-        self.ui = gui.ui_meta.Ui_Metadata()
-        self.ui.setupUi(self)
-        self.setWindowTitle("bruh")
-        self.populate()
-        yes = MainWindow.app_name
-
-    def populate(self):
+    def selection_changed(self):
+        app_name = self.ui.listAppsWidget.currentItem().text()
         info = metadata.dictionary(app_name)
         self.ui.appname.setText(info.get("display_name"))
         self.ui.version.setText(info.get("version"))
         self.ui.contributors.setText(info.get("contributors"))
         self.ui.developer.setText(info.get("coder"))
+        self.ui.shortDescriptionBrowser.setText(info.get("short_description"))
+        self.ui.longDescriptionBrowser.setText(info.get("long_description"))
         self.ui.FileNameLineEdit.setText(app_name + ".zip")
-        self.ui.DownloadAppBtn.clicked.connect(self.download_button)
-        self.ui.CloseBtn.clicked.connect(self.close_button)
+        self.ui.progressBar.setValue(0)
+
+    def view_metadata(self):
+        self.app_name = self.ui.listAppsWidget.currentItem().text()
 
     def download_button(self):
+        self.app_name = self.ui.listAppsWidget.currentItem().text()
         output = self.ui.FileNameLineEdit.text()
         extract = self.ui.ExtractAppCheckbox.isChecked()
-        metawindow.close()
-        download.get(app_name=app_name, output=output, extract=extract)
-
-    def close_button(self):
-        metawindow.close()
+        self.ui.progressBar.setValue(10)
+        download.get(app_name=self.app_name, output=output, extract=extract)
+        self.ui.progressBar.setValue(100)
 
 
 if __name__ == "__main__":
     app = QApplication()
-    metawindow = MetadataWindow()
     window = MainWindow()
-    #metawindow.show()
     window.show()
     app.exec_()
-
-
-#class Metadata(QtWidgets.QWidget):
-#    def __init__(self):
-#        super().__init__()
-#        self.setWindowTitle("Metadata")
-#        self.setIcon()
-#
-#        info = metadata.dictionary(app_name)
-#        info.get("version")
-#
-#        self.name = QtWidgets.QLabel("Display Name: "+info.get("display_name"))
-#        self.version = QtWidgets.QLabel("Version: "+info.get("version"))
-#        self.coder = QtWidgets.QLabel("Coder: "+info.get("coder"))
-#        self.contributors = QtWidgets.QLabel("Contributors: " + info.get("contributors"))
-#
-#        # load icon image
-#        #icon = QtGui.QPixmap(metadata.icon(app_name))
-#        #label = QtWidgets.QLabel()
-#        #label.setPixmap(icon)
-#        #label.show()
-#
-#        self.layout = QtWidgets.QVBoxLayout()
-#        self.layout.addWidget(self.name)
-#        self.layout.addWidget(self.version)
-#        self.layout.addWidget(self.coder)
-#        self.layout.addWidget(self.contributors)
-#        #self.layout.addWidget(label)
-#
-#        self.setLayout(self.layout)
-#
-#    def setIcon(self):
-#        appIcon = QIcon("oscicon.ico")
-#        self.setWindowIcon(appIcon)
-#
-#
-#if __name__ == "__main__":
-#    app = QtWidgets.QApplication([])
-#
-#    widget = Metadata()
-#    widget.resize(400, 200)
-#    widget.show()
-#
-#    sys.exit(app.exec_())
