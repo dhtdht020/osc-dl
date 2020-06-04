@@ -2,7 +2,6 @@ import metadata
 import download
 import parsecontents
 import gui.ui_united
-import gui.ui_about
 import updater
 from PySide2.QtWidgets import QApplication, QMainWindow
 
@@ -57,14 +56,6 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         self.ui.progressBar.setValue(25)
         download.get(app_name=self.app_name, output=output, extract=extract)
         self.ui.progressBar.setValue(100)
-
-
-class AboutDialog(gui.ui_about.QDialog):
-    def __init__(self):
-        super(AboutDialog, self).__init__()
-        self.ui = gui.ui_about.QDialog
-        self.ui.setupUi(self)
-        self.setWindowTitle("bruh")
 
 
 if __name__ == "__main__":
