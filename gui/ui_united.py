@@ -62,7 +62,7 @@ class Ui_MainWindow(object):
         self.GeneralTab.setObjectName(u"GeneralTab")
         self.formLayoutWidget = QWidget(self.GeneralTab)
         self.formLayoutWidget.setObjectName(u"formLayoutWidget")
-        self.formLayoutWidget.setGeometry(QRect(10, 20, 221, 101))
+        self.formLayoutWidget.setGeometry(QRect(10, 40, 221, 101))
         self.MetaLayout = QFormLayout(self.formLayoutWidget)
         self.MetaLayout.setObjectName(u"MetaLayout")
         self.MetaLayout.setContentsMargins(0, 0, 0, 0)
@@ -114,21 +114,19 @@ class Ui_MainWindow(object):
 
         self.MetaLayout.setWidget(3, QFormLayout.FieldRole, self.contributors)
 
+        self.label_description = QLabel(self.GeneralTab)
+        self.label_description.setObjectName(u"label_description")
+        self.label_description.setGeometry(QRect(10, 10, 221, 16))
+        self.label_description.setMaximumSize(QSize(221, 16777215))
         self.tabMetadata.addTab(self.GeneralTab, "")
         self.Description = QWidget()
         self.Description.setObjectName(u"Description")
-        self.shortDescriptionBrowser = QTextBrowser(self.Description)
-        self.shortDescriptionBrowser.setObjectName(u"shortDescriptionBrowser")
-        self.shortDescriptionBrowser.setGeometry(QRect(10, 20, 221, 31))
-        self.ShortDescLabel = QLabel(self.Description)
-        self.ShortDescLabel.setObjectName(u"ShortDescLabel")
-        self.ShortDescLabel.setGeometry(QRect(10, 0, 91, 20))
         self.longDescriptionBrowser = QTextBrowser(self.Description)
         self.longDescriptionBrowser.setObjectName(u"longDescriptionBrowser")
-        self.longDescriptionBrowser.setGeometry(QRect(10, 70, 221, 61))
+        self.longDescriptionBrowser.setGeometry(QRect(10, 20, 221, 121))
         self.LongDescLabel = QLabel(self.Description)
         self.LongDescLabel.setObjectName(u"LongDescLabel")
-        self.LongDescLabel.setGeometry(QRect(10, 50, 91, 20))
+        self.LongDescLabel.setGeometry(QRect(10, 0, 91, 20))
         self.tabMetadata.addTab(self.Description, "")
         self.ViewMetadataBtn = QPushButton(self.SelectionInfoBox)
         self.ViewMetadataBtn.setObjectName(u"ViewMetadataBtn")
@@ -172,20 +170,15 @@ class Ui_MainWindow(object):
         self.label_version.setText(QCoreApplication.translate("MainWindow", u"Version", None))
         self.label_developer.setText(QCoreApplication.translate("MainWindow", u"Developer", None))
         self.label_contributors.setText(QCoreApplication.translate("MainWindow", u"Contributors", None))
+        self.label_description.setText(QCoreApplication.translate("MainWindow", u"Description", None))
         self.tabMetadata.setTabText(self.tabMetadata.indexOf(self.GeneralTab), QCoreApplication.translate("MainWindow", u"General", None))
-        self.shortDescriptionBrowser.setHtml(QCoreApplication.translate("MainWindow", u"<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
-"p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
-"<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br /></p></body></html>", None))
-        self.ShortDescLabel.setText(QCoreApplication.translate("MainWindow", u"Short Description", None))
         self.longDescriptionBrowser.setHtml(QCoreApplication.translate("MainWindow", u"<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
 "</style></head><body style=\" font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
 "<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br /></p></body></html>", None))
         self.LongDescLabel.setText(QCoreApplication.translate("MainWindow", u"Long Description", None))
-        self.tabMetadata.setTabText(self.tabMetadata.indexOf(self.Description), QCoreApplication.translate("MainWindow", u"Description", None))
+        self.tabMetadata.setTabText(self.tabMetadata.indexOf(self.Description), QCoreApplication.translate("MainWindow", u"Long Description", None))
         self.ViewMetadataBtn.setText(QCoreApplication.translate("MainWindow", u"Download App", None))
         self.ApplicationIconBox.setTitle(QCoreApplication.translate("MainWindow", u"Application Icon", None))
         self.ApplicationIconLabel.setText(QCoreApplication.translate("MainWindow", u"IconGoesHere", None))

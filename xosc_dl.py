@@ -33,10 +33,14 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         self.ui.version.setText(info.get("version"))
         self.ui.contributors.setText(info.get("contributors"))
         self.ui.developer.setText(info.get("coder"))
-        self.ui.shortDescriptionBrowser.setText(info.get("short_description"))
+        if info.get("short_description") == "Unknown":
+            self.ui.label_description.setText("No description specified.")
+        else:
+            self.ui.label_description.setText(info.get("short_description"))
         self.ui.longDescriptionBrowser.setText(info.get("long_description"))
         self.ui.FileNameLineEdit.setText(app_name + ".zip")
         self.ui.progressBar.setValue(0)
+
 
     def view_metadata(self):
         self.app_name = self.ui.listAppsWidget.currentItem().text()
