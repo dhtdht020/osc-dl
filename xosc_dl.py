@@ -30,6 +30,7 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         app_name = self.ui.listAppsWidget.currentItem().text()
         info = metadata.dictionary(app_name)
         self.ui.appname.setText(info.get("display_name"))
+        self.ui.SelectionInfoBox.setTitle("Metadata: " + info.get("display_name"))
         self.ui.version.setText(info.get("version"))
         self.ui.contributors.setText(info.get("contributors"))
         self.ui.developer.setText(info.get("coder"))
@@ -49,7 +50,7 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         self.app_name = self.ui.listAppsWidget.currentItem().text()
         output = self.ui.FileNameLineEdit.text()
         extract = self.ui.ExtractAppCheckbox.isChecked()
-        self.ui.progressBar.setValue(10)
+        self.ui.progressBar.setValue(25)
         download.get(app_name=self.app_name, output=output, extract=extract)
         self.ui.progressBar.setValue(100)
 
