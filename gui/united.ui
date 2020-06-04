@@ -73,29 +73,6 @@
     <property name="title">
      <string>Application Metadata</string>
     </property>
-    <widget class="QLabel" name="FileNameLabel">
-     <property name="geometry">
-      <rect>
-       <x>10</x>
-       <y>220</y>
-       <width>91</width>
-       <height>20</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>Output File</string>
-     </property>
-    </widget>
-    <widget class="QLineEdit" name="FileNameLineEdit">
-     <property name="geometry">
-      <rect>
-       <x>70</x>
-       <y>220</y>
-       <width>181</width>
-       <height>20</height>
-      </rect>
-     </property>
-    </widget>
     <widget class="QCheckBox" name="ExtractAppCheckbox">
      <property name="geometry">
       <rect>
@@ -292,6 +269,28 @@ p, li { white-space: pre-wrap; }
      <property name="text">
       <string>Download App</string>
      </property>
+    </widget>
+    <widget class="QWidget" name="formLayoutWidget_2">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>220</y>
+       <width>251</width>
+       <height>22</height>
+      </rect>
+     </property>
+     <layout class="QFormLayout" name="MetaLayout_2">
+      <item row="0" column="0">
+       <widget class="QLabel" name="FileNameLabel">
+        <property name="text">
+         <string>Output File</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="QLineEdit" name="FileNameLineEdit"/>
+      </item>
+     </layout>
     </widget>
    </widget>
    <widget class="QGroupBox" name="ApplicationIconBox">
