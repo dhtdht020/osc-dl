@@ -35,8 +35,10 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         info = metadata.dictionary(app_name)
         self.ui.appname.setText(info.get("display_name"))
         self.ui.SelectionInfoBox.setTitle("Metadata: " + info.get("display_name"))
+        self.ui.label_displayname.setText(info.get("display_name"))
         self.ui.version.setText(info.get("version"))
         self.ui.contributors.setText(info.get("contributors"))
+        self.ui.releasedate.setText(info.get("release_date"))
         self.ui.developer.setText(info.get("coder"))
         if info.get("short_description") == "Unknown":
             self.ui.label_description.setText("No description specified.")

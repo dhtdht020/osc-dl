@@ -67,7 +67,7 @@
       <x>620</x>
       <y>10</y>
       <width>271</width>
-      <height>281</height>
+      <height>361</height>
      </rect>
     </property>
     <property name="title">
@@ -77,7 +77,7 @@
      <property name="geometry">
       <rect>
        <x>10</x>
-       <y>200</y>
+       <y>260</y>
        <width>179</width>
        <height>17</height>
       </rect>
@@ -90,7 +90,7 @@
      <property name="geometry">
       <rect>
        <x>170</x>
-       <y>250</y>
+       <y>320</y>
        <width>101</width>
        <height>23</height>
       </rect>
@@ -105,7 +105,7 @@
        <x>10</x>
        <y>20</y>
        <width>251</width>
-       <height>171</height>
+       <height>221</height>
       </rect>
      </property>
      <property name="currentIndex">
@@ -119,9 +119,9 @@
        <property name="geometry">
         <rect>
          <x>10</x>
-         <y>40</y>
+         <y>60</y>
          <width>221</width>
-         <height>101</height>
+         <height>126</height>
         </rect>
        </property>
        <layout class="QFormLayout" name="MetaLayout">
@@ -199,13 +199,30 @@
           </property>
          </widget>
         </item>
+        <item row="4" column="0">
+         <widget class="QLabel" name="label_releasedate">
+          <property name="text">
+           <string>Release Date</string>
+          </property>
+         </widget>
+        </item>
+        <item row="4" column="1">
+         <widget class="QLineEdit" name="releasedate">
+          <property name="echoMode">
+           <enum>QLineEdit::Normal</enum>
+          </property>
+          <property name="readOnly">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
        </layout>
       </widget>
       <widget class="QLabel" name="label_description">
        <property name="geometry">
         <rect>
          <x>10</x>
-         <y>10</y>
+         <y>30</y>
          <width>221</width>
          <height>16</height>
         </rect>
@@ -220,6 +237,31 @@
         <string>Description</string>
        </property>
       </widget>
+      <widget class="QLabel" name="label_displayname">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>10</y>
+         <width>221</width>
+         <height>16</height>
+        </rect>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>221</width>
+         <height>16777215</height>
+        </size>
+       </property>
+       <property name="font">
+        <font>
+         <weight>75</weight>
+         <bold>true</bold>
+        </font>
+       </property>
+       <property name="text">
+        <string>Title</string>
+       </property>
+      </widget>
      </widget>
      <widget class="QWidget" name="Description">
       <attribute name="title">
@@ -231,7 +273,7 @@
          <x>10</x>
          <y>20</y>
          <width>221</width>
-         <height>121</height>
+         <height>171</height>
         </rect>
        </property>
        <property name="html">
@@ -261,7 +303,7 @@ p, li { white-space: pre-wrap; }
      <property name="geometry">
       <rect>
        <x>10</x>
-       <y>250</y>
+       <y>320</y>
        <width>149</width>
        <height>23</height>
       </rect>
@@ -274,7 +316,7 @@ p, li { white-space: pre-wrap; }
      <property name="geometry">
       <rect>
        <x>10</x>
-       <y>220</y>
+       <y>280</y>
        <width>251</width>
        <height>22</height>
       </rect>
@@ -291,32 +333,6 @@ p, li { white-space: pre-wrap; }
        <widget class="QLineEdit" name="FileNameLineEdit"/>
       </item>
      </layout>
-    </widget>
-   </widget>
-   <widget class="QGroupBox" name="ApplicationIconBox">
-    <property name="geometry">
-     <rect>
-      <x>620</x>
-      <y>300</y>
-      <width>271</width>
-      <height>71</height>
-     </rect>
-    </property>
-    <property name="title">
-     <string>Application Icon</string>
-    </property>
-    <widget class="QLabel" name="ApplicationIconLabel">
-     <property name="geometry">
-      <rect>
-       <x>10</x>
-       <y>20</y>
-       <width>81</width>
-       <height>16</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>IconGoesHere</string>
-     </property>
     </widget>
    </widget>
   </widget>
