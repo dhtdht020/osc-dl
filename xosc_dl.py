@@ -4,9 +4,17 @@ import parsecontents
 import gui.ui_united
 import updater
 from PySide2.QtWidgets import QApplication, QMainWindow
+from PySide2.QtGui import QIcon
+import sys, os
 
 
 version = updater.current_version()
+
+
+def resource_path(relative_path):
+    if hasattr(sys, '_MEIPASS'):
+        return os.path.join(sys._MEIPASS, relative_path)
+    return os.path.join(os.path.abspath("."), relative_path)
 
 
 class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
@@ -15,8 +23,13 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         self.ui = gui.ui_united.Ui_MainWindow()
         self.ui.setupUi(self)
         self.setWindowTitle("Open Shop Channel Downloader v"+version+" - Library")
+        self.setIcon()
         self.populate()
         self.populate_meta()
+
+    def setIcon(self):
+        appIcon = QIcon(resource_path("oscicon.ico"))
+        self.setWindowIcon(appIcon)
 
     def populate(self):
         self.ui.ViewMetadataBtn.clicked.connect(self.view_metadata)
