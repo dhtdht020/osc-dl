@@ -48,7 +48,7 @@ class Ui_MainWindow(object):
         self.ExtractAppCheckbox.setGeometry(QRect(10, 260, 179, 17))
         self.progressBar = QProgressBar(self.SelectionInfoBox)
         self.progressBar.setObjectName(u"progressBar")
-        self.progressBar.setGeometry(QRect(170, 320, 101, 23))
+        self.progressBar.setGeometry(QRect(170, 320, 91, 23))
         self.progressBar.setValue(0)
         self.tabMetadata = QTabWidget(self.SelectionInfoBox)
         self.tabMetadata.setObjectName(u"tabMetadata")
