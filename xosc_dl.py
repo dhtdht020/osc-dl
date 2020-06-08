@@ -3,10 +3,19 @@ import download
 import parsecontents
 import gui.ui_united
 import updater
-from PySide2.QtWidgets import QApplication, QMainWindow
+import export
+import io
+import re
+from contextlib import redirect_stdout
+from PySide2.QtWidgets import QApplication, QMainWindow, QFileDialog
 
 
 version = updater.current_version()
+
+
+def escape_ansi(line):
+    ansi_escape = re.compile(r'(\x9B|\x1B\[)[0-?]*[ -\/]*[@-~]')
+    return ansi_escape.sub('', line)
 
 
 class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
@@ -17,6 +26,14 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         self.setWindowTitle("Open Shop Channel Downloader v"+version+" - Library")
         self.populate()
         self.populate_meta()
+        self.status_message("Ready to download")
+        self.ui.statusBar.addPermanentWidget(self.ui.progressBar)
+
+        # set up menu bar
+        # self.ui.actionTXT_file.triggered.connect(self.export_applist_txt_button)
+
+    def status_message(self, message):
+        self.ui.statusBar.showMessage(message)
 
     def populate(self):
         self.ui.ViewMetadataBtn.clicked.connect(self.view_metadata)
@@ -47,17 +64,38 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         self.ui.longDescriptionBrowser.setText(info.get("long_description"))
         self.ui.FileNameLineEdit.setText(app_name + ".zip")
         self.ui.progressBar.setValue(0)
+        self.status_message("Ready to download")
 
     def view_metadata(self):
         self.app_name = self.ui.listAppsWidget.currentItem().text()
 
+    """def export_applist_txt_button(self):
+        self.status_message("Exporting list of apps from Open Shop Channel..")
+        file_name = None
+        try:
+            file_name = str(QFileDialog.getSaveFileName())
+        except Exception:
+            pass
+
+        self.ui.progressBar.setValue(25)
+        export_txt_output = io.StringIO()
+        with redirect_stdout(export_txt_output):
+            export.app_list(txt_path=file_name)
+        self.ui.progressBar.setValue(100)
+        self.status_message(escape_ansi(export_txt_output.getvalue()))
+        print("Exported application list to " + file_name)"""
+
     def download_button(self):
         self.app_name = self.ui.listAppsWidget.currentItem().text()
+        self.status_message("Downloading " + self.app_name + " from Open Shop Channel..")
         output = self.ui.FileNameLineEdit.text()
         extract = self.ui.ExtractAppCheckbox.isChecked()
         self.ui.progressBar.setValue(25)
-        download.get(app_name=self.app_name, output=output, extract=extract)
+        console_output = io.StringIO()
+        with redirect_stdout(console_output):
+            download.get(app_name=self.app_name, output=output, extract=extract)
         self.ui.progressBar.setValue(100)
+        self.status_message(escape_ansi(console_output.getvalue()))
 
 
 if __name__ == "__main__":

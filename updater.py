@@ -6,7 +6,7 @@ from packaging import version
 
 
 def current_version():
-    beta_number = "5"
+    beta_number = "6"
     version = "1.2." + beta_number
     return version
 

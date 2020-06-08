@@ -41,7 +41,7 @@
       <x>10</x>
       <y>10</y>
       <width>601</width>
-      <height>361</height>
+      <height>341</height>
      </rect>
     </property>
     <property name="title">
@@ -53,7 +53,7 @@
        <x>10</x>
        <y>20</y>
        <width>581</width>
-       <height>331</height>
+       <height>311</height>
       </rect>
      </property>
      <property name="currentRow">
@@ -67,7 +67,7 @@
       <x>620</x>
       <y>10</y>
       <width>271</width>
-      <height>361</height>
+      <height>341</height>
      </rect>
     </property>
     <property name="title">
@@ -89,8 +89,8 @@
     <widget class="QProgressBar" name="progressBar">
      <property name="geometry">
       <rect>
-       <x>170</x>
-       <y>320</y>
+       <x>180</x>
+       <y>10</y>
        <width>91</width>
        <height>23</height>
       </rect>
@@ -236,6 +236,9 @@
        <property name="text">
         <string>Description</string>
        </property>
+       <property name="textInteractionFlags">
+        <set>Qt::LinksAccessibleByMouse|Qt::TextSelectableByMouse</set>
+       </property>
       </widget>
       <widget class="QLabel" name="label_displayname">
        <property name="geometry">
@@ -260,6 +263,12 @@
        </property>
        <property name="text">
         <string>Title</string>
+       </property>
+       <property name="wordWrap">
+        <bool>true</bool>
+       </property>
+       <property name="textInteractionFlags">
+        <set>Qt::LinksAccessibleByMouse|Qt::TextSelectableByMouse</set>
        </property>
       </widget>
      </widget>
@@ -303,7 +312,7 @@ p, li { white-space: pre-wrap; }
      <property name="geometry">
       <rect>
        <x>10</x>
-       <y>320</y>
+       <y>310</y>
        <width>149</width>
        <height>23</height>
       </rect>
@@ -351,7 +360,25 @@ p, li { white-space: pre-wrap; }
     </property>
     <addaction name="actionAbout_OSC_DL"/>
    </widget>
+   <widget class="QMenu" name="menuExport">
+    <property name="title">
+     <string>Export Data</string>
+    </property>
+    <widget class="QMenu" name="menuApplication_List">
+     <property name="title">
+      <string>Application List</string>
+     </property>
+     <addaction name="actionTXT_file"/>
+    </widget>
+    <addaction name="menuApplication_List"/>
+   </widget>
    <addaction name="menuAbout"/>
+   <addaction name="menuExport"/>
+  </widget>
+  <widget class="QStatusBar" name="statusBar">
+   <property name="sizeGripEnabled">
+    <bool>false</bool>
+   </property>
   </widget>
   <action name="actionAbout_OSC_DL">
    <property name="enabled">
@@ -359,6 +386,11 @@ p, li { white-space: pre-wrap; }
    </property>
    <property name="text">
     <string>About OSC-DL</string>
+   </property>
+  </action>
+  <action name="actionTXT_file">
+   <property name="text">
+    <string>Text File</string>
    </property>
   </action>
  </widget>

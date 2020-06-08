@@ -4,6 +4,7 @@ import download
 import localcontents
 import updater
 import metadata
+import export
 import os
 
 if os.name == 'nt':
@@ -27,6 +28,7 @@ getall = subparser.add_parser('get-all')
 getlist = subparser.add_parser('get-list')
 meta = subparser.add_parser('meta')
 repolist = subparser.add_parser('repo-list')
+export_cmd = subparser.add_parser('export')
 update = subparser.add_parser('update')
 
 
@@ -169,6 +171,29 @@ applist.add_argument(
     action="store_true"
 )
 
+export_cmd.add_argument(
+    "-o",
+    "--output",
+    help="Output file",
+    action="store"
+)
+
+export_cmd.add_argument(
+    "-t",
+    "--type",
+    help="Type of data to export "
+         "(list)",
+    action="store",
+    required=True
+)
+
+export_cmd.add_argument(
+    "-r",
+    "--host",
+    help="Repository URL",
+    action="store"
+)
+
 ascii_logo = """                                                                                                    
     `.----.   .--`----.     `....`   ---.-:::.    
    :++/-:/++- :///---///` `---...--` +oo+:::oo+`  
@@ -229,6 +254,15 @@ if args.cmd == 'meta':
 # get list of repos on server command
 if args.cmd == 'repo-list':
     parsecontents.repository_list()
+
+
+# export data to file command
+if args.cmd == 'export':
+    if args.host is None:
+        args.host = "hbb1.oscwii.org"
+
+    if args.type == "list":
+        export.app_list(repo=args.host)
 
 
 # get the entire repo command
