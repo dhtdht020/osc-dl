@@ -81,7 +81,10 @@ def get_list(repo="hbb1.oscwii.org"):
 
 
 def list(repo="hbb1.oscwii.org"):
-    u = requests.get("https://" + repo + "/metadata.json")
+    try:
+        u = requests.get("https://" + repo + "/metadata.json")
+    except requests.exceptions.SSLError:
+        u = requests.get("http://" + repo + "/metadata.json")
 
     applist = []
 
