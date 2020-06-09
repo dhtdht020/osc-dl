@@ -89,8 +89,8 @@
     <widget class="QProgressBar" name="progressBar">
      <property name="geometry">
       <rect>
-       <x>180</x>
-       <y>10</y>
+       <x>170</x>
+       <y>310</y>
        <width>91</width>
        <height>23</height>
       </rect>
@@ -361,6 +361,9 @@ p, li { white-space: pre-wrap; }
     <addaction name="actionAbout_OSC_DL"/>
    </widget>
    <widget class="QMenu" name="menuExport">
+    <property name="enabled">
+     <bool>false</bool>
+    </property>
     <property name="title">
      <string>Export Data</string>
     </property>
