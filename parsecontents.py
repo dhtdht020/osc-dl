@@ -29,9 +29,13 @@ def query(term, repo="hbb1.oscwii.org"):
     print("Searching for package on " + repo + "..")
     with Halo(text="Searching..", color="yellow", text_color="yellow"):
         try:
-            u = requests.get("https://" + repo + "/metadata.json")
-        except requests.exceptions.SSLError:
-            u = requests.get("http://" + repo + "/metadata.json")
+            try:
+                u = requests.get("https://" + repo + "/metadata.json")
+            except requests.exceptions.SSLError:
+                u = requests.get("http://" + repo + "/metadata.json")
+        except requests.exceptions.ConnectionError:
+            print("Could not connect to host: "+ repo)
+            exit(1)
 
     try:
         data = json.loads(u.content)

@@ -47,7 +47,7 @@
     <property name="title">
      <string>Apps Library</string>
     </property>
-    <widget class="QListWidget" name="listAppsWidget">
+    <widget class="QTreeWidget" name="listAppsWidget">
      <property name="geometry">
       <rect>
        <x>10</x>
@@ -56,9 +56,94 @@
        <height>311</height>
       </rect>
      </property>
-     <property name="currentRow">
-      <number>-1</number>
+     <property name="horizontalScrollBarPolicy">
+      <enum>Qt::ScrollBarAlwaysOff</enum>
      </property>
+     <property name="rootIsDecorated">
+      <bool>false</bool>
+     </property>
+     <property name="sortingEnabled">
+      <bool>true</bool>
+     </property>
+     <property name="animated">
+      <bool>true</bool>
+     </property>
+     <column>
+      <property name="text">
+       <string>App Name</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>Internal Name</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>Author</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>Short Description</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>Version</string>
+      </property>
+     </column>
+     <item>
+      <property name="text">
+       <string>RiiConnect24 Mail Patcher</string>
+      </property>
+      <property name="text">
+       <string>Mail-Patcher</string>
+      </property>
+      <property name="text">
+       <string>Spotlight</string>
+      </property>
+      <property name="text">
+       <string>Patches your nwc24msg.cfg to use Wii Mail!</string>
+      </property>
+      <property name="text">
+       <string>v1.1</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Nintendont</string>
+      </property>
+      <property name="text">
+       <string>nintendont</string>
+      </property>
+      <property name="text">
+       <string>FIX94, crediar</string>
+      </property>
+      <property name="text">
+       <string>Gamecube Loader</string>
+      </property>
+      <property name="text">
+       <string>4.431</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Newo Fox</string>
+      </property>
+      <property name="text">
+       <string>newofox</string>
+      </property>
+      <property name="text">
+       <string>Owen</string>
+      </property>
+      <property name="text">
+       <string>on rails arcade shooter</string>
+      </property>
+      <property name="text">
+       <string>1.2</string>
+      </property>
+     </item>
     </widget>
    </widget>
    <widget class="QGroupBox" name="SelectionInfoBox">
