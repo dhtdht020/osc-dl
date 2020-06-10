@@ -9,9 +9,16 @@ FAIL = '\033[91m'
 def get(repo="hbb1.oscwii.org", raw=False):
     if raw is False:
         with Halo(text="Getting list..", color="yellow", text_color="yellow"):
-            u = requests.get("https://" + repo + "/metadata.json")
+            try:
+                u = requests.get("https://" + repo + "/metadata.json")
+            except requests.exceptions.SSLError:
+                u = requests.get("http://" + repo + "/metadata.json")
+
     else:
-        u = requests.get("https://" + repo + "/metadata.json")
+        try:
+            u = requests.get("https://" + repo + "/metadata.json")
+        except requests.exceptions.SSLError:
+            u = requests.get("http://" + repo + "/metadata.json")
 
     data = json.loads(u.content)
     for key in data.keys():
@@ -21,7 +28,10 @@ def get(repo="hbb1.oscwii.org", raw=False):
 def query(term, repo="hbb1.oscwii.org"):
     print("Searching for package on " + repo + "..")
     with Halo(text="Searching..", color="yellow", text_color="yellow"):
-        u = requests.get("https://" + repo + "/metadata.json")
+        try:
+            u = requests.get("https://" + repo + "/metadata.json")
+        except requests.exceptions.SSLError:
+            u = requests.get("http://" + repo + "/metadata.json")
 
     try:
         data = json.loads(u.content)
@@ -43,7 +53,10 @@ def query(term, repo="hbb1.oscwii.org"):
 
 
 def query_verify(term, repo="hbb1.oscwii.org", internal=False):
-    u = requests.get("https://" + repo + "/metadata.json")
+    try:
+        u = requests.get("https://" + repo + "/metadata.json")
+    except requests.exceptions.SSLError:
+        u = requests.get("http://" + repo + "/metadata.json")
 
     data = json.loads(u.content)
 
@@ -69,7 +82,10 @@ def get_list(repo="hbb1.oscwii.org"):
     print("Getting list of all packages from " + repo + "..")
 
     with Halo(text="Getting list..", color="yellow", text_color="yellow"):
+        try:
             u = requests.get("https://" + repo + "/metadata.json")
+        except requests.exceptions.SSLError:
+            u = requests.get("http://" + repo + "/metadata.json")
 
     try:
         data = json.loads(u.content)

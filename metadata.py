@@ -13,7 +13,10 @@ def get(app_name, type=None, repo="hbb1.oscwii.org"):
         exit(1)
 
     # https://hbb1.oscwii.org/unzipped_apps/wiixplorer/apps/wiixplorer/
-    xml = requests.get("https://" + repo + "/unzipped_apps/" + app_name + "/apps/" + app_name + "/meta.xml").text
+    try:
+        xml = requests.get("https://" + repo + "/unzipped_apps/" + app_name + "/apps/" + app_name + "/meta.xml").text
+    except requests.exceptions.SSLError:
+        xml = requests.get("http://" + repo + "/unzipped_apps/" + app_name + "/apps/" + app_name + "/meta.xml").text
 
     # remove unicode declaration
     xml = xml.split("\n", 1)[1]
