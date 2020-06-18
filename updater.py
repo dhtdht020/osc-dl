@@ -36,18 +36,24 @@ def init_update():
 
     print("Get the latest version from https://github.com/dhtdht020/osc-dl/\n")
 
-    check_update()
+    if check_update is True:
+        print("OSC-DL is out of date.")
+        print("Latest released version: " + latest_version())
+        print("Current version: " + current_version())
+    else:
+        print("You are up to date.")
+        print("Latest released version: " + latest_version())
+        print("Current version: " + current_version())
 
 
 def check_update():
     latest = latest_version()
-    current = current_version()
     if version.parse(latest) > version.parse(current_version()):
-        print("OUT OF DATE")
+        # out of date
+        return True
     else:
-        print("You are up to date.")
-        print("Latest released version: " + latest)
-        print("Current version: " + current)
+        # up to date
+        return False
 
 
 def get_update():

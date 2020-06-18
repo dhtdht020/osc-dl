@@ -42,6 +42,7 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         self.ui.actionAbout_OSC_DL.setText("osc-dl Version v" + version)
         for item in self.applist:
             self.ui.listAppsWidget.addItem(item)
+        self.ui.AppsAmountLabel.setText("Displaying " + str(self.ui.listAppsWidget.count()) + " apps.")
 
     def populate_meta(self):
         self.ui.ViewMetadataBtn.clicked.connect(self.download_button)
@@ -102,7 +103,7 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
     def copy_download_link_button(self):
         self.app_name = self.ui.listAppsWidget.currentItem().text()
         pyperclip.copy(metadata.url(self.app_name))
-        self.status_message("Copied the download link for " + self.app_name + "to clipboard")
+        self.status_message("Copied the download link for " + self.app_name + " to clipboard")
 
 
 if __name__ == "__main__":
