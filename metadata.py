@@ -98,6 +98,11 @@ def icon(app_name, repo="hbb1.oscwii.org"):
     return icon
 
 
+def url(app_name, repo="hbb1.oscwii.org"):
+    app_url = "https://" + repo + "/hbb/" + app_name + "/" + app_name + ".zip"
+    return app_url
+
+
 def dictionary(app_name, repo="hbb1.oscwii.org"):
 
     try:
@@ -159,3 +164,35 @@ def dictionary(app_name, repo="hbb1.oscwii.org"):
             }
 
     return meta
+
+
+def dictionary_raw(app_name, repo="hbb1.oscwii.org"):
+
+    try:
+        xml = requests.get("https://" + repo + "/unzipped_apps/" + app_name + "/apps/" + app_name + "/meta.xml").text
+    except requests.exceptions.SSLError:
+        xml = requests.get("http://" + repo + "/unzipped_apps/" + app_name + "/apps/" + app_name + "/meta.xml").text
+
+    # remove unicode declaration
+    xml = xml.split("\n", 1)[1]
+
+    # get information from XML
+    try:
+        root = lxml.etree.fromstring(xml)
+    except Exception:
+        pass
+
+    d = {}
+    for Element in root:
+        d[Element.tag] = root.find(Element.tag).text
+
+    return d
+
+
+def raw(app_name, repo="hbb1.oscwii.org"):
+    try:
+        xml = requests.get("https://" + repo + "/unzipped_apps/" + app_name + "/apps/" + app_name + "/meta.xml").text
+    except requests.exceptions.SSLError:
+        xml = requests.get("http://" + repo + "/unzipped_apps/" + app_name + "/apps/" + app_name + "/meta.xml").text
+
+    return xml

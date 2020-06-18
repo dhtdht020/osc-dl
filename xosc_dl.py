@@ -3,11 +3,11 @@ import download
 import parsecontents
 import gui.ui_united
 import updater
-import export
+import pyperclip
 import io
 import re
 from contextlib import redirect_stdout
-from PySide2.QtWidgets import QApplication, QMainWindow, QFileDialog
+from PySide2.QtWidgets import QApplication, QMainWindow
 
 
 version = updater.current_version()
@@ -37,6 +37,7 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
 
     def populate(self):
         self.ui.ViewMetadataBtn.clicked.connect(self.view_metadata)
+        self.ui.CopyDirectLinkBtn.clicked.connect(self.copy_download_link_button)
         self.applist = parsecontents.list()
         self.ui.actionAbout_OSC_DL.setText("osc-dl Version v" + version)
         for item in self.applist:
@@ -63,6 +64,7 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
             self.ui.label_description.setText(info.get("short_description"))
         self.ui.longDescriptionBrowser.setText(info.get("long_description"))
         self.ui.FileNameLineEdit.setText(app_name + ".zip")
+        self.ui.DirectLinkLineEdit.setText(metadata.url(app_name))
         self.ui.progressBar.setValue(0)
         self.status_message("Ready to download")
 
@@ -96,6 +98,11 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
             download.get(app_name=self.app_name, output=output, extract=extract)
         self.ui.progressBar.setValue(100)
         self.status_message(escape_ansi(console_output.getvalue()))
+
+    def copy_download_link_button(self):
+        self.app_name = self.ui.listAppsWidget.currentItem().text()
+        pyperclip.copy(metadata.url(self.app_name))
+        self.status_message("Copied the download link for " + self.app_name + "to clipboard")
 
 
 if __name__ == "__main__":

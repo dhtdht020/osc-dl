@@ -47,7 +47,7 @@
     <property name="title">
      <string>Apps Library</string>
     </property>
-    <widget class="QTreeWidget" name="listAppsWidget">
+    <widget class="QListWidget" name="listAppsWidget">
      <property name="geometry">
       <rect>
        <x>10</x>
@@ -56,94 +56,9 @@
        <height>311</height>
       </rect>
      </property>
-     <property name="horizontalScrollBarPolicy">
-      <enum>Qt::ScrollBarAlwaysOff</enum>
+     <property name="currentRow">
+      <number>-1</number>
      </property>
-     <property name="rootIsDecorated">
-      <bool>false</bool>
-     </property>
-     <property name="sortingEnabled">
-      <bool>true</bool>
-     </property>
-     <property name="animated">
-      <bool>true</bool>
-     </property>
-     <column>
-      <property name="text">
-       <string>App Name</string>
-      </property>
-     </column>
-     <column>
-      <property name="text">
-       <string>Internal Name</string>
-      </property>
-     </column>
-     <column>
-      <property name="text">
-       <string>Author</string>
-      </property>
-     </column>
-     <column>
-      <property name="text">
-       <string>Short Description</string>
-      </property>
-     </column>
-     <column>
-      <property name="text">
-       <string>Version</string>
-      </property>
-     </column>
-     <item>
-      <property name="text">
-       <string>RiiConnect24 Mail Patcher</string>
-      </property>
-      <property name="text">
-       <string>Mail-Patcher</string>
-      </property>
-      <property name="text">
-       <string>Spotlight</string>
-      </property>
-      <property name="text">
-       <string>Patches your nwc24msg.cfg to use Wii Mail!</string>
-      </property>
-      <property name="text">
-       <string>v1.1</string>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string>Nintendont</string>
-      </property>
-      <property name="text">
-       <string>nintendont</string>
-      </property>
-      <property name="text">
-       <string>FIX94, crediar</string>
-      </property>
-      <property name="text">
-       <string>Gamecube Loader</string>
-      </property>
-      <property name="text">
-       <string>4.431</string>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string>Newo Fox</string>
-      </property>
-      <property name="text">
-       <string>newofox</string>
-      </property>
-      <property name="text">
-       <string>Owen</string>
-      </property>
-      <property name="text">
-       <string>on rails arcade shooter</string>
-      </property>
-      <property name="text">
-       <string>1.2</string>
-      </property>
-     </item>
     </widget>
    </widget>
    <widget class="QGroupBox" name="SelectionInfoBox">
@@ -390,6 +305,73 @@ p, li { white-space: pre-wrap; }
        <property name="text">
         <string>Long Description</string>
        </property>
+      </widget>
+     </widget>
+     <widget class="QWidget" name="RawTab">
+      <attribute name="title">
+       <string>Raw</string>
+      </attribute>
+      <widget class="QLabel" name="DirectLinkLabel">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>140</y>
+         <width>91</width>
+         <height>20</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Direct Link</string>
+       </property>
+      </widget>
+      <widget class="QLineEdit" name="DirectLinkLineEdit">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>160</y>
+         <width>151</width>
+         <height>20</height>
+        </rect>
+       </property>
+       <property name="readOnly">
+        <bool>true</bool>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="CopyDirectLinkBtn">
+       <property name="geometry">
+        <rect>
+         <x>170</x>
+         <y>160</y>
+         <width>61</width>
+         <height>21</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Copy</string>
+       </property>
+      </widget>
+      <widget class="QTreeWidget" name="metaTreeWidget">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>10</y>
+         <width>221</width>
+         <height>121</height>
+        </rect>
+       </property>
+       <property name="rootIsDecorated">
+        <bool>false</bool>
+       </property>
+       <column>
+        <property name="text">
+         <string>Type</string>
+        </property>
+       </column>
+       <column>
+        <property name="text">
+         <string>Value</string>
+        </property>
+       </column>
       </widget>
      </widget>
     </widget>
