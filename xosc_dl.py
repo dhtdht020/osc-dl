@@ -14,6 +14,13 @@ version = updater.current_version()
 host = "hbb1.oscwii.org"
 
 
+def get_repo_host(display_name):
+    if display_name == "Open Shop Channel":
+        return "hbb1.oscwii.org"
+    elif display_name == "Homebrew Channel Themes":
+        return "hbb3.oscwii.org"
+
+
 def escape_ansi(line):
     ansi_escape = re.compile(r'(\x9B|\x1B\[)[0-?]*[ -\/]*[@-~]')
     return ansi_escape.sub('', line)
@@ -112,7 +119,7 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
 
     def changed_host(self):
         global host
-        host = self.ui.ReposComboBox.currentText()
+        host = get_repo_host(self.ui.ReposComboBox.currentText())
         self.status_message("Loading " + host + " repository..")
         self.ui.progressBar.setValue(20)
         self.repopulate()
@@ -129,8 +136,6 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
             self.ui.listAppsWidget.addItem(item)
         self.ui.listAppsWidget.setCurrentRow(0)
         self.ui.AppsAmountLabel.setText("Displaying " + str(self.ui.listAppsWidget.count()) + " apps.")
-
-
 
 
 if __name__ == "__main__":

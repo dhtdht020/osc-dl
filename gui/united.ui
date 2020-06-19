@@ -63,7 +63,7 @@
     <widget class="QLabel" name="RepositoryLabel">
      <property name="geometry">
       <rect>
-       <x>260</x>
+       <x>250</x>
        <y>20</y>
        <width>60</width>
        <height>21</height>
@@ -79,20 +79,20 @@
      </property>
      <property name="geometry">
       <rect>
-       <x>320</x>
+       <x>310</x>
        <y>21</y>
-       <width>151</width>
+       <width>161</width>
        <height>21</height>
       </rect>
      </property>
      <item>
       <property name="text">
-       <string>hbb1.oscwii.org</string>
+       <string>Open Shop Channel</string>
       </property>
      </item>
      <item>
       <property name="text">
-       <string>hbb3.oscwii.org</string>
+       <string>Homebrew Channel Themes</string>
       </property>
      </item>
     </widget>
