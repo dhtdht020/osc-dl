@@ -75,7 +75,7 @@
     </widget>
     <widget class="QComboBox" name="ReposComboBox">
      <property name="enabled">
-      <bool>false</bool>
+      <bool>true</bool>
      </property>
      <property name="geometry">
       <rect>
@@ -90,10 +90,15 @@
        <string>hbb1.oscwii.org</string>
       </property>
      </item>
+     <item>
+      <property name="text">
+       <string>hbb3.oscwii.org</string>
+      </property>
+     </item>
     </widget>
     <widget class="QPushButton" name="RefreshListBtn">
      <property name="enabled">
-      <bool>false</bool>
+      <bool>true</bool>
      </property>
      <property name="geometry">
       <rect>
