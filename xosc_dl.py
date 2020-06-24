@@ -1,9 +1,11 @@
 import io
 import re
+import zipfile
 from contextlib import redirect_stdout
 
 import pyperclip
-from PySide2.QtWidgets import QApplication, QMainWindow
+import requests
+from PySide2.QtWidgets import QApplication, QMainWindow, QInputDialog, QLineEdit, QMessageBox
 
 import download
 import gui.ui_united
@@ -13,6 +15,9 @@ import updater
 
 version = updater.current_version()
 host = "hbb1.oscwii.org"
+
+ip_regex = re.compile(r"^(?:[0-9]{1,3}\.){3}[0-9]{1,3}$")
+bootdol_regex = re.compile(r"^apps/(?:.+?)/boot.dol")
 
 
 def get_repo_host(display_name):
@@ -114,7 +119,40 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         self.status_message(escape_ansi(console_output.getvalue()))
 
     def wiiload_button(self):
-        print('h')
+        ip, ok = QInputDialog.getText(self, 'WiiLoad IP Address',
+                                      'Enter the IP address of your Wii:',
+                                      QLineEdit.Normal)
+        if not ok:
+            return
+
+        ip_match = ip_regex.match(ip)
+        if not ip_match:
+            QMessageBox.warning(self, 'Invalid IP Address', 'This IP address is invalid.')
+
+            return
+
+        self.app_name = self.ui.listAppsWidget.currentItem().text()
+        self.status_message("Downloading " + self.app_name + " from Open Shop Channel..")
+        self.ui.progressBar.setValue(25)
+
+        # download.get() cannot save to our own file-like object.
+        # Alt fix: add a file parameter to write to instead?
+        url = f"https://{host}/hbb/{self.app_name}/{self.app_name}.zip"
+        r = requests.get(url)
+
+        self.status_message("Unzipping...")
+        self.ui.progressBar.setValue(50)
+
+        zipped_app = io.BytesIO(r.content)
+        zip_file = zipfile.ZipFile(zipped_app)
+        executable_path = next((m for m in zip_file.namelist() if bootdol_regex.match(m)), None)
+        if not executable_path:
+            QMessageBox.warning(self, 'Unzip error', 'Could not find boot.dol executable in zip file.')
+
+            return
+        executable = zip_file.open(executable_path)
+
+        print(executable)
 
     def copy_download_link_button(self):
         self.app_name = self.ui.listAppsWidget.currentItem().text()
