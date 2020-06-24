@@ -46,7 +46,6 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         self.ui.statusBar.showMessage(message)
 
     def populate(self):
-        self.ui.ViewMetadataBtn.clicked.connect(self.view_metadata)
         self.ui.CopyDirectLinkBtn.clicked.connect(self.copy_download_link_button)
         self.ui.RefreshListBtn.clicked.connect(self.repopulate)
         self.ui.ReposComboBox.currentIndexChanged.connect(self.changed_host)
