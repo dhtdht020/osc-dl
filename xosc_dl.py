@@ -1,14 +1,15 @@
-import metadata
-import download
-import parsecontents
-import gui.ui_united
-import updater
-import pyperclip
 import io
 import re
 from contextlib import redirect_stdout
+
+import pyperclip
 from PySide2.QtWidgets import QApplication, QMainWindow
 
+import download
+import gui.ui_united
+import metadata
+import parsecontents
+import updater
 
 version = updater.current_version()
 host = "hbb1.oscwii.org"
