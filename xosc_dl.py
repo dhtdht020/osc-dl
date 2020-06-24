@@ -54,6 +54,7 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
 
     def populate_meta(self):
         self.ui.ViewMetadataBtn.clicked.connect(self.download_button)
+        self.ui.WiiLoadButton.clicked.connect(self.wiiload_button)
 
         self.ui.listAppsWidget.currentItemChanged.connect(self.selection_changed)
 
@@ -111,6 +112,9 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
             download.get(app_name=self.app_name, repo=host, output=output, extract=extract)
         self.ui.progressBar.setValue(100)
         self.status_message(escape_ansi(console_output.getvalue()))
+
+    def wiiload_button(self):
+        print('h')
 
     def copy_download_link_button(self):
         self.app_name = self.ui.listAppsWidget.currentItem().text()

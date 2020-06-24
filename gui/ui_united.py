@@ -8,11 +8,9 @@
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
 
-from PySide2.QtCore import (QCoreApplication, QDate, QDateTime, QMetaObject,
-    QObject, QPoint, QRect, QSize, QTime, QUrl, Qt)
-from PySide2.QtGui import (QBrush, QColor, QConicalGradient, QCursor, QFont,
-    QFontDatabase, QIcon, QKeySequence, QLinearGradient, QPalette, QPainter,
-    QPixmap, QRadialGradient)
+from PySide2.QtCore import (QCoreApplication, QMetaObject,
+                            QRect, QSize, Qt)
+from PySide2.QtGui import (QFont)
 from PySide2.QtWidgets import *
 
 
@@ -66,7 +64,7 @@ class Ui_MainWindow(object):
         self.ExtractAppCheckbox.setGeometry(QRect(10, 260, 179, 17))
         self.progressBar = QProgressBar(self.SelectionInfoBox)
         self.progressBar.setObjectName(u"progressBar")
-        self.progressBar.setGeometry(QRect(170, 310, 91, 23))
+        self.progressBar.setGeometry(QRect(180, 250, 91, 23))
         self.progressBar.setValue(0)
         self.tabMetadata = QTabWidget(self.SelectionInfoBox)
         self.tabMetadata.setObjectName(u"tabMetadata")
@@ -75,7 +73,7 @@ class Ui_MainWindow(object):
         self.GeneralTab.setObjectName(u"GeneralTab")
         self.formLayoutWidget = QWidget(self.GeneralTab)
         self.formLayoutWidget.setObjectName(u"formLayoutWidget")
-        self.formLayoutWidget.setGeometry(QRect(10, 60, 221, 126))
+        self.formLayoutWidget.setGeometry(QRect(10, 60, 221, 166))
         self.MetaLayout = QFormLayout(self.formLayoutWidget)
         self.MetaLayout.setObjectName(u"MetaLayout")
         self.MetaLayout.setContentsMargins(0, 0, 0, 0)
@@ -181,12 +179,9 @@ class Ui_MainWindow(object):
         self.metaTreeWidget.setGeometry(QRect(10, 10, 221, 121))
         self.metaTreeWidget.setRootIsDecorated(False)
         self.tabMetadata.addTab(self.RawTab, "")
-        self.ViewMetadataBtn = QPushButton(self.SelectionInfoBox)
-        self.ViewMetadataBtn.setObjectName(u"ViewMetadataBtn")
-        self.ViewMetadataBtn.setGeometry(QRect(10, 310, 149, 23))
         self.formLayoutWidget_2 = QWidget(self.SelectionInfoBox)
         self.formLayoutWidget_2.setObjectName(u"formLayoutWidget_2")
-        self.formLayoutWidget_2.setGeometry(QRect(10, 280, 251, 22))
+        self.formLayoutWidget_2.setGeometry(QRect(10, 280, 251, 31))
         self.MetaLayout_2 = QFormLayout(self.formLayoutWidget_2)
         self.MetaLayout_2.setObjectName(u"MetaLayout_2")
         self.MetaLayout_2.setContentsMargins(0, 0, 0, 0)
@@ -200,10 +195,26 @@ class Ui_MainWindow(object):
 
         self.MetaLayout_2.setWidget(0, QFormLayout.FieldRole, self.FileNameLineEdit)
 
+        self.horizontalLayoutWidget = QWidget(self.SelectionInfoBox)
+        self.horizontalLayoutWidget.setObjectName(u"horizontalLayoutWidget")
+        self.horizontalLayoutWidget.setGeometry(QRect(10, 310, 251, 30))
+        self.horizontalLayout = QHBoxLayout(self.horizontalLayoutWidget)
+        self.horizontalLayout.setObjectName(u"horizontalLayout")
+        self.horizontalLayout.setContentsMargins(0, 0, 0, 0)
+        self.ViewMetadataBtn = QPushButton(self.horizontalLayoutWidget)
+        self.ViewMetadataBtn.setObjectName(u"ViewMetadataBtn")
+
+        self.horizontalLayout.addWidget(self.ViewMetadataBtn)
+
+        self.WiiLoadButton = QPushButton(self.horizontalLayoutWidget)
+        self.WiiLoadButton.setObjectName(u"WiiLoadButton")
+
+        self.horizontalLayout.addWidget(self.WiiLoadButton)
+
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QMenuBar(MainWindow)
         self.menubar.setObjectName(u"menubar")
-        self.menubar.setGeometry(QRect(0, 0, 900, 21))
+        self.menubar.setGeometry(QRect(0, 0, 900, 25))
         self.menuAbout = QMenu(self.menubar)
         self.menuAbout.setObjectName(u"menuAbout")
         self.menuExport = QMenu(self.menubar)
@@ -255,21 +266,26 @@ class Ui_MainWindow(object):
         self.label_description.setText(QCoreApplication.translate("MainWindow", u"Description", None))
         self.label_displayname.setText(QCoreApplication.translate("MainWindow", u"Title", None))
         self.tabMetadata.setTabText(self.tabMetadata.indexOf(self.GeneralTab), QCoreApplication.translate("MainWindow", u"General", None))
-        self.longDescriptionBrowser.setHtml(QCoreApplication.translate("MainWindow", u"<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
-"p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
-"<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br /></p></body></html>", None))
+        self.longDescriptionBrowser.setHtml(QCoreApplication.translate("MainWindow",
+                                                                       u"<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+                                                                       "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+                                                                       "p, li { white-space: pre-wrap; }\n"
+                                                                       "</style></head><body style=\" font-family:'Cantarell'; font-size:10pt; font-weight:400; font-style:normal;\">\n"
+                                                                       "<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'MS Shell Dlg 2'; font-size:8.25pt;\"><br /></p></body></html>",
+                                                                       None))
         self.LongDescLabel.setText(QCoreApplication.translate("MainWindow", u"Long Description", None))
-        self.tabMetadata.setTabText(self.tabMetadata.indexOf(self.Description), QCoreApplication.translate("MainWindow", u"Long Description", None))
+        self.tabMetadata.setTabText(self.tabMetadata.indexOf(self.Description),
+                                    QCoreApplication.translate("MainWindow", u"Long Description", None))
         self.DirectLinkLabel.setText(QCoreApplication.translate("MainWindow", u"Direct Link", None))
         self.CopyDirectLinkBtn.setText(QCoreApplication.translate("MainWindow", u"Copy", None))
         ___qtreewidgetitem = self.metaTreeWidget.headerItem()
         ___qtreewidgetitem.setText(1, QCoreApplication.translate("MainWindow", u"Value", None));
         ___qtreewidgetitem.setText(0, QCoreApplication.translate("MainWindow", u"Type", None));
-        self.tabMetadata.setTabText(self.tabMetadata.indexOf(self.RawTab), QCoreApplication.translate("MainWindow", u"Raw", None))
-        self.ViewMetadataBtn.setText(QCoreApplication.translate("MainWindow", u"Download App", None))
+        self.tabMetadata.setTabText(self.tabMetadata.indexOf(self.RawTab),
+                                    QCoreApplication.translate("MainWindow", u"Raw", None))
         self.FileNameLabel.setText(QCoreApplication.translate("MainWindow", u"Output File", None))
+        self.ViewMetadataBtn.setText(QCoreApplication.translate("MainWindow", u"Download", None))
+        self.WiiLoadButton.setText(QCoreApplication.translate("MainWindow", u"WiiLoad", None))
         self.menuAbout.setTitle(QCoreApplication.translate("MainWindow", u"About", None))
         self.menuExport.setTitle(QCoreApplication.translate("MainWindow", u"Export Data", None))
         self.menuApplication_List.setTitle(QCoreApplication.translate("MainWindow", u"Application List", None))
