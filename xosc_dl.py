@@ -1,6 +1,10 @@
 import io
+import os
 import re
+import socket
+import struct
 import zipfile
+import zlib
 from contextlib import redirect_stdout
 
 import pyperclip
@@ -17,7 +21,11 @@ version = updater.current_version()
 host = "hbb1.oscwii.org"
 
 ip_regex = re.compile(r"^(?:[0-9]{1,3}\.){3}[0-9]{1,3}$")
-bootdol_regex = re.compile(r"^apps/(?:.+?)/boot.dol")
+
+# WiiLoad
+WIILOAD_VER_MAJOR = 0
+WIILOAD_VER_MINOR = 5
+CHUNK_SIZE = 1024 * 128
 
 
 def get_repo_host(display_name):
@@ -140,19 +148,75 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         url = f"https://{host}/hbb/{self.app_name}/{self.app_name}.zip"
         r = requests.get(url)
 
-        self.status_message("Unzipping...")
+        self.status_message("Preparing app...")
         self.ui.progressBar.setValue(50)
 
         zipped_app = io.BytesIO(r.content)
-        zip_file = zipfile.ZipFile(zipped_app)
-        executable_path = next((m for m in zip_file.namelist() if bootdol_regex.match(m)), None)
-        if not executable_path:
-            QMessageBox.warning(self, 'Unzip error', 'Could not find boot.dol executable in zip file.')
+        zip_file = zipfile.ZipFile(zipped_app, mode='r')
+        app_namelist = zip_file.namelist()
+
+        # Our zip file should only contain one directory with the app data in it,
+        # but the downloaded file contains an apps/ directory. We're removing that here.
+        zip_buf = io.BytesIO()
+        app_zip = zipfile.ZipFile(zip_buf, mode='w', compression=zipfile.ZIP_DEFLATED)
+
+        for member in app_namelist:
+            if member[-1] in ['/', '\\']:  # directory
+                continue
+
+            with zip_file.open(member, mode='r') as old_file:
+                new_path = member.replace('apps/', '')
+                with app_zip.open(new_path, mode='w') as new_file:
+                    new_file.write(old_file.read())
+
+        # cleanup
+        zipped_app.close()
+        zip_file.close()
+
+        # preparing
+        zip_buf.seek(0, os.SEEK_END)
+        file_size = zip_buf.tell()
+        zip_buf.seek(0)
+
+        c_data = zlib.compress((zip_buf.read()))
+        compressed_size = len(c_data)
+        chunks = [c_data[i:i + CHUNK_SIZE] for i in range(0, compressed_size, CHUNK_SIZE)]
+
+        # connecting
+        self.status_message('Connecting to the HBC...')
+
+        conn = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        conn.settimeout(5)
+        try:
+            conn.connect((ip, 4299))
+        except socket.error as e:
+            QMessageBox.warning(self, 'Connection error',
+                                'Error while connecting to the HBC. Please check the IP address and try again.')
+            print(f'WiiLoad: {e}')
 
             return
-        executable = zip_file.open(executable_path)
 
-        print(executable)
+        # handshake, all data types are unsigned
+        conn.send(b'HAXX')
+        conn.send(struct.pack('B', WIILOAD_VER_MAJOR))  # char
+        conn.send(struct.pack('B', WIILOAD_VER_MINOR))  # char
+        conn.send(struct.pack('>H', 0))  # big endian short
+        conn.send(struct.pack('>L', compressed_size))  # big endian long
+        conn.send(struct.pack('>L', file_size))  # big endian long
+
+        # Sending file
+        self.status_message('Sending app...')
+
+        chunk_num = 1
+        for chunk in chunks:
+            conn.send(chunk)
+
+            chunk_num += 1
+            progress = round(chunk_num / len(chunks) * 50) + 50
+            self.ui.progressBar.setValue(progress)
+
+        file_name = f'{self.app_name}.zip'
+        conn.send(bytes(file_name, 'utf-8') + b'\x00')
 
     def copy_download_link_button(self):
         self.app_name = self.ui.listAppsWidget.currentItem().text()
