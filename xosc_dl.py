@@ -18,10 +18,10 @@ import metadata
 import parsecontents
 import updater
 
-version = updater.current_version()
-host = "hbb1.oscwii.org"
+VERSION = updater.current_version()
+HOST = "hbb1.oscwii.org"
 
-ip_regex = re.compile(r"^(?:[0-9]{1,3}\.){3}[0-9]{1,3}$")
+IP_REGEX = re.compile(r"^(?:[0-9]{1,3}\.){3}[0-9]{1,3}$")
 
 # WiiLoad
 WIILOAD_VER_MAJOR = 0
@@ -46,7 +46,7 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         super(MainWindow, self).__init__()
         self.ui = gui.ui_united.Ui_MainWindow()
         self.ui.setupUi(self)
-        self.setWindowTitle("Open Shop Channel Downloader v"+version+" - Library")
+        self.setWindowTitle("Open Shop Channel Downloader v" + VERSION + " - Library")
         self.populate()
         self.populate_meta()
         self.selection_changed()
@@ -63,7 +63,7 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         self.ui.CopyDirectLinkBtn.clicked.connect(self.copy_download_link_button)
         self.ui.RefreshListBtn.clicked.connect(self.repopulate)
         self.ui.ReposComboBox.currentIndexChanged.connect(self.changed_host)
-        self.ui.actionAbout_OSC_DL.setText("osc-dl Version v" + version)
+        self.ui.actionAbout_OSC_DL.setText("osc-dl Version v" + VERSION)
         self.populate_list()
 
     def populate_meta(self):
@@ -78,7 +78,7 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         except Exception:
             app_name = None
         if app_name is not None:
-            info = metadata.dictionary(app_name, repo=host)
+            info = metadata.dictionary(app_name, repo=HOST)
             self.ui.appname.setText(info.get("display_name"))
             self.ui.SelectionInfoBox.setTitle("Metadata: " + info.get("display_name"))
             self.ui.label_displayname.setText(info.get("display_name"))
@@ -92,7 +92,7 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
                 self.ui.label_description.setText(info.get("short_description"))
             self.ui.longDescriptionBrowser.setText(info.get("long_description"))
             self.ui.FileNameLineEdit.setText(app_name + ".zip")
-            self.ui.DirectLinkLineEdit.setText(metadata.url(app_name, repo=host))
+            self.ui.DirectLinkLineEdit.setText(metadata.url(app_name, repo=HOST))
         self.ui.progressBar.setValue(0)
         self.status_message("Ready to download")
 
@@ -123,7 +123,7 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         self.ui.progressBar.setValue(25)
         console_output = io.StringIO()
         with redirect_stdout(console_output):
-            download.get(app_name=self.app_name, repo=host, output=output, extract=extract)
+            download.get(app_name=self.app_name, repo=HOST, output=output, extract=extract)
         self.ui.progressBar.setValue(100)
         self.status_message(escape_ansi(console_output.getvalue()))
 
@@ -134,7 +134,7 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         if not ok:
             return
 
-        ip_match = ip_regex.match(ip)
+        ip_match = IP_REGEX.match(ip)
         if not ip_match:
             QMessageBox.warning(self, 'Invalid IP Address', 'This IP address is invalid.')
 
@@ -146,7 +146,7 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
 
         # download.get() cannot save to our own file-like object.
         # Alt fix: add a file parameter to write to instead?
-        url = f"https://{host}/hbb/{self.app_name}/{self.app_name}.zip"
+        url = f"https://{HOST}/hbb/{self.app_name}/{self.app_name}.zip"
         r = requests.get(url)
 
         self.status_message("Preparing app...")
@@ -235,13 +235,13 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
 
     def copy_download_link_button(self):
         self.app_name = self.ui.listAppsWidget.currentItem().text()
-        pyperclip.copy(metadata.url(self.app_name, repo=host))
+        pyperclip.copy(metadata.url(self.app_name, repo=HOST))
         self.status_message("Copied the download link for " + self.app_name + " to clipboard")
 
     def changed_host(self):
-        global host
-        host = get_repo_host(self.ui.ReposComboBox.currentText())
-        self.status_message("Loading " + host + " repository..")
+        global HOST
+        HOST = get_repo_host(self.ui.ReposComboBox.currentText())
+        self.status_message("Loading " + HOST + " repository..")
         self.ui.progressBar.setValue(20)
         self.repopulate()
 
@@ -252,7 +252,7 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         self.ui.progressBar.setValue(100)
 
     def populate_list(self):
-        self.applist = parsecontents.list(repo=host)
+        self.applist = parsecontents.list(repo=HOST)
         for item in self.applist:
             self.ui.listAppsWidget.addItem(item)
         self.ui.listAppsWidget.setCurrentRow(0)
