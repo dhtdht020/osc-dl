@@ -150,7 +150,7 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         r = requests.get(url)
 
         self.status_message("Preparing app...")
-        self.ui.progressBar.setValue(50)
+        self.ui.progressBar.setValue(40)
 
         zipped_app = io.BytesIO(r.content)
         zip_file = zipfile.ZipFile(zipped_app, mode='r')
@@ -197,9 +197,10 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
 
         # connecting
         self.status_message('Connecting to the HBC...')
+        self.ui.progressBar.setValue(50)
 
         conn = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        conn.settimeout(5)
+        conn.settimeout(2)
         try:
             conn.connect((ip, 4299))
         except socket.error as e:
