@@ -1,3 +1,4 @@
+import copy
 import io
 import os
 import re
@@ -153,25 +154,37 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
 
         zipped_app = io.BytesIO(r.content)
         zip_file = zipfile.ZipFile(zipped_app, mode='r')
-        app_namelist = zip_file.namelist()
+        app_infolist = zip_file.infolist()
 
         # Our zip file should only contain one directory with the app data in it,
         # but the downloaded file contains an apps/ directory. We're removing that here.
         zip_buf = io.BytesIO()
         app_zip = zipfile.ZipFile(zip_buf, mode='w', compression=zipfile.ZIP_DEFLATED)
 
-        for member in app_namelist:
-            if member[-1] in ['/', '\\']:  # directory
+        # copy over all files
+        for info in app_infolist:
+            new_path = info.filename.replace('apps/', '')
+            if not new_path:
                 continue
 
-            with zip_file.open(member, mode='r') as old_file:
-                new_path = member.replace('apps/', '')
-                with app_zip.open(new_path, mode='w') as new_file:
-                    new_file.write(old_file.read())
+            # we need to copy over the member info manually because
+            # python's zipfile implementation sucks and
+            # the HBC is very insecure about it.
+            new_info = copy.copy(info)
+            new_info.filename = new_path
+
+            if new_info.filename[-1] in ('/', '\\'):  # directory
+                continue
+
+            with zip_file.open(info.filename, 'r') as file:
+                data = file.read()
+
+            app_zip.writestr(new_path, data)
 
         # cleanup
         zipped_app.close()
         zip_file.close()
+        app_zip.close()
 
         # preparing
         zip_buf.seek(0, os.SEEK_END)
@@ -217,6 +230,8 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
 
         file_name = f'{self.app_name}.zip'
         conn.send(bytes(file_name, 'utf-8') + b'\x00')
+
+        self.status_message('App transmitted!')
 
     def copy_download_link_button(self):
         self.app_name = self.ui.listAppsWidget.currentItem().text()
