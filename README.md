@@ -25,6 +25,13 @@ Make sure Python 3 is installed and used.
 2. `pip3 install -r requirements.txt`
 3. `python3 osc-dl.py`
 
+##### Manual Download of GUI:
+
+1. `git clone https://github.com/dhtdht020/osc-dl.git`
+2. `cd osc-dl`
+2. `pip3 install -r requirements_GUI.txt`
+3. `python3 xosc_dl.py`
+
 
 ## Downloading Homebrew (get command)
 
