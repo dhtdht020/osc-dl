@@ -10,6 +10,7 @@ from contextlib import redirect_stdout
 
 import pyperclip
 import requests
+import logging # for logs
 from PySide2.QtWidgets import QApplication, QMainWindow, QInputDialog, QLineEdit, QMessageBox
 
 import download
@@ -63,6 +64,7 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         self.ui.CopyDirectLinkBtn.clicked.connect(self.copy_download_link_button)
         self.ui.RefreshListBtn.clicked.connect(self.repopulate)
         self.ui.ReposComboBox.currentIndexChanged.connect(self.changed_host)
+        self.ui.actionEnable_Log_File.triggered.connect(self.turn_log_on)
         self.ui.actionAbout_OSC_DL.setText("osc-dl Version v" + VERSION)
         self.populate_list()
 
@@ -207,6 +209,9 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
             QMessageBox.warning(self, 'Connection error',
                                 'Error while connecting to the HBC. Please check the IP address and try again.')
             print(f'WiiLoad: {e}')
+            logging.error('Error while connecting to the HBC. Please check the IP address and try again.')
+            self.ui.progressBar.setValue(0)
+            self.status_message('Error: Could not connect to the Homebrew Channel. :(')
 
             return
 
@@ -243,6 +248,7 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         global HOST
         HOST = get_repo_host(self.ui.ReposComboBox.currentText())
         self.status_message("Loading " + HOST + " repository..")
+        logging.info('Loading ' + HOST)
         self.ui.progressBar.setValue(20)
         self.repopulate()
 
@@ -258,6 +264,18 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
             self.ui.listAppsWidget.addItem(item)
         self.ui.listAppsWidget.setCurrentRow(0)
         self.ui.AppsAmountLabel.setText("Displaying " + str(self.ui.listAppsWidget.count()) + " apps.")
+
+    def turn_log_on(self):
+        logging.basicConfig(filename='osc-dl-gui.log', level=logging.DEBUG)
+        logging.info('User chose to enable log file. Hello there!')
+        self.status_message('DEBUG: Enabled log file. To disable, exit the program.')
+        self.ui.actionEnable_Log_File.setDisabled(True)
+        self.ui.actionClear_Log.setEnabled(True)
+        self.ui.actionClear_Log.triggered.connect(self.clear_log)
+
+    def clear_log(self):
+        open("osc-dl-gui.log", 'w').close()
+        self.status_message('DEBUG: Removed / cleared log file.')
 
 
 if __name__ == "__main__":

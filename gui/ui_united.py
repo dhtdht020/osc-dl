@@ -8,9 +8,11 @@
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
 
-from PySide2.QtCore import (QCoreApplication, QMetaObject,
-                            QRect, QSize, Qt)
-from PySide2.QtGui import (QFont)
+from PySide2.QtCore import (QCoreApplication, QDate, QDateTime, QMetaObject,
+    QObject, QPoint, QRect, QSize, QTime, QUrl, Qt)
+from PySide2.QtGui import (QBrush, QColor, QConicalGradient, QCursor, QFont,
+    QFontDatabase, QIcon, QKeySequence, QLinearGradient, QPalette, QPainter,
+    QPixmap, QRadialGradient)
 from PySide2.QtWidgets import *
 
 
@@ -32,6 +34,12 @@ class Ui_MainWindow(object):
         self.actionAbout_OSC_DL.setEnabled(False)
         self.actionTXT_file = QAction(MainWindow)
         self.actionTXT_file.setObjectName(u"actionTXT_file")
+        self.actionEnable_Log_File = QAction(MainWindow)
+        self.actionEnable_Log_File.setObjectName(u"actionEnable_Log_File")
+        self.actionEnable_Log_File.setCheckable(True)
+        self.actionClear_Log = QAction(MainWindow)
+        self.actionClear_Log.setObjectName(u"actionClear_Log")
+        self.actionClear_Log.setEnabled(False)
         self.centralwidget = QWidget(MainWindow)
         self.centralwidget.setObjectName(u"centralwidget")
         self.AppsLibraryBox = QGroupBox(self.centralwidget)
@@ -214,7 +222,7 @@ class Ui_MainWindow(object):
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QMenuBar(MainWindow)
         self.menubar.setObjectName(u"menubar")
-        self.menubar.setGeometry(QRect(0, 0, 900, 25))
+        self.menubar.setGeometry(QRect(0, 0, 900, 21))
         self.menuAbout = QMenu(self.menubar)
         self.menuAbout.setObjectName(u"menuAbout")
         self.menuExport = QMenu(self.menubar)
@@ -222,6 +230,8 @@ class Ui_MainWindow(object):
         self.menuExport.setEnabled(False)
         self.menuApplication_List = QMenu(self.menuExport)
         self.menuApplication_List.setObjectName(u"menuApplication_List")
+        self.menuDebug = QMenu(self.menubar)
+        self.menuDebug.setObjectName(u"menuDebug")
         MainWindow.setMenuBar(self.menubar)
         self.statusBar = QStatusBar(MainWindow)
         self.statusBar.setObjectName(u"statusBar")
@@ -229,10 +239,13 @@ class Ui_MainWindow(object):
         MainWindow.setStatusBar(self.statusBar)
 
         self.menubar.addAction(self.menuAbout.menuAction())
+        self.menubar.addAction(self.menuDebug.menuAction())
         self.menubar.addAction(self.menuExport.menuAction())
         self.menuAbout.addAction(self.actionAbout_OSC_DL)
         self.menuExport.addAction(self.menuApplication_List.menuAction())
         self.menuApplication_List.addAction(self.actionTXT_file)
+        self.menuDebug.addAction(self.actionEnable_Log_File)
+        self.menuDebug.addAction(self.actionClear_Log)
 
         self.retranslateUi(MainWindow)
 
@@ -247,6 +260,8 @@ class Ui_MainWindow(object):
         MainWindow.setWindowTitle(QCoreApplication.translate("MainWindow", u"Open Shop Channel Downloader - Library", None))
         self.actionAbout_OSC_DL.setText(QCoreApplication.translate("MainWindow", u"About OSC-DL", None))
         self.actionTXT_file.setText(QCoreApplication.translate("MainWindow", u"Text File", None))
+        self.actionEnable_Log_File.setText(QCoreApplication.translate("MainWindow", u"Enable GUI Log File", None))
+        self.actionClear_Log.setText(QCoreApplication.translate("MainWindow", u"Clear GUI Log", None))
         self.AppsLibraryBox.setTitle(QCoreApplication.translate("MainWindow", u"Apps Library", None))
         self.RepositoryLabel.setText(QCoreApplication.translate("MainWindow", u"Repository:", None))
         self.ReposComboBox.setItemText(0, QCoreApplication.translate("MainWindow", u"Open Shop Channel", None))
@@ -266,28 +281,26 @@ class Ui_MainWindow(object):
         self.label_description.setText(QCoreApplication.translate("MainWindow", u"Description", None))
         self.label_displayname.setText(QCoreApplication.translate("MainWindow", u"Title", None))
         self.tabMetadata.setTabText(self.tabMetadata.indexOf(self.GeneralTab), QCoreApplication.translate("MainWindow", u"General", None))
-        self.longDescriptionBrowser.setHtml(QCoreApplication.translate("MainWindow",
-                                                                       u"<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
-                                                                       "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
-                                                                       "p, li { white-space: pre-wrap; }\n"
-                                                                       "</style></head><body style=\" font-family:'Cantarell'; font-size:10pt; font-weight:400; font-style:normal;\">\n"
-                                                                       "<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'MS Shell Dlg 2'; font-size:8.25pt;\"><br /></p></body></html>",
-                                                                       None))
+        self.longDescriptionBrowser.setHtml(QCoreApplication.translate("MainWindow", u"<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"</style></head><body style=\" font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:'Cantarell'; font-size:10pt;\">         </span></p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">        </p></body></html>", None))
         self.LongDescLabel.setText(QCoreApplication.translate("MainWindow", u"Long Description", None))
-        self.tabMetadata.setTabText(self.tabMetadata.indexOf(self.Description),
-                                    QCoreApplication.translate("MainWindow", u"Long Description", None))
+        self.tabMetadata.setTabText(self.tabMetadata.indexOf(self.Description), QCoreApplication.translate("MainWindow", u"Long Description", None))
         self.DirectLinkLabel.setText(QCoreApplication.translate("MainWindow", u"Direct Link", None))
         self.CopyDirectLinkBtn.setText(QCoreApplication.translate("MainWindow", u"Copy", None))
         ___qtreewidgetitem = self.metaTreeWidget.headerItem()
         ___qtreewidgetitem.setText(1, QCoreApplication.translate("MainWindow", u"Value", None));
         ___qtreewidgetitem.setText(0, QCoreApplication.translate("MainWindow", u"Type", None));
-        self.tabMetadata.setTabText(self.tabMetadata.indexOf(self.RawTab),
-                                    QCoreApplication.translate("MainWindow", u"Raw", None))
+        self.tabMetadata.setTabText(self.tabMetadata.indexOf(self.RawTab), QCoreApplication.translate("MainWindow", u"Raw", None))
         self.FileNameLabel.setText(QCoreApplication.translate("MainWindow", u"Output File", None))
         self.ViewMetadataBtn.setText(QCoreApplication.translate("MainWindow", u"Download", None))
         self.WiiLoadButton.setText(QCoreApplication.translate("MainWindow", u"WiiLoad", None))
         self.menuAbout.setTitle(QCoreApplication.translate("MainWindow", u"About", None))
         self.menuExport.setTitle(QCoreApplication.translate("MainWindow", u"Export Data", None))
         self.menuApplication_List.setTitle(QCoreApplication.translate("MainWindow", u"Application List", None))
+        self.menuDebug.setTitle(QCoreApplication.translate("MainWindow", u"Debug", None))
     # retranslateUi
 
