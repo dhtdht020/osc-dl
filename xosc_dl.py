@@ -101,22 +101,6 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
     def view_metadata(self):
         self.app_name = self.ui.listAppsWidget.currentItem().text()
 
-    """def export_applist_txt_button(self):
-        self.status_message("Exporting list of apps from Open Shop Channel..")
-        file_name = None
-        try:
-            file_name = str(QFileDialog.getSaveFileName())
-        except Exception:
-            pass
-
-        self.ui.progressBar.setValue(25)
-        export_txt_output = io.StringIO()
-        with redirect_stdout(export_txt_output):
-            export.app_list(txt_path=file_name)
-        self.ui.progressBar.setValue(100)
-        self.status_message(escape_ansi(export_txt_output.getvalue()))
-        print("Exported application list to " + file_name)"""
-
     def download_button(self):
         self.app_name = self.ui.listAppsWidget.currentItem().text()
         self.status_message("Downloading " + self.app_name + " from Open Shop Channel..")
@@ -138,8 +122,8 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
 
         ip_match = IP_REGEX.match(ip)
         if not ip_match:
+            logging.warning('Invalid IP Address: ' + ip)
             QMessageBox.warning(self, 'Invalid IP Address', 'This IP address is invalid.')
-
             return
 
         self.app_name = self.ui.listAppsWidget.currentItem().text()
@@ -238,6 +222,7 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         conn.send(bytes(file_name, 'utf-8') + b'\x00')
 
         self.status_message('App transmitted!')
+        logging.info('App transmitted to HBC at ' + ip)
 
     def copy_download_link_button(self):
         self.app_name = self.ui.listAppsWidget.currentItem().text()

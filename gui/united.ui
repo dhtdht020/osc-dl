@@ -506,21 +506,6 @@ p, li { white-space: pre-wrap; }
     </property>
     <addaction name="actionAbout_OSC_DL"/>
    </widget>
-   <widget class="QMenu" name="menuExport">
-    <property name="enabled">
-     <bool>false</bool>
-    </property>
-    <property name="title">
-     <string>Export Data</string>
-    </property>
-    <widget class="QMenu" name="menuApplication_List">
-     <property name="title">
-      <string>Application List</string>
-     </property>
-     <addaction name="actionTXT_file"/>
-    </widget>
-    <addaction name="menuApplication_List"/>
-   </widget>
    <widget class="QMenu" name="menuDebug">
     <property name="title">
      <string>Debug</string>
@@ -530,7 +515,6 @@ p, li { white-space: pre-wrap; }
    </widget>
    <addaction name="menuAbout"/>
    <addaction name="menuDebug"/>
-   <addaction name="menuExport"/>
   </widget>
   <widget class="QStatusBar" name="statusBar">
    <property name="sizeGripEnabled">

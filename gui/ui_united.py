@@ -225,11 +225,6 @@ class Ui_MainWindow(object):
         self.menubar.setGeometry(QRect(0, 0, 900, 21))
         self.menuAbout = QMenu(self.menubar)
         self.menuAbout.setObjectName(u"menuAbout")
-        self.menuExport = QMenu(self.menubar)
-        self.menuExport.setObjectName(u"menuExport")
-        self.menuExport.setEnabled(False)
-        self.menuApplication_List = QMenu(self.menuExport)
-        self.menuApplication_List.setObjectName(u"menuApplication_List")
         self.menuDebug = QMenu(self.menubar)
         self.menuDebug.setObjectName(u"menuDebug")
         MainWindow.setMenuBar(self.menubar)
@@ -240,10 +235,7 @@ class Ui_MainWindow(object):
 
         self.menubar.addAction(self.menuAbout.menuAction())
         self.menubar.addAction(self.menuDebug.menuAction())
-        self.menubar.addAction(self.menuExport.menuAction())
         self.menuAbout.addAction(self.actionAbout_OSC_DL)
-        self.menuExport.addAction(self.menuApplication_List.menuAction())
-        self.menuApplication_List.addAction(self.actionTXT_file)
         self.menuDebug.addAction(self.actionEnable_Log_File)
         self.menuDebug.addAction(self.actionClear_Log)
 
@@ -299,8 +291,6 @@ class Ui_MainWindow(object):
         self.ViewMetadataBtn.setText(QCoreApplication.translate("MainWindow", u"Download", None))
         self.WiiLoadButton.setText(QCoreApplication.translate("MainWindow", u"WiiLoad", None))
         self.menuAbout.setTitle(QCoreApplication.translate("MainWindow", u"About", None))
-        self.menuExport.setTitle(QCoreApplication.translate("MainWindow", u"Export Data", None))
-        self.menuApplication_List.setTitle(QCoreApplication.translate("MainWindow", u"Application List", None))
         self.menuDebug.setTitle(QCoreApplication.translate("MainWindow", u"Debug", None))
     # retranslateUi
 
