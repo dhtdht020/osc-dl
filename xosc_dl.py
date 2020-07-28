@@ -251,7 +251,8 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         self.ui.AppsAmountLabel.setText("Displaying " + str(self.ui.listAppsWidget.count()) + " apps.")
 
     def turn_log_on(self):
-        logging.basicConfig(filename='osc-dl-gui.log', level=logging.DEBUG)
+        logging.basicConfig(filename='osc-dl-gui.log', level=logging.DEBUG,
+                            format="%(asctime)s | %(levelname)s:%(name)s:%(message)s")
         logging.info('User chose to enable log file. Hello there!')
         self.status_message('DEBUG: Enabled log file. To disable, exit the program.')
         self.ui.actionEnable_Log_File.setDisabled(True)
