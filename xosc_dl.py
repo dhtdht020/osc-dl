@@ -10,7 +10,7 @@ from contextlib import redirect_stdout
 
 import pyperclip
 import requests
-import logging # for logs
+import logging  # for logs
 from PySide2.QtWidgets import QApplication, QMainWindow, QInputDialog, QLineEdit, QMessageBox
 
 import download
@@ -106,6 +106,8 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         self.status_message("Downloading " + self.app_name + " from Open Shop Channel..")
         output = self.ui.FileNameLineEdit.text()
         extract = self.ui.ExtractAppCheckbox.isChecked()
+        if extract is True:
+            logging.info("Set to extract app too!")
         self.ui.progressBar.setValue(25)
         console_output = io.StringIO()
         with redirect_stdout(console_output):
@@ -190,10 +192,10 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         try:
             conn.connect((ip, 4299))
         except socket.error as e:
+            logging.error('Error while connecting to the HBC. Please check the IP address and try again.')
             QMessageBox.warning(self, 'Connection error',
                                 'Error while connecting to the HBC. Please check the IP address and try again.')
             print(f'WiiLoad: {e}')
-            logging.error('Error while connecting to the HBC. Please check the IP address and try again.')
             self.ui.progressBar.setValue(0)
             self.status_message('Error: Could not connect to the Homebrew Channel. :(')
 
