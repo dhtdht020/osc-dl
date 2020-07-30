@@ -186,7 +186,7 @@
          <x>10</x>
          <y>60</y>
          <width>221</width>
-         <height>166</height>
+         <height>131</height>
         </rect>
        </property>
        <layout class="QFormLayout" name="MetaLayout">
@@ -447,7 +447,7 @@ p, li { white-space: pre-wrap; }
        <x>10</x>
        <y>280</y>
        <width>251</width>
-       <height>31</height>
+       <height>21</height>
       </rect>
      </property>
      <layout class="QFormLayout" name="MetaLayout_2">
@@ -513,8 +513,41 @@ p, li { white-space: pre-wrap; }
     <addaction name="actionEnable_Log_File"/>
     <addaction name="actionClear_Log"/>
    </widget>
+   <widget class="QMenu" name="menuClients">
+    <property name="title">
+     <string>Clients</string>
+    </property>
+    <widget class="QMenu" name="menuOpen_Shop_Channel_DL">
+     <property name="title">
+      <string>Open Shop Channel DL</string>
+     </property>
+     <widget class="QMenu" name="menuDownload_Latest_Release">
+      <property name="title">
+       <string>Download Latest Release</string>
+      </property>
+      <addaction name="actionGUI"/>
+      <addaction name="actionCLI"/>
+     </widget>
+     <addaction name="actionCheck_for_Updates"/>
+     <addaction name="actionGitHub_Releases"/>
+     <addaction name="actionReport_a_bug"/>
+     <addaction name="menuDownload_Latest_Release"/>
+    </widget>
+    <widget class="QMenu" name="menuHomebrew_Browser_2">
+     <property name="title">
+      <string>Homebrew Browser</string>
+     </property>
+     <addaction name="actionDownload_HBB_Client_2"/>
+     <addaction name="actionWiiLoad_HBB_Client"/>
+    </widget>
+    <addaction name="menuHomebrew_Browser_2"/>
+    <addaction name="menuOpen_Shop_Channel_DL"/>
+    <addaction name="separator"/>
+    <addaction name="actionNot_yet_implemented"/>
+   </widget>
    <addaction name="menuAbout"/>
    <addaction name="menuDebug"/>
+   <addaction name="menuClients"/>
   </widget>
   <widget class="QStatusBar" name="statusBar">
    <property name="sizeGripEnabled">
@@ -548,6 +581,60 @@ p, li { white-space: pre-wrap; }
    </property>
    <property name="text">
     <string>Clear GUI Log</string>
+   </property>
+  </action>
+  <action name="actionDownload_HBB_Client">
+   <property name="text">
+    <string>Download HBB Client</string>
+   </property>
+  </action>
+  <action name="actionGitHub_Releases">
+   <property name="text">
+    <string>GitHub Releases</string>
+   </property>
+  </action>
+  <action name="actionReport_a_bug">
+   <property name="text">
+    <string>Report a bug</string>
+   </property>
+  </action>
+  <action name="actionGUI">
+   <property name="text">
+    <string>GUI</string>
+   </property>
+  </action>
+  <action name="actionCLI">
+   <property name="text">
+    <string>Command Line</string>
+   </property>
+  </action>
+  <action name="actionDownload_HBB_Client_2">
+   <property name="text">
+    <string>Download HBB Client</string>
+   </property>
+  </action>
+  <action name="actionWiiLoad_HBB_Client">
+   <property name="text">
+    <string>WiiLoad HBB Client</string>
+   </property>
+  </action>
+  <action name="actionCheck_for_Updates">
+   <property name="text">
+    <string>Check for Updates</string>
+   </property>
+  </action>
+  <action name="actionNot_yet_implemented">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="text">
+    <string>Not yet implemented.</string>
+   </property>
+   <property name="font">
+    <font>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
    </property>
   </action>
  </widget>

@@ -6,9 +6,17 @@ from packaging import version
 
 
 def current_version():
-    beta_number = "7"
-    version = "1.2." + beta_number
+    prefix = "1.2."
+    beta_number = "8"
+
+    version = prefix + beta_number
+
     return version
+
+
+def get_branch():
+    branch = "DEV"
+    return branch
 
 
 def latest_version():
@@ -56,6 +64,28 @@ def check_update():
         return False
 
 
+def get_type():
+    if is_frozen() is True and platform.system() == 'Windows':
+        return 'Windows NT, with PyInstaller EXE.'
+
+    if is_frozen() is False and platform.system() == 'Windows':
+        return 'Windows NT, as script.'
+
+    if is_frozen() is True and platform.system() == 'Linux':
+        return 'Linux, with PyInstaller binary.'
+
+    if is_frozen() is False and platform.system() == 'Linux':
+        return 'Linux, as script.'
+
+    if is_frozen() is True and platform.system() == 'Darwin':
+        return 'Mac, with PyInstaller binary.'
+
+    if is_frozen() is False and platform.system() == 'Darwin':
+        return 'Mac, as script.'
+
+    return 'Unknown System, Never saw this before. Damn.'
+
+
 def get_update():
     if is_frozen() is True and platform.system() == 'Windows':
         print('Checking updates for Windows NT, with PyInstaller EXE.')
@@ -64,18 +94,6 @@ def get_update():
         print('Checking updates for Windows NT, as script.')
         latest_version()
         update_win32_script()
-
-    if is_frozen() is True and platform.system() == 'Linux':
-        print('Checking updates for Linux, with PyInstaller binary.')
-
-    if is_frozen() is False and platform.system() == 'Linux':
-        print('Checking updates for Linux, as script.')
-
-    if is_frozen() is True and platform.system() == 'Darwin':
-        print('Checking updates for Mac, with PyInstaller binary.')
-
-    if is_frozen() is False and platform.system() == 'Darwin':
-        print('Checking updates for Mac, as script.')
 
     print("\nAutomatic updater for your operating system, version, or executable is not yet implemented.")
 

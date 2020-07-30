@@ -20,6 +20,13 @@ import parsecontents
 import updater
 
 VERSION = updater.current_version()
+BRANCH = updater.get_branch()
+if BRANCH is "Stable":
+    DISPLAY_VERSION = VERSION
+else:
+    DISPLAY_VERSION = VERSION + " " + BRANCH
+
+
 HOST = "hbb1.oscwii.org"
 
 IP_REGEX = re.compile(r"^(?:[0-9]{1,3}\.){3}[0-9]{1,3}$")
@@ -47,7 +54,7 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         super(MainWindow, self).__init__()
         self.ui = gui.ui_united.Ui_MainWindow()
         self.ui.setupUi(self)
-        self.setWindowTitle("Open Shop Channel Downloader v" + VERSION + " - Library")
+        self.setWindowTitle("Open Shop Channel Downloader v" + DISPLAY_VERSION + " - Library")
         self.populate()
         self.populate_meta()
         self.selection_changed()
@@ -256,6 +263,7 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         logging.basicConfig(filename='osc-dl-gui.log', level=logging.DEBUG,
                             format="%(asctime)s | %(levelname)s:%(name)s:%(message)s")
         logging.info('User chose to enable log file. Hello there!')
+        logging.info("OSC-DL v" + DISPLAY_VERSION + ": Running on " + updater.get_type())
         self.status_message('DEBUG: Enabled log file. To disable, exit the program.')
         self.ui.actionEnable_Log_File.setDisabled(True)
         self.ui.actionClear_Log.setEnabled(True)
