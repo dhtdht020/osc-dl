@@ -2,8 +2,6 @@
 
 OSC-DL is an advanced Python 3 command line utility for obtaining homebrew from the Open Shop Channel repository, and scraping it's contents.
 
-Soon, it will be available as a PIP package for use in other projects that require obtaining homebrew applications.
-
 Currently, the following features are implemented:
 
 - Listing all apps on the remote repository.
