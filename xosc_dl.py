@@ -18,6 +18,7 @@ import gui.ui_united
 import metadata
 import parsecontents
 import updater
+import wiiload
 
 VERSION = updater.current_version()
 BRANCH = updater.get_branch()
@@ -28,8 +29,6 @@ else:
 
 
 HOST = "hbb1.oscwii.org"
-
-IP_REGEX = re.compile(r"^(?:[0-9]{1,3}\.){3}[0-9]{1,3}$")
 
 # WiiLoad
 WIILOAD_VER_MAJOR = 0
@@ -129,8 +128,9 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         if not ok:
             return
 
-        ip_match = IP_REGEX.match(ip)
-        if not ip_match:
+        ip_match = wiiload.validate_ip_regex(ip)
+
+        if ip_match is None:
             logging.warning('Invalid IP Address: ' + ip)
             QMessageBox.warning(self, 'Invalid IP Address', 'This IP address is invalid.')
             return
