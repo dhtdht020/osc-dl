@@ -165,10 +165,8 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         self.status_message('Connecting to the HBC...')
         self.ui.progressBar.setValue(50)
 
-        conn = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        conn.settimeout(2)
         try:
-            conn.connect((ip, 4299))
+            conn = wiiload.connect(ip)
         except socket.error as e:
             logging.error('Error while connecting to the HBC. Please check the IP address and try again.')
             QMessageBox.warning(self, 'Connection error',
@@ -179,13 +177,7 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
 
             return
 
-        # handshake, all data types are unsigned
-        conn.send(b'HAXX')
-        conn.send(struct.pack('B', WIILOAD_VER_MAJOR))  # char
-        conn.send(struct.pack('B', WIILOAD_VER_MINOR))  # char
-        conn.send(struct.pack('>H', 0))  # big endian short
-        conn.send(struct.pack('>L', compressed_size))  # big endian long
-        conn.send(struct.pack('>L', file_size))  # big endian long
+        wiiload.handshake(conn, compressed_size, file_size)
 
         # Sending file
         self.status_message('Sending app...')

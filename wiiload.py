@@ -3,6 +3,8 @@ import zipfile
 import copy
 import os
 import zlib
+import socket
+import struct
 
 IP_REGEX = re.compile(r"^(?:[0-9]{1,3}\.){3}[0-9]{1,3}$")
 
@@ -67,3 +69,20 @@ def prepare(zip_buf):
     # file_size = prep[0]
     # compressed_size = prep[1]
     # chunks = prep[2]
+
+
+def connect(ip):
+    conn = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    conn.settimeout(2)
+    conn.connect((ip, 4299))
+    return conn
+
+
+def handshake(conn, compressed_size, file_size):
+    # handshake, all data types are unsigned
+    conn.send(b'HAXX')
+    conn.send(struct.pack('B', WIILOAD_VER_MAJOR))  # char
+    conn.send(struct.pack('B', WIILOAD_VER_MINOR))  # char
+    conn.send(struct.pack('>H', 0))  # big endian short
+    conn.send(struct.pack('>L', compressed_size))  # big endian long
+    conn.send(struct.pack('>L', file_size))  # big endian long
