@@ -86,3 +86,16 @@ def handshake(conn, compressed_size, file_size):
     conn.send(struct.pack('>H', 0))  # big endian short
     conn.send(struct.pack('>L', compressed_size))  # big endian long
     conn.send(struct.pack('>L', file_size))  # big endian long
+
+
+def send(chunks, conn, app_name):
+    chunk_num = 1
+    for chunk in chunks:
+        conn.send(chunk)
+
+        chunk_num += 1
+        # progress = round(chunk_num / len(chunks) * 50) + 50
+        # self.ui.progressBar.setValue(progress)
+
+    file_name = f'{app_name}.zip'
+    conn.send(bytes(file_name, 'utf-8') + b'\x00')
