@@ -148,38 +148,11 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         self.ui.progressBar.setValue(40)
 
         zipped_app = io.BytesIO(r.content)
-        zip_file = zipfile.ZipFile(zipped_app, mode='r')
-        app_infolist = zip_file.infolist()
+        zip_buf = io.BytesIO()
 
         # Our zip file should only contain one directory with the app data in it,
         # but the downloaded file contains an apps/ directory. We're removing that here.
-        zip_buf = io.BytesIO()
-        app_zip = zipfile.ZipFile(zip_buf, mode='w', compression=zipfile.ZIP_DEFLATED)
-
-        # copy over all files
-        for info in app_infolist:
-            new_path = info.filename.replace('apps/', '')
-            if not new_path:
-                continue
-
-            # we need to copy over the member info manually because
-            # python's zipfile implementation sucks and
-            # the HBC is very insecure about it.
-            new_info = copy.copy(info)
-            new_info.filename = new_path
-
-            if new_info.filename[-1] in ('/', '\\'):  # directory
-                continue
-
-            with zip_file.open(info.filename, 'r') as file:
-                data = file.read()
-
-            app_zip.writestr(new_path, data)
-
-        # cleanup
-        zipped_app.close()
-        zip_file.close()
-        app_zip.close()
+        wiiload.organize_zip(zipped_app, zip_buf)
 
         # preparing
         zip_buf.seek(0, os.SEEK_END)
