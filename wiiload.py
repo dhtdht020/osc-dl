@@ -1,8 +1,15 @@
 import re
 import zipfile
 import copy
+import os
+import zlib
 
 IP_REGEX = re.compile(r"^(?:[0-9]{1,3}\.){3}[0-9]{1,3}$")
+
+# WiiLoad
+WIILOAD_VER_MAJOR = 0
+WIILOAD_VER_MINOR = 5
+CHUNK_SIZE = 1024 * 128
 
 
 def validate_ip_regex(ip):
@@ -43,3 +50,20 @@ def organize_zip(zipped_app, zip_buf):
     zipped_app.close()
     zip_file.close()
     app_zip.close()
+
+
+def prepare(zip_buf):
+    # preparing
+    zip_buf.seek(0, os.SEEK_END)
+    file_size = zip_buf.tell()
+    zip_buf.seek(0)
+
+    c_data = zlib.compress((zip_buf.read()))
+    compressed_size = len(c_data)
+    chunks = [c_data[i:i + CHUNK_SIZE] for i in range(0, compressed_size, CHUNK_SIZE)]
+
+    return file_size, compressed_size, chunks
+    # obtain returned values outside with:
+    # file_size = prep[0]
+    # compressed_size = prep[1]
+    # chunks = prep[2]

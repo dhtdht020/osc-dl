@@ -155,13 +155,11 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         wiiload.organize_zip(zipped_app, zip_buf)
 
         # preparing
-        zip_buf.seek(0, os.SEEK_END)
-        file_size = zip_buf.tell()
-        zip_buf.seek(0)
+        prep = wiiload.prepare(zip_buf)
 
-        c_data = zlib.compress((zip_buf.read()))
-        compressed_size = len(c_data)
-        chunks = [c_data[i:i + CHUNK_SIZE] for i in range(0, compressed_size, CHUNK_SIZE)]
+        file_size = prep[0]
+        compressed_size = prep[1]
+        chunks = prep[2]
 
         # connecting
         self.status_message('Connecting to the HBC...')
