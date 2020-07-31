@@ -84,19 +84,3 @@ def get_type():
         return 'Mac, as script.'
 
     return 'Unknown System, Never saw this before. Damn.'
-
-
-def get_update():
-    if is_frozen() is True and platform.system() == 'Windows':
-        print('Checking updates for Windows NT, with PyInstaller EXE.')
-
-    if is_frozen() is False and platform.system() == 'Windows':
-        print('Checking updates for Windows NT, as script.')
-        latest_version()
-        update_win32_script()
-
-    print("\nAutomatic updater for your operating system, version, or executable is not yet implemented.")
-
-
-def update_win32_script():
-    print('oop')
