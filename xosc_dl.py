@@ -182,7 +182,16 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         # Sending file
         self.status_message('Sending app...')
 
-        wiiload.send(chunks, conn, self.app_name)
+        chunk_num = 1
+        for chunk in chunks:
+            conn.send(chunk)
+
+            chunk_num += 1
+            progress = round(chunk_num / len(chunks) * 50) + 50
+            self.ui.progressBar.setValue(progress)
+
+        file_name = f'{self.app_name}.zip'
+        conn.send(bytes(file_name, 'utf-8') + b'\x00')
 
         self.ui.progressBar.setValue(100)
         self.status_message('App transmitted!')
