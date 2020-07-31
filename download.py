@@ -1,8 +1,8 @@
+from zipfile import ZipFile
 import requests
 import lxml.etree
 import parsecontents
-from zipfile import ZipFile
-from sys import exit
+import sys
 from halo import Halo
 import metadata
 
@@ -10,6 +10,7 @@ GREEN = '\033[92m'
 FAIL = '\033[91m'
 
 
+# download app, print result.
 def get(app_name, output=None, extract=False, repo="hbb1.oscwii.org"):
 
     if output is None:
@@ -17,14 +18,16 @@ def get(app_name, output=None, extract=False, repo="hbb1.oscwii.org"):
 
     # https://hbb1.oscwii.org/hbb/fceugx/fceugx.zip
     # print("Obtaining " + app_name + " from " + repo + "..")
-    with Halo(text="Obtaining " + app_name + " from " + repo + "..", color="yellow", text_color="yellow"):
+    with Halo(
+            text="Obtaining " + app_name + " from " + repo + "..", color="yellow", text_color="yellow"
+    ):
         try:
-            u = requests.get("https://" + repo + "/hbb/" + app_name + "/" + app_name + ".zip")
+            app_data = requests.get("https://" + repo + "/hbb/" + app_name + "/" + app_name + ".zip")
         except requests.exceptions.SSLError:
-            u = requests.get("http://" + repo + "/hbb/" + app_name + "/" + app_name + ".zip")
+            app_data = requests.get("http://" + repo + "/hbb/" + app_name + "/" + app_name + ".zip")
 
-    with open(output, "wb") as f:
-        f.write(u.content)
+    with open(output, "wb") as app_data_file:
+        app_data_file.write(app_data.content)
 
     print(GREEN + "Download success! Output: " + output)
 
@@ -35,13 +38,18 @@ def get(app_name, output=None, extract=False, repo="hbb1.oscwii.org"):
             print("Extracted to ExtractedApps!")
 
 
+# confirmation prompt
 def confirm(app_name, repo="hbb1.oscwii.org"):
     # https://hbb1.oscwii.org/unzipped_apps/wiixplorer/apps/wiixplorer/
     with Halo(text="Loading Metadata..", color="white"):
         try:
-            xml = requests.get("https://" + repo + "/unzipped_apps/" + app_name + "/apps/" + app_name + "/meta.xml").text
+            xml = requests.get(
+                "https://" + repo + "/unzipped_apps/" + app_name + "/apps/" + app_name + "/meta.xml"
+            ).text
         except requests.exceptions.SSLError:
-            xml = requests.get("http://" + repo + "/unzipped_apps/" + app_name + "/apps/" + app_name + "/meta.xml").text
+            xml = requests.get(
+                "http://" + repo + "/unzipped_apps/" + app_name + "/apps/" + app_name + "/meta.xml"
+            ).text
 
 
     # remove unicode declaration
@@ -53,7 +61,7 @@ def confirm(app_name, repo="hbb1.oscwii.org"):
         display_name = root.find('name').text
     except AttributeError:
         print("[Error D:002] Could not find application on the server. Cannot continue.")
-        exit(1)
+        sys.exit(1)
 
     metadata.get(app_name)
 
@@ -62,7 +70,7 @@ def confirm(app_name, repo="hbb1.oscwii.org"):
         pass
     elif answer == "n":
         print(FAIL+"Cancelled download operation. Exiting.")
-        exit(1)
+        sys.exit(1)
     else:
         print("Please reply with 'y' to continue or 'n' to cancel.")
 
