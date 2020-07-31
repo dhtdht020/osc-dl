@@ -8,9 +8,9 @@ import zipfile
 import zlib
 from contextlib import redirect_stdout
 
-import pyperclip
-import requests
 import logging  # for logs
+import requests
+import pyperclip
 from PySide2.QtWidgets import QApplication, QMainWindow, QInputDialog, QLineEdit, QMessageBox
 
 import download

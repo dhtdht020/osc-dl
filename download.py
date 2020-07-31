@@ -51,7 +51,6 @@ def confirm(app_name, repo="hbb1.oscwii.org"):
                 "http://" + repo + "/unzipped_apps/" + app_name + "/apps/" + app_name + "/meta.xml"
             ).text
 
-
     # remove unicode declaration
     xml = xml.split("\n", 1)[1]
 
@@ -75,7 +74,7 @@ def confirm(app_name, repo="hbb1.oscwii.org"):
         print("Please reply with 'y' to continue or 'n' to cancel.")
 
 
-def everything(output, extract=False, repo="hbb1.oscwii.org"):
+def everything(extract=False, repo="hbb1.oscwii.org"):
     data = parsecontents.get_list(repo=repo)
     progress = 0
     amount = len(data.keys())
