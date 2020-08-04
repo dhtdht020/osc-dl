@@ -30,11 +30,6 @@ else:
 
 HOST = "hbb1.oscwii.org"
 
-# WiiLoad
-WIILOAD_VER_MAJOR = 0
-WIILOAD_VER_MINOR = 5
-CHUNK_SIZE = 1024 * 128
-
 
 def get_repo_host(display_name):
     if display_name == "Open Shop Channel":
