@@ -1,11 +1,7 @@
-import copy
 import io
-import os
 import re
 import socket
-import struct
-import zipfile
-import zlib
+import sys
 from contextlib import redirect_stdout
 
 import logging  # for logs
@@ -31,6 +27,7 @@ else:
 HOST = "hbb1.oscwii.org"
 
 
+# get hostname of repository from given display name
 def get_repo_host(display_name):
     if display_name == "Open Shop Channel":
         return "hbb1.oscwii.org"
@@ -38,11 +35,13 @@ def get_repo_host(display_name):
         return "hbb3.oscwii.org"
 
 
+# escape ansi for stdout output of download status
 def escape_ansi(line):
     ansi_escape = re.compile(r'(\x9B|\x1B\[)[0-?]*[ -\/]*[@-~]')
     return ansi_escape.sub('', line)
 
 
+# G U I
 class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
     def __init__(self):
         super(MainWindow, self).__init__()
@@ -55,12 +54,11 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         self.status_message("Ready to download")
         self.ui.statusBar.addPermanentWidget(self.ui.progressBar)
 
-        # set up menu bar
-        # self.ui.actionTXT_file.triggered.connect(self.export_applist_txt_button)
-
+    # show given status message on bottom status bar
     def status_message(self, message):
         self.ui.statusBar.showMessage(message)
 
+    # populate UI elements
     def populate(self):
         self.ui.CopyDirectLinkBtn.clicked.connect(self.copy_download_link_button)
         self.ui.RefreshListBtn.clicked.connect(self.repopulate)
@@ -75,6 +73,7 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
 
         self.ui.listAppsWidget.currentItemChanged.connect(self.selection_changed)
 
+    # When user selects a different homebrew from the list
     def selection_changed(self):
         try:
             app_name = self.ui.listAppsWidget.currentItem().text()
@@ -212,7 +211,14 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         self.ui.progressBar.setValue(100)
 
     def populate_list(self):
-        self.applist = parsecontents.list(repo=HOST)
+        try:
+            self.applist = parsecontents.list(repo=HOST)
+        except Exception:
+            QMessageBox.critical(self, 'OSC-DL: Critical Error',
+                                 'Could not connect to the Open Shop Channel server.\n'
+                                 'Cannot continue. :(\n'
+                                 'Please check your internet connection, or report this incident.')
+            sys.exit(1)
         for item in self.applist:
             self.ui.listAppsWidget.addItem(item)
         self.ui.listAppsWidget.setCurrentRow(0)
