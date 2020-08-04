@@ -209,7 +209,7 @@ class Ui_MainWindow(object):
         self.tabMetadata.addTab(self.RawTab, "")
         self.formLayoutWidget_2 = QWidget(self.SelectionInfoBox)
         self.formLayoutWidget_2.setObjectName(u"formLayoutWidget_2")
-        self.formLayoutWidget_2.setGeometry(QRect(10, 280, 251, 21))
+        self.formLayoutWidget_2.setGeometry(QRect(10, 280, 251, 22))
         self.MetaLayout_2 = QFormLayout(self.formLayoutWidget_2)
         self.MetaLayout_2.setObjectName(u"MetaLayout_2")
         self.MetaLayout_2.setContentsMargins(0, 0, 0, 0)

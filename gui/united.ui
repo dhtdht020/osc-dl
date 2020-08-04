@@ -447,7 +447,7 @@ p, li { white-space: pre-wrap; }
        <x>10</x>
        <y>280</y>
        <width>251</width>
-       <height>21</height>
+       <height>22</height>
       </rect>
      </property>
      <layout class="QFormLayout" name="MetaLayout_2">

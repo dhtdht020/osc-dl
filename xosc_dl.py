@@ -37,7 +37,7 @@ def get_repo_host(display_name):
 
 # escape ansi for stdout output of download status
 def escape_ansi(line):
-    ansi_escape = re.compile(r'(\x9B|\x1B\[)[0-?]*[ -\/]*[@-~]')
+    ansi_escape = re.compile(r'(\x9B|\x1B\[)[0-?]*[ -/]*[@-~]')
     return ansi_escape.sub('', line)
 
 
@@ -49,7 +49,6 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         self.ui.setupUi(self)
         self.setWindowTitle("Open Shop Channel Downloader v" + DISPLAY_VERSION + " - Library")
         self.populate()
-        self.populate_meta()
         self.selection_changed()
         self.status_message("Ready to download")
         self.ui.statusBar.addPermanentWidget(self.ui.progressBar)
@@ -60,18 +59,23 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
 
     # populate UI elements
     def populate(self):
-        self.ui.CopyDirectLinkBtn.clicked.connect(self.copy_download_link_button)
-        self.ui.RefreshListBtn.clicked.connect(self.repopulate)
-        self.ui.ReposComboBox.currentIndexChanged.connect(self.changed_host)
-        self.ui.actionEnable_Log_File.triggered.connect(self.turn_log_on)
+        self.assign_initial_actions()
         self.ui.actionAbout_OSC_DL.setText("osc-dl Version v" + VERSION)
         self.populate_list()
 
-    def populate_meta(self):
+    def assign_initial_actions(self):
+        # Buttons
+        self.ui.CopyDirectLinkBtn.clicked.connect(self.copy_download_link_button)
+        self.ui.RefreshListBtn.clicked.connect(self.repopulate)
         self.ui.ViewMetadataBtn.clicked.connect(self.download_button)
         self.ui.WiiLoadButton.clicked.connect(self.wiiload_button)
 
+        # Others
+        self.ui.ReposComboBox.currentIndexChanged.connect(self.changed_host)
         self.ui.listAppsWidget.currentItemChanged.connect(self.selection_changed)
+
+        # Actions
+        self.ui.actionEnable_Log_File.triggered.connect(self.turn_log_on)
 
     # When user selects a different homebrew from the list
     def selection_changed(self):
@@ -211,10 +215,11 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         self.ui.progressBar.setValue(100)
 
     def populate_list(self):
+        # Can't have a list when there's no connection :P
         try:
             self.applist = parsecontents.list(repo=HOST)
         except Exception:
-            QMessageBox.critical(self, 'OSC-DL: Critical Error',
+            QMessageBox.critical(self, 'OSC-DL: Critical Network Error',
                                  'Could not connect to the Open Shop Channel server.\n'
                                  'Cannot continue. :(\n'
                                  'Please check your internet connection, or report this incident.')
