@@ -63,6 +63,8 @@ class Ui_MainWindow(object):
         font.setBold(True)
         font.setWeight(75)
         self.actionNot_yet_implemented.setFont(font)
+        self.actionDownload_from_List = QAction(MainWindow)
+        self.actionDownload_from_List.setObjectName(u"actionDownload_from_List")
         self.centralwidget = QWidget(MainWindow)
         self.centralwidget.setObjectName(u"centralwidget")
         self.AppsLibraryBox = QGroupBox(self.centralwidget)
@@ -255,6 +257,8 @@ class Ui_MainWindow(object):
         self.menuDownload_Latest_Release.setObjectName(u"menuDownload_Latest_Release")
         self.menuHomebrew_Browser_2 = QMenu(self.menuClients)
         self.menuHomebrew_Browser_2.setObjectName(u"menuHomebrew_Browser_2")
+        self.menuTools = QMenu(self.menubar)
+        self.menuTools.setObjectName(u"menuTools")
         MainWindow.setMenuBar(self.menubar)
         self.statusBar = QStatusBar(MainWindow)
         self.statusBar.setObjectName(u"statusBar")
@@ -262,8 +266,9 @@ class Ui_MainWindow(object):
         MainWindow.setStatusBar(self.statusBar)
 
         self.menubar.addAction(self.menuAbout.menuAction())
-        self.menubar.addAction(self.menuDebug.menuAction())
         self.menubar.addAction(self.menuClients.menuAction())
+        self.menubar.addAction(self.menuTools.menuAction())
+        self.menubar.addAction(self.menuDebug.menuAction())
         self.menuAbout.addAction(self.actionAbout_OSC_DL)
         self.menuDebug.addAction(self.actionEnable_Log_File)
         self.menuDebug.addAction(self.actionClear_Log)
@@ -279,6 +284,7 @@ class Ui_MainWindow(object):
         self.menuDownload_Latest_Release.addAction(self.actionCLI)
         self.menuHomebrew_Browser_2.addAction(self.actionDownload_HBB_Client_2)
         self.menuHomebrew_Browser_2.addAction(self.actionWiiLoad_HBB_Client)
+        self.menuTools.addAction(self.actionDownload_from_List)
 
         self.retranslateUi(MainWindow)
 
@@ -304,6 +310,7 @@ class Ui_MainWindow(object):
         self.actionWiiLoad_HBB_Client.setText(QCoreApplication.translate("MainWindow", u"WiiLoad HBB Client", None))
         self.actionCheck_for_Updates.setText(QCoreApplication.translate("MainWindow", u"Check for Updates", None))
         self.actionNot_yet_implemented.setText(QCoreApplication.translate("MainWindow", u"Not yet implemented.", None))
+        self.actionDownload_from_List.setText(QCoreApplication.translate("MainWindow", u"Download from List", None))
         self.AppsLibraryBox.setTitle(QCoreApplication.translate("MainWindow", u"Apps Library", None))
         self.RepositoryLabel.setText(QCoreApplication.translate("MainWindow", u"Repository:", None))
         self.ReposComboBox.setItemText(0, QCoreApplication.translate("MainWindow", u"Open Shop Channel", None))
@@ -346,5 +353,6 @@ class Ui_MainWindow(object):
         self.menuOpen_Shop_Channel_DL.setTitle(QCoreApplication.translate("MainWindow", u"Open Shop Channel DL", None))
         self.menuDownload_Latest_Release.setTitle(QCoreApplication.translate("MainWindow", u"Download Latest Release", None))
         self.menuHomebrew_Browser_2.setTitle(QCoreApplication.translate("MainWindow", u"Homebrew Browser", None))
+        self.menuTools.setTitle(QCoreApplication.translate("MainWindow", u"Tools", None))
     # retranslateUi
 
