@@ -63,4 +63,5 @@ jobs:
         description: "In-development build number #${{ github.run_number }} of OSC-DL is now available."
         nodetail: true
         username: OSC-DL
+        avatar_url: ${{ secrets.AVATAR_URL }}
 
