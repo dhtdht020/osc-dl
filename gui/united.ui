@@ -545,15 +545,8 @@ p, li { white-space: pre-wrap; }
     <addaction name="separator"/>
     <addaction name="actionNot_yet_implemented"/>
    </widget>
-   <widget class="QMenu" name="menuTools">
-    <property name="title">
-     <string>Tools</string>
-    </property>
-    <addaction name="actionDownload_from_List"/>
-   </widget>
    <addaction name="menuAbout"/>
    <addaction name="menuClients"/>
-   <addaction name="menuTools"/>
    <addaction name="menuDebug"/>
   </widget>
   <widget class="QStatusBar" name="statusBar">

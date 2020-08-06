@@ -257,8 +257,6 @@ class Ui_MainWindow(object):
         self.menuDownload_Latest_Release.setObjectName(u"menuDownload_Latest_Release")
         self.menuHomebrew_Browser = QMenu(self.menuClients)
         self.menuHomebrew_Browser.setObjectName(u"menuHomebrew_Browser")
-        self.menuTools = QMenu(self.menubar)
-        self.menuTools.setObjectName(u"menuTools")
         MainWindow.setMenuBar(self.menubar)
         self.statusBar = QStatusBar(MainWindow)
         self.statusBar.setObjectName(u"statusBar")
@@ -267,7 +265,6 @@ class Ui_MainWindow(object):
 
         self.menubar.addAction(self.menuAbout.menuAction())
         self.menubar.addAction(self.menuClients.menuAction())
-        self.menubar.addAction(self.menuTools.menuAction())
         self.menubar.addAction(self.menuDebug.menuAction())
         self.menuAbout.addAction(self.actionAbout_OSC_DL)
         self.menuDebug.addAction(self.actionEnable_Log_File)
@@ -284,7 +281,6 @@ class Ui_MainWindow(object):
         self.menuDownload_Latest_Release.addAction(self.actionCLI)
         self.menuHomebrew_Browser.addAction(self.actionDownload_HBB_Client_Latest)
         self.menuHomebrew_Browser.addAction(self.actionWiiLoad_HBB_Client)
-        self.menuTools.addAction(self.actionDownload_from_List)
 
         self.retranslateUi(MainWindow)
 
@@ -353,6 +349,5 @@ class Ui_MainWindow(object):
         self.menuOpen_Shop_Channel_DL.setTitle(QCoreApplication.translate("MainWindow", u"Open Shop Channel DL", None))
         self.menuDownload_Latest_Release.setTitle(QCoreApplication.translate("MainWindow", u"Download Latest Release", None))
         self.menuHomebrew_Browser.setTitle(QCoreApplication.translate("MainWindow", u"Homebrew Browser", None))
-        self.menuTools.setTitle(QCoreApplication.translate("MainWindow", u"Tools", None))
     # retranslateUi
 
