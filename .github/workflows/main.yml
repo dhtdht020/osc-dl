@@ -52,7 +52,7 @@ jobs:
       with:
         name: '${{ matrix.os }}-GUI'
         path: dist
-    - uses: dhtdht020/actions-status-discord@v1
+    - uses: sarisia/actions-status-discord@v1
       name: Send discord webhook
       if: always()
       env:
