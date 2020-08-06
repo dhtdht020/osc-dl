@@ -5,6 +5,8 @@ import sys
 from contextlib import redirect_stdout
 
 import logging  # for logs
+from functools import partial
+
 import requests
 import pyperclip
 from PySide2.QtWidgets import QApplication, QMainWindow, QInputDialog, QLineEdit, QMessageBox
@@ -76,6 +78,7 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
 
         # Actions
         self.ui.actionEnable_Log_File.triggered.connect(self.turn_log_on)
+        self.ui.actionDownload_HBB_Client_Latest.triggered.connect(partial(self.download_latest_hbb_action))
 
     # When user selects a different homebrew from the list
     def selection_changed(self):
@@ -229,6 +232,8 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         self.ui.listAppsWidget.setCurrentRow(0)
         self.ui.AppsAmountLabel.setText("Displaying " + str(self.ui.listAppsWidget.count()) + " apps.")
 
+    # Actions
+
     def turn_log_on(self):
         logging.basicConfig(filename='osc-dl-gui.log', level=logging.DEBUG,
                             format="%(asctime)s | %(levelname)s:%(name)s:%(message)s")
@@ -242,6 +247,13 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
     def clear_log(self):
         open("osc-dl-gui.log", 'w').close()
         self.status_message('DEBUG: Removed / cleared log file.')
+
+    def download_latest_hbb_action(self):
+        self.status_message("Downloading Homebrew Browser from Open Shop Channel..")
+        self.ui.progressBar.setValue(25)
+        download.hbb()
+        self.ui.progressBar.setValue(100)
+        self.status_message("Download success! Output: homebrew_browser_v0.3.9e.zip")
 
 
 if __name__ == "__main__":

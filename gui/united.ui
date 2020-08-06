@@ -533,14 +533,14 @@ p, li { white-space: pre-wrap; }
      <addaction name="actionReport_a_bug"/>
      <addaction name="menuDownload_Latest_Release"/>
     </widget>
-    <widget class="QMenu" name="menuHomebrew_Browser_2">
+    <widget class="QMenu" name="menuHomebrew_Browser">
      <property name="title">
       <string>Homebrew Browser</string>
      </property>
-     <addaction name="actionDownload_HBB_Client_2"/>
+     <addaction name="actionDownload_HBB_Client_Latest"/>
      <addaction name="actionWiiLoad_HBB_Client"/>
     </widget>
-    <addaction name="menuHomebrew_Browser_2"/>
+    <addaction name="menuHomebrew_Browser"/>
     <addaction name="menuOpen_Shop_Channel_DL"/>
     <addaction name="separator"/>
     <addaction name="actionNot_yet_implemented"/>
@@ -615,7 +615,7 @@ p, li { white-space: pre-wrap; }
     <string>Command Line</string>
    </property>
   </action>
-  <action name="actionDownload_HBB_Client_2">
+  <action name="actionDownload_HBB_Client_Latest">
    <property name="text">
     <string>Download HBB Client</string>
    </property>

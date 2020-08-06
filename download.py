@@ -84,3 +84,21 @@ def everything(extract=False, repo="hbb1.oscwii.org"):
         get(app_name=key, extract=extract, repo=repo)  # remember to implement output or it's gonna be very sad
         progress = progress+1
         print("[Progress] Downloaded " + str(progress) + " out of " + str(amount) + " apps.")
+
+
+def hbb():
+
+    output = "homebrew_browser_v0.3.9e.zip"
+
+    with Halo(
+            text="Obtaining Homebrew Browser", color="yellow", text_color="yellow"
+    ):
+        try:
+            app_data = requests.get("https://wii.guide/assets/files/homebrew_browser_v0.3.9e.zip")
+        except requests.exceptions.SSLError:
+            app_data = requests.get("http://wii.guide/assets/files/homebrew_browser_v0.3.9e.zip")
+
+    with open(output, "wb") as app_data_file:
+        app_data_file.write(app_data.content)
+
+    print(GREEN + "Download success! Output: " + output)
