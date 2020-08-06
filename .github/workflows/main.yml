@@ -59,8 +59,8 @@ jobs:
         DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
       with:
         status: ${{ job.status }}
-        title: "${{ job.status }}: Build ${{ github.run_number }} of OSC-DL"
-        description: "In-development build of OSC-DL"
+        title: "Build #${{ github.run_number }} of OSC-DL: ${{ job.status }}"
+        description: "In-development build number #${{ github.run_number }} of OSC-DL is now available."
         nodetail: true
         username: OSC-DL
         avatar_url: ${{ secrets.AVATAR_URL }}
