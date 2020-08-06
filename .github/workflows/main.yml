@@ -53,10 +53,15 @@ jobs:
         name: '${{ matrix.os }}-GUI'
         path: dist
     - uses: sarisia/actions-status-discord@v1
+      name: Send discord webhook
       if: always()
       env:
         DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
       with:
         status: ${{ job.status }}
-        title: "Build ${{ github.run_id }} of OSC-DL"
+        title: "${{ job.status }}: Build ${{ github.run_number }} of OSC-DL"
         description: "In-development build of OSC-DL"
+        nodetail: true
+        username: OSC-DL
+        avatar_url: ${{ secrets.AVATAR_URL }}
+
