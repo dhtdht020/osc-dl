@@ -88,6 +88,8 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
             app_name = None
         if app_name is not None:
             info = metadata.dictionary(app_name, repo=HOST)
+            # Set active tab to first
+            self.ui.tabMetadata.setCurrentIndex(0)
             self.ui.appname.setText(info.get("display_name"))
             self.ui.SelectionInfoBox.setTitle("Metadata: " + info.get("display_name"))
             self.ui.label_displayname.setText(info.get("display_name"))
