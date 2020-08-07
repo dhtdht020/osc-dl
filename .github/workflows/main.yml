@@ -52,7 +52,7 @@ jobs:
       with:
         name: '${{ matrix.os }}-GUI'
         path: dist
-    - uses: sarisia/actions-status-discord@v1
+    - uses: dhtdht020/openshop-status-discord@master
       name: Send discord webhook
       if: always()
       env:
@@ -63,5 +63,5 @@ jobs:
         description: "In-development build number #${{ github.run_number }} of OSC-DL is now available."
         nodetail: true
         username: OSC-DL
-        avatar_url: ${{ secrets.AVATAR_URL }}
+        # avatar_url: ${{ secrets.AVATAR_URL }}
 
