@@ -1,4 +1,4 @@
-lxml~=4.5.1
-requests~=2.23.0
-halo~=0.0.29
+lxml~=4.5.2
+requests~=2.24.0
+halo~=0.0.30
 packaging~=20.4
