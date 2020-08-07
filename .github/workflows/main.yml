@@ -46,7 +46,7 @@ jobs:
     - name: Install pyinstaller
       run: pip install pyinstaller
     - name: Build Graphical Open Shop Channel Downloader
-      run: pyinstaller --onefile --noconsole --icon=./assets/oscicon.ico xosc_dl.py
+      run: pyinstaller --onefile --noconsole --icon=/assets/oscicon.ico xosc_dl.py
     - name: Publish Build Artifacts
       uses: actions/upload-artifact@master
       with:
@@ -63,5 +63,4 @@ jobs:
         description: "In-development build number #${{ github.run_number }} of OSC-DL is now available."
         nodetail: true
         username: OSC-DL
-        # avatar_url: ${{ secrets.AVATAR_URL }}
 
