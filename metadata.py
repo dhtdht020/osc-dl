@@ -1,10 +1,14 @@
 import parsecontents
 import requests
 import lxml.etree
+import dateparser
+import datetime
+import locale
 
 
 GREEN = '\033[92m'
 FAIL = '\033[91m'
+locale.setlocale(locale.LC_ALL, 'en_GB')
 
 
 def get(app_name, type=None, repo="hbb1.oscwii.org"):
@@ -137,22 +141,30 @@ def dictionary(app_name, repo="hbb1.oscwii.org"):
     try:
         short_description = root.find('short_description').text
     except Exception:
-        short_description = "Unknown"
+        short_description = "No description provided"
 
     try:
         long_description = root.find('long_description').text
     except Exception:
-        long_description = "Unknown"
+        long_description = "No description provided"
 
     try:
-        release_date = root.find('release_date').text
+        try:
+            parsed_date = dateparser.parse(root.find('release_date').text)
+            if parsed_date is not None:
+                readable_date = parsed_date.strftime('%x')
+                release_date = readable_date
+            else:
+                release_date = root.find('release_date').text + " [RAW]"
+        except Exception:
+            release_date = root.find('release_date').text + " [RAW]"
     except Exception:
         release_date = "Unknown"
 
     try:
         contributors = root.find('contributors').text
     except Exception:
-        contributors = "Unknown"
+        contributors = "None"
 
     meta = {"display_name": display_name,
             "coder": developer,
