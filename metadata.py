@@ -2,7 +2,6 @@ import parsecontents
 import requests
 import lxml.etree
 import dateparser
-import datetime
 import locale
 
 
@@ -153,7 +152,7 @@ def dictionary(app_name, repo="hbb1.oscwii.org"):
             parsed_date = dateparser.parse(root.find('release_date').text)
             if parsed_date is not None:
                 readable_date = parsed_date.strftime('%x')
-                release_date = readable_date
+                release_date = root.find('release_date').text + " (" + readable_date + ")"
             else:
                 release_date = root.find('release_date').text + " [RAW]"
         except Exception:
