@@ -33,9 +33,13 @@ update = subparser.add_parser('update')
 
 
 if build > 0:
-    parser.add_argument('-v', '--version', action='version', version='%(prog)s ' + updater.current_version() + ' (Build: ' + str(build) + ') Developed by dhtdht020. Open Source Software.')
+    parser.add_argument('-v', '--version', action='version',
+                        version='%(prog)s ' + updater.current_version() +
+                                ' (Build: ' + str(build) + ') Developed by dhtdht020. Open Source Software.')
 else:
-    parser.add_argument('-v', '--version', action='version', version='%(prog)s ' + updater.current_version() + ' Developed by dhtdht020. Open Source Software.')
+    parser.add_argument('-v', '--version', action='version',
+                        version='%(prog)s ' + updater.current_version() +
+                                ' Developed by dhtdht020. Open Source Software.')
 
 query.add_argument(
     "-n",
@@ -276,7 +280,7 @@ if args.cmd == 'get-all':
     if args.extract is None:
         args.extract = False
 
-    download.everything(output=args.output, extract=args.extract, repo=args.host)
+    download.everything(extract=args.extract, repo=args.host)
 
 
 # get list file command
