@@ -538,7 +538,6 @@ p, li { white-space: pre-wrap; }
       <string>Homebrew Browser</string>
      </property>
      <addaction name="actionDownload_HBB_Client_Latest"/>
-     <addaction name="actionWiiLoad_HBB_Client"/>
     </widget>
     <addaction name="menuHomebrew_Browser"/>
     <addaction name="menuOpen_Shop_Channel_DL"/>

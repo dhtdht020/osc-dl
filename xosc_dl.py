@@ -77,8 +77,13 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         self.ui.listAppsWidget.currentItemChanged.connect(self.selection_changed)
 
         # Actions
+        # -- Debug
         self.ui.actionEnable_Log_File.triggered.connect(self.turn_log_on)
+        # -- Clients
+        # ---- Homebrew Browser
         self.ui.actionDownload_HBB_Client_Latest.triggered.connect(partial(self.download_latest_hbb_action))
+        # ---- OSC-DL
+        self.ui.actionCheck_for_Updates.triggered.connect(partial(self.check_for_updates_action))
 
     # When user selects a different homebrew from the list
     def selection_changed(self):
@@ -256,6 +261,19 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         download.hbb()
         self.ui.progressBar.setValue(100)
         self.status_message("Download success! Output: homebrew_browser_v0.3.9e.zip")
+
+    def check_for_updates_action(self):
+        self.status_message("Checking for updates..")
+        if updater.check_update() is True:
+            latest = updater.latest_version()
+            self.status_message("New version available! (" +updater.latest_version()+") OSC-DL is out of date.")
+            QMessageBox.warning(self, 'OSC-DL is out of date',
+                                      'Please go to GitHub and obtain the latest release\n'
+                                      'Newest Version: ' + latest)
+        else:
+            self.status_message("OSC-DL is up to date!")
+            QMessageBox.information(self, 'OSC-DL is up to date',
+                                    'You are running the latest version of OSC-DL!\n')
 
 
 if __name__ == "__main__":

@@ -280,7 +280,6 @@ class Ui_MainWindow(object):
         self.menuDownload_Latest_Release.addAction(self.actionGUI)
         self.menuDownload_Latest_Release.addAction(self.actionCLI)
         self.menuHomebrew_Browser.addAction(self.actionDownload_HBB_Client_Latest)
-        self.menuHomebrew_Browser.addAction(self.actionWiiLoad_HBB_Client)
 
         self.retranslateUi(MainWindow)
 
