@@ -4,3 +4,4 @@ halo~=0.0.30
 packaging~=20.4
 PySide2~=5.15.0
 pyperclip~=1.8.0
+dateparser~=0.7.6
