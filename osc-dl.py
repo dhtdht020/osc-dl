@@ -262,7 +262,8 @@ if args.cmd == 'export':
         args.host = "hbb1.oscwii.org"
 
     if args.type == "list":
-        export.app_list(repo=args.host)
+        txt_path = export.app_list(repo=args.host)
+        print("Exported application list to " + txt_path)
 
 
 # get the entire repo command
