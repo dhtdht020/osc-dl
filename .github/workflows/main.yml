@@ -60,7 +60,7 @@ jobs:
       with:
         status: ${{ job.status }}
         title: "Build #${{ github.run_number }} of OSC-DL: ${{ job.status }}"
-        description: "In-development build number #${{ github.run_number }} of OSC-DL is now available."
+        description: "In-development build number #${{ github.run_number }} of OSC-DL is now available.\nThis is a dev build, and it might not be stable. [Download Build](https://github.com/dhtdht020/osc-dl/actions/runs/${{ github.run_id }})"
         nodetail: true
         username: OSC-DL
 
