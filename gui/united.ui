@@ -527,10 +527,10 @@ p, li { white-space: pre-wrap; }
       </property>
       <addaction name="actionGUI"/>
       <addaction name="actionCLI"/>
+      <addaction name="separator"/>
+      <addaction name="actionNot_yet_implemented"/>
      </widget>
      <addaction name="actionCheck_for_Updates"/>
-     <addaction name="actionGitHub_Releases"/>
-     <addaction name="actionReport_a_bug"/>
      <addaction name="menuDownload_Latest_Release"/>
     </widget>
     <widget class="QMenu" name="menuHomebrew_Browser">
@@ -541,8 +541,6 @@ p, li { white-space: pre-wrap; }
     </widget>
     <addaction name="menuHomebrew_Browser"/>
     <addaction name="menuOpen_Shop_Channel_DL"/>
-    <addaction name="separator"/>
-    <addaction name="actionNot_yet_implemented"/>
    </widget>
    <addaction name="menuAbout"/>
    <addaction name="menuClients"/>
