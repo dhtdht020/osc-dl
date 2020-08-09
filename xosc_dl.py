@@ -79,6 +79,7 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         # Actions
         # -- Debug
         self.ui.actionEnable_Log_File.triggered.connect(self.turn_log_on)
+        self.ui.actionClose_the_shop.triggered.connect(self.close_the_shop)
         # -- Clients
         # ---- Homebrew Browser
         self.ui.actionDownload_HBB_Client_Latest.triggered.connect(partial(self.download_latest_hbb_action))
@@ -274,6 +275,21 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
             self.status_message("OSC-DL is up to date!")
             QMessageBox.information(self, 'OSC-DL is up to date',
                                     'You are running the latest version of OSC-DL!\n')
+
+    # in case OSC gods are angry
+    def close_the_shop(self):
+        # Close the shop
+        logging.critical('[OSC GODS] CLOSING THE SHOP')
+        self.ui.listAppsWidget.setDisabled(True)
+        self.ui.ViewMetadataBtn.setDisabled(True)
+        self.ui.WiiLoadButton.setDisabled(True)
+        self.ui.progressBar.setDisabled(True)
+        self.ui.ExtractAppCheckbox.setDisabled(True)
+        self.ui.menubar.setDisabled(True)
+        self.ui.ReposComboBox.setDisabled(True)
+        self.ui.RefreshListBtn.setDisabled(True)
+        logging.critical('[OSC GODS] CLOSED THE SHOP')
+        self.status_message("The shop is now closed")
 
 
 if __name__ == "__main__":

@@ -512,6 +512,8 @@ p, li { white-space: pre-wrap; }
     </property>
     <addaction name="actionEnable_Log_File"/>
     <addaction name="actionClear_Log"/>
+    <addaction name="separator"/>
+    <addaction name="actionClose_the_shop"/>
    </widget>
    <widget class="QMenu" name="menuClients">
     <property name="title">
@@ -637,6 +639,11 @@ p, li { white-space: pre-wrap; }
   <action name="actionDownload_from_List">
    <property name="text">
     <string>Download from List</string>
+   </property>
+  </action>
+  <action name="actionClose_the_shop">
+   <property name="text">
+    <string>Close the shop</string>
    </property>
   </action>
  </widget>
