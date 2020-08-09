@@ -9,6 +9,7 @@ from functools import partial
 
 import requests
 import pyperclip
+from PySide2 import QtGui
 from PySide2.QtWidgets import QApplication, QMainWindow, QInputDialog, QLineEdit, QMessageBox
 
 import download
@@ -61,9 +62,9 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
 
     # populate UI elements
     def populate(self):
-        self.assign_initial_actions()
         self.ui.actionAbout_OSC_DL.setText("osc-dl Version v" + VERSION)
         self.populate_list()
+        self.assign_initial_actions()
 
     def assign_initial_actions(self):
         # Buttons
@@ -110,6 +111,7 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
             self.ui.longDescriptionBrowser.setText(info.get("long_description"))
             self.ui.FileNameLineEdit.setText(app_name + ".zip")
             self.ui.DirectLinkLineEdit.setText(metadata.url(app_name, repo=HOST))
+        self.load_icon(app_name=app_name)
         self.ui.progressBar.setValue(0)
         self.status_message("Ready to download")
 
@@ -290,6 +292,15 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         self.ui.RefreshListBtn.setDisabled(True)
         logging.critical('[OSC GODS] CLOSED THE SHOP')
         self.status_message("The shop is now closed")
+
+    def load_icon(self, app_name):
+        data = metadata.icon(app_name)
+
+        image = QtGui.QImage()
+        image.loadFromData(data)
+
+        lbl = self.ui.HomebrewIconLabel
+        lbl.setPixmap(QtGui.QPixmap(image))
 
 
 if __name__ == "__main__":

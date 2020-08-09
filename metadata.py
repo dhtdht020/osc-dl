@@ -3,6 +3,7 @@ import requests
 import lxml.etree
 import dateparser
 import locale
+import urllib3
 
 
 GREEN = '\033[92m'
@@ -97,7 +98,7 @@ def get(app_name, type=None, repo="hbb1.oscwii.org"):
 
 # experimental, for use by xosc-dl
 def icon(app_name, repo="hbb1.oscwii.org"):
-    icon = "https://" + repo+ "/hbb/"+ app_name + ".png"
+    icon = requests.get("https://" + repo+ "/hbb/"+ app_name + ".png").content
     return icon
 
 
