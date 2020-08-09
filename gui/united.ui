@@ -510,10 +510,17 @@ p, li { white-space: pre-wrap; }
     <property name="title">
      <string>Debug</string>
     </property>
+    <widget class="QMenu" name="menuExperimental">
+     <property name="title">
+      <string>Experimental</string>
+     </property>
+     <addaction name="actionUpdate_Wizard_EARLY"/>
+    </widget>
     <addaction name="actionEnable_Log_File"/>
     <addaction name="actionClear_Log"/>
     <addaction name="separator"/>
     <addaction name="actionClose_the_shop"/>
+    <addaction name="menuExperimental"/>
    </widget>
    <widget class="QMenu" name="menuClients">
     <property name="title">
@@ -644,6 +651,11 @@ p, li { white-space: pre-wrap; }
   <action name="actionClose_the_shop">
    <property name="text">
     <string>Close the shop</string>
+   </property>
+  </action>
+  <action name="actionUpdate_Wizard_EARLY">
+   <property name="text">
+    <string>Update Wizard (EARLY!)</string>
    </property>
   </action>
  </widget>
