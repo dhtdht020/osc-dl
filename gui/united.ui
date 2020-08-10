@@ -378,7 +378,7 @@ p, li { white-space: pre-wrap; }
      </widget>
      <widget class="QWidget" name="RawTab">
       <attribute name="title">
-       <string>Raw</string>
+       <string>More</string>
       </attribute>
       <widget class="QLabel" name="DirectLinkLabel">
        <property name="geometry">
@@ -425,7 +425,7 @@ p, li { white-space: pre-wrap; }
          <x>10</x>
          <y>10</y>
          <width>221</width>
-         <height>141</height>
+         <height>101</height>
         </rect>
        </property>
        <property name="rootIsDecorated">
@@ -442,18 +442,31 @@ p, li { white-space: pre-wrap; }
         </property>
        </column>
       </widget>
-      <widget class="QCheckBox" name="ExtractAppCheckbox">
+      <widget class="QGroupBox" name="settingsBox">
        <property name="geometry">
         <rect>
          <x>10</x>
-         <y>160</y>
-         <width>179</width>
-         <height>17</height>
+         <y>120</y>
+         <width>221</width>
+         <height>51</height>
         </rect>
        </property>
-       <property name="text">
-        <string>Extract Downloaded App</string>
+       <property name="title">
+        <string>Settings</string>
        </property>
+       <widget class="QCheckBox" name="ExtractAppCheckbox">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>20</y>
+          <width>201</width>
+          <height>17</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Extract Downloaded App</string>
+        </property>
+       </widget>
       </widget>
      </widget>
     </widget>

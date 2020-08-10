@@ -21,7 +21,7 @@ import wiiload
 
 VERSION = updater.current_version()
 BRANCH = updater.get_branch()
-if BRANCH is "Stable":
+if BRANCH == "Stable":
     DISPLAY_VERSION = VERSION
 else:
     DISPLAY_VERSION = VERSION + " " + BRANCH
