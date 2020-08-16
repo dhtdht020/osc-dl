@@ -98,7 +98,15 @@ def get(app_name, type=None, repo="hbb1.oscwii.org"):
 
 # experimental, for use by xosc-dl
 def icon(app_name, repo="hbb1.oscwii.org"):
-    icon = requests.get("https://" + repo+ "/hbb/"+ app_name + ".png").content
+    try:
+        request = requests.get("https://" + repo+ "/hbb/"+ app_name + ".png")
+        icon = request.content
+        # If icon is not there
+        if str(request.status_code) != "200":
+            icon = requests.get(
+                "https://raw.githubusercontent.com/dhtdht020/oscdl-updateserver/master/v1/assets/missing.png").content
+    except Exception:
+        icon = requests.get("https://raw.githubusercontent.com/dhtdht020/oscdl-updateserver/master/v1/assets/missing.png").content
     return icon
 
 

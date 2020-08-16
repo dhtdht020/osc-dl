@@ -51,6 +51,7 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         self.ui = gui.ui_united.Ui_MainWindow()
         self.ui.setupUi(self)
         self.setWindowTitle("Open Shop Channel Downloader v" + DISPLAY_VERSION + " - Library")
+        self.ui.listAppsWidget.addItem("Fortnite_Wii")
         self.populate()
         self.selection_changed()
         self.status_message("Ready to download")
@@ -97,6 +98,8 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
             info = metadata.dictionary(app_name, repo=HOST)
             # Set active tab to first
             self.ui.tabMetadata.setCurrentIndex(0)
+            # Load icon
+            self.load_icon(app_name=app_name, repo=HOST)
             self.ui.appname.setText(info.get("display_name"))
             self.ui.SelectionInfoBox.setTitle("Metadata: " + info.get("display_name"))
             self.ui.label_displayname.setText(info.get("display_name"))
@@ -111,7 +114,6 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
             self.ui.longDescriptionBrowser.setText(info.get("long_description"))
             self.ui.FileNameLineEdit.setText(app_name + ".zip")
             self.ui.DirectLinkLineEdit.setText(metadata.url(app_name, repo=HOST))
-        self.load_icon(app_name=app_name)
         self.ui.progressBar.setValue(0)
         self.status_message("Ready to download")
 
@@ -250,6 +252,7 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         logging.info('User chose to enable log file. Hello there!')
         logging.info("OSC-DL v" + DISPLAY_VERSION + ": Running on " + updater.get_type())
         self.status_message('DEBUG: Enabled log file. To disable, exit the program.')
+        self.status_message('DEBUG: Enabled log file. To disable, exit the program.')
         self.ui.actionEnable_Log_File.setDisabled(True)
         self.ui.actionClear_Log.setEnabled(True)
         self.ui.actionClear_Log.triggered.connect(self.clear_log)
@@ -293,8 +296,8 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         logging.critical('[OSC GODS] CLOSED THE SHOP')
         self.status_message("The shop is now closed")
 
-    def load_icon(self, app_name):
-        data = metadata.icon(app_name)
+    def load_icon(self, app_name, repo):
+        data = metadata.icon(app_name=app_name, repo=repo)
 
         image = QtGui.QImage()
         image.loadFromData(data)
