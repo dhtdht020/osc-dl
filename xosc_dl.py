@@ -51,7 +51,6 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         self.ui = gui.ui_united.Ui_MainWindow()
         self.ui.setupUi(self)
         self.setWindowTitle("Open Shop Channel Downloader v" + DISPLAY_VERSION + " - Library")
-        self.ui.listAppsWidget.addItem("Fortnite_Wii")
         self.populate()
         self.selection_changed()
         self.status_message("Ready to download")
