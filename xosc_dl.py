@@ -26,7 +26,6 @@ if BRANCH == "Stable":
 else:
     DISPLAY_VERSION = VERSION + " " + BRANCH
 
-
 HOST = "hbb1.oscwii.org"
 
 
@@ -50,7 +49,7 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         super(MainWindow, self).__init__()
         self.ui = gui.ui_united.Ui_MainWindow()
         self.ui.setupUi(self)
-        self.setWindowTitle("Open Shop Channel Downloader v" + DISPLAY_VERSION + " - Library")
+        self.setWindowTitle(f"Open Shop Channel Downloader v{DISPLAY_VERSION} - Library")
         self.populate()
         self.selection_changed()
         self.status_message("Ready to download")
@@ -62,7 +61,7 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
 
     # populate UI elements
     def populate(self):
-        self.ui.actionAbout_OSC_DL.setText("osc-dl Version v" + VERSION)
+        self.ui.actionAbout_OSC_DL.setText(f"osc-dl Version v{VERSION}")
         self.populate_list()
         self.assign_initial_actions()
 
@@ -122,7 +121,7 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
 
     def download_button(self):
         self.app_name = self.ui.listAppsWidget.currentItem().text()
-        self.status_message("Downloading " + self.app_name + " from Open Shop Channel..")
+        self.status_message(f"Downloading {self.app_name} from Open Shop Channel..")
         output = self.ui.FileNameLineEdit.text()
         extract = self.ui.ExtractAppCheckbox.isChecked()
         if extract is True:
@@ -208,18 +207,18 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
 
         self.ui.progressBar.setValue(100)
         self.status_message('App transmitted!')
-        logging.info('App transmitted to HBC at ' + ip)
+        logging.info(f"App transmitted to HBC at {ip}")
 
     def copy_download_link_button(self):
         self.app_name = self.ui.listAppsWidget.currentItem().text()
         pyperclip.copy(metadata.url(self.app_name, repo=HOST))
-        self.status_message("Copied the download link for " + self.app_name + " to clipboard")
+        self.status_message(f"Copied the download link for {self.app_name} to clipboard")
 
     def changed_host(self):
         global HOST
         HOST = get_repo_host(self.ui.ReposComboBox.currentText())
-        self.status_message("Loading " + HOST + " repository..")
-        logging.info('Loading ' + HOST)
+        self.status_message(f"Loading {HOST} repository..")
+        logging.info(f"Loading {HOST}")
         self.ui.progressBar.setValue(20)
         self.repopulate()
 
@@ -272,10 +271,10 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         self.status_message("Checking for updates..")
         if updater.check_update() is True:
             latest = updater.latest_version()
-            self.status_message("New version available! (" +updater.latest_version()+") OSC-DL is out of date.")
+            self.status_message("New version available! (" + updater.latest_version() + ") OSC-DL is out of date.")
             QMessageBox.warning(self, 'OSC-DL is out of date',
-                                      'Please go to GitHub and obtain the latest release\n'
-                                      'Newest Version: ' + latest)
+                                'Please go to GitHub and obtain the latest release\n'
+                                'Newest Version: ' + latest)
         else:
             self.status_message("OSC-DL is up to date!")
             QMessageBox.information(self, 'OSC-DL is up to date',
@@ -307,8 +306,8 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
 
     def add_fake_listing_action(self):
         amount, ok = QInputDialog.getText(self, 'Debug: Fake Listing Wizard',
-                                      'Enter the amount of fake listings to add:',
-                                      QLineEdit.Normal)
+                                          'Enter the amount of fake listings to add:',
+                                          QLineEdit.Normal)
         if not ok:
             return
 
