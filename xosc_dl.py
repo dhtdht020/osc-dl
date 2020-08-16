@@ -81,6 +81,7 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         # -- Debug
         self.ui.actionEnable_Log_File.triggered.connect(self.turn_log_on)
         self.ui.actionClose_the_shop.triggered.connect(self.close_the_shop)
+        self.ui.actionAdd_Fake_Application.triggered.connect(self.add_fake_listing_action)
         # -- Clients
         # ---- Homebrew Browser
         self.ui.actionDownload_HBB_Client_Latest.triggered.connect(partial(self.download_latest_hbb_action))
@@ -303,6 +304,22 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
 
         lbl = self.ui.HomebrewIconLabel
         lbl.setPixmap(QtGui.QPixmap(image))
+
+    def add_fake_listing_action(self):
+        amount, ok = QInputDialog.getText(self, 'Debug: Fake Listing Wizard',
+                                      'Enter the amount of fake listings to add:',
+                                      QLineEdit.Normal)
+        if not ok:
+            return
+
+        self.status_message("DEBUG: Adding fake entries.. Please wait..")
+
+        for _ in range(int(amount)):
+            word_json = requests.get("https://random-word-api.herokuapp.com/word?number=1").text
+            word = word_json.strip("[]").strip('"')
+            self.ui.listAppsWidget.addItem(word + "_wii")
+
+        self.status_message(f"DEBUG: Added {amount} fake entries to applications list.")
 
 
 if __name__ == "__main__":

@@ -550,6 +550,8 @@ p, li { white-space: pre-wrap; }
     <addaction name="separator"/>
     <addaction name="actionClose_the_shop"/>
     <addaction name="menuExperimental"/>
+    <addaction name="separator"/>
+    <addaction name="actionAdd_Fake_Application"/>
    </widget>
    <widget class="QMenu" name="menuClients">
     <property name="title">
@@ -685,6 +687,11 @@ p, li { white-space: pre-wrap; }
   <action name="actionUpdate_Wizard_EARLY">
    <property name="text">
     <string>Update Wizard (EARLY!)</string>
+   </property>
+  </action>
+  <action name="actionAdd_Fake_Application">
+   <property name="text">
+    <string>Add Fake Listing</string>
    </property>
   </action>
  </widget>
