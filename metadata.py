@@ -134,7 +134,7 @@ def dictionary(app_name, repo="hbb1.oscwii.org"):
     try:
         display_name = root.find('name').text
     except Exception:
-        display_name = app_name
+        display_name = app_name + " (hbbID)"
 
     try:
         developer = root.find('coder').text
