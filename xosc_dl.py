@@ -251,7 +251,6 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         logging.info('User chose to enable log file. Hello there!')
         logging.info("OSC-DL v" + DISPLAY_VERSION + ": Running on " + updater.get_type())
         self.status_message('DEBUG: Enabled log file. To disable, exit the program.')
-        self.status_message('DEBUG: Enabled log file. To disable, exit the program.')
         self.ui.actionEnable_Log_File.setDisabled(True)
         self.ui.actionClear_Log.setEnabled(True)
         self.ui.actionClear_Log.triggered.connect(self.clear_log)
