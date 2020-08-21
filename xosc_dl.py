@@ -53,6 +53,7 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         self.populate()
         self.selection_changed()
         self.status_message("Ready to download")
+        self.ui.progressBar.setHidden(False)
         self.ui.statusBar.addPermanentWidget(self.ui.progressBar)
 
     # show given status message on bottom status bar

@@ -202,6 +202,7 @@ class Ui_MainWindow(object):
         self.progressBar = QProgressBar(self.GeneralTab)
         self.progressBar.setObjectName(u"progressBar")
         self.progressBar.setGeometry(QRect(150, 0, 91, 23))
+        self.progressBar.setVisible(False)
         self.progressBar.setValue(0)
         self.HomebrewIconLabel = QLabel(self.GeneralTab)
         self.HomebrewIconLabel.setObjectName(u"HomebrewIconLabel")
@@ -373,7 +374,7 @@ class Ui_MainWindow(object):
         self.label_releasedate.setText(QCoreApplication.translate("MainWindow", u"Release Date", None))
         self.label_description.setText(QCoreApplication.translate("MainWindow", u"Description", None))
         self.label_displayname.setText(QCoreApplication.translate("MainWindow", u"Title", None))
-        self.HomebrewIconLabel.setText(QCoreApplication.translate("MainWindow", u"HOMEBREW_ICON", None))
+        self.HomebrewIconLabel.setText(QCoreApplication.translate("MainWindow", u"No homebrew icon. Aw.", None))
         self.tabMetadata.setTabText(self.tabMetadata.indexOf(self.GeneralTab), QCoreApplication.translate("MainWindow", u"General", None))
         self.longDescriptionBrowser.setHtml(QCoreApplication.translate("MainWindow", u"<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
