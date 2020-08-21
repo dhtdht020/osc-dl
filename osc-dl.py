@@ -1,7 +1,7 @@
 import parsecontents
 import argparse
 import download
-import localcontents
+import parsecontents
 import updater
 import metadata
 import export
@@ -289,9 +289,9 @@ if args.cmd == 'get-list':
         args.host = "hbb1.oscwii.org"
 
     if args.display is True:
-        localcontents.dl_list(file=args.file, display=True, repo=args.host)
+        parsecontents.dl_list(file=args.file, display=True, repo=args.host)
     else:
-        localcontents.dl_list(file=args.file, repo=args.host)
+        parsecontents.dl_list(file=args.file, repo=args.host)
 
 
 # get command
