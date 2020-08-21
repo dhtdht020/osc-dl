@@ -2,7 +2,7 @@ import parsecontents
 import sys
 
 
-def app_list(txt_path="osc-dl_export_app_list.txt", repo="hbb1.oscwii.org"):
+def export_app_list(txt_path="osc-dl_export_app_list.txt", repo="hbb1.oscwii.org"):
     if txt_path is None:
         txt_path = "osc-dl_export_app_list.txt"
     sys.stdout = open(str(txt_path), "w")
