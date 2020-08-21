@@ -2,6 +2,7 @@ import sys
 import requests
 import platform
 import json
+import yaml
 from packaging import version
 
 
@@ -84,3 +85,7 @@ def get_type():
         return 'Mac, as script.'
 
     return 'Unknown System, Never saw this before. Damn.'
+
+
+def get_announcement():
+    pass
