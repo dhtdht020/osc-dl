@@ -81,6 +81,7 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         self.ui.actionEnable_Log_File.triggered.connect(self.turn_log_on)
         self.ui.actionClose_the_shop.triggered.connect(self.close_the_shop)
         self.ui.actionAdd_Fake_Application.triggered.connect(self.add_fake_listing_action)
+        self.ui.actionDisplay_Banner.triggered.connect(self.load_announcement_banner)
         # -- Clients
         # ---- Homebrew Browser
         self.ui.actionDownload_HBB_Client_Latest.triggered.connect(partial(self.download_latest_hbb_action))
@@ -318,6 +319,9 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
             self.ui.listAppsWidget.addItem(word + "_wii")
 
         self.status_message(f"DEBUG: Added {amount} fake entries to applications list.")
+
+    def load_announcement_banner(self):
+        self.ui.announcement.setHidden(False)
 
 
 if __name__ == "__main__":

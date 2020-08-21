@@ -125,6 +125,45 @@
       <string>Displaying 0 apps</string>
      </property>
     </widget>
+    <widget class="QFrame" name="announcement">
+     <property name="geometry">
+      <rect>
+       <x>0</x>
+       <y>0</y>
+       <width>601</width>
+       <height>21</height>
+      </rect>
+     </property>
+     <property name="visible">
+      <bool>false</bool>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-color: rgb(255, 85, 0);
+color: rgb(255, 255, 255);</string>
+     </property>
+     <property name="frameShape">
+      <enum>QFrame::StyledPanel</enum>
+     </property>
+     <property name="frameShadow">
+      <enum>QFrame::Raised</enum>
+     </property>
+     <widget class="QLabel" name="announcementLabel">
+      <property name="geometry">
+       <rect>
+        <x>6</x>
+        <y>0</y>
+        <width>591</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Announcement Header: &lt;/span&gt;Announcement Content. &lt;a href=&quot;https://google.com&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;Announcement URL&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      </property>
+      <property name="openExternalLinks">
+       <bool>true</bool>
+      </property>
+     </widget>
+    </widget>
    </widget>
    <widget class="QGroupBox" name="SelectionInfoBox">
     <property name="geometry">
@@ -543,7 +582,16 @@ p, li { white-space: pre-wrap; }
      <property name="title">
       <string>Experimental</string>
      </property>
+     <widget class="QMenu" name="menuAnnouncement_Banner">
+      <property name="title">
+       <string>Announcement Banner</string>
+      </property>
+      <addaction name="actionDisplay_Banner"/>
+      <addaction name="actionUpdate_Banner"/>
+      <addaction name="actionHide_Banner"/>
+     </widget>
      <addaction name="actionUpdate_Wizard_EARLY"/>
+     <addaction name="menuAnnouncement_Banner"/>
     </widget>
     <addaction name="actionEnable_Log_File"/>
     <addaction name="actionClear_Log"/>
@@ -692,6 +740,21 @@ p, li { white-space: pre-wrap; }
   <action name="actionAdd_Fake_Application">
    <property name="text">
     <string>Add Fake Listing</string>
+   </property>
+  </action>
+  <action name="actionDisplay_Banner">
+   <property name="text">
+    <string>Display Banner</string>
+   </property>
+  </action>
+  <action name="actionUpdate_Banner">
+   <property name="text">
+    <string>Update Banner</string>
+   </property>
+  </action>
+  <action name="actionHide_Banner">
+   <property name="text">
+    <string>Hide Banner</string>
    </property>
   </action>
  </widget>
