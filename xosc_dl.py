@@ -55,6 +55,7 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         self.status_message("Ready to download")
         self.ui.progressBar.setHidden(False)
         self.ui.statusBar.addPermanentWidget(self.ui.progressBar)
+        self.load_announcement_banner()
 
     # show given status message on bottom status bar
     def status_message(self, message):
@@ -322,7 +323,11 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         self.status_message(f"DEBUG: Added {amount} fake entries to applications list.")
 
     def load_announcement_banner(self):
-        self.ui.announcement.setHidden(False)
+        announcement = updater.get_announcement()
+        if announcement is not None:
+            self.ui.announcement.setHidden(False)
+            self.ui.announcementLabel.setText(announcement[0])
+            self.ui.announcementURLLabel.setText(announcement[1])
 
 
 if __name__ == "__main__":

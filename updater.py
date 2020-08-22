@@ -88,4 +88,24 @@ def get_type():
 
 
 def get_announcement():
-    pass
+    yaml_file = requests.get("https://raw.githubusercontent.com/dhtdht020/oscdl-updateserver/master/v1/announcement"
+                             "/alert.yml").text
+    parsed_yaml = yaml.load(yaml_file, Loader=yaml.FullLoader)
+
+    if not parsed_yaml["information"]["display"]:
+        return
+
+    # Get announcement
+    announcement_header = parsed_yaml["information"]["header"]
+    announcement_content = parsed_yaml["information"]["content"]
+    announcement_website_label = parsed_yaml["website"]["label"]
+    announcement_website_url = parsed_yaml["website"]["url"]
+
+    announcement = f'<html><head/><body><p><span style=" font-weight:600;">{announcement_header} ' \
+                   f'</span>{announcement_content}'
+
+    announcement_url = f'<html><head/><body><p><a href="{announcement_website_url}">' \
+                       f'<span style=" text-decoration: underline; color:#0000ff;">{announcement_website_label}' \
+                       f'</span></a></p></body></html>'
+
+    return announcement, announcement_url
