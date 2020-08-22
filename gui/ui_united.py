@@ -370,7 +370,7 @@ class Ui_MainWindow(object):
         self.RefreshListBtn.setText(QCoreApplication.translate("MainWindow", u"Refresh Apps", None))
         self.AppsAmountLabel.setText(QCoreApplication.translate("MainWindow", u"Displaying 0 apps", None))
         self.announcementLabel.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p><span style=\" font-weight:600;\">Announcement Header: </span>Announcement Content.</p></body></html>", None))
-        self.announcementURLLabel.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p><a href=\"https://google.com\"><span style=\" text-decoration: underline; color:#0000ff;\">Announcement URL</span></a></p></body></html>", None))
+        self.announcementURLLabel.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p><a href=\"https://google.com\"><span style=\" text-decoration: underline; color:#ffff00;\">Announcement URL</span></a></p></body></html>", None))
         self.SelectionInfoBox.setTitle(QCoreApplication.translate("MainWindow", u"Application Metadata", None))
         self.label_appname.setText(QCoreApplication.translate("MainWindow", u"App Name", None))
         self.appname.setText("")

@@ -94,18 +94,22 @@ def get_announcement():
 
     if not parsed_yaml["information"]["display"]:
         return
+    # Check YAML version for compatibility, Does not parse lower versions.
+    elif parsed_yaml["version"] != 2:
+        return
 
     # Get announcement
     announcement_header = parsed_yaml["information"]["header"]
     announcement_content = parsed_yaml["information"]["content"]
-    announcement_website_label = parsed_yaml["website"]["label"]
+    announcement_website_label_text = parsed_yaml["website"]["label"]["text"]
+    announcement_website_label_color = parsed_yaml["website"]["label"]["color"]
     announcement_website_url = parsed_yaml["website"]["url"]
 
     announcement = f'<html><head/><body><p><span style=" font-weight:600;">{announcement_header} ' \
                    f'</span>{announcement_content}'
 
     announcement_url = f'<html><head/><body><p><a href="{announcement_website_url}">' \
-                       f'<span style=" text-decoration: underline; color:#0000ff;">{announcement_website_label}' \
-                       f'</span></a></p></body></html>'
+                       f'<span style=" text-decoration: underline; color:{announcement_website_label_color};">' \
+                       f'{announcement_website_label_text}</span></a></p></body></html>'
 
     return announcement, announcement_url
