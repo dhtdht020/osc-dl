@@ -324,10 +324,25 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
 
     def load_announcement_banner(self):
         announcement = updater.get_announcement()
+        announcement_label = announcement[0]
+        announcement_url_label = announcement[1]
+        announcement_banner_color = announcement[2]
+        announcement_banner_text_color = announcement[3]
+        announcement_website_enabled = announcement[4]
         if announcement is not None:
+            # Un-hide banner
             self.ui.announcement.setHidden(False)
-            self.ui.announcementLabel.setText(announcement[0])
-            self.ui.announcementURLLabel.setText(announcement[1])
+
+            # Set banner styling
+            self.ui.announcement.setStyleSheet(f'background-color: {announcement_banner_color}; '
+                                               f'color: {announcement_banner_text_color};')
+
+            # Populate banner
+            self.ui.announcementLabel.setText(announcement_label)
+            self.ui.announcementURLLabel.setText(announcement_url_label)
+
+            if announcement_website_enabled is False:
+                self.ui.announcementURLLabel.setHidden(True)
 
 
 if __name__ == "__main__":

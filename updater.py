@@ -95,6 +95,9 @@ def get_announcement():
     # Get announcement
     announcement_header = parsed_yaml["information"]["header"]
     announcement_content = parsed_yaml["information"]["content"]
+    announcement_banner_color = parsed_yaml["information"]["banner"]["color"]
+    announcement_banner_text_color = parsed_yaml["information"]["banner"]["text_color"]
+    announcement_website_enabled = parsed_yaml["website"]["display"]
     announcement_website_label_text = parsed_yaml["website"]["label"]["text"]
     announcement_website_label_color = parsed_yaml["website"]["label"]["color"]
     announcement_website_url = parsed_yaml["website"]["url"]
@@ -110,7 +113,6 @@ def get_announcement():
         announcement_website_label_color = "#ffff00"
         announcement_website_url = "https://github.com/dhtdht020/osc-dl/releases"
 
-
     announcement = f'<html><head/><body><p><span style=" font-weight:600;">{announcement_header} ' \
                    f'</span>{announcement_content}'
 
@@ -118,4 +120,4 @@ def get_announcement():
                        f'<span style=" text-decoration: underline; color:{announcement_website_label_color};">' \
                        f'{announcement_website_label_text}</span></a></p></body></html>'
 
-    return announcement, announcement_url
+    return announcement, announcement_url, announcement_banner_color, announcement_banner_text_color, announcement_website_enabled
