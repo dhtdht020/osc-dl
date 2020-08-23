@@ -1,4 +1,5 @@
 import io
+import json
 import re
 import socket
 import sys
@@ -318,10 +319,10 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
 
         self.status_message("DEBUG: Adding fake entries.. Please wait..")
 
-        for _ in range(int(amount)):
-            word_json = requests.get("https://random-word-api.herokuapp.com/word?number=1").text
-            word = word_json.strip("[]").strip('"')
-            self.ui.listAppsWidget.addItem(word + "_wii")
+        word_json = requests.get(f"https://random-word-api.herokuapp.com/word?number={amount}").text
+        words = json.loads(word_json)
+        for item in words:
+            self.ui.listAppsWidget.addItem(item + "_wii")
 
         self.status_message(f"DEBUG: Added {amount} fake entries to applications list.")
 
