@@ -298,18 +298,21 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         self.status_message("The shop is now closed")
 
     def load_icon(self, app_name, repo):
+        # Gets raw image data from server
         data = metadata.icon(app_name=app_name, repo=repo)
 
+        # Loads image
         image = QtGui.QImage()
         image.loadFromData(data)
 
+        # Adds image to label
         lbl = self.ui.HomebrewIconLabel
         lbl.setPixmap(QtGui.QPixmap(image))
 
     def add_fake_listing_action(self):
-        amount, ok = QInputDialog.getText(self, 'Debug: Fake Listing Wizard',
-                                          'Enter the amount of fake listings to add:',
-                                          QLineEdit.Normal)
+        amount, ok = QInputDialog.getInt(self, 'Debug: Fake Listing Wizard',
+                                         'Enter the amount of fake listings to add:',
+                                         QLineEdit.Normal)
         if not ok:
             return
 
