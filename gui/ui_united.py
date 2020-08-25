@@ -105,8 +105,10 @@ class Ui_MainWindow(object):
         self.announcement.setObjectName(u"announcement")
         self.announcement.setGeometry(QRect(0, 0, 601, 21))
         self.announcement.setVisible(False)
-        self.announcement.setStyleSheet(u"background-color: rgb(255, 85, 0);\n"
-"color: rgb(255, 255, 255);")
+        self.announcement.setStyleSheet(u"QFrame {\n"
+"background-color: rgb(255, 85, 0);\n"
+"color: rgb(255, 255, 255);\n"
+"}")
         self.announcement.setFrameShape(QFrame.StyledPanel)
         self.announcement.setFrameShadow(QFrame.Raised)
         self.announcementLabel = QLabel(self.announcement)
@@ -116,7 +118,9 @@ class Ui_MainWindow(object):
         self.announcementURLLabel = QLabel(self.announcement)
         self.announcementURLLabel.setObjectName(u"announcementURLLabel")
         self.announcementURLLabel.setGeometry(QRect(340, 0, 251, 21))
-        self.announcementURLLabel.setStyleSheet(u"background-color: rgba(255, 255, 255, 0);")
+        self.announcementURLLabel.setStyleSheet(u"QLabel {\n"
+"background-color: rgba(255, 255, 255, 0);\n"
+"}")
         self.announcementURLLabel.setAlignment(Qt.AlignRight|Qt.AlignTrailing|Qt.AlignVCenter)
         self.announcementURLLabel.setOpenExternalLinks(True)
         self.SelectionInfoBox = QGroupBox(self.centralwidget)

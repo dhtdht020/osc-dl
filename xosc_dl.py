@@ -11,7 +11,6 @@ from functools import partial
 import requests
 import pyperclip
 from PySide2 import QtGui
-from PySide2.QtGui import QPixmap
 from PySide2.QtWidgets import QApplication, QMainWindow, QInputDialog, QLineEdit, QMessageBox, QSplashScreen
 
 import download
@@ -339,8 +338,10 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
             self.ui.announcement.setHidden(False)
 
             # Set banner styling
-            self.ui.announcement.setStyleSheet(f'background-color: {announcement_banner_color}; '
-                                               f'color: {announcement_banner_text_color};')
+            self.ui.announcement.setStyleSheet(f'QFrame {{'
+                                               f'background-color: {announcement_banner_color};'
+                                               f'color: {announcement_banner_text_color};'
+                                               f'}}')
 
             # Populate banner
             self.ui.announcementLabel.setText(announcement_label)
