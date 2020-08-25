@@ -121,3 +121,13 @@ def get_announcement():
                        f'{announcement_website_label_text}</span></a></p></body></html>'
 
     return announcement, announcement_url, announcement_banner_color, announcement_banner_text_color, announcement_website_enabled
+
+
+def obtain_splash():
+    # https://raw.githubusercontent.com/dhtdht020/oscdl-updateserver/master/v1/assets/splash.png
+    splash_image = requests.get("https://raw.githubusercontent.com/dhtdht020/oscdl-updateserver/master/v1/assets"
+                                "/splash.png")
+
+    splash = splash_image.content
+
+    return splash

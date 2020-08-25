@@ -11,7 +11,8 @@ from functools import partial
 import requests
 import pyperclip
 from PySide2 import QtGui
-from PySide2.QtWidgets import QApplication, QMainWindow, QInputDialog, QLineEdit, QMessageBox
+from PySide2.QtGui import QPixmap
+from PySide2.QtWidgets import QApplication, QMainWindow, QInputDialog, QLineEdit, QMessageBox, QSplashScreen
 
 import download
 import gui.ui_united
@@ -351,6 +352,17 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
 
 if __name__ == "__main__":
     app = QApplication()
+
+    # Splash
+    data = updater.obtain_splash()
+    image = QtGui.QImage()
+    image.loadFromData(data)
+    image = QtGui.QImage()
+    image.loadFromData(data)
+    splash = QSplashScreen(QtGui.QPixmap(image))
+    splash.show()
+
     window = MainWindow()
     window.show()
+    splash.hide()
     app.exec_()
