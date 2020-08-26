@@ -355,13 +355,16 @@ if __name__ == "__main__":
     app = QApplication()
 
     # Splash
-    data = updater.obtain_splash()
-    image = QtGui.QImage()
-    image.loadFromData(data)
-    image = QtGui.QImage()
-    image.loadFromData(data)
-    splash = QSplashScreen(QtGui.QPixmap(image))
-    splash.show()
+    try:
+        data = updater.obtain_splash()
+        image = QtGui.QImage()
+        image.loadFromData(data)
+        image = QtGui.QImage()
+        image.loadFromData(data)
+        splash = QSplashScreen(QtGui.QPixmap(image))
+        splash.show()
+    except Exception:
+        pass
 
     window = MainWindow()
     window.show()
