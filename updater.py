@@ -124,9 +124,9 @@ def get_announcement():
 
 
 def obtain_splash():
-    # https://raw.githubusercontent.com/dhtdht020/oscdl-updateserver/master/v1/assets/splash.png
-    splash_image = requests.get("https://raw.githubusercontent.com/dhtdht020/oscdl-updateserver/master/v1/assets"
-                                "/splash.png")
+    version_name = current_version()
+    splash_image = requests.get(f"https://raw.githubusercontent.com/dhtdht020/oscdl-updateserver/master/v1/assets"
+                                f"/{version_name}/splash.png")
 
     splash = splash_image.content
 
