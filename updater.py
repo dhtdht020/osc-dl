@@ -128,6 +128,10 @@ def obtain_splash():
     splash_image = requests.get(f"https://raw.githubusercontent.com/dhtdht020/oscdl-updateserver/master/v1/assets"
                                 f"/{version_name}/splash.png")
 
+    if str(splash_image.status_code) != "200":
+        splash_image = requests.get("https://raw.githubusercontent.com/dhtdht020/oscdl-updateserver/master/v1/assets"
+                                    "/splash.png")
+
     splash = splash_image.content
 
     return splash
