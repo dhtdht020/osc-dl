@@ -10,9 +10,9 @@ def current_version():
     prefix = "1.2."
     beta_number = "8"
 
-    version = prefix + beta_number
+    version_number = prefix + beta_number
 
-    return version
+    return version_number
 
 
 def get_branch():

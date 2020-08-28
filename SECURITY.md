@@ -5,6 +5,7 @@
 | Version | Supported          |
 | ------- | ------------------ |
 | Master  | :white_check_mark: |
+| 1.2.7   | :white_check_mark: |
 | 1.2.6   | :white_check_mark: |
 | 1.2.0   | :white_check_mark: |
 | < 1.1   | :x:                |
