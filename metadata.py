@@ -3,7 +3,6 @@ import requests
 import lxml.etree
 import dateparser
 import locale
-import urllib3
 
 
 GREEN = '\033[92m'
