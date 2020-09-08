@@ -1,8 +1,14 @@
 import argparse
+import io
+import socket
+
+import requests
+
 import download
 import parsecontents
 import updater
 import metadata
+import wiiload
 import utils
 import os
 
@@ -29,6 +35,7 @@ meta = subparser.add_parser('meta')
 repolist = subparser.add_parser('repo-list')
 export_cmd = subparser.add_parser('export')
 update = subparser.add_parser('update')
+transmit = subparser.add_parser('transmit')
 
 
 if build > 0:
@@ -197,6 +204,29 @@ export_cmd.add_argument(
     action="store"
 )
 
+transmit.add_argument(
+    "-r",
+    "--host",
+    help="Repository URL",
+    action="store"
+)
+
+transmit.add_argument(
+    "-n",
+    "--name",
+    help="Name of homebrew app",
+    action="store",
+    required=True
+)
+
+transmit.add_argument(
+    "-i",
+    "--ip",
+    help="IP Address of Nintendo Wii",
+    action="store",
+    required=True
+)
+
 ascii_logo = """                                                                                                    
     `.----.   .--`----.     `....`   ---.-:::.    
    :++/-:/++- :///---///` `---...--` +oo+:::oo+`  
@@ -223,6 +253,68 @@ if args.cmd == 'list':
         args.host = "hbb1.oscwii.org"
 
     parsecontents.get(repo=args.host, raw=args.raw)
+
+
+# Modern Code here :S
+if args.cmd == 'transmit':
+    if args.host is None:
+        args.host = "hbb1.oscwii.org"
+        # args.ip
+
+    ok = wiiload.validate_ip_regex(ip=args.ip)
+    if not ok:
+        print(f"Error DL0001: The IP address '{args.ip}' is invalid! Please correct it!")
+        exit(1)
+
+    parsecontents.query(term=args.name, repo=args.host)
+
+    url = f"https://{args.host}/hbb/{args.name}/{args.name}.zip"
+    r = requests.get(url)
+    zipped_app = io.BytesIO(r.content)
+    zip_buf = io.BytesIO()
+
+    # Our zip file should only contain one directory with the app data in it,
+    # but the downloaded file contains an apps/ directory. We're removing that here.
+    wiiload.organize_zip(zipped_app, zip_buf)
+
+    # preparing
+    print("25% - Preparing app...")
+    prep = wiiload.prepare(zip_buf)
+
+    file_size = prep[0]
+    compressed_size = prep[1]
+    chunks = prep[2]
+
+    # connecting
+    print('50% - Connecting to the HBC...')
+
+    try:
+        conn = wiiload.connect(args.ip)
+    except socket.error as e:
+        print('Connection error: Error while connecting to the HBC. Please check the IP address and try again.')
+        print(f'OSC-TRANSMIT: {e}')
+        print('Error: Could not connect to the Homebrew Channel. :(')
+
+        exit(1)
+
+    wiiload.handshake(conn, compressed_size, file_size)
+
+    # Sending file
+    print('0% - Sending app...')
+
+    chunk_num = 1
+    for chunk in chunks:
+        conn.send(chunk)
+
+        chunk_num += 1
+        progress = round(chunk_num / len(chunks) * 50) + 50
+        if progress <= 100:
+            print(f'{progress}% - Sending app...')
+
+    file_name = f'{args.name}.zip'
+    conn.send(bytes(file_name, 'utf-8') + b'\x00')
+
+    print('100% - App transmitted!')
 
 
 # update osc-dl command
