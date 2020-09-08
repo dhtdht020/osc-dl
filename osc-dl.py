@@ -12,6 +12,8 @@ import wiiload
 import utils
 import os
 
+from sys import exit
+
 if os.name == 'nt':
     # Initialize color on Windows
     os.system('color')
