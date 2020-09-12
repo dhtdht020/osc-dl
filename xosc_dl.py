@@ -62,7 +62,7 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
 
         # Set title and icon of window
         self.setWindowTitle(f"Open Shop Channel Downloader v{DISPLAY_VERSION} - Library")
-        app_icon = QIcon(resource_path("windowicon.png"))
+        app_icon = QIcon(resource_path("assets/gui/windowicon.png"))
         self.setWindowIcon(app_icon)
 
         self.populate()
