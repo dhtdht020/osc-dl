@@ -1,5 +1,6 @@
 import io
 import json
+import os
 import re
 import socket
 import sys
@@ -11,6 +12,7 @@ from functools import partial
 import requests
 import pyperclip
 from PySide2 import QtGui
+from PySide2.QtGui import QIcon
 from PySide2.QtWidgets import QApplication, QMainWindow, QInputDialog, QLineEdit, QMessageBox, QSplashScreen
 
 import download
@@ -44,13 +46,25 @@ def escape_ansi(line):
     return ansi_escape.sub('', line)
 
 
+# Get resource when frozen with PyInstaller
+def resource_path(relative_path):
+    if hasattr(sys, '_MEIPASS'):
+        return os.path.join(sys._MEIPASS, relative_path)
+    return os.path.join(os.path.abspath("."), relative_path)
+
+
 # G U I
 class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
     def __init__(self):
         super(MainWindow, self).__init__()
         self.ui = gui.ui_united.Ui_MainWindow()
         self.ui.setupUi(self)
+
+        # Set title and icon of window
         self.setWindowTitle(f"Open Shop Channel Downloader v{DISPLAY_VERSION} - Library")
+        app_icon = QIcon(resource_path("windowicon.png"))
+        self.setWindowIcon(app_icon)
+
         self.populate()
         self.selection_changed()
         self.status_message("Ready to download")
