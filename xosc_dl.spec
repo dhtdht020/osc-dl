@@ -5,7 +5,7 @@ block_cipher = None
 
 a = Analysis(['xosc_dl.py'],
              binaries=[],
-             datas=[('assets/gui/windowicon.png', '.')],
+             datas=[('assets/gui/windowicon.png', './assets/gui/')],
              hiddenimports=[],
              hookspath=[],
              runtime_hooks=[],
