@@ -316,7 +316,6 @@ class Ui_MainWindow(object):
         self.menubar.addAction(self.menuClients.menuAction())
         self.menubar.addAction(self.menuDebug.menuAction())
         self.menuAbout.addAction(self.actionAbout_OSC_DL)
-        self.menuAbout.addAction(self.actionIcons_by_Icons8)
         self.menuDebug.addAction(self.actionEnable_Log_File)
         self.menuDebug.addAction(self.actionClear_Log)
         self.menuDebug.addSeparator()
