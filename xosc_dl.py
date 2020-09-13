@@ -65,6 +65,20 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         app_icon = QIcon(resource_path("assets/gui/windowicon.png"))
         self.setWindowIcon(app_icon)
 
+
+        # Set GUI Icons
+
+        # DEBUG
+        self.ui.actionEnable_Log_File.setIcon(QIcon(resource_path("assets/gui/icons/enable-log.png")))
+        self.ui.actionClear_Log.setIcon(QIcon(resource_path("assets/gui/icons/clear-log.png")))
+        self.ui.actionClose_the_shop.setIcon(QIcon(resource_path("assets/gui/icons/close-shop.png")))
+        self.ui.menuExperimental.setIcon(QIcon(resource_path("assets/gui/icons/experimental.png")))
+        self.ui.actionAdd_Fake_Application.setIcon(QIcon(resource_path("assets/gui/icons/add-fake-listing.png")))
+        # DEBUG -> EXPERIMENTAL
+        self.ui.actionUpdate_Wizard_EARLY.setIcon(QIcon(resource_path("assets/gui/icons/update-wizard.png")))
+        self.ui.menuAnnouncement_Banner.setIcon(QIcon(resource_path("assets/gui/icons/announcement-banner.png")))
+
+
         self.populate()
         self.selection_changed()
         self.status_message("Ready to download")
