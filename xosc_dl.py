@@ -68,6 +68,8 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
 
         # Set GUI Icons
 
+        # ABOUT
+        self.ui.actionAbout_OSC_DL.setIcon(QIcon(resource_path("assets/gui/icons/about-open-version.png")))
         # DEBUG
         self.ui.actionEnable_Log_File.setIcon(QIcon(resource_path("assets/gui/icons/enable-log.png")))
         self.ui.actionClear_Log.setIcon(QIcon(resource_path("assets/gui/icons/clear-log.png")))
