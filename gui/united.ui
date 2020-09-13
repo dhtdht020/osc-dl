@@ -602,7 +602,6 @@ p, li { white-space: pre-wrap; }
      <string>About</string>
     </property>
     <addaction name="actionAbout_OSC_DL"/>
-    <addaction name="actionIcons_by_Icons8"/>
    </widget>
    <widget class="QMenu" name="menuDebug">
     <property name="title">
