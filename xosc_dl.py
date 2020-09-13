@@ -79,6 +79,8 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         # DEBUG -> EXPERIMENTAL
         self.ui.actionUpdate_Wizard_EARLY.setIcon(QIcon(resource_path("assets/gui/icons/update-wizard.png")))
         self.ui.menuAnnouncement_Banner.setIcon(QIcon(resource_path("assets/gui/icons/announcement-banner.png")))
+        # DEBUG -> EXPERIMENTAL -> ANNOUNCEMENT BANNER
+        self.ui.actionDisplay_Banner.setIcon(QIcon(resource_path("assets/gui/icons/announcement-banner-reload.png")))
 
 
         self.populate()
@@ -357,28 +359,32 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         self.status_message(f"DEBUG: Added {amount} fake entries to applications list.")
 
     def load_announcement_banner(self):
-        announcement = updater.get_announcement()
-        announcement_label = announcement[0]
-        announcement_url_label = announcement[1]
-        announcement_banner_color = announcement[2]
-        announcement_banner_text_color = announcement[3]
-        announcement_website_enabled = announcement[4]
-        if announcement is not None:
-            # Un-hide banner
-            self.ui.announcement.setHidden(False)
+        try:
+            announcement = updater.get_announcement()
+            announcement_label = announcement[0]
+            announcement_url_label = announcement[1]
+            announcement_banner_color = announcement[2]
+            announcement_banner_text_color = announcement[3]
+            announcement_website_enabled = announcement[4]
+            if announcement is not None:
+                # Un-hide banner
+                self.ui.announcement.setHidden(False)
 
-            # Set banner styling
-            self.ui.announcement.setStyleSheet(f'QFrame {{'
-                                               f'background-color: {announcement_banner_color};'
-                                               f'color: {announcement_banner_text_color};'
-                                               f'}}')
+                # Set banner styling
+                self.ui.announcement.setStyleSheet(f'QFrame {{'
+                                                   f'background-color: {announcement_banner_color};'
+                                                   f'color: {announcement_banner_text_color};'
+                                                   f'}}')
 
-            # Populate banner
-            self.ui.announcementLabel.setText(announcement_label)
-            self.ui.announcementURLLabel.setText(announcement_url_label)
+                # Populate banner
+                self.ui.announcementLabel.setText(announcement_label)
+                self.ui.announcementURLLabel.setText(announcement_url_label)
 
-            if announcement_website_enabled is False:
-                self.ui.announcementURLLabel.setHidden(True)
+                if announcement_website_enabled is False:
+                    self.ui.announcementURLLabel.setHidden(True)
+
+        except Exception:
+            pass
 
 
 if __name__ == "__main__":

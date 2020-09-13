@@ -616,8 +616,6 @@ p, li { white-space: pre-wrap; }
        <string>Announcement Banner</string>
       </property>
       <addaction name="actionDisplay_Banner"/>
-      <addaction name="actionUpdate_Banner"/>
-      <addaction name="actionHide_Banner"/>
      </widget>
      <addaction name="actionUpdate_Wizard_EARLY"/>
      <addaction name="menuAnnouncement_Banner"/>
@@ -773,7 +771,7 @@ p, li { white-space: pre-wrap; }
   </action>
   <action name="actionDisplay_Banner">
    <property name="text">
-    <string>Display Banner</string>
+    <string>Reload Banner</string>
    </property>
   </action>
   <action name="actionUpdate_Banner">
