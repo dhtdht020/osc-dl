@@ -70,6 +70,11 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
 
         # ABOUT
         self.ui.actionAbout_OSC_DL.setIcon(QIcon(resource_path("assets/gui/icons/about-open-version.png")))
+        # CLIENTS
+        self.ui.menuHomebrew_Browser.setIcon(QIcon(resource_path("assets/gui/icons/hbb-icon.png")))
+        self.ui.menuOpen_Shop_Channel_DL.setIcon(QIcon(resource_path("assets/gui/icons/oscdl-icon.png")))
+        self.ui.actionDownload_HBB_Client_Latest.setIcon(QIcon(resource_path("assets/gui/icons/download.png")))
+        self.ui.actionCheck_for_Updates.setIcon(QIcon(resource_path("assets/gui/icons/check-for-updates.png")))
         # DEBUG
         self.ui.actionEnable_Log_File.setIcon(QIcon(resource_path("assets/gui/icons/enable-log.png")))
         self.ui.actionClear_Log.setIcon(QIcon(resource_path("assets/gui/icons/clear-log.png")))
@@ -318,7 +323,7 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
     # in case OSC gods are angry
     def close_the_shop(self):
         # Close the shop
-        logging.critical('[OSC GODS] CLOSING THE SHOP')
+        logging.critical('OSC GODS:CLOSING THE SHOP')
         self.ui.listAppsWidget.setDisabled(True)
         self.ui.ViewMetadataBtn.setDisabled(True)
         self.ui.WiiLoadButton.setDisabled(True)
@@ -327,7 +332,7 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         self.ui.menubar.setDisabled(True)
         self.ui.ReposComboBox.setDisabled(True)
         self.ui.RefreshListBtn.setDisabled(True)
-        logging.critical('[OSC GODS] CLOSED THE SHOP')
+        logging.critical('OSC GODS:CLOSED THE SHOP')
         self.status_message("The shop is now closed")
 
     def load_icon(self, app_name, repo):

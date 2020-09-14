@@ -302,8 +302,6 @@ class Ui_MainWindow(object):
         self.menuClients.setObjectName(u"menuClients")
         self.menuOpen_Shop_Channel_DL = QMenu(self.menuClients)
         self.menuOpen_Shop_Channel_DL.setObjectName(u"menuOpen_Shop_Channel_DL")
-        self.menuDownload_Latest_Release = QMenu(self.menuOpen_Shop_Channel_DL)
-        self.menuDownload_Latest_Release.setObjectName(u"menuDownload_Latest_Release")
         self.menuHomebrew_Browser = QMenu(self.menuClients)
         self.menuHomebrew_Browser.setObjectName(u"menuHomebrew_Browser")
         MainWindow.setMenuBar(self.menubar)
@@ -329,11 +327,6 @@ class Ui_MainWindow(object):
         self.menuClients.addAction(self.menuHomebrew_Browser.menuAction())
         self.menuClients.addAction(self.menuOpen_Shop_Channel_DL.menuAction())
         self.menuOpen_Shop_Channel_DL.addAction(self.actionCheck_for_Updates)
-        self.menuOpen_Shop_Channel_DL.addAction(self.menuDownload_Latest_Release.menuAction())
-        self.menuDownload_Latest_Release.addAction(self.actionGUI)
-        self.menuDownload_Latest_Release.addAction(self.actionCLI)
-        self.menuDownload_Latest_Release.addSeparator()
-        self.menuDownload_Latest_Release.addAction(self.actionNot_yet_implemented)
         self.menuHomebrew_Browser.addAction(self.actionDownload_HBB_Client_Latest)
 
         self.retranslateUi(MainWindow)
@@ -414,7 +407,6 @@ class Ui_MainWindow(object):
         self.menuAnnouncement_Banner.setTitle(QCoreApplication.translate("MainWindow", u"Announcement Banner", None))
         self.menuClients.setTitle(QCoreApplication.translate("MainWindow", u"Clients", None))
         self.menuOpen_Shop_Channel_DL.setTitle(QCoreApplication.translate("MainWindow", u"Open Shop Channel DL", None))
-        self.menuDownload_Latest_Release.setTitle(QCoreApplication.translate("MainWindow", u"Download Latest Release", None))
         self.menuHomebrew_Browser.setTitle(QCoreApplication.translate("MainWindow", u"Homebrew Browser", None))
     # retranslateUi
 
