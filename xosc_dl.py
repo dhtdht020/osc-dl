@@ -395,11 +395,8 @@ if __name__ == "__main__":
 
     # Splash
     try:
-        data = updater.obtain_splash()
-        image = QtGui.QImage()
-        image.loadFromData(data)
-        image = QtGui.QImage()
-        image.loadFromData(data)
+        # data = updater.obtain_splash()
+        image = QtGui.QImage(resource_path("assets/gui/splash.png"))
         splash = QSplashScreen(QtGui.QPixmap(image))
         splash.show()
     except Exception:
