@@ -87,7 +87,6 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         # DEBUG -> EXPERIMENTAL -> ANNOUNCEMENT BANNER
         self.ui.actionDisplay_Banner.setIcon(QIcon(resource_path("assets/gui/icons/announcement-banner-reload.png")))
 
-
         self.populate()
         self.selection_changed()
         self.status_message("Ready to download")
@@ -409,5 +408,8 @@ if __name__ == "__main__":
 
     window = MainWindow()
     window.show()
-    splash.hide()
+    try:
+        splash.hide()
+    except Exception:
+        pass
     app.exec_()
