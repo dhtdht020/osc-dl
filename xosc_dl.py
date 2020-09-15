@@ -82,7 +82,6 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         self.ui.menuExperimental.setIcon(QIcon(resource_path("assets/gui/icons/experimental.png")))
         self.ui.actionAdd_Fake_Application.setIcon(QIcon(resource_path("assets/gui/icons/add-fake-listing.png")))
         # DEBUG -> EXPERIMENTAL
-        self.ui.actionUpdate_Wizard_EARLY.setIcon(QIcon(resource_path("assets/gui/icons/update-wizard.png")))
         self.ui.menuAnnouncement_Banner.setIcon(QIcon(resource_path("assets/gui/icons/announcement-banner.png")))
         # DEBUG -> EXPERIMENTAL -> ANNOUNCEMENT BANNER
         self.ui.actionDisplay_Banner.setIcon(QIcon(resource_path("assets/gui/icons/announcement-banner-reload.png")))

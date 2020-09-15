@@ -617,7 +617,6 @@ p, li { white-space: pre-wrap; }
       </property>
       <addaction name="actionDisplay_Banner"/>
      </widget>
-     <addaction name="actionUpdate_Wizard_EARLY"/>
      <addaction name="menuAnnouncement_Banner"/>
     </widget>
     <addaction name="actionEnable_Log_File"/>

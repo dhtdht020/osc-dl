@@ -321,7 +321,6 @@ class Ui_MainWindow(object):
         self.menuDebug.addAction(self.menuExperimental.menuAction())
         self.menuDebug.addSeparator()
         self.menuDebug.addAction(self.actionAdd_Fake_Application)
-        self.menuExperimental.addAction(self.actionUpdate_Wizard_EARLY)
         self.menuExperimental.addAction(self.menuAnnouncement_Banner.menuAction())
         self.menuAnnouncement_Banner.addAction(self.actionDisplay_Banner)
         self.menuClients.addAction(self.menuHomebrew_Browser.menuAction())
