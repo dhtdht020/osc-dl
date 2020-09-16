@@ -8,7 +8,7 @@ from packaging import version
 
 def current_version():
     prefix = "1.2."
-    beta_number = "8"
+    beta_number = "9"
 
     version_number = prefix + beta_number
 

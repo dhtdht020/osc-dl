@@ -394,7 +394,7 @@ background-color: rgba(255, 255, 255, 0);
       <widget class="QLabel" name="HomebrewIconLabel">
        <property name="geometry">
         <rect>
-         <x>60</x>
+         <x>10</x>
          <y>10</y>
          <width>128</width>
          <height>48</height>

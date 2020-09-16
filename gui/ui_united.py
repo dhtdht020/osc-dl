@@ -219,7 +219,7 @@ class Ui_MainWindow(object):
         self.progressBar.setValue(0)
         self.HomebrewIconLabel = QLabel(self.GeneralTab)
         self.HomebrewIconLabel.setObjectName(u"HomebrewIconLabel")
-        self.HomebrewIconLabel.setGeometry(QRect(60, 10, 128, 48))
+        self.HomebrewIconLabel.setGeometry(QRect(10, 10, 128, 48))
         self.HomebrewIconLabel.setAlignment(Qt.AlignCenter)
         self.tabMetadata.addTab(self.GeneralTab, "")
         self.Description = QWidget()
