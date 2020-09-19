@@ -286,15 +286,8 @@ background-color: rgba(255, 255, 255, 0);
           </property>
          </widget>
         </item>
-        <item row="3" column="0">
-         <widget class="QLabel" name="label_contributors">
-          <property name="text">
-           <string>Contributors</string>
-          </property>
-         </widget>
-        </item>
         <item row="3" column="1">
-         <widget class="QLineEdit" name="contributors">
+         <widget class="QLineEdit" name="releasedate">
           <property name="echoMode">
            <enum>QLineEdit::Normal</enum>
           </property>
@@ -303,15 +296,22 @@ background-color: rgba(255, 255, 255, 0);
           </property>
          </widget>
         </item>
-        <item row="4" column="0">
+        <item row="3" column="0">
          <widget class="QLabel" name="label_releasedate">
           <property name="text">
            <string>Release Date</string>
           </property>
          </widget>
         </item>
+        <item row="4" column="0">
+         <widget class="QLabel" name="label_filesize">
+          <property name="text">
+           <string>File Size</string>
+          </property>
+         </widget>
+        </item>
         <item row="4" column="1">
-         <widget class="QLineEdit" name="releasedate">
+         <widget class="QLineEdit" name="filesize">
           <property name="echoMode">
            <enum>QLineEdit::Normal</enum>
           </property>

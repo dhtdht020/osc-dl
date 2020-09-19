@@ -176,29 +176,29 @@ class Ui_MainWindow(object):
 
         self.MetaLayout.setWidget(2, QFormLayout.FieldRole, self.developer)
 
-        self.label_contributors = QLabel(self.formLayoutWidget)
-        self.label_contributors.setObjectName(u"label_contributors")
-
-        self.MetaLayout.setWidget(3, QFormLayout.LabelRole, self.label_contributors)
-
-        self.contributors = QLineEdit(self.formLayoutWidget)
-        self.contributors.setObjectName(u"contributors")
-        self.contributors.setEchoMode(QLineEdit.Normal)
-        self.contributors.setReadOnly(True)
-
-        self.MetaLayout.setWidget(3, QFormLayout.FieldRole, self.contributors)
-
-        self.label_releasedate = QLabel(self.formLayoutWidget)
-        self.label_releasedate.setObjectName(u"label_releasedate")
-
-        self.MetaLayout.setWidget(4, QFormLayout.LabelRole, self.label_releasedate)
-
         self.releasedate = QLineEdit(self.formLayoutWidget)
         self.releasedate.setObjectName(u"releasedate")
         self.releasedate.setEchoMode(QLineEdit.Normal)
         self.releasedate.setReadOnly(True)
 
-        self.MetaLayout.setWidget(4, QFormLayout.FieldRole, self.releasedate)
+        self.MetaLayout.setWidget(3, QFormLayout.FieldRole, self.releasedate)
+
+        self.label_releasedate = QLabel(self.formLayoutWidget)
+        self.label_releasedate.setObjectName(u"label_releasedate")
+
+        self.MetaLayout.setWidget(3, QFormLayout.LabelRole, self.label_releasedate)
+
+        self.label_filesize = QLabel(self.formLayoutWidget)
+        self.label_filesize.setObjectName(u"label_filesize")
+
+        self.MetaLayout.setWidget(4, QFormLayout.LabelRole, self.label_filesize)
+
+        self.filesize = QLineEdit(self.formLayoutWidget)
+        self.filesize.setObjectName(u"filesize")
+        self.filesize.setEchoMode(QLineEdit.Normal)
+        self.filesize.setReadOnly(True)
+
+        self.MetaLayout.setWidget(4, QFormLayout.FieldRole, self.filesize)
 
         self.label_description = QLabel(self.GeneralTab)
         self.label_description.setObjectName(u"label_description")
@@ -375,8 +375,8 @@ class Ui_MainWindow(object):
         self.appname.setPlaceholderText("")
         self.label_version.setText(QCoreApplication.translate("MainWindow", u"Version", None))
         self.label_developer.setText(QCoreApplication.translate("MainWindow", u"Developer", None))
-        self.label_contributors.setText(QCoreApplication.translate("MainWindow", u"Contributors", None))
         self.label_releasedate.setText(QCoreApplication.translate("MainWindow", u"Release Date", None))
+        self.label_filesize.setText(QCoreApplication.translate("MainWindow", u"File Size", None))
         self.label_description.setText(QCoreApplication.translate("MainWindow", u"Description", None))
         self.label_displayname.setText(QCoreApplication.translate("MainWindow", u"Title", None))
         self.HomebrewIconLabel.setText(QCoreApplication.translate("MainWindow", u"No homebrew icon. Aw.", None))

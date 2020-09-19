@@ -185,6 +185,21 @@ def dictionary(app_name, repo="hbb1.oscwii.org"):
     return meta
 
 
+def file_size(app_name, repo="hbb1.oscwii.org"):
+    try:
+        response = requests.get(f"https://{repo}/hbb/{app_name}/{app_name}.zip", stream=True)
+    except requests.exceptions.SSLError:
+        response = requests.get(f"http://{repo}/hbb/{app_name}/{app_name}.zip", stream=True)
+
+    length = int(response.headers['Content-length'])
+    for unit in ['', 'Ki', 'Mi', 'Gi', 'Ti', 'Pi', 'Ei', 'Zi']:
+        if abs(length) < 1024.0:
+            return "%3.1f%s%s" % (length, unit, "B")
+        length /= 1024.0
+
+    return "%.1f%s%s" % (length, 'Yi', "B")
+
+
 def dictionary_raw(app_name, repo="hbb1.oscwii.org"):
 
     try:

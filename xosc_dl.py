@@ -142,7 +142,8 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
             self.ui.SelectionInfoBox.setTitle("Metadata: " + info.get("display_name"))
             self.ui.label_displayname.setText(info.get("display_name"))
             self.ui.version.setText(info.get("version"))
-            self.ui.contributors.setText(info.get("contributors"))
+            #self.ui.contributors.setText(info.get("contributors"))
+            self.ui.filesize.setText(metadata.file_size(app_name, repo=HOST))
             self.ui.releasedate.setText(info.get("release_date"))
             self.ui.developer.setText(info.get("coder"))
             if info.get("short_description") == "Unknown":
