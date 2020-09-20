@@ -7,7 +7,11 @@ import locale
 
 GREEN = '\033[92m'
 FAIL = '\033[91m'
-locale.setlocale(locale.LC_ALL, 'en_GB')
+try:
+    locale.setlocale(locale.LC_ALL, 'en_GB')
+except locale.Error:
+    pass
+
 
 
 def get(app_name, type=None, repo="hbb1.oscwii.org"):
