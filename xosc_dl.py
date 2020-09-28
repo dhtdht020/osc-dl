@@ -136,8 +136,6 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
             info = metadata.dictionary(app_name, repo=HOST)
             # Set active tab to first
             self.ui.tabMetadata.setCurrentIndex(0)
-            # Load icon
-            self.load_icon(app_name=app_name, repo=HOST)
             self.ui.appname.setText(info.get("display_name"))
             self.ui.SelectionInfoBox.setTitle("Metadata: " + info.get("display_name"))
             self.ui.label_displayname.setText(info.get("display_name"))
@@ -154,6 +152,9 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
             self.ui.FileNameLineEdit.setText(app_name + ".zip")
             self.ui.DirectLinkLineEdit.setText(metadata.url(app_name, repo=HOST))
         self.ui.progressBar.setValue(0)
+        self.repaint()
+        # Load icon
+        self.load_icon(app_name=app_name, repo=HOST)
         self.status_message("Ready to download")
 
     def view_metadata(self):
@@ -241,6 +242,7 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
             chunk_num += 1
             progress = round(chunk_num / len(chunks) * 50) + 50
             self.ui.progressBar.setValue(progress)
+            self.repaint()
 
         file_name = f'{self.app_name}.zip'
         conn.send(bytes(file_name, 'utf-8') + b'\x00')
