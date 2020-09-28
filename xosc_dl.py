@@ -136,6 +136,19 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
             info = metadata.dictionary(app_name, repo=HOST)
             # Set active tab to first
             self.ui.tabMetadata.setCurrentIndex(0)
+            # Set text to Loading
+            self.ui.HomebrewIconLabel.hide()
+            self.ui.SelectionInfoBox.setTitle("Metadata: Loading..")
+            self.ui.label_displayname.setText("Loading..")
+            self.ui.version.setText("")
+            # self.ui.contributors.setText(info.get("contributors"))
+            self.ui.filesize.setText("")
+            self.ui.releasedate.setText("")
+            self.ui.developer.setText("")
+            self.ui.label_description.setText("")
+
+            self.repaint()
+
             self.ui.appname.setText(info.get("display_name"))
             self.ui.SelectionInfoBox.setTitle("Metadata: " + info.get("display_name"))
             self.ui.label_displayname.setText(info.get("display_name"))
@@ -347,6 +360,7 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         # Adds image to label
         lbl = self.ui.HomebrewIconLabel
         lbl.setPixmap(QtGui.QPixmap(image))
+        lbl.show()
 
     def add_fake_listing_action(self):
         amount, ok = QInputDialog.getInt(self, 'Debug: Fake Listing Wizard',
