@@ -771,8 +771,16 @@ p, li { white-space: pre-wrap; }
     <addaction name="menuHomebrew_Browser"/>
     <addaction name="menuOpen_Shop_Channel_DL"/>
    </widget>
+   <widget class="QMenu" name="menuBundles">
+    <property name="title">
+     <string>Bundles (Preview)</string>
+    </property>
+    <addaction name="actionLoad_Bundle"/>
+    <addaction name="actionCreate_Bundle"/>
+   </widget>
    <addaction name="menuAbout"/>
    <addaction name="menuClients"/>
+   <addaction name="menuBundles"/>
    <addaction name="menuDebug"/>
   </widget>
   <widget class="QStatusBar" name="statusBar">
@@ -904,6 +912,16 @@ p, li { white-space: pre-wrap; }
    </property>
    <property name="text">
     <string>Icons by Icons8</string>
+   </property>
+  </action>
+  <action name="actionLoad_Bundle">
+   <property name="text">
+    <string>Load Bundle</string>
+   </property>
+  </action>
+  <action name="actionCreate_Bundle">
+   <property name="text">
+    <string>Create Bundle</string>
    </property>
   </action>
  </widget>

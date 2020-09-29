@@ -84,7 +84,10 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         # DEBUG -> EXPERIMENTAL
         self.ui.menuAnnouncement_Banner.setIcon(QIcon(resource_path("assets/gui/icons/announcement-banner.png")))
         # DEBUG -> EXPERIMENTAL -> ANNOUNCEMENT BANNER
-        self.ui.actionDisplay_Banner.setIcon(QIcon(resource_path("assets/gui/icons/announcement-banner-reload.png")))
+        self.ui.actionDisplay_Banner.setIcon(QIcon(resource_path("assets/gui/icons/create-bundle.png")))
+        # BUNDLES
+        self.ui.actionLoad_Bundle.setIcon(QIcon(resource_path("assets/gui/icons/load-bundle.png")))
+        self.ui.actionCreate_Bundle.setIcon(QIcon(resource_path("assets/gui/icons/create-bundle.png")))
 
         self.populate()
         self.selection_changed()

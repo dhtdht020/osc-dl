@@ -79,6 +79,10 @@ class Ui_MainWindow(object):
         self.actionIcons_by_Icons8 = QAction(MainWindow)
         self.actionIcons_by_Icons8.setObjectName(u"actionIcons_by_Icons8")
         self.actionIcons_by_Icons8.setEnabled(False)
+        self.actionLoad_Bundle = QAction(MainWindow)
+        self.actionLoad_Bundle.setObjectName(u"actionLoad_Bundle")
+        self.actionCreate_Bundle = QAction(MainWindow)
+        self.actionCreate_Bundle.setObjectName(u"actionCreate_Bundle")
         self.centralwidget = QWidget(MainWindow)
         self.centralwidget.setObjectName(u"centralwidget")
         self.horizontalLayout_2 = QHBoxLayout(self.centralwidget)
@@ -366,6 +370,8 @@ class Ui_MainWindow(object):
         self.menuOpen_Shop_Channel_DL.setObjectName(u"menuOpen_Shop_Channel_DL")
         self.menuHomebrew_Browser = QMenu(self.menuClients)
         self.menuHomebrew_Browser.setObjectName(u"menuHomebrew_Browser")
+        self.menuBundles = QMenu(self.menubar)
+        self.menuBundles.setObjectName(u"menuBundles")
         MainWindow.setMenuBar(self.menubar)
         self.statusBar = QStatusBar(MainWindow)
         self.statusBar.setObjectName(u"statusBar")
@@ -374,6 +380,7 @@ class Ui_MainWindow(object):
 
         self.menubar.addAction(self.menuAbout.menuAction())
         self.menubar.addAction(self.menuClients.menuAction())
+        self.menubar.addAction(self.menuBundles.menuAction())
         self.menubar.addAction(self.menuDebug.menuAction())
         self.menuAbout.addAction(self.actionAbout_OSC_DL)
         self.menuDebug.addAction(self.actionEnable_Log_File)
@@ -389,6 +396,8 @@ class Ui_MainWindow(object):
         self.menuClients.addAction(self.menuOpen_Shop_Channel_DL.menuAction())
         self.menuOpen_Shop_Channel_DL.addAction(self.actionCheck_for_Updates)
         self.menuHomebrew_Browser.addAction(self.actionDownload_HBB_Client_Latest)
+        self.menuBundles.addAction(self.actionLoad_Bundle)
+        self.menuBundles.addAction(self.actionCreate_Bundle)
 
         self.retranslateUi(MainWindow)
 
@@ -422,6 +431,8 @@ class Ui_MainWindow(object):
         self.actionUpdate_Banner.setText(QCoreApplication.translate("MainWindow", u"Update Banner", None))
         self.actionHide_Banner.setText(QCoreApplication.translate("MainWindow", u"Hide Banner", None))
         self.actionIcons_by_Icons8.setText(QCoreApplication.translate("MainWindow", u"Icons by Icons8", None))
+        self.actionLoad_Bundle.setText(QCoreApplication.translate("MainWindow", u"Load Bundle", None))
+        self.actionCreate_Bundle.setText(QCoreApplication.translate("MainWindow", u"Create Bundle", None))
         self.AppsLibraryBox.setTitle(QCoreApplication.translate("MainWindow", u"Apps Library", None))
         self.announcementLabel.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p><span style=\" font-weight:600;\">Announcement Header: </span>Announcement Content.</p></body></html>", None))
         self.announcementURLLabel.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p><a href=\"https://google.com\"><span style=\" text-decoration: underline; color:#ffff00;\">Announcement URL</span></a></p></body></html>", None))
@@ -469,5 +480,6 @@ class Ui_MainWindow(object):
         self.menuClients.setTitle(QCoreApplication.translate("MainWindow", u"Clients", None))
         self.menuOpen_Shop_Channel_DL.setTitle(QCoreApplication.translate("MainWindow", u"Open Shop Channel DL", None))
         self.menuHomebrew_Browser.setTitle(QCoreApplication.translate("MainWindow", u"Homebrew Browser", None))
+        self.menuBundles.setTitle(QCoreApplication.translate("MainWindow", u"Bundles (Preview)", None))
     # retranslateUi
 
