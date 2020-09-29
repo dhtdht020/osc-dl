@@ -1,5 +1,6 @@
 import io
 import json
+import yaml
 import os
 import re
 import socket
@@ -12,6 +13,7 @@ from functools import partial
 import requests
 import pyperclip
 from PySide2 import QtGui
+from PySide2.QtCore import Qt
 from PySide2.QtGui import QIcon
 from PySide2.QtWidgets import QApplication, QMainWindow, QInputDialog, QLineEdit, QMessageBox, QSplashScreen
 
@@ -30,14 +32,6 @@ else:
     DISPLAY_VERSION = VERSION + " " + BRANCH
 
 HOST = "hbb1.oscwii.org"
-
-
-# get hostname of repository from given display name
-def get_repo_host(display_name):
-    if display_name == "Open Shop Channel":
-        return "hbb1.oscwii.org"
-    elif display_name == "Homebrew Channel Themes":
-        return "hbb3.oscwii.org"
 
 
 # escape ansi for stdout output of download status
@@ -103,8 +97,23 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
     # populate UI elements
     def populate(self):
         self.ui.actionAbout_OSC_DL.setText(f"osc-dl Version v{VERSION}")
+        self.populate_repositories()
         self.populate_list()
         self.assign_initial_actions()
+
+    def populate_repositories(self):
+        yaml_file = requests.get("https://raw.githubusercontent.com/dhtdht020/oscdl-updateserver/master/v1/announcement"
+                                 "/repositories.yml").text
+        parsed_yaml = yaml.load(yaml_file, Loader=yaml.FullLoader)
+        repos = parsed_yaml["repos"]
+        n = 0
+        for i in repos:
+            display_name = parsed_yaml["repositories"][i]["name"]
+            host = parsed_yaml["repositories"][i]["host"]
+            description = parsed_yaml["repositories"][i]["description"]
+            self.ui.ReposComboBox.addItem(display_name)
+            self.ui.ReposComboBox.setItemData(n, [display_name, host, description], Qt.UserRole)
+            n += 1
 
     def assign_initial_actions(self):
         # Buttons
@@ -274,7 +283,9 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
 
     def changed_host(self):
         global HOST
-        HOST = get_repo_host(self.ui.ReposComboBox.currentText())
+        index = self.ui.ReposComboBox.currentIndex()
+        repo_data = self.ui.ReposComboBox.itemData(index, Qt.UserRole)
+        HOST = repo_data[1]
         self.status_message(f"Loading {HOST} repository..")
         logging.info(f"Loading {HOST}")
         self.ui.progressBar.setValue(20)
