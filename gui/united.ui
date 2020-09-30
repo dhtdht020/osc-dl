@@ -63,10 +63,13 @@
              </size>
             </property>
             <property name="frameShape">
-             <enum>QFrame::StyledPanel</enum>
+             <enum>QFrame::NoFrame</enum>
             </property>
             <property name="frameShadow">
-             <enum>QFrame::Raised</enum>
+             <enum>QFrame::Plain</enum>
+            </property>
+            <property name="lineWidth">
+             <number>0</number>
             </property>
             <layout class="QVBoxLayout" name="verticalLayout_4">
              <property name="leftMargin">
@@ -115,7 +118,7 @@
                  <number>0</number>
                 </property>
                 <item>
-                 <widget class="QLabel" name="AppsAmountLabel">
+                 <widget class="QLabel" name="RepositoryNameLabel">
                   <property name="font">
                    <font>
                     <weight>75</weight>
@@ -126,7 +129,7 @@
                    <string notr="true"/>
                   </property>
                   <property name="text">
-                   <string>Repository Name (0 Apps)</string>
+                   <string>Repository Name</string>
                   </property>
                  </widget>
                 </item>
@@ -194,10 +197,56 @@
               </widget>
              </item>
              <item>
-              <widget class="QLabel" name="RepositoryDescLabel">
-               <property name="text">
-                <string>Repository Description</string>
+              <widget class="QFrame" name="LibraryTopFrameBottom">
+               <property name="frameShape">
+                <enum>QFrame::NoFrame</enum>
                </property>
+               <property name="frameShadow">
+                <enum>QFrame::Plain</enum>
+               </property>
+               <property name="lineWidth">
+                <number>0</number>
+               </property>
+               <layout class="QHBoxLayout" name="horizontalLayout">
+                <property name="leftMargin">
+                 <number>0</number>
+                </property>
+                <property name="topMargin">
+                 <number>0</number>
+                </property>
+                <property name="rightMargin">
+                 <number>0</number>
+                </property>
+                <property name="bottomMargin">
+                 <number>0</number>
+                </property>
+                <item>
+                 <widget class="QLabel" name="RepositoryDescLabel">
+                  <property name="lineWidth">
+                   <number>0</number>
+                  </property>
+                  <property name="text">
+                   <string>Repository Description</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QLabel" name="AppsAmountLabel">
+                  <property name="maximumSize">
+                   <size>
+                    <width>60</width>
+                    <height>16777215</height>
+                   </size>
+                  </property>
+                  <property name="text">
+                   <string>0 Apps</string>
+                  </property>
+                  <property name="alignment">
+                   <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
               </widget>
              </item>
             </layout>

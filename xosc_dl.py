@@ -115,6 +115,12 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
             self.ui.ReposComboBox.setItemData(n, [display_name, host, description], Qt.UserRole)
             n += 1
 
+        index = self.ui.ReposComboBox.currentIndex()
+        repo_data = self.ui.ReposComboBox.itemData(index, Qt.UserRole)
+
+        self.ui.RepositoryNameLabel.setText(repo_data[0])
+        self.ui.RepositoryDescLabel.setText(repo_data[2])
+
     def assign_initial_actions(self):
         # Buttons
         self.ui.CopyDirectLinkBtn.clicked.connect(self.copy_download_link_button)
@@ -286,6 +292,8 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         index = self.ui.ReposComboBox.currentIndex()
         repo_data = self.ui.ReposComboBox.itemData(index, Qt.UserRole)
         HOST = repo_data[1]
+        self.ui.RepositoryNameLabel.setText(repo_data[0])
+        self.ui.RepositoryDescLabel.setText(repo_data[2])
         self.status_message(f"Loading {HOST} repository..")
         logging.info(f"Loading {HOST}")
         self.ui.progressBar.setValue(20)
@@ -310,7 +318,7 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         for item in self.applist:
             self.ui.listAppsWidget.addItem(item)
         self.ui.listAppsWidget.setCurrentRow(0)
-        self.ui.AppsAmountLabel.setText("Displaying " + str(self.ui.listAppsWidget.count()) + " apps.")
+        self.ui.AppsAmountLabel.setText(str(self.ui.listAppsWidget.count()) + " Apps")
 
     # Actions
 

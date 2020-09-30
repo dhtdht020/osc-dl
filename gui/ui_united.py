@@ -122,8 +122,9 @@ class Ui_MainWindow(object):
         self.LibraryTopFrame = QFrame(self.LibraryContentFrame)
         self.LibraryTopFrame.setObjectName(u"LibraryTopFrame")
         self.LibraryTopFrame.setMaximumSize(QSize(16777215, 45))
-        self.LibraryTopFrame.setFrameShape(QFrame.StyledPanel)
-        self.LibraryTopFrame.setFrameShadow(QFrame.Raised)
+        self.LibraryTopFrame.setFrameShape(QFrame.NoFrame)
+        self.LibraryTopFrame.setFrameShadow(QFrame.Plain)
+        self.LibraryTopFrame.setLineWidth(0)
         self.verticalLayout_4 = QVBoxLayout(self.LibraryTopFrame)
         self.verticalLayout_4.setObjectName(u"verticalLayout_4")
         self.verticalLayout_4.setContentsMargins(0, 0, 0, 0)
@@ -140,12 +141,12 @@ class Ui_MainWindow(object):
         self.horizontalLayout_3 = QHBoxLayout(self.LibraryTopFrameTop)
         self.horizontalLayout_3.setObjectName(u"horizontalLayout_3")
         self.horizontalLayout_3.setContentsMargins(0, 0, 0, 0)
-        self.AppsAmountLabel = QLabel(self.LibraryTopFrameTop)
-        self.AppsAmountLabel.setObjectName(u"AppsAmountLabel")
-        self.AppsAmountLabel.setFont(font)
-        self.AppsAmountLabel.setStyleSheet(u"")
+        self.RepositoryNameLabel = QLabel(self.LibraryTopFrameTop)
+        self.RepositoryNameLabel.setObjectName(u"RepositoryNameLabel")
+        self.RepositoryNameLabel.setFont(font)
+        self.RepositoryNameLabel.setStyleSheet(u"")
 
-        self.horizontalLayout_3.addWidget(self.AppsAmountLabel)
+        self.horizontalLayout_3.addWidget(self.RepositoryNameLabel)
 
         self.RepositoryLabel = QLabel(self.LibraryTopFrameTop)
         self.RepositoryLabel.setObjectName(u"RepositoryLabel")
@@ -173,10 +174,29 @@ class Ui_MainWindow(object):
 
         self.verticalLayout_4.addWidget(self.LibraryTopFrameTop)
 
-        self.RepositoryDescLabel = QLabel(self.LibraryTopFrame)
+        self.LibraryTopFrameBottom = QFrame(self.LibraryTopFrame)
+        self.LibraryTopFrameBottom.setObjectName(u"LibraryTopFrameBottom")
+        self.LibraryTopFrameBottom.setFrameShape(QFrame.NoFrame)
+        self.LibraryTopFrameBottom.setFrameShadow(QFrame.Plain)
+        self.LibraryTopFrameBottom.setLineWidth(0)
+        self.horizontalLayout = QHBoxLayout(self.LibraryTopFrameBottom)
+        self.horizontalLayout.setObjectName(u"horizontalLayout")
+        self.horizontalLayout.setContentsMargins(0, 0, 0, 0)
+        self.RepositoryDescLabel = QLabel(self.LibraryTopFrameBottom)
         self.RepositoryDescLabel.setObjectName(u"RepositoryDescLabel")
+        self.RepositoryDescLabel.setLineWidth(0)
 
-        self.verticalLayout_4.addWidget(self.RepositoryDescLabel)
+        self.horizontalLayout.addWidget(self.RepositoryDescLabel)
+
+        self.AppsAmountLabel = QLabel(self.LibraryTopFrameBottom)
+        self.AppsAmountLabel.setObjectName(u"AppsAmountLabel")
+        self.AppsAmountLabel.setMaximumSize(QSize(60, 16777215))
+        self.AppsAmountLabel.setAlignment(Qt.AlignRight|Qt.AlignTrailing|Qt.AlignVCenter)
+
+        self.horizontalLayout.addWidget(self.AppsAmountLabel)
+
+
+        self.verticalLayout_4.addWidget(self.LibraryTopFrameBottom)
 
 
         self.verticalLayout_2.addWidget(self.LibraryTopFrame)
@@ -450,10 +470,11 @@ class Ui_MainWindow(object):
         self.AppsLibraryBox.setTitle(QCoreApplication.translate("MainWindow", u"Apps Library", None))
         self.announcementLabel.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p><span style=\" font-weight:600;\">Announcement Header: </span>Announcement Content.</p></body></html>", None))
         self.announcementURLLabel.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p><a href=\"https://google.com\"><span style=\" text-decoration: underline; color:#ffff00;\">Announcement URL</span></a></p></body></html>", None))
-        self.AppsAmountLabel.setText(QCoreApplication.translate("MainWindow", u"Repository Name (0 Apps)", None))
+        self.RepositoryNameLabel.setText(QCoreApplication.translate("MainWindow", u"Repository Name", None))
         self.RepositoryLabel.setText(QCoreApplication.translate("MainWindow", u"Repository:", None))
         self.RefreshListBtn.setText(QCoreApplication.translate("MainWindow", u"Refresh Apps", None))
         self.RepositoryDescLabel.setText(QCoreApplication.translate("MainWindow", u"Repository Description", None))
+        self.AppsAmountLabel.setText(QCoreApplication.translate("MainWindow", u"0 Apps", None))
         self.SelectionInfoBox.setTitle(QCoreApplication.translate("MainWindow", u"Application Metadata", None))
         self.label_appname.setText(QCoreApplication.translate("MainWindow", u"App Name", None))
         self.appname.setText("")
