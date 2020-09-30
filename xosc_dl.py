@@ -143,6 +143,9 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         self.ui.actionDownload_HBB_Client_Latest.triggered.connect(partial(self.download_latest_hbb_action))
         # ---- OSC-DL
         self.ui.actionCheck_for_Updates.triggered.connect(partial(self.check_for_updates_action))
+        # -- Bundles
+        # ----- Load Bundle
+        self.ui.actionLoad_Bundle.triggered.connect(partial(self.load_bundle))
 
     # When user selects a different homebrew from the list
     def selection_changed(self):
@@ -190,6 +193,69 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
 
     def view_metadata(self):
         self.app_name = self.ui.listAppsWidget.currentItem().text()
+
+    def load_bundle(self):
+        global HOST
+        id, ok = QInputDialog.getText(self, 'Load Open Shop Channel Bundle',
+                                      'Enter the ID (File Name) associated with your bundle:',
+                                      QLineEdit.Normal)
+        if not ok:
+            return
+
+        bundle_req = requests.get(f"https://raw.githubusercontent.com/dhtdht020/OSCDL-Bundles/master/v1/bundle/{id}.yml")
+        repos_req = requests.get(f"https://raw.githubusercontent.com/dhtdht020/oscdl-updateserver/master/v1/announcement/repositories.yml")
+        bundle_file = bundle_req.text
+        repos_file = repos_req.text
+        if bundle_req.status_code != 200:
+            QMessageBox.critical(self, 'OSC-DL: Critical Bundle Error',
+                                 'Could not find this bundle or connect to the bundle server.\n'
+                                 'Please check your internet connection, or report this incident.')
+        if repos_req.status_code != 200:
+            QMessageBox.critical(self, 'OSC-DL: Critical Repository List Error',
+                                 'Could not connect to the repository list server.\n'
+                                 'Please check your internet connection, or report this incident.')
+        else:
+            parsed_bundle = yaml.load(bundle_file, Loader=yaml.FullLoader)
+            parsed_repos = yaml.load(repos_file, Loader=yaml.FullLoader)
+            # Disconnect repository signals while nobody's looking :eyes:
+            self.ui.ReposComboBox.currentIndexChanged.disconnect(self.changed_host)
+            self.ui.listAppsWidget.currentItemChanged.disconnect(self.selection_changed)
+
+            bundle_internal_name = parsed_bundle["metadata"]["host"]
+            bundle_host_name = parsed_repos["repositories"][bundle_internal_name]["name"]
+            bundle_host_addr = parsed_repos["repositories"][bundle_internal_name]["host"]
+            bundle_contents = parsed_bundle["applications"]
+
+            HOST = bundle_host_addr
+
+            # Get dropdown index of repo by name
+            repo_index = self.ui.ReposComboBox.findText(bundle_host_name)
+            # Set current dropdown index
+            self.ui.ReposComboBox.setCurrentIndex(repo_index)
+
+            # Set displayed repo info
+            display_name = parsed_bundle["metadata"]["name"]
+            description = parsed_bundle["metadata"]["description"]
+            author = parsed_bundle["metadata"]["author"]
+            self.ui.RepositoryNameLabel.setText(f"Bundle: {display_name}")
+            self.ui.RepositoryDescLabel.setText(f"Bundle by {author}. {description}")
+
+            # Clear list and repopulate with bundle
+            self.ui.listAppsWidget.clear()
+            amount = 0
+            for i in bundle_contents:
+                self.ui.listAppsWidget.addItem(i)
+                amount += 1
+
+            # Set apps amount
+            self.ui.AppsAmountLabel.setText(f"{amount} Apps")
+
+            # Reconnect repository signals. Good. Nobody noticed.
+            self.ui.ReposComboBox.currentIndexChanged.connect(self.changed_host)
+            self.ui.listAppsWidget.currentItemChanged.connect(self.selection_changed)
+
+            # Select row 0
+            self.ui.listAppsWidget.setCurrentRow(0)
 
     def download_button(self):
         self.app_name = self.ui.listAppsWidget.currentItem().text()
