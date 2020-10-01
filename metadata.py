@@ -70,15 +70,14 @@ def get(app_name, type=None, repo="hbb1.oscwii.org"):
         contributors = "Unknown"
 
     # check for requested information
-    metadata = {
-        "display_name": display_name,
-        "coder": developer,
-        "version": version,
-        "short_description": short_description,
-        "long_description": long_description,
-        "release_date": release_date,
-        "contributors": contributors
-    }
+    meta = {"display_name": display_name,
+            "coder": developer,
+            "version": version,
+            "short_description": short_description,
+            "long_description": long_description,
+            "release_date": release_date,
+            "contributors": contributors
+            }
 
     if type:
         return metadata[type]
