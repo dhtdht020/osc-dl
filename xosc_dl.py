@@ -78,10 +78,10 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         # DEBUG -> EXPERIMENTAL
         self.ui.menuAnnouncement_Banner.setIcon(QIcon(resource_path("assets/gui/icons/announcement-banner.png")))
         # DEBUG -> EXPERIMENTAL -> ANNOUNCEMENT BANNER
-        self.ui.actionDisplay_Banner.setIcon(QIcon(resource_path("assets/gui/icons/create-bundle.png")))
+        self.ui.actionDisplay_Banner.setIcon(QIcon(resource_path("assets/gui/icons/announcement-banner-reload.png")))
         # BUNDLES
-        self.ui.actionLoad_Bundle.setIcon(QIcon(resource_path("assets/gui/icons/load-bundle.png")))
-        self.ui.actionCreate_Bundle.setIcon(QIcon(resource_path("assets/gui/icons/create-bundle.png")))
+        self.ui.actionLoad_Collection.setIcon(QIcon(resource_path("assets/gui/icons/load-bundle.png")))
+        self.ui.actionCreate_Collection.setIcon(QIcon(resource_path("assets/gui/icons/create-bundle.png")))
 
         self.populate()
         self.selection_changed()
@@ -143,9 +143,9 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         self.ui.actionDownload_HBB_Client_Latest.triggered.connect(partial(self.download_latest_hbb_action))
         # ---- OSC-DL
         self.ui.actionCheck_for_Updates.triggered.connect(partial(self.check_for_updates_action))
-        # -- Bundles
-        # ----- Load Bundle
-        self.ui.actionLoad_Bundle.triggered.connect(partial(self.load_bundle))
+        # -- Collections
+        # ----- Load Collection
+        self.ui.actionLoad_Collection.triggered.connect(partial(self.load_collection))
 
     # When user selects a different homebrew from the list
     def selection_changed(self):
@@ -175,7 +175,11 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
             self.ui.SelectionInfoBox.setTitle("Metadata: " + info.get("display_name"))
             self.ui.label_displayname.setText(info.get("display_name"))
             self.ui.version.setText(info.get("version"))
-            self.ui.filesize.setText(metadata.file_size(app_name, repo=HOST))
+            try:
+                self.ui.filesize.setText(metadata.file_size(app_name, repo=HOST))
+            except KeyError:
+                self.ui.filesize.setText("Unknown")
+
             self.ui.releasedate.setText(info.get("release_date"))
             self.ui.developer.setText(info.get("coder"))
             if info.get("short_description") == "Unknown":
@@ -194,56 +198,58 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
     def view_metadata(self):
         self.app_name = self.ui.listAppsWidget.currentItem().text()
 
-    def load_bundle(self):
+    def load_collection(self):
         global HOST
-        id, ok = QInputDialog.getText(self, 'Load Open Shop Channel Bundle',
-                                      'Enter the ID (File Name) associated with your bundle:',
+        id, ok = QInputDialog.getText(self, 'Load OSC Collection',
+                                      'Enter the ID associated with your collection.\n'
+                                      'The ID is in all-caps, and matches the collection YAML name. \n\n'
+                                      'If you are testing a local collection, please use the Collection Editor tool.',
                                       QLineEdit.Normal)
         if not ok:
             return
 
-        bundle_req = requests.get(f"https://raw.githubusercontent.com/dhtdht020/OSCDL-Bundles/master/v1/bundle/{id}.yml")
+        collection_req = requests.get(f"https://raw.githubusercontent.com/dhtdht020/OSCDL-Collections/master/v1/collection/{id}.yml")
         repos_req = requests.get(f"https://raw.githubusercontent.com/dhtdht020/oscdl-updateserver/master/v1/announcement/repositories.yml")
-        bundle_file = bundle_req.text
+        collection_file = collection_req.text
         repos_file = repos_req.text
-        if bundle_req.status_code != 200:
-            QMessageBox.critical(self, 'OSC-DL: Critical Bundle Error',
-                                 'Could not find this bundle or connect to the bundle server.\n'
+        if collection_req.status_code != 200:
+            QMessageBox.critical(self, 'OSC-DL: Critical Collections Error',
+                                 'Could not find this collection or connect to the collection server.\n'
                                  'Please check your internet connection, or report this incident.')
         if repos_req.status_code != 200:
             QMessageBox.critical(self, 'OSC-DL: Critical Repository List Error',
                                  'Could not connect to the repository list server.\n'
                                  'Please check your internet connection, or report this incident.')
         else:
-            parsed_bundle = yaml.load(bundle_file, Loader=yaml.FullLoader)
+            parsed_collection = yaml.load(collection_file, Loader=yaml.FullLoader)
             parsed_repos = yaml.load(repos_file, Loader=yaml.FullLoader)
             # Disconnect repository signals while nobody's looking :eyes:
             self.ui.ReposComboBox.currentIndexChanged.disconnect(self.changed_host)
             self.ui.listAppsWidget.currentItemChanged.disconnect(self.selection_changed)
 
-            bundle_internal_name = parsed_bundle["metadata"]["host"]
-            bundle_host_name = parsed_repos["repositories"][bundle_internal_name]["name"]
-            bundle_host_addr = parsed_repos["repositories"][bundle_internal_name]["host"]
-            bundle_contents = parsed_bundle["applications"]
+            collection_internal_name = parsed_collection["metadata"]["host"]
+            collection_host_name = parsed_repos["repositories"][collection_internal_name]["name"]
+            collection_host_addr = parsed_repos["repositories"][collection_internal_name]["host"]
+            collection_contents = parsed_collection["applications"]
 
-            HOST = bundle_host_addr
+            HOST = collection_host_addr
 
             # Get dropdown index of repo by name
-            repo_index = self.ui.ReposComboBox.findText(bundle_host_name)
+            repo_index = self.ui.ReposComboBox.findText(collection_host_name)
             # Set current dropdown index
             self.ui.ReposComboBox.setCurrentIndex(repo_index)
 
             # Set displayed repo info
-            display_name = parsed_bundle["metadata"]["name"]
-            description = parsed_bundle["metadata"]["description"]
-            author = parsed_bundle["metadata"]["author"]
-            self.ui.RepositoryNameLabel.setText(f"Bundle: {display_name}")
-            self.ui.RepositoryDescLabel.setText(f"Bundle by {author}. {description}")
+            display_name = parsed_collection["metadata"]["name"]
+            description = parsed_collection["metadata"]["description"]
+            author = parsed_collection["metadata"]["author"]
+            self.ui.RepositoryNameLabel.setText(f"Collection: {display_name}")
+            self.ui.RepositoryDescLabel.setText(f"Made by {author}. {description}")
 
-            # Clear list and repopulate with bundle
+            # Clear list and repopulate with collection
             self.ui.listAppsWidget.clear()
             amount = 0
-            for i in bundle_contents:
+            for i in collection_contents:
                 self.ui.listAppsWidget.addItem(i)
                 amount += 1
 

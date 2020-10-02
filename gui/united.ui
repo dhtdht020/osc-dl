@@ -844,6 +844,7 @@ p, li { white-space: pre-wrap; }
     <addaction name="menuExperimental"/>
     <addaction name="separator"/>
     <addaction name="actionAdd_Fake_Application"/>
+    <addaction name="actionLoad_collection_from_file"/>
    </widget>
    <widget class="QMenu" name="menuClients">
     <property name="title">
@@ -864,16 +865,16 @@ p, li { white-space: pre-wrap; }
     <addaction name="menuHomebrew_Browser"/>
     <addaction name="menuOpen_Shop_Channel_DL"/>
    </widget>
-   <widget class="QMenu" name="menuBundles">
+   <widget class="QMenu" name="menuCollections">
     <property name="title">
-     <string>Bundles (Preview)</string>
+     <string>Collections (Preview)</string>
     </property>
-    <addaction name="actionLoad_Bundle"/>
-    <addaction name="actionCreate_Bundle"/>
+    <addaction name="actionLoad_Collection"/>
+    <addaction name="actionCreate_Collection"/>
    </widget>
    <addaction name="menuAbout"/>
    <addaction name="menuClients"/>
-   <addaction name="menuBundles"/>
+   <addaction name="menuCollections"/>
    <addaction name="menuDebug"/>
   </widget>
   <widget class="QStatusBar" name="statusBar">
@@ -1007,14 +1008,19 @@ p, li { white-space: pre-wrap; }
     <string>Icons by Icons8</string>
    </property>
   </action>
-  <action name="actionLoad_Bundle">
+  <action name="actionLoad_Collection">
    <property name="text">
-    <string>Load Bundle</string>
+    <string>Load Collection</string>
    </property>
   </action>
-  <action name="actionCreate_Bundle">
+  <action name="actionCreate_Collection">
    <property name="text">
-    <string>Create Bundle</string>
+    <string>Create Collection</string>
+   </property>
+  </action>
+  <action name="actionLoad_collection_from_file">
+   <property name="text">
+    <string>Load collection from file</string>
    </property>
   </action>
  </widget>
