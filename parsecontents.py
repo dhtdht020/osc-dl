@@ -137,7 +137,7 @@ def dl_list(file, display="False", repo="hbb1.oscwii.org"):
         except Exception:
             pass
 
-        if line is "":
+        if line == "":
             pass
         else:
             if display is True:
