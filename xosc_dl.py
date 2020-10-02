@@ -367,6 +367,11 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
 
     def repopulate(self):
         self.status_message("Reloading list..")
+        index = self.ui.ReposComboBox.currentIndex()
+        repo_data = self.ui.ReposComboBox.itemData(index, Qt.UserRole)
+        self.ui.RepositoryNameLabel.setText(repo_data[0])
+        self.ui.RepositoryDescLabel.setText(repo_data[2])
+
         self.ui.listAppsWidget.clear()
         self.populate_list()
         self.ui.progressBar.setValue(100)
