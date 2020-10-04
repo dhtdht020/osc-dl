@@ -6,4 +6,5 @@ PyYAML~=5.3.1
 pyperclip~=1.8.0
 dateparser~=0.7.6
 urllib3~=1.25.10
+sentry_sdk~=0.18.0
 PySide2~=5.15.1 # GUI exclusive
