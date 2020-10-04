@@ -1,6 +1,7 @@
 import io
 import json
 import yaml
+import sentry_sdk
 import os
 import re
 import socket
@@ -45,6 +46,14 @@ def resource_path(relative_path):
     if hasattr(sys, '_MEIPASS'):
         return os.path.join(sys._MEIPASS, relative_path)
     return os.path.join(os.path.abspath("."), relative_path)
+
+
+if updater.is_frozen():
+    # Init sentry
+    sentry_sdk.init(
+        "https://619963fe9ec346e1b032fb19ea1632c8@o456896.ingest.sentry.io/5450395",
+        traces_sample_rate=1.0
+    )
 
 
 # G U I
@@ -102,24 +111,36 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         self.assign_initial_actions()
 
     def populate_repositories(self):
-        yaml_file = requests.get("https://raw.githubusercontent.com/dhtdht020/oscdl-updateserver/master/v1/announcement"
-                                 "/repositories.yml").text
-        parsed_yaml = yaml.load(yaml_file, Loader=yaml.FullLoader)
-        repos = parsed_yaml["repos"]
-        n = 0
-        for i in repos:
-            display_name = parsed_yaml["repositories"][i]["name"]
-            host = parsed_yaml["repositories"][i]["host"]
-            description = parsed_yaml["repositories"][i]["description"]
-            self.ui.ReposComboBox.addItem(display_name)
-            self.ui.ReposComboBox.setItemData(n, [display_name, host, description], Qt.UserRole)
-            n += 1
+        try:
+            yaml_file = requests.get("https://raw.githubusercontent.com/dhtdht020/oscdl-updateserver/master/v1/announcement"
+                                     "/repositories.yml").text
+            parsed_yaml = yaml.load(yaml_file, Loader=yaml.FullLoader)
+            repos = parsed_yaml["repos"]
+            n = 0
+            for i in repos:
+                display_name = parsed_yaml["repositories"][i]["name"]
+                host = parsed_yaml["repositories"][i]["host"]
+                description = parsed_yaml["repositories"][i]["description"]
+                self.ui.ReposComboBox.addItem(display_name)
+                self.ui.ReposComboBox.setItemData(n, [display_name, host, description], Qt.UserRole)
+                n += 1
 
-        index = self.ui.ReposComboBox.currentIndex()
-        repo_data = self.ui.ReposComboBox.itemData(index, Qt.UserRole)
+            index = self.ui.ReposComboBox.currentIndex()
+            repo_data = self.ui.ReposComboBox.itemData(index, Qt.UserRole)
 
-        self.ui.RepositoryNameLabel.setText(repo_data[0])
-        self.ui.RepositoryDescLabel.setText(repo_data[2])
+            self.ui.RepositoryNameLabel.setText(repo_data[0])
+            self.ui.RepositoryDescLabel.setText(repo_data[2])
+        except Exception:
+            # Add base repos
+            self.ui.ReposComboBox.addItem("Open Shop Channel")
+            self.ui.ReposComboBox.addItem("Homebrew Channel Themes")
+            self.ui.ReposComboBox.setItemData(0, ["Open Shop Channel",
+                                                  "hbb1.oscwii.org",
+                                                  "Built in: Open Shop Channel default repository."], Qt.UserRole)
+            self.ui.ReposComboBox.setItemData(1, ["Homebrew Channel Themes",
+                                                  "hbb2.oscwii.org",
+                                                  "Built in: Open Shop Channel default theme repository."], Qt.UserRole)
+
 
     def assign_initial_actions(self):
         # Buttons
@@ -198,6 +219,21 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
     def view_metadata(self):
         self.app_name = self.ui.listAppsWidget.currentItem().text()
 
+    def validate_collection(self, collection, repos):
+        # Check if there are contents
+        try:
+            apps = collection["applications"]
+            first_app = apps[0]
+        except TypeError as e:
+            QMessageBox.critical(self, 'OSC-DL: Critical Collection Validator Error',
+                                 'This collection seems to have 0 apps. Instructions unclear!\n'
+                                 'Loading of collection has been stopped.\n'
+                                 'Please report this incident.\n\n'
+                                 f'Exception: {e}')
+            raise e
+
+
+
     def load_collection(self):
         global HOST
         id, ok = QInputDialog.getText(self, 'Load OSC Collection',
@@ -212,6 +248,7 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         repos_req = requests.get(f"https://raw.githubusercontent.com/dhtdht020/oscdl-updateserver/master/v1/announcement/repositories.yml")
         collection_file = collection_req.text
         repos_file = repos_req.text
+
         if collection_req.status_code != 200:
             QMessageBox.critical(self, 'OSC-DL: Critical Collections Error',
                                  'Could not find this collection or connect to the collection server.\n'
@@ -223,6 +260,8 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         else:
             parsed_collection = yaml.load(collection_file, Loader=yaml.FullLoader)
             parsed_repos = yaml.load(repos_file, Loader=yaml.FullLoader)
+            # Validate collection
+            self.validate_collection(parsed_collection, parsed_repos)
             # Disconnect repository signals while nobody's looking :eyes:
             self.ui.ReposComboBox.currentIndexChanged.disconnect(self.changed_host)
             self.ui.listAppsWidget.currentItemChanged.disconnect(self.selection_changed)

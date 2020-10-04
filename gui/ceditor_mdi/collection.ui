@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>CollectionMainForm</class>
+ <widget class="QWidget" name="CollectionMainForm">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>400</width>
+    <height>300</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Collection - New Unnamed Collection</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <item>
+    <widget class="QLabel" name="AppsCount">
+     <property name="text">
+      <string>0 Apps</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QLabel" name="HostName">
+     <property name="text">
+      <string>Host: primary</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QListWidget" name="AppsList"/>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

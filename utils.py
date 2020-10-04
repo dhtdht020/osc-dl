@@ -11,4 +11,3 @@ def export_app_list(txt_path="osc-dl_export_app_list.txt", repo="hbb1.oscwii.org
     sys.stdout.close()
     sys.stdout = sys.__stdout__
     return txt_path
-
