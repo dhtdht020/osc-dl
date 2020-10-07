@@ -197,13 +197,14 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
             self.repaint()
 
             info = metadata.dictionary(app_name, repo=HOST)
+            data = self.ui.listAppsWidget.currentItem().data(Qt.UserRole)
             # Get actual metadata
             self.ui.appname.setText(info.get("display_name"))
             self.ui.SelectionInfoBox.setTitle("Metadata: " + info.get("display_name"))
             self.ui.label_displayname.setText(info.get("display_name"))
             self.ui.version.setText(info.get("version"))
             try:
-                self.ui.filesize.setText(metadata.file_size(app_name, repo=HOST))
+                self.ui.filesize.setText(metadata.file_size(data[2]))
             except KeyError:
                 self.ui.filesize.setText("Unknown")
 
@@ -448,17 +449,25 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         # self.ui.listAppsWidget.setCurrentRow(0)
         # self.ui.AppsAmountLabel.setText(str(self.ui.listAppsWidget.count()) + " Apps")
         json_req = requests.get(f"https://api.oscwii.org/v1/{HOST_NAME}/packages")
+        loaded_json = json.loads(json_req.text)
         if json_req.status_code == 200:
             i = 0
             ongoing = True
+            internal_name_dict = self.parse_json_expression(json=loaded_json,
+                                                       expression=f"$[*].internal_name")
+            display_name_dict = self.parse_json_expression(json=loaded_json,
+                                                      expression=f"$[*].display_name")
+            extracted_size_dict = self.parse_json_expression(json=loaded_json,
+                                                        expression=f"$[*].extracted")
             while ongoing is True:
                 try:
-                    internal_name = self.parse_json_expression(json=json.loads(json_req.text),
-                                                               expression=f"$[{i}].internal_name")
-                    display_name = self.parse_json_expression(json=json.loads(json_req.text),
-                                                               expression=f"$[{i}].display_name")
+                    internal_name = internal_name_dict[i].value
+                    display_name = display_name_dict[i].value
+                    extracted_size = extracted_size_dict[i].value
                     self.ui.listAppsWidget.addItem(display_name)
-                    self.ui.listAppsWidget.item(i).setData(Qt.UserRole, [internal_name, display_name])
+                    self.ui.listAppsWidget.item(i).setData(Qt.UserRole, [internal_name,
+                                                                         display_name,
+                                                                         extracted_size])
                     # self.ui.listAppsWidget.setItemData(i, [internal_name, display_name], Qt.UserRole)
                     i += 1
                 except IndexError:
@@ -527,9 +536,8 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
     def parse_json_expression(self, json, expression):
         json_expression = parse(expression)
         json_thing = json_expression.find(json)
-        value = json_thing[0].value
 
-        return value
+        return json_thing
 
     def load_icon(self, app_name, repo):
         # Gets raw image data from server
