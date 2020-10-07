@@ -175,7 +175,9 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
     # When user selects a different homebrew from the list
     def selection_changed(self):
         try:
-            app_name = self.ui.listAppsWidget.currentItem().text()
+            # app_name = self.ui.listAppsWidget.currentItem().text()
+            data = self.ui.listAppsWidget.currentItem().data(Qt.UserRole)
+            app_name = data[0]
         except Exception:
             app_name = None
         if app_name is not None:
@@ -221,7 +223,8 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         self.status_message("Ready to download")
 
     def view_metadata(self):
-        self.app_name = self.ui.listAppsWidget.currentItem().text()
+        data = self.ui.listAppsWidget.currentItem().data(Qt.UserRole)
+        self.app_name = data[0]
 
     def validate_collection(self, collection, repos):
         # Check if there are contents
@@ -307,7 +310,8 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
             self.ui.listAppsWidget.setCurrentRow(0)
 
     def download_button(self):
-        self.app_name = self.ui.listAppsWidget.currentItem().text()
+        data = self.ui.listAppsWidget.currentItem().data(Qt.UserRole)
+        self.app_name = data[0]
         self.status_message(f"Downloading {self.app_name} from Open Shop Channel..")
         output = self.ui.FileNameLineEdit.text()
         extract = self.ui.ExtractAppCheckbox.isChecked()
@@ -334,7 +338,8 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
             QMessageBox.warning(self, 'Invalid IP Address', 'This IP address is invalid.')
             return
 
-        self.app_name = self.ui.listAppsWidget.currentItem().text()
+        data = self.ui.listAppsWidget.currentItem().data(Qt.UserRole)
+        self.app_name = data[0]
         self.status_message("Downloading " + self.app_name + " from Open Shop Channel..")
         self.ui.progressBar.setValue(25)
 
@@ -398,7 +403,8 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         logging.info(f"App transmitted to HBC at {ip}")
 
     def copy_download_link_button(self):
-        self.app_name = self.ui.listAppsWidget.currentItem().text()
+        data = self.ui.listAppsWidget.currentItem().data(Qt.UserRole)
+        self.app_name = data[0]
         pyperclip.copy(metadata.url(self.app_name, repo=HOST))
         self.status_message(f"Copied the download link for {self.app_name} to clipboard")
 
@@ -449,7 +455,11 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
                 try:
                     internal_name = self.parse_json_expression(json=json.loads(json_req.text),
                                                                expression=f"$[{i}].internal_name")
-                    self.ui.listAppsWidget.addItem(internal_name)
+                    display_name = self.parse_json_expression(json=json.loads(json_req.text),
+                                                               expression=f"$[{i}].display_name")
+                    self.ui.listAppsWidget.addItem(display_name)
+                    self.ui.listAppsWidget.item(i).setData(Qt.UserRole, [internal_name, display_name])
+                    # self.ui.listAppsWidget.setItemData(i, [internal_name, display_name], Qt.UserRole)
                     i += 1
                 except IndexError:
                     ongoing = False
