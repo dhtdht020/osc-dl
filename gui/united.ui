@@ -595,6 +595,30 @@ background-color: rgba(255, 255, 255, 0);
              <set>Qt::AlignCenter</set>
             </property>
            </widget>
+           <widget class="QLabel" name="HomebrewCategoryLabel">
+            <property name="geometry">
+             <rect>
+              <x>147</x>
+              <y>10</y>
+              <width>81</width>
+              <height>48</height>
+             </rect>
+            </property>
+            <property name="font">
+             <font>
+              <family>Arial</family>
+              <pointsize>11</pointsize>
+              <weight>75</weight>
+              <bold>true</bold>
+             </font>
+            </property>
+            <property name="text">
+             <string>Category</string>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignCenter</set>
+            </property>
+           </widget>
           </widget>
           <widget class="QWidget" name="Description">
            <attribute name="title">
@@ -866,9 +890,6 @@ p, li { white-space: pre-wrap; }
     <addaction name="menuOpen_Shop_Channel_DL"/>
    </widget>
    <widget class="QMenu" name="menuCollections">
-    <property name="enabled">
-     <bool>false</bool>
-    </property>
     <property name="title">
      <string>Collections (Preview)</string>
     </property>
@@ -1012,9 +1033,6 @@ p, li { white-space: pre-wrap; }
    </property>
   </action>
   <action name="actionLoad_Collection">
-   <property name="enabled">
-    <bool>false</bool>
-   </property>
    <property name="text">
     <string>Load Collection</string>
    </property>

@@ -3,16 +3,13 @@
 ################################################################################
 ## Form generated from reading UI file 'united.ui'
 ##
-## Created by: Qt User Interface Compiler version 5.15.0
+## Created by: Qt User Interface Compiler version 5.15.1
 ##
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
 
-from PySide2.QtCore import (QCoreApplication, QDate, QDateTime, QMetaObject,
-    QObject, QPoint, QRect, QSize, QTime, QUrl, Qt)
-from PySide2.QtGui import (QBrush, QColor, QConicalGradient, QCursor, QFont,
-    QFontDatabase, QIcon, QKeySequence, QLinearGradient, QPalette, QPainter,
-    QPixmap, QRadialGradient)
+from PySide2.QtCore import *
+from PySide2.QtGui import *
 from PySide2.QtWidgets import *
 
 
@@ -81,7 +78,6 @@ class Ui_MainWindow(object):
         self.actionIcons_by_Icons8.setEnabled(False)
         self.actionLoad_Collection = QAction(MainWindow)
         self.actionLoad_Collection.setObjectName(u"actionLoad_Collection")
-        self.actionLoad_Collection.setEnabled(False)
         self.actionCreate_Collection = QAction(MainWindow)
         self.actionCreate_Collection.setObjectName(u"actionCreate_Collection")
         self.actionLoad_collection_from_file = QAction(MainWindow)
@@ -333,6 +329,16 @@ class Ui_MainWindow(object):
         self.HomebrewIconLabel.setObjectName(u"HomebrewIconLabel")
         self.HomebrewIconLabel.setGeometry(QRect(10, 10, 128, 48))
         self.HomebrewIconLabel.setAlignment(Qt.AlignCenter)
+        self.HomebrewCategoryLabel = QLabel(self.GeneralTab)
+        self.HomebrewCategoryLabel.setObjectName(u"HomebrewCategoryLabel")
+        self.HomebrewCategoryLabel.setGeometry(QRect(147, 10, 81, 48))
+        font1 = QFont()
+        font1.setFamily(u"Arial")
+        font1.setPointSize(11)
+        font1.setBold(True)
+        font1.setWeight(75)
+        self.HomebrewCategoryLabel.setFont(font1)
+        self.HomebrewCategoryLabel.setAlignment(Qt.AlignCenter)
         self.tabMetadata.addTab(self.GeneralTab, "")
         self.Description = QWidget()
         self.Description.setObjectName(u"Description")
@@ -415,7 +421,6 @@ class Ui_MainWindow(object):
         self.menuHomebrew_Browser.setObjectName(u"menuHomebrew_Browser")
         self.menuCollections = QMenu(self.menubar)
         self.menuCollections.setObjectName(u"menuCollections")
-        self.menuCollections.setEnabled(False)
         MainWindow.setMenuBar(self.menubar)
         self.statusBar = QStatusBar(MainWindow)
         self.statusBar.setObjectName(u"statusBar")
@@ -498,6 +503,7 @@ class Ui_MainWindow(object):
         self.label_description.setText(QCoreApplication.translate("MainWindow", u"Description", None))
         self.label_displayname.setText(QCoreApplication.translate("MainWindow", u"Title", None))
         self.HomebrewIconLabel.setText(QCoreApplication.translate("MainWindow", u"No homebrew icon. Aw.", None))
+        self.HomebrewCategoryLabel.setText(QCoreApplication.translate("MainWindow", u"Category", None))
         self.tabMetadata.setTabText(self.tabMetadata.indexOf(self.GeneralTab), QCoreApplication.translate("MainWindow", u"General", None))
         self.longDescriptionBrowser.setHtml(QCoreApplication.translate("MainWindow", u"<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"

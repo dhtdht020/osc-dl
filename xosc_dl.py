@@ -191,6 +191,7 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
             self.ui.version.setText("")
             self.ui.filesize.setText("")
             self.ui.releasedate.setText("")
+            self.ui.HomebrewCategoryLabel.setText("")
             self.ui.developer.setText("")
             self.ui.label_description.setText("")
 
@@ -207,6 +208,19 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
                 self.ui.filesize.setText(metadata.file_size(data[2]))
             except KeyError:
                 self.ui.filesize.setText("Unknown")
+
+            if data[3] == "demos":
+                self.ui.HomebrewCategoryLabel.setText("Demo")
+            elif data[3] == "emulators":
+                self.ui.HomebrewCategoryLabel.setText("Emulator")
+            elif data[3] == "games":
+                self.ui.HomebrewCategoryLabel.setText("Game")
+            elif data[3] == "media":
+                self.ui.HomebrewCategoryLabel.setText("Media")
+            elif data[3] == "utilities":
+                self.ui.HomebrewCategoryLabel.setText("Utility")
+            else:
+                self.ui.HomebrewCategoryLabel.setText("")
 
             self.ui.releasedate.setText(info.get("release_date"))
             self.ui.developer.setText(info.get("coder"))
@@ -454,25 +468,30 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
             i = 0
             ongoing = True
             internal_name_dict = self.parse_json_expression(json=loaded_json,
-                                                       expression=f"$[*].internal_name")
+                                                            expression=f"$[*].internal_name")
             display_name_dict = self.parse_json_expression(json=loaded_json,
-                                                      expression=f"$[*].display_name")
+                                                           expression=f"$[*].display_name")
             extracted_size_dict = self.parse_json_expression(json=loaded_json,
-                                                        expression=f"$[*].extracted")
+                                                             expression=f"$[*].extracted")
+            category_dict = self.parse_json_expression(json=loaded_json,
+                                                       expression=f"$[*].category")
             while ongoing is True:
                 try:
                     internal_name = internal_name_dict[i].value
                     display_name = display_name_dict[i].value
                     extracted_size = extracted_size_dict[i].value
+                    category = category_dict[i].value
                     self.ui.listAppsWidget.addItem(display_name)
                     self.ui.listAppsWidget.item(i).setData(Qt.UserRole, [internal_name,
                                                                          display_name,
-                                                                         extracted_size])
+                                                                         extracted_size,
+                                                                         category])
                     # self.ui.listAppsWidget.setItemData(i, [internal_name, display_name], Qt.UserRole)
                     i += 1
                 except IndexError:
                     ongoing = False
 
+            self.sort_list_alphabetically()
             self.ui.listAppsWidget.setCurrentRow(0)
             self.ui.AppsAmountLabel.setText(str(self.ui.listAppsWidget.count()) + " Apps")
 
@@ -497,6 +516,9 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
     def clear_log(self):
         open("osc-dl-gui.log", 'w').close()
         self.status_message('DEBUG: Removed / cleared log file.')
+
+    def sort_list_alphabetically(self):
+        self.ui.listAppsWidget.sortItems(Qt.AscendingOrder)
 
     def download_latest_hbb_action(self):
         self.status_message("Downloading Homebrew Browser from Open Shop Channel..")
