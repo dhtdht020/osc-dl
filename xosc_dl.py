@@ -1,5 +1,7 @@
 import io
 import json
+from datetime import datetime
+
 import yaml
 import sentry_sdk
 import os
@@ -222,7 +224,7 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
             else:
                 self.ui.HomebrewCategoryLabel.setText("")
 
-            self.ui.releasedate.setText(info.get("release_date"))
+            self.ui.releasedate.setText(datetime.fromtimestamp(int(data[4])).strftime('%B %e, %Y at %R'))
             self.ui.developer.setText(info.get("coder"))
             if info.get("short_description") == "Unknown":
                 self.ui.label_description.setText("No description specified.")
@@ -475,17 +477,21 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
                                                              expression=f"$[*].extracted")
             category_dict = self.parse_json_expression(json=loaded_json,
                                                        expression=f"$[*].category")
+            release_date_dict = self.parse_json_expression(json=loaded_json,
+                                                       expression=f"$[*].release_date")
             while ongoing is True:
                 try:
                     internal_name = internal_name_dict[i].value
                     display_name = display_name_dict[i].value
                     extracted_size = extracted_size_dict[i].value
                     category = category_dict[i].value
+                    release_date = release_date_dict[i].value
                     self.ui.listAppsWidget.addItem(display_name)
                     self.ui.listAppsWidget.item(i).setData(Qt.UserRole, [internal_name,
                                                                          display_name,
                                                                          extracted_size,
-                                                                         category])
+                                                                         category,
+                                                                         release_date])
                     # self.ui.listAppsWidget.setItemData(i, [internal_name, display_name], Qt.UserRole)
                     i += 1
                 except IndexError:
