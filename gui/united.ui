@@ -866,6 +866,9 @@ p, li { white-space: pre-wrap; }
     <addaction name="menuOpen_Shop_Channel_DL"/>
    </widget>
    <widget class="QMenu" name="menuCollections">
+    <property name="enabled">
+     <bool>false</bool>
+    </property>
     <property name="title">
      <string>Collections (Preview)</string>
     </property>
@@ -1009,6 +1012,9 @@ p, li { white-space: pre-wrap; }
    </property>
   </action>
   <action name="actionLoad_Collection">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
    <property name="text">
     <string>Load Collection</string>
    </property>

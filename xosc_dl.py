@@ -10,6 +10,7 @@ from contextlib import redirect_stdout
 
 import logging  # for logs
 from functools import partial
+from jsonpath_ng import jsonpath, parse
 
 import requests
 import pyperclip
@@ -33,6 +34,7 @@ else:
     DISPLAY_VERSION = VERSION + " " + BRANCH
 
 HOST = "hbb1.oscwii.org"
+HOST_NAME = "primary"
 
 
 # escape ansi for stdout output of download status
@@ -67,7 +69,6 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         self.setWindowTitle(f"Open Shop Channel Downloader v{DISPLAY_VERSION} - Library")
         app_icon = QIcon(resource_path("assets/gui/windowicon.png"))
         self.setWindowIcon(app_icon)
-
 
         # Set GUI Icons
 
@@ -112,8 +113,9 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
 
     def populate_repositories(self):
         try:
-            yaml_file = requests.get("https://raw.githubusercontent.com/dhtdht020/oscdl-updateserver/master/v1/announcement"
-                                     "/repositories.yml").text
+            yaml_file = requests.get(
+                "https://raw.githubusercontent.com/dhtdht020/oscdl-updateserver/master/v1/announcement"
+                "/repositories.yml").text
             parsed_yaml = yaml.load(yaml_file, Loader=yaml.FullLoader)
             repos = parsed_yaml["repos"]
             n = 0
@@ -121,8 +123,9 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
                 display_name = parsed_yaml["repositories"][i]["name"]
                 host = parsed_yaml["repositories"][i]["host"]
                 description = parsed_yaml["repositories"][i]["description"]
+                name = i
                 self.ui.ReposComboBox.addItem(display_name)
-                self.ui.ReposComboBox.setItemData(n, [display_name, host, description], Qt.UserRole)
+                self.ui.ReposComboBox.setItemData(n, [display_name, host, description, name], Qt.UserRole)
                 n += 1
 
             index = self.ui.ReposComboBox.currentIndex()
@@ -136,11 +139,12 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
             self.ui.ReposComboBox.addItem("Homebrew Channel Themes")
             self.ui.ReposComboBox.setItemData(0, ["Open Shop Channel",
                                                   "hbb1.oscwii.org",
-                                                  "Built in: Open Shop Channel default repository."], Qt.UserRole)
+                                                  "Built in: Open Shop Channel default repository.",
+                                                  "primary"], Qt.UserRole)
             self.ui.ReposComboBox.setItemData(1, ["Homebrew Channel Themes",
-                                                  "hbb2.oscwii.org",
-                                                  "Built in: Open Shop Channel default theme repository."], Qt.UserRole)
-
+                                                  "hbb3.oscwii.org",
+                                                  "Built in: Open Shop Channel default theme repository.",
+                                                  "themes"], Qt.UserRole)
 
     def assign_initial_actions(self):
         # Buttons
@@ -232,8 +236,6 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
                                  f'Exception: {e}')
             raise e
 
-
-
     def load_collection(self):
         global HOST
         id, ok = QInputDialog.getText(self, 'Load OSC Collection',
@@ -244,8 +246,10 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         if not ok:
             return
 
-        collection_req = requests.get(f"https://raw.githubusercontent.com/dhtdht020/OSCDL-Collections/master/v1/collection/{id}.yml")
-        repos_req = requests.get(f"https://raw.githubusercontent.com/dhtdht020/oscdl-updateserver/master/v1/announcement/repositories.yml")
+        collection_req = requests.get(
+            f"https://raw.githubusercontent.com/dhtdht020/OSCDL-Collections/master/v1/collection/{id}.yml")
+        repos_req = requests.get(
+            f"https://raw.githubusercontent.com/dhtdht020/oscdl-updateserver/master/v1/announcement/repositories.yml")
         collection_file = collection_req.text
         repos_file = repos_req.text
 
@@ -400,9 +404,11 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
 
     def changed_host(self):
         global HOST
+        global HOST_NAME
         index = self.ui.ReposComboBox.currentIndex()
         repo_data = self.ui.ReposComboBox.itemData(index, Qt.UserRole)
         HOST = repo_data[1]
+        HOST_NAME = repo_data[3]
         self.ui.RepositoryNameLabel.setText(repo_data[0])
         self.ui.RepositoryDescLabel.setText(repo_data[2])
         self.status_message(f"Loading {HOST} repository..")
@@ -423,18 +429,39 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
 
     def populate_list(self):
         # Can't have a list when there's no connection :P
-        try:
-            self.applist = parsecontents.list(repo=HOST)
-        except Exception:
+        # try:
+        #    self.applist = parsecontents.list(repo=HOST)
+        # except Exception:
+        #    QMessageBox.critical(self, 'OSC-DL: Critical Network Error',
+        #                         'Could not connect to the Open Shop Channel server.\n'
+        #                         'Cannot continue. :(\n'
+        #                         'Please check your internet connection, or report this incident.')
+        #    sys.exit(1)
+        # for item in self.applist:
+        #    self.ui.listAppsWidget.addItem(item)
+        # self.ui.listAppsWidget.setCurrentRow(0)
+        # self.ui.AppsAmountLabel.setText(str(self.ui.listAppsWidget.count()) + " Apps")
+        json_req = requests.get(f"https://api.oscwii.org/v1/{HOST_NAME}/packages")
+        if json_req.status_code == 200:
+            i = 0
+            ongoing = True
+            while ongoing is True:
+                try:
+                    internal_name = self.parse_json_expression(json=json.loads(json_req.text),
+                                                               expression=f"$[{i}].internal_name")
+                    self.ui.listAppsWidget.addItem(internal_name)
+                    i += 1
+                except IndexError:
+                    ongoing = False
+
+            self.ui.listAppsWidget.setCurrentRow(0)
+            self.ui.AppsAmountLabel.setText(str(self.ui.listAppsWidget.count()) + " Apps")
+
+        else:
             QMessageBox.critical(self, 'OSC-DL: Critical Network Error',
                                  'Could not connect to the Open Shop Channel server.\n'
                                  'Cannot continue. :(\n'
                                  'Please check your internet connection, or report this incident.')
-            sys.exit(1)
-        for item in self.applist:
-            self.ui.listAppsWidget.addItem(item)
-        self.ui.listAppsWidget.setCurrentRow(0)
-        self.ui.AppsAmountLabel.setText(str(self.ui.listAppsWidget.count()) + " Apps")
 
     # Actions
 
@@ -486,6 +513,13 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         self.ui.RefreshListBtn.setDisabled(True)
         logging.critical('OSC GODS:CLOSED THE SHOP')
         self.status_message("The shop is now closed")
+
+    def parse_json_expression(self, json, expression):
+        json_expression = parse(expression)
+        json_thing = json_expression.find(json)
+        value = json_thing[0].value
+
+        return value
 
     def load_icon(self, app_name, repo):
         # Gets raw image data from server
