@@ -401,7 +401,7 @@ background-color: rgba(255, 255, 255, 0);
            </rect>
           </property>
           <property name="currentIndex">
-           <number>0</number>
+           <number>2</number>
           </property>
           <widget class="QWidget" name="GeneralTab">
            <attribute name="title">
@@ -699,29 +699,6 @@ p, li { white-space: pre-wrap; }
              <string>Copy</string>
             </property>
            </widget>
-           <widget class="QTreeWidget" name="metaTreeWidget">
-            <property name="geometry">
-             <rect>
-              <x>10</x>
-              <y>10</y>
-              <width>221</width>
-              <height>101</height>
-             </rect>
-            </property>
-            <property name="rootIsDecorated">
-             <bool>false</bool>
-            </property>
-            <column>
-             <property name="text">
-              <string>Type</string>
-             </property>
-            </column>
-            <column>
-             <property name="text">
-              <string>Value</string>
-             </property>
-            </column>
-           </widget>
            <widget class="QGroupBox" name="settingsBox">
             <property name="geometry">
              <rect>
@@ -747,6 +724,29 @@ p, li { white-space: pre-wrap; }
               <string>Extract Downloaded App</string>
              </property>
             </widget>
+           </widget>
+           <widget class="QLabel" name="SupportedControllersLabel">
+            <property name="geometry">
+             <rect>
+              <x>10</x>
+              <y>10</y>
+              <width>221</width>
+              <height>16</height>
+             </rect>
+            </property>
+            <property name="text">
+             <string>Supported Controllers:</string>
+            </property>
+           </widget>
+           <widget class="QListWidget" name="SupportedControllersListWidget">
+            <property name="geometry">
+             <rect>
+              <x>10</x>
+              <y>30</y>
+              <width>221</width>
+              <height>81</height>
+             </rect>
+            </property>
            </widget>
           </widget>
          </widget>
@@ -912,11 +912,6 @@ p, li { white-space: pre-wrap; }
    </property>
    <property name="text">
     <string>About OSC-DL</string>
-   </property>
-  </action>
-  <action name="actionTXT_file">
-   <property name="text">
-    <string>Text File</string>
    </property>
   </action>
   <action name="actionEnable_Log_File">

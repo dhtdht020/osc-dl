@@ -28,8 +28,6 @@ class Ui_MainWindow(object):
         self.actionAbout_OSC_DL = QAction(MainWindow)
         self.actionAbout_OSC_DL.setObjectName(u"actionAbout_OSC_DL")
         self.actionAbout_OSC_DL.setEnabled(False)
-        self.actionTXT_file = QAction(MainWindow)
-        self.actionTXT_file.setObjectName(u"actionTXT_file")
         self.actionEnable_Log_File = QAction(MainWindow)
         self.actionEnable_Log_File.setObjectName(u"actionEnable_Log_File")
         self.actionEnable_Log_File.setCheckable(True)
@@ -361,16 +359,18 @@ class Ui_MainWindow(object):
         self.CopyDirectLinkBtn = QPushButton(self.RawTab)
         self.CopyDirectLinkBtn.setObjectName(u"CopyDirectLinkBtn")
         self.CopyDirectLinkBtn.setGeometry(QRect(170, 200, 61, 21))
-        self.metaTreeWidget = QTreeWidget(self.RawTab)
-        self.metaTreeWidget.setObjectName(u"metaTreeWidget")
-        self.metaTreeWidget.setGeometry(QRect(10, 10, 221, 101))
-        self.metaTreeWidget.setRootIsDecorated(False)
         self.settingsBox = QGroupBox(self.RawTab)
         self.settingsBox.setObjectName(u"settingsBox")
         self.settingsBox.setGeometry(QRect(10, 120, 221, 51))
         self.ExtractAppCheckbox = QCheckBox(self.settingsBox)
         self.ExtractAppCheckbox.setObjectName(u"ExtractAppCheckbox")
         self.ExtractAppCheckbox.setGeometry(QRect(10, 20, 201, 17))
+        self.SupportedControllersLabel = QLabel(self.RawTab)
+        self.SupportedControllersLabel.setObjectName(u"SupportedControllersLabel")
+        self.SupportedControllersLabel.setGeometry(QRect(10, 10, 221, 16))
+        self.SupportedControllersListWidget = QListWidget(self.RawTab)
+        self.SupportedControllersListWidget.setObjectName(u"SupportedControllersListWidget")
+        self.SupportedControllersListWidget.setGeometry(QRect(10, 30, 221, 81))
         self.tabMetadata.addTab(self.RawTab, "")
 
         self.verticalLayout_3.addWidget(self.MetadataTabsFrame)
@@ -452,7 +452,7 @@ class Ui_MainWindow(object):
         self.retranslateUi(MainWindow)
 
         self.listAppsWidget.setCurrentRow(-1)
-        self.tabMetadata.setCurrentIndex(0)
+        self.tabMetadata.setCurrentIndex(2)
 
 
         QMetaObject.connectSlotsByName(MainWindow)
@@ -461,7 +461,6 @@ class Ui_MainWindow(object):
     def retranslateUi(self, MainWindow):
         MainWindow.setWindowTitle(QCoreApplication.translate("MainWindow", u"Open Shop Channel Downloader - Library", None))
         self.actionAbout_OSC_DL.setText(QCoreApplication.translate("MainWindow", u"About OSC-DL", None))
-        self.actionTXT_file.setText(QCoreApplication.translate("MainWindow", u"Text File", None))
         self.actionEnable_Log_File.setText(QCoreApplication.translate("MainWindow", u"Enable GUI Log File", None))
         self.actionClear_Log.setText(QCoreApplication.translate("MainWindow", u"Clear GUI Log", None))
         self.actionDownload_HBB_Client.setText(QCoreApplication.translate("MainWindow", u"Download HBB Client", None))
@@ -515,11 +514,9 @@ class Ui_MainWindow(object):
         self.tabMetadata.setTabText(self.tabMetadata.indexOf(self.Description), QCoreApplication.translate("MainWindow", u"Long Description", None))
         self.DirectLinkLabel.setText(QCoreApplication.translate("MainWindow", u"Direct Link", None))
         self.CopyDirectLinkBtn.setText(QCoreApplication.translate("MainWindow", u"Copy", None))
-        ___qtreewidgetitem = self.metaTreeWidget.headerItem()
-        ___qtreewidgetitem.setText(1, QCoreApplication.translate("MainWindow", u"Value", None));
-        ___qtreewidgetitem.setText(0, QCoreApplication.translate("MainWindow", u"Type", None));
         self.settingsBox.setTitle(QCoreApplication.translate("MainWindow", u"Settings", None))
         self.ExtractAppCheckbox.setText(QCoreApplication.translate("MainWindow", u"Extract Downloaded App", None))
+        self.SupportedControllersLabel.setText(QCoreApplication.translate("MainWindow", u"Supported Controllers:", None))
         self.tabMetadata.setTabText(self.tabMetadata.indexOf(self.RawTab), QCoreApplication.translate("MainWindow", u"More", None))
         self.FileNameLabel.setText(QCoreApplication.translate("MainWindow", u"Output File", None))
         self.ViewMetadataBtn.setText(QCoreApplication.translate("MainWindow", u"Download", None))

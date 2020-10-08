@@ -19,7 +19,7 @@ import pyperclip
 from PySide2 import QtGui
 from PySide2.QtCore import Qt
 from PySide2.QtGui import QIcon
-from PySide2.QtWidgets import QApplication, QMainWindow, QInputDialog, QLineEdit, QMessageBox, QSplashScreen
+from PySide2.QtWidgets import QApplication, QMainWindow, QInputDialog, QLineEdit, QMessageBox, QSplashScreen, QLabel
 
 import download
 import gui.ui_united
@@ -196,6 +196,8 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
             self.ui.HomebrewCategoryLabel.setText("")
             self.ui.developer.setText("")
             self.ui.label_description.setText("")
+            # Clear supported controllers:
+            self.ui.SupportedControllersListWidget.clear()
 
             self.repaint()
 
@@ -210,6 +212,26 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
                 self.ui.filesize.setText(metadata.file_size(data[2]))
             except KeyError:
                 self.ui.filesize.setText("Unknown")
+
+            # Get controllers
+            controllers = self.parse_controllers(data[5])
+            # Add icons for Wii Remotes
+            if controllers[0] > 1:
+                self.ui.SupportedControllersListWidget.addItem(f"{str(controllers[0])} Wii Remotes")
+            elif controllers[0] == 1:
+                self.ui.SupportedControllersListWidget.addItem(f"1 Wii Remote")
+            if controllers[1] is True:
+                self.ui.SupportedControllersListWidget.addItem("Nunchuck")
+            if controllers[2] is True:
+                self.ui.SupportedControllersListWidget.addItem("Classic Controller")
+            if controllers[3] is True:
+                self.ui.SupportedControllersListWidget.addItem("Gamecube Controller")
+            if controllers[4] is True:
+                self.ui.SupportedControllersListWidget.addItem("Wii Zapper")
+            if controllers[5] is True:
+                self.ui.SupportedControllersListWidget.addItem("USB Keyboard")
+            if controllers[6] is True:
+                self.ui.SupportedControllersListWidget.addItem("Compatible with SDHC Cards")
 
             if data[3] == "demos":
                 self.ui.HomebrewCategoryLabel.setText("Demo")
@@ -242,6 +264,36 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
     def view_metadata(self):
         data = self.ui.listAppsWidget.currentItem().data(Qt.UserRole)
         self.app_name = data[0]
+
+    def parse_controllers(self, controllers):
+        wii_remotes = 0
+        nunchuck = classic_controller = gamecube_controller = wii_zapper = keyboard = sdhc_compatible = False
+        # Wii Remotes
+        if "wwww" in controllers:
+            wii_remotes = 4
+        elif "www" in controllers:
+            wii_remotes = 3
+        elif "ww" in controllers:
+            wii_remotes = 2
+        elif "w" in controllers:
+            wii_remotes = 1
+
+        # Nunchuck
+        if "n" in controllers:
+            nunchuck = True
+        # Classic Controller
+        if "c" in controllers:
+            classic_controller = True
+        if "g" in controllers:
+            gamecube_controller = True
+        if "z" in controllers:
+            wii_zapper = True
+        if "k" in controllers:
+            keyboard = True
+        if "s" in controllers:
+            sdhc_compatible = True
+
+        return wii_remotes, nunchuck, classic_controller, gamecube_controller, wii_zapper, keyboard, sdhc_compatible
 
     def validate_collection(self, collection, repos):
         # Check if there are contents
@@ -478,7 +530,9 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
             category_dict = self.parse_json_expression(json=loaded_json,
                                                        expression=f"$[*].category")
             release_date_dict = self.parse_json_expression(json=loaded_json,
-                                                       expression=f"$[*].release_date")
+                                                           expression=f"$[*].release_date")
+            controllers_dict = self.parse_json_expression(json=loaded_json,
+                                                          expression=f"$[*].controllers")
             while ongoing is True:
                 try:
                     internal_name = internal_name_dict[i].value
@@ -486,12 +540,14 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
                     extracted_size = extracted_size_dict[i].value
                     category = category_dict[i].value
                     release_date = release_date_dict[i].value
+                    controllers = controllers_dict[i].value
                     self.ui.listAppsWidget.addItem(display_name)
                     self.ui.listAppsWidget.item(i).setData(Qt.UserRole, [internal_name,
                                                                          display_name,
                                                                          extracted_size,
                                                                          category,
-                                                                         release_date])
+                                                                         release_date,
+                                                                         controllers])
                     # self.ui.listAppsWidget.setItemData(i, [internal_name, display_name], Qt.UserRole)
                     i += 1
                 except IndexError:
