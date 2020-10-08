@@ -879,7 +879,6 @@ p, li { white-space: pre-wrap; }
     <addaction name="menuExperimental"/>
     <addaction name="separator"/>
     <addaction name="actionAdd_Fake_Application"/>
-    <addaction name="actionLoad_collection_from_file"/>
    </widget>
    <widget class="QMenu" name="menuClients">
     <property name="title">
@@ -890,6 +889,7 @@ p, li { white-space: pre-wrap; }
       <string>Open Shop Channel DL</string>
      </property>
      <addaction name="actionCheck_for_Updates"/>
+     <addaction name="actionRefresh"/>
     </widget>
     <widget class="QMenu" name="menuHomebrew_Browser">
      <property name="title">
@@ -902,10 +902,9 @@ p, li { white-space: pre-wrap; }
    </widget>
    <widget class="QMenu" name="menuCollections">
     <property name="title">
-     <string>Collections (Preview)</string>
+     <string>Collections</string>
     </property>
     <addaction name="actionLoad_Collection"/>
-    <addaction name="actionCreate_Collection"/>
    </widget>
    <addaction name="menuAbout"/>
    <addaction name="menuClients"/>
@@ -932,6 +931,9 @@ p, li { white-space: pre-wrap; }
    <property name="text">
     <string>Enable GUI Log File</string>
    </property>
+   <property name="shortcut">
+    <string>Ctrl+L</string>
+   </property>
   </action>
   <action name="actionClear_Log">
    <property name="enabled">
@@ -941,39 +943,9 @@ p, li { white-space: pre-wrap; }
     <string>Clear GUI Log</string>
    </property>
   </action>
-  <action name="actionDownload_HBB_Client">
-   <property name="text">
-    <string>Download HBB Client</string>
-   </property>
-  </action>
-  <action name="actionGitHub_Releases">
-   <property name="text">
-    <string>GitHub Releases</string>
-   </property>
-  </action>
-  <action name="actionReport_a_bug">
-   <property name="text">
-    <string>Report a bug</string>
-   </property>
-  </action>
-  <action name="actionGUI">
-   <property name="text">
-    <string>GUI</string>
-   </property>
-  </action>
-  <action name="actionCLI">
-   <property name="text">
-    <string>Command Line</string>
-   </property>
-  </action>
   <action name="actionDownload_HBB_Client_Latest">
    <property name="text">
     <string>Download HBB Client</string>
-   </property>
-  </action>
-  <action name="actionWiiLoad_HBB_Client">
-   <property name="text">
-    <string>WiiLoad HBB Client</string>
    </property>
   </action>
   <action name="actionCheck_for_Updates">
@@ -981,33 +953,9 @@ p, li { white-space: pre-wrap; }
     <string>Check for Updates</string>
    </property>
   </action>
-  <action name="actionNot_yet_implemented">
-   <property name="enabled">
-    <bool>false</bool>
-   </property>
-   <property name="text">
-    <string>Not yet implemented.</string>
-   </property>
-   <property name="font">
-    <font>
-     <weight>75</weight>
-     <bold>true</bold>
-    </font>
-   </property>
-  </action>
-  <action name="actionDownload_from_List">
-   <property name="text">
-    <string>Download from List</string>
-   </property>
-  </action>
   <action name="actionClose_the_shop">
    <property name="text">
     <string>Close the shop</string>
-   </property>
-  </action>
-  <action name="actionUpdate_Wizard_EARLY">
-   <property name="text">
-    <string>Update Wizard (EARLY!)</string>
    </property>
   </action>
   <action name="actionAdd_Fake_Application">
@@ -1020,37 +968,17 @@ p, li { white-space: pre-wrap; }
     <string>Reload Banner</string>
    </property>
   </action>
-  <action name="actionUpdate_Banner">
-   <property name="text">
-    <string>Update Banner</string>
-   </property>
-  </action>
-  <action name="actionHide_Banner">
-   <property name="text">
-    <string>Hide Banner</string>
-   </property>
-  </action>
-  <action name="actionIcons_by_Icons8">
-   <property name="enabled">
-    <bool>false</bool>
-   </property>
-   <property name="text">
-    <string>Icons by Icons8</string>
-   </property>
-  </action>
   <action name="actionLoad_Collection">
    <property name="text">
     <string>Load Collection</string>
    </property>
   </action>
-  <action name="actionCreate_Collection">
+  <action name="actionRefresh">
    <property name="text">
-    <string>Create Collection</string>
+    <string>Refresh List</string>
    </property>
-  </action>
-  <action name="actionLoad_collection_from_file">
-   <property name="text">
-    <string>Load collection from file</string>
+   <property name="shortcut">
+    <string>F5</string>
    </property>
   </action>
  </widget>

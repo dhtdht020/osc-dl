@@ -82,6 +82,7 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         self.ui.menuOpen_Shop_Channel_DL.setIcon(QIcon(resource_path("assets/gui/icons/oscdl-icon.png")))
         self.ui.actionDownload_HBB_Client_Latest.setIcon(QIcon(resource_path("assets/gui/icons/download.png")))
         self.ui.actionCheck_for_Updates.setIcon(QIcon(resource_path("assets/gui/icons/check-for-updates.png")))
+        self.ui.actionRefresh.setIcon(QIcon(resource_path("assets/gui/icons/refresh.png")))
         # DEBUG
         self.ui.actionEnable_Log_File.setIcon(QIcon(resource_path("assets/gui/icons/enable-log.png")))
         self.ui.actionClear_Log.setIcon(QIcon(resource_path("assets/gui/icons/clear-log.png")))
@@ -94,7 +95,6 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         self.ui.actionDisplay_Banner.setIcon(QIcon(resource_path("assets/gui/icons/announcement-banner-reload.png")))
         # BUNDLES
         self.ui.actionLoad_Collection.setIcon(QIcon(resource_path("assets/gui/icons/load-bundle.png")))
-        self.ui.actionCreate_Collection.setIcon(QIcon(resource_path("assets/gui/icons/create-bundle.png")))
 
         self.populate()
         self.selection_changed()
@@ -171,6 +171,7 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         self.ui.actionDownload_HBB_Client_Latest.triggered.connect(partial(self.download_latest_hbb_action))
         # ---- OSC-DL
         self.ui.actionCheck_for_Updates.triggered.connect(partial(self.check_for_updates_action))
+        self.ui.actionRefresh.triggered.connect(partial(self.repopulate))
         # -- Collections
         # ----- Load Collection
         self.ui.actionLoad_Collection.triggered.connect(partial(self.load_collection))
@@ -221,41 +222,49 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
                 item = QListWidgetItem()
                 item.setText(f"{str(controllers[0])} Wii Remotes")
                 item.setIcon(QIcon(resource_path(f"assets/gui/icons/controllers/{str(controllers[0])}WiiRemote.png")))
+                item.setToolTip(f"This app supports up to {str(controllers[0])} Wii Remotes.")
                 self.ui.SupportedControllersListWidget.addItem(item)
             elif controllers[0] == 1:
                 item = QListWidgetItem()
                 item.setText(f"1 Wii Remote")
                 item.setIcon(QIcon(resource_path(f"assets/gui/icons/controllers/1WiiRemote.png")))
+                item.setToolTip("This app supports a single Wii Remote.")
                 self.ui.SupportedControllersListWidget.addItem(item)
             if controllers[1] is True:
                 item = QListWidgetItem()
                 item.setText(f"Nunchuck")
                 item.setIcon(QIcon(resource_path(f"assets/gui/icons/controllers/Nunchuck.png")))
+                item.setToolTip("This app can be used with a Nunchuck.")
                 self.ui.SupportedControllersListWidget.addItem(item)
             if controllers[2] is True:
                 item = QListWidgetItem()
                 item.setText(f"Classic Controller")
                 item.setIcon(QIcon(resource_path(f"assets/gui/icons/controllers/ClassicController.png")))
+                item.setToolTip("This app can be used with a Classic Controller.")
                 self.ui.SupportedControllersListWidget.addItem(item)
             if controllers[3] is True:
                 item = QListWidgetItem()
                 item.setText(f"GameCube Controller")
                 item.setIcon(QIcon(resource_path(f"assets/gui/icons/controllers/GamecubeController.png")))
+                item.setToolTip("This app can be used with a Gamecube Controller.")
                 self.ui.SupportedControllersListWidget.addItem(item)
             if controllers[4] is True:
                 item = QListWidgetItem()
                 item.setText(f"Wii Zapper")
                 item.setIcon(QIcon(resource_path(f"assets/gui/icons/controllers/WiiZapper.png")))
+                item.setToolTip("This app can be used with a Wii Zapper.")
                 self.ui.SupportedControllersListWidget.addItem(item)
             if controllers[5] is True:
                 item = QListWidgetItem()
                 item.setText(f"USB Keyboard")
                 item.setIcon(QIcon(resource_path(f"assets/gui/icons/controllers/USBKeyboard.png")))
+                item.setToolTip("This app can be used with a USB Keyboard.")
                 self.ui.SupportedControllersListWidget.addItem(item)
             if controllers[6] is True:
                 item = QListWidgetItem()
                 item.setText(f"SDHC Card")
                 item.setIcon(QIcon(resource_path(f"assets/gui/icons/controllers/SDHC.png")))
+                item.setToolTip("This app is confirmed to support SDHC cards.")
                 self.ui.SupportedControllersListWidget.addItem(item)
 
             if data[3] == "demos":
