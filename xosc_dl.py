@@ -212,9 +212,9 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
             info = metadata.dictionary(app_name, repo=HOST)
             data = self.ui.listAppsWidget.currentItem().data(Qt.UserRole)
             # Get actual metadata
-            self.ui.appname.setText(info.get("display_name"))
-            self.ui.SelectionInfoBox.setTitle("Metadata: " + info.get("display_name"))
-            self.ui.label_displayname.setText(info.get("display_name"))
+            self.ui.appname.setText(data[1])
+            self.ui.SelectionInfoBox.setTitle("Metadata: " + data[1])
+            self.ui.label_displayname.setText(data[1])
             self.ui.version.setText(info.get("version"))
             try:
                 self.ui.filesize.setText(metadata.file_size(data[2]))
@@ -238,9 +238,9 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
                 self.ui.SupportedControllersListWidget.addItem(item)
             if controllers[1] is True:
                 item = QListWidgetItem()
-                item.setText(f"Nunchuck")
-                item.setIcon(QIcon(resource_path(f"assets/gui/icons/controllers/Nunchuck.png")))
-                item.setToolTip("This app can be used with a Nunchuck.")
+                item.setText(f"Nunchuk")
+                item.setIcon(QIcon(resource_path(f"assets/gui/icons/controllers/Nunchuk.png")))
+                item.setToolTip("This app can be used with a Nunchuk.")
                 self.ui.SupportedControllersListWidget.addItem(item)
             if controllers[2] is True:
                 item = QListWidgetItem()
@@ -307,7 +307,7 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
 
     def parse_controllers(self, controllers):
         wii_remotes = 0
-        nunchuck = classic_controller = gamecube_controller = wii_zapper = keyboard = sdhc_compatible = False
+        nunchuk = classic_controller = gamecube_controller = wii_zapper = keyboard = sdhc_compatible = False
         # Wii Remotes
         if "wwww" in controllers:
             wii_remotes = 4
@@ -318,9 +318,9 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         elif "w" in controllers:
             wii_remotes = 1
 
-        # Nunchuck
+        # nunchuk
         if "n" in controllers:
-            nunchuck = True
+            nunchuk = True
         # Classic Controller
         if "c" in controllers:
             classic_controller = True
@@ -333,7 +333,7 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         if "s" in controllers:
             sdhc_compatible = True
 
-        return wii_remotes, nunchuck, classic_controller, gamecube_controller, wii_zapper, keyboard, sdhc_compatible
+        return wii_remotes, nunchuk, classic_controller, gamecube_controller, wii_zapper, keyboard, sdhc_compatible
 
     def validate_collection(self, collection, repos):
         # Check if there are contents
