@@ -19,7 +19,8 @@ import pyperclip
 from PySide2 import QtGui
 from PySide2.QtCore import Qt
 from PySide2.QtGui import QIcon
-from PySide2.QtWidgets import QApplication, QMainWindow, QInputDialog, QLineEdit, QMessageBox, QSplashScreen, QLabel
+from PySide2.QtWidgets import QApplication, QMainWindow, QInputDialog, QLineEdit, QMessageBox, QSplashScreen, QLabel, \
+    QListWidgetItem
 
 import download
 import gui.ui_united
@@ -217,21 +218,45 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
             controllers = self.parse_controllers(data[5])
             # Add icons for Wii Remotes
             if controllers[0] > 1:
-                self.ui.SupportedControllersListWidget.addItem(f"{str(controllers[0])} Wii Remotes")
+                item = QListWidgetItem()
+                item.setText(f"{str(controllers[0])} Wii Remotes")
+                item.setIcon(QIcon(resource_path(f"assets/gui/icons/controllers/{str(controllers[0])}WiiRemote.png")))
+                self.ui.SupportedControllersListWidget.addItem(item)
             elif controllers[0] == 1:
-                self.ui.SupportedControllersListWidget.addItem(f"1 Wii Remote")
+                item = QListWidgetItem()
+                item.setText(f"1 Wii Remote")
+                item.setIcon(QIcon(resource_path(f"assets/gui/icons/controllers/1WiiRemote.png")))
+                self.ui.SupportedControllersListWidget.addItem(item)
             if controllers[1] is True:
-                self.ui.SupportedControllersListWidget.addItem("Nunchuck")
+                item = QListWidgetItem()
+                item.setText(f"Nunchuck")
+                item.setIcon(QIcon(resource_path(f"assets/gui/icons/controllers/Nunchuck.png")))
+                self.ui.SupportedControllersListWidget.addItem(item)
             if controllers[2] is True:
-                self.ui.SupportedControllersListWidget.addItem("Classic Controller")
+                item = QListWidgetItem()
+                item.setText(f"Classic Controller")
+                item.setIcon(QIcon(resource_path(f"assets/gui/icons/controllers/ClassicController.png")))
+                self.ui.SupportedControllersListWidget.addItem(item)
             if controllers[3] is True:
-                self.ui.SupportedControllersListWidget.addItem("Gamecube Controller")
+                item = QListWidgetItem()
+                item.setText(f"GameCube Controller")
+                item.setIcon(QIcon(resource_path(f"assets/gui/icons/controllers/GamecubeController.png")))
+                self.ui.SupportedControllersListWidget.addItem(item)
             if controllers[4] is True:
-                self.ui.SupportedControllersListWidget.addItem("Wii Zapper")
+                item = QListWidgetItem()
+                item.setText(f"Wii Zapper")
+                item.setIcon(QIcon(resource_path(f"assets/gui/icons/controllers/WiiZapper.png")))
+                self.ui.SupportedControllersListWidget.addItem(item)
             if controllers[5] is True:
-                self.ui.SupportedControllersListWidget.addItem("USB Keyboard")
+                item = QListWidgetItem()
+                item.setText(f"USB Keyboard")
+                item.setIcon(QIcon(resource_path(f"assets/gui/icons/controllers/USBKeyboard.png")))
+                self.ui.SupportedControllersListWidget.addItem(item)
             if controllers[6] is True:
-                self.ui.SupportedControllersListWidget.addItem("Compatible with SDHC Cards")
+                item = QListWidgetItem()
+                item.setText(f"SDHC Card")
+                item.setIcon(QIcon(resource_path(f"assets/gui/icons/controllers/SDHC.png")))
+                self.ui.SupportedControllersListWidget.addItem(item)
 
             if data[3] == "demos":
                 self.ui.HomebrewCategoryLabel.setText("Demo")
