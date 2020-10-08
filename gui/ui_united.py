@@ -456,7 +456,7 @@ class Ui_MainWindow(object):
         self.retranslateUi(MainWindow)
 
         self.listAppsWidget.setCurrentRow(-1)
-        self.tabMetadata.setCurrentIndex(2)
+        self.tabMetadata.setCurrentIndex(0)
 
 
         QMetaObject.connectSlotsByName(MainWindow)
@@ -515,12 +515,12 @@ class Ui_MainWindow(object):
 "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:'Cantarell'; font-size:10pt;\">         </span></p>\n"
 "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">        </p></body></html>", None))
         self.LongDescLabel.setText(QCoreApplication.translate("MainWindow", u"Long Description", None))
-        self.tabMetadata.setTabText(self.tabMetadata.indexOf(self.Description), QCoreApplication.translate("MainWindow", u"Long Description", None))
+        self.tabMetadata.setTabText(self.tabMetadata.indexOf(self.Description), QCoreApplication.translate("MainWindow", u"Description", None))
         self.DirectLinkLabel.setText(QCoreApplication.translate("MainWindow", u"Direct Link", None))
         self.CopyDirectLinkBtn.setText(QCoreApplication.translate("MainWindow", u"Copy", None))
         self.SupportedControllersLabel.setText(QCoreApplication.translate("MainWindow", u"Supported Controllers:", None))
         self.ExtractAppCheckbox.setText(QCoreApplication.translate("MainWindow", u"Extract Downloaded App", None))
-        self.tabMetadata.setTabText(self.tabMetadata.indexOf(self.RawTab), QCoreApplication.translate("MainWindow", u"More", None))
+        self.tabMetadata.setTabText(self.tabMetadata.indexOf(self.RawTab), QCoreApplication.translate("MainWindow", u"Controllers", None))
         self.FileNameLabel.setText(QCoreApplication.translate("MainWindow", u"Output File", None))
         self.ViewMetadataBtn.setText(QCoreApplication.translate("MainWindow", u"Download", None))
         self.WiiLoadButton.setText(QCoreApplication.translate("MainWindow", u"WiiLoad", None))
