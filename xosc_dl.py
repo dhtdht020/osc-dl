@@ -18,7 +18,7 @@ import requests
 import pyperclip
 from PySide2 import QtGui
 from PySide2.QtCore import Qt
-from PySide2.QtGui import QIcon
+from PySide2.QtGui import QIcon, QColor
 from PySide2.QtWidgets import QApplication, QMainWindow, QInputDialog, QLineEdit, QMessageBox, QSplashScreen, QLabel, \
     QListWidgetItem
 
@@ -109,6 +109,8 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
 
     # populate UI elements
     def populate(self):
+        if not splash.isHidden():
+            splash.showMessage(f"Loading contents..", color=splash_color)
         self.ui.actionAbout_OSC_DL.setText(f"osc-dl Version v{VERSION}")
         self.populate_repositories()
         self.populate_list()
@@ -129,6 +131,8 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
                 name = i
                 self.ui.ReposComboBox.addItem(display_name)
                 self.ui.ReposComboBox.setItemData(n, [display_name, host, description, name], Qt.UserRole)
+                if not splash.isHidden():
+                    splash.showMessage(f"Loaded {n} repositories..", color=splash_color)
                 n += 1
 
             index = self.ui.ReposComboBox.currentIndex()
@@ -150,6 +154,8 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
                                                   "themes"], Qt.UserRole)
 
     def assign_initial_actions(self):
+        if not splash.isHidden():
+            splash.showMessage(f"Finishing..", color=splash_color)
         # Buttons
         self.ui.CopyDirectLinkBtn.clicked.connect(self.copy_download_link_button)
         self.ui.RefreshListBtn.clicked.connect(self.repopulate)
@@ -583,6 +589,8 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
                                                                          release_date,
                                                                          controllers])
                     # self.ui.listAppsWidget.setItemData(i, [internal_name, display_name], Qt.UserRole)
+                    if not splash.isHidden():
+                        splash.showMessage(f"Loaded {i} apps..", color=splash_color)
                     i += 1
                 except IndexError:
                     ongoing = False
@@ -716,21 +724,17 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
 
 
 if __name__ == "__main__":
+    global splash
+    global splash_color
     app = QApplication()
 
     # Splash
-    try:
-        # data = updater.obtain_splash()
-        image = QtGui.QImage(resource_path("assets/gui/splash.png"))
-        splash = QSplashScreen(QtGui.QPixmap(image))
-        splash.show()
-    except Exception:
-        pass
+    image = QtGui.QImage(resource_path("assets/gui/splash.png"))
+    splash_color = QColor("White")
+    splash = QSplashScreen(QtGui.QPixmap(image))
+    splash.show()
 
     window = MainWindow()
     window.show()
-    try:
-        splash.hide()
-    except Exception:
-        pass
+    splash.hide()
     app.exec_()
