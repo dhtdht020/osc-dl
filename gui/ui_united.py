@@ -46,8 +46,6 @@ class Ui_MainWindow(object):
         self.actionDisplay_Banner.setObjectName(u"actionDisplay_Banner")
         self.actionLoad_Collection = QAction(MainWindow)
         self.actionLoad_Collection.setObjectName(u"actionLoad_Collection")
-        self.actionLoad_collection_from_file = QAction(MainWindow)
-        self.actionLoad_collection_from_file.setObjectName(u"actionLoad_collection_from_file")
         self.actionRefresh = QAction(MainWindow)
         self.actionRefresh.setObjectName(u"actionRefresh")
         self.centralwidget = QWidget(MainWindow)
@@ -56,28 +54,6 @@ class Ui_MainWindow(object):
         self.horizontalLayout_2.setObjectName(u"horizontalLayout_2")
         self.AppsLibraryBox = QGroupBox(self.centralwidget)
         self.AppsLibraryBox.setObjectName(u"AppsLibraryBox")
-        self.announcement = QFrame(self.AppsLibraryBox)
-        self.announcement.setObjectName(u"announcement")
-        self.announcement.setGeometry(QRect(0, 0, 605, 21))
-        self.announcement.setVisible(False)
-        self.announcement.setStyleSheet(u"QFrame {\n"
-"background-color: rgb(255, 85, 0);\n"
-"color: rgb(255, 255, 255);\n"
-"}")
-        self.announcement.setFrameShape(QFrame.StyledPanel)
-        self.announcement.setFrameShadow(QFrame.Raised)
-        self.announcementLabel = QLabel(self.announcement)
-        self.announcementLabel.setObjectName(u"announcementLabel")
-        self.announcementLabel.setGeometry(QRect(6, 0, 591, 21))
-        self.announcementLabel.setOpenExternalLinks(True)
-        self.announcementURLLabel = QLabel(self.announcement)
-        self.announcementURLLabel.setObjectName(u"announcementURLLabel")
-        self.announcementURLLabel.setGeometry(QRect(340, 0, 251, 21))
-        self.announcementURLLabel.setStyleSheet(u"QLabel {\n"
-"background-color: rgba(255, 255, 255, 0);\n"
-"}")
-        self.announcementURLLabel.setAlignment(Qt.AlignRight|Qt.AlignTrailing|Qt.AlignVCenter)
-        self.announcementURLLabel.setOpenExternalLinks(True)
         self.verticalLayout = QVBoxLayout(self.AppsLibraryBox)
         self.verticalLayout.setObjectName(u"verticalLayout")
         self.verticalLayout.setContentsMargins(-1, 4, -1, -1)
@@ -188,8 +164,38 @@ class Ui_MainWindow(object):
 
         self.verticalLayout.addWidget(self.LibraryContentFrame)
 
-        self.LibraryContentFrame.raise_()
-        self.announcement.raise_()
+        self.announcement = QFrame(self.AppsLibraryBox)
+        self.announcement.setObjectName(u"announcement")
+        self.announcement.setMaximumSize(QSize(16777215, 21))
+        self.announcement.setVisible(False)
+        self.announcement.setStyleSheet(u"QFrame {\n"
+"background-color: rgb(255, 85, 0);\n"
+"color: rgb(255, 255, 255);\n"
+"}")
+        self.announcement.setFrameShape(QFrame.StyledPanel)
+        self.announcement.setFrameShadow(QFrame.Raised)
+        self.horizontalLayout_4 = QHBoxLayout(self.announcement)
+        self.horizontalLayout_4.setObjectName(u"horizontalLayout_4")
+        self.horizontalLayout_4.setContentsMargins(3, 0, 3, 0)
+        self.announcementLabel = QLabel(self.announcement)
+        self.announcementLabel.setObjectName(u"announcementLabel")
+        self.announcementLabel.setOpenExternalLinks(True)
+
+        self.horizontalLayout_4.addWidget(self.announcementLabel)
+
+        self.announcementURLLabel = QLabel(self.announcement)
+        self.announcementURLLabel.setObjectName(u"announcementURLLabel")
+        self.announcementURLLabel.setStyleSheet(u"QLabel {\n"
+"background-color: rgba(255, 255, 255, 0);\n"
+"}")
+        self.announcementURLLabel.setAlignment(Qt.AlignRight|Qt.AlignTrailing|Qt.AlignVCenter)
+        self.announcementURLLabel.setOpenExternalLinks(True)
+
+        self.horizontalLayout_4.addWidget(self.announcementURLLabel)
+
+
+        self.verticalLayout.addWidget(self.announcement)
+
 
         self.horizontalLayout_2.addWidget(self.AppsLibraryBox)
 
@@ -347,7 +353,7 @@ class Ui_MainWindow(object):
         self.SupportedControllersListWidget.setWordWrap(True)
         self.ExtractAppCheckbox = QCheckBox(self.RawTab)
         self.ExtractAppCheckbox.setObjectName(u"ExtractAppCheckbox")
-        self.ExtractAppCheckbox.setGeometry(QRect(10, 170, 141, 31))
+        self.ExtractAppCheckbox.setGeometry(QRect(10, 170, 271, 31))
         self.tabMetadata.addTab(self.RawTab, "")
 
         self.verticalLayout_3.addWidget(self.MetadataTabsFrame)
@@ -416,7 +422,6 @@ class Ui_MainWindow(object):
         self.menuDebug.addAction(self.menuExperimental.menuAction())
         self.menuDebug.addSeparator()
         self.menuDebug.addAction(self.actionAdd_Fake_Application)
-        self.menuDebug.addAction(self.actionLoad_collection_from_file)
         self.menuExperimental.addAction(self.menuAnnouncement_Banner.menuAction())
         self.menuAnnouncement_Banner.addAction(self.actionDisplay_Banner)
         self.menuClients.addAction(self.menuHomebrew_Browser.menuAction())
@@ -429,7 +434,7 @@ class Ui_MainWindow(object):
         self.retranslateUi(MainWindow)
 
         self.listAppsWidget.setCurrentRow(-1)
-        self.tabMetadata.setCurrentIndex(0)
+        self.tabMetadata.setCurrentIndex(2)
 
 
         QMetaObject.connectSlotsByName(MainWindow)
@@ -449,19 +454,18 @@ class Ui_MainWindow(object):
         self.actionAdd_Fake_Application.setText(QCoreApplication.translate("MainWindow", u"Add Fake Listing", None))
         self.actionDisplay_Banner.setText(QCoreApplication.translate("MainWindow", u"Reload Banner", None))
         self.actionLoad_Collection.setText(QCoreApplication.translate("MainWindow", u"Load Collection", None))
-        self.actionLoad_collection_from_file.setText(QCoreApplication.translate("MainWindow", u"Load collection from file", None))
         self.actionRefresh.setText(QCoreApplication.translate("MainWindow", u"Refresh List", None))
 #if QT_CONFIG(shortcut)
         self.actionRefresh.setShortcut(QCoreApplication.translate("MainWindow", u"F5", None))
 #endif // QT_CONFIG(shortcut)
         self.AppsLibraryBox.setTitle(QCoreApplication.translate("MainWindow", u"Apps Library", None))
-        self.announcementLabel.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p><span style=\" font-weight:600;\">Announcement Header: </span>Announcement Content.</p></body></html>", None))
-        self.announcementURLLabel.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p><a href=\"https://google.com\"><span style=\" text-decoration: underline; color:#ffff00;\">Announcement URL</span></a></p></body></html>", None))
         self.RepositoryNameLabel.setText(QCoreApplication.translate("MainWindow", u"Repository Name", None))
         self.RepositoryLabel.setText(QCoreApplication.translate("MainWindow", u"Repository:", None))
         self.RefreshListBtn.setText(QCoreApplication.translate("MainWindow", u"Refresh Apps", None))
         self.RepositoryDescLabel.setText(QCoreApplication.translate("MainWindow", u"Repository Description", None))
         self.AppsAmountLabel.setText(QCoreApplication.translate("MainWindow", u"0 Apps", None))
+        self.announcementLabel.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p><span style=\" font-weight:600;\">Announcement Header: </span>Announcement Content.</p></body></html>", None))
+        self.announcementURLLabel.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p><a href=\"https://google.com\"><span style=\" text-decoration: underline; color:#ffff00;\">Announcement URL</span></a></p></body></html>", None))
         self.SelectionInfoBox.setTitle(QCoreApplication.translate("MainWindow", u"Application Metadata", None))
         self.label_appname.setText(QCoreApplication.translate("MainWindow", u"App Name", None))
         self.appname.setText("")
