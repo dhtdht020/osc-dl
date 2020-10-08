@@ -155,16 +155,18 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
 
     def assign_initial_actions(self):
         if not splash.isHidden():
-            splash.showMessage(f"Finishing..", color=splash_color)
+            splash.showMessage(f"Finishing (1/3)..", color=splash_color)
         # Buttons
         self.ui.CopyDirectLinkBtn.clicked.connect(self.copy_download_link_button)
         self.ui.RefreshListBtn.clicked.connect(self.repopulate)
         self.ui.ViewMetadataBtn.clicked.connect(self.download_button)
         self.ui.WiiLoadButton.clicked.connect(self.wiiload_button)
 
+
         # Others
         self.ui.ReposComboBox.currentIndexChanged.connect(self.changed_host)
         self.ui.listAppsWidget.currentItemChanged.connect(self.selection_changed)
+
 
         # Actions
         # -- Debug
@@ -184,6 +186,8 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
 
     # When user selects a different homebrew from the list
     def selection_changed(self):
+        if not splash.isHidden():
+            splash.showMessage(f"Finishing (2/3) - Loading first app..", color=splash_color)
         try:
             # app_name = self.ui.listAppsWidget.currentItem().text()
             data = self.ui.listAppsWidget.currentItem().data(Qt.UserRole)
@@ -556,6 +560,8 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         #    self.ui.listAppsWidget.addItem(item)
         # self.ui.listAppsWidget.setCurrentRow(0)
         # self.ui.AppsAmountLabel.setText(str(self.ui.listAppsWidget.count()) + " Apps")
+        if not splash.isHidden():
+            splash.showMessage(f"Connecting to server..", color=splash_color)
         json_req = requests.get(f"https://api.oscwii.org/v1/{HOST_NAME}/packages")
         loaded_json = json.loads(json_req.text)
         if json_req.status_code == 200:
@@ -695,6 +701,8 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         self.status_message(f"DEBUG: Added {amount} fake entries to applications list.")
 
     def load_announcement_banner(self):
+        if not splash.isHidden():
+            splash.showMessage(f"Finishing (3/3) - Checking for announcements..", color=splash_color)
         try:
             announcement = updater.get_announcement()
             announcement_label = announcement[0]
