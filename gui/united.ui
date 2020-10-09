@@ -877,8 +877,6 @@ p, li { white-space: pre-wrap; }
     <addaction name="separator"/>
     <addaction name="actionClose_the_shop"/>
     <addaction name="menuExperimental"/>
-    <addaction name="separator"/>
-    <addaction name="actionAdd_Fake_Application"/>
    </widget>
    <widget class="QMenu" name="menuClients">
     <property name="title">

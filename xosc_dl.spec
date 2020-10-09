@@ -6,7 +6,6 @@ block_cipher = None
 a = Analysis(['xosc_dl.py'],
              binaries=[],
              datas=[('assets/gui/windowicon.png', './assets/gui/'),
-                    ('assets/gui/icons/add-fake-listing.png', './assets/gui/icons/'),
                     ('assets/gui/icons/announcement-banner.png', './assets/gui/icons/'),
                     ('assets/gui/icons/clear-log.png', './assets/gui/icons/'),
                     ('assets/gui/icons/close-shop.png', './assets/gui/icons/'),

@@ -91,7 +91,6 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         self.ui.actionClear_Log.setIcon(QIcon(resource_path("assets/gui/icons/clear-log.png")))
         self.ui.actionClose_the_shop.setIcon(QIcon(resource_path("assets/gui/icons/close-shop.png")))
         self.ui.menuExperimental.setIcon(QIcon(resource_path("assets/gui/icons/experimental.png")))
-        self.ui.actionAdd_Fake_Application.setIcon(QIcon(resource_path("assets/gui/icons/add-fake-listing.png")))
         # DEBUG -> EXPERIMENTAL
         self.ui.menuAnnouncement_Banner.setIcon(QIcon(resource_path("assets/gui/icons/announcement-banner.png")))
         # DEBUG -> EXPERIMENTAL -> ANNOUNCEMENT BANNER
@@ -175,7 +174,6 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         # -- Debug
         self.ui.actionEnable_Log_File.triggered.connect(self.turn_log_on)
         self.ui.actionClose_the_shop.triggered.connect(self.close_the_shop)
-        self.ui.actionAdd_Fake_Application.triggered.connect(self.add_fake_listing_action)
         self.ui.actionDisplay_Banner.triggered.connect(self.load_announcement_banner)
         # -- Clients
         # ---- Homebrew Browser
@@ -686,22 +684,6 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         lbl = self.ui.HomebrewIconLabel
         lbl.setPixmap(QtGui.QPixmap(image))
         lbl.show()
-
-    def add_fake_listing_action(self):
-        amount, ok = QInputDialog.getInt(self, 'Debug: Fake Listing Wizard',
-                                         'Enter the amount of fake listings to add:',
-                                         QLineEdit.Normal)
-        if not ok:
-            return
-
-        self.status_message("DEBUG: Adding fake entries.. Please wait..")
-
-        word_json = requests.get(f"https://random-word-api.herokuapp.com/word?number={amount}").text
-        words = json.loads(word_json)
-        for item in words:
-            self.ui.listAppsWidget.addItem(item + "_wii")
-
-        self.status_message(f"DEBUG: Added {amount} fake entries to applications list.")
 
     def load_announcement_banner(self):
         if not splash.isHidden():
