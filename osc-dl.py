@@ -100,14 +100,6 @@ meta.add_argument(
 )
 
 meta.add_argument(
-    "-t",
-    "--type",
-    help="Type of metadata to obtain "
-         "(display_name, developer, version, short_description, long_description, release_date, contributors)",
-    action="store"
-)
-
-meta.add_argument(
     "-r",
     "--host",
     help="Repository URL",
@@ -348,10 +340,7 @@ if args.cmd == 'meta':
     if args.host is None:
         args.host = "hbb1.oscwii.org"
 
-    if args.type is None:
-        args.type = "default"
-
-    appmeta = metadata.get(app_name=args.name, type=args.type, repo=args.host)
+    appmeta = metadata.get(app_name=args.name, repo=args.host)
     if appmeta is not None:
         print(appmeta)
 

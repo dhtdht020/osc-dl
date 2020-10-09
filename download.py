@@ -64,14 +64,14 @@ def confirm(app_name, repo="hbb1.oscwii.org"):
 
     metadata.get(app_name)
 
-    answer = input('Continue with download of "' + display_name + '"? (y/n) > ')
+    answer = input(f'Continue with download of "{display_name}" ? (y/n) > ')
     if answer == "y":
         pass
     elif answer == "n":
         print(FAIL+"Cancelled download operation. Exiting.")
         sys.exit(1)
     else:
-        print("Please reply with 'y' to continue or 'n' to cancel.")
+        print("Please type 'y' to continue or 'n' to cancel.")
 
 
 def everything(extract=False, repo="hbb1.oscwii.org"):

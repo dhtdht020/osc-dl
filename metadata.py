@@ -13,8 +13,7 @@ except locale.Error:
     pass
 
 
-
-def get(app_name, type=None, repo="hbb1.oscwii.org"):
+def get(app_name, repo="hbb1.oscwii.org"):
     if parsecontents.query_verify(term=app_name, repo=repo, internal=True) is False:
         print(FAIL+"Failure: App "+app_name+" could not be found on "+repo)
         exit(1)
@@ -69,24 +68,11 @@ def get(app_name, type=None, repo="hbb1.oscwii.org"):
     except Exception:
         contributors = "Unknown"
 
-    # check for requested information
-    meta = {"display_name": display_name,
-            "coder": developer,
-            "version": version,
-            "short_description": short_description,
-            "long_description": long_description,
-            "release_date": release_date,
-            "contributors": contributors
-            }
-
-    if type:
-        return metadata[type]
-
     print("\n=========== Application Metadata ===========")
-    print("Application: " + display_name + "\n")
-    print("Developer: " + developer)
-    print("Version: " + version)
-    print("Description: " + short_description)
+    print(f"Application:  {display_name}")
+    print(f"Developer:    {developer}")
+    print(f"Version:      {version}")
+    print(f"Description:  {short_description}")
     print("============================================\n")
 
 
