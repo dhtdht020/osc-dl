@@ -60,6 +60,9 @@ if updater.is_frozen():
         traces_sample_rate=1.0
     )
 
+    with sentry_sdk.configure_scope() as scope:
+        scope.set_tag("osc.release", VERSION)
+
 
 # G U I
 class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
