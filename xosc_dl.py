@@ -342,7 +342,7 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         data = self.ui.listAppsWidget.currentItem().data(Qt.UserRole)
         self.app_name = data[0]
         self.status_message(f"Downloading {self.app_name} from Open Shop Channel..")
-        path_to_file, _ = QFileDialog.getSaveFileName(None, 'Save File', self.ui.FileNameLineEdit.text())
+        path_to_file, _ = QFileDialog.getSaveFileName(None, 'Save Application', self.ui.FileNameLineEdit.text())
         output = path_to_file
         extract = self.ui.ExtractAppCheckbox.isChecked()
         if extract is True:
@@ -554,12 +554,16 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
 
     def download_latest_hbb_action(self):
         self.status_message("Downloading Homebrew Browser from Open Shop Channel..")
-        path_to_file, _ = QFileDialog.getSaveFileName(None, 'Save File', "homebrew_browser_v0.3.9e.zip")
+        path_to_file, _ = QFileDialog.getSaveFileName(None, 'Save Application', "homebrew_browser_v0.3.9e.zip")
         output = path_to_file
         self.ui.progressBar.setValue(25)
-        download.hbb(output)
-        self.ui.progressBar.setValue(100)
-        self.status_message(f"Download success! Output: {output}")
+        if output != "":
+            download.hbb(output)
+            self.ui.progressBar.setValue(100)
+            self.status_message(f"Download success! Output: {output}")
+        else:
+            self.ui.progressBar.setValue(0)
+            self.status_message(f"Cancelled Download.")
 
     def check_for_updates_action(self):
         self.status_message("Checking for updates..")
