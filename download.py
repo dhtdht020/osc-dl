@@ -86,9 +86,7 @@ def everything(extract=False, repo="hbb1.oscwii.org"):
         print("[Progress] Downloaded " + str(progress) + " out of " + str(amount) + " apps.")
 
 
-def hbb():
-
-    output = "homebrew_browser_v0.3.9e.zip"
+def hbb(output):
 
     with Halo(
             text="Obtaining Homebrew Browser", color="yellow", text_color="yellow"

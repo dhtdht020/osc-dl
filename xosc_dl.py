@@ -554,10 +554,12 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
 
     def download_latest_hbb_action(self):
         self.status_message("Downloading Homebrew Browser from Open Shop Channel..")
+        path_to_file, _ = QFileDialog.getSaveFileName(None, 'Save File', "homebrew_browser_v0.3.9e.zip")
+        output = path_to_file
         self.ui.progressBar.setValue(25)
-        download.hbb()
+        download.hbb(output)
         self.ui.progressBar.setValue(100)
-        self.status_message("Download success! Output: homebrew_browser_v0.3.9e.zip")
+        self.status_message(f"Download success! Output: {output}")
 
     def check_for_updates_action(self):
         self.status_message("Checking for updates..")
