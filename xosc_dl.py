@@ -17,10 +17,10 @@ from jsonpath_ng import jsonpath, parse
 import requests
 import pyperclip
 from PySide2 import QtGui
-from PySide2.QtCore import Qt
+from PySide2.QtCore import Qt, QObject
 from PySide2.QtGui import QIcon, QColor
 from PySide2.QtWidgets import QApplication, QMainWindow, QInputDialog, QLineEdit, QMessageBox, QSplashScreen, QLabel, \
-    QListWidgetItem
+    QListWidgetItem, QFileDialog
 
 import download
 import gui.ui_united
@@ -335,20 +335,29 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
 
         return wii_remotes, nunchuk, classic_controller, gamecube_controller, wii_zapper, keyboard, sdhc_compatible
 
+    def trugh(self, text):
+        return QObject.tr(self, text)
+
     def download_button(self):
         data = self.ui.listAppsWidget.currentItem().data(Qt.UserRole)
         self.app_name = data[0]
         self.status_message(f"Downloading {self.app_name} from Open Shop Channel..")
-        output = self.ui.FileNameLineEdit.text()
+        path_to_file, _ = QFileDialog.getSaveFileName(None, 'Save File', self.ui.FileNameLineEdit.text())
+        output = path_to_file
         extract = self.ui.ExtractAppCheckbox.isChecked()
         if extract is True:
             logging.info("Set to extract app too!")
         self.ui.progressBar.setValue(25)
         console_output = io.StringIO()
-        with redirect_stdout(console_output):
-            download.get(app_name=self.app_name, repo=HOST, output=output, extract=extract)
-        self.ui.progressBar.setValue(100)
-        self.status_message(escape_ansi(console_output.getvalue()))
+        if output != '':
+            with redirect_stdout(console_output):
+                download.get(app_name=self.app_name, repo=HOST, output=output, extract=extract)
+            self.ui.progressBar.setValue(100)
+            self.status_message(escape_ansi(console_output.getvalue()))
+        else:
+            print("Cancelled.")
+            self.ui.progressBar.setValue(0)
+            self.status_message("Cancelled Download.")
 
     def wiiload_button(self):
         ip, ok = QInputDialog.getText(self, 'WiiLoad IP Address',
