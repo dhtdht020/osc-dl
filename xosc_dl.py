@@ -95,8 +95,6 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         self.ui.menuAnnouncement_Banner.setIcon(QIcon(resource_path("assets/gui/icons/announcement-banner.png")))
         # DEBUG -> EXPERIMENTAL -> ANNOUNCEMENT BANNER
         self.ui.actionDisplay_Banner.setIcon(QIcon(resource_path("assets/gui/icons/announcement-banner-reload.png")))
-        # BUNDLES
-        self.ui.actionLoad_Collection.setIcon(QIcon(resource_path("assets/gui/icons/load-bundle.png")))
 
         self.populate()
         self.selection_changed()
@@ -113,7 +111,7 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
     def populate(self):
         if not splash.isHidden():
             splash.showMessage(f"Loading contents..", color=splash_color)
-        self.ui.actionAbout_OSC_DL.setText(f"osc-dl Version v{VERSION}")
+        self.ui.actionAbout_OSC_DL.setText(f"osc-dl Version v{VERSION} by dhtdht020")
         self.populate_repositories()
         self.populate_list()
         self.assign_initial_actions()
@@ -181,9 +179,6 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         # ---- OSC-DL
         self.ui.actionCheck_for_Updates.triggered.connect(partial(self.check_for_updates_action))
         self.ui.actionRefresh.triggered.connect(partial(self.repopulate))
-        # -- Collections
-        # ----- Load Collection
-        self.ui.actionLoad_Collection.triggered.connect(partial(self.load_collection))
 
     # When user selects a different homebrew from the list
     def selection_changed(self):
@@ -339,89 +334,6 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
             sdhc_compatible = True
 
         return wii_remotes, nunchuk, classic_controller, gamecube_controller, wii_zapper, keyboard, sdhc_compatible
-
-    def validate_collection(self, collection, repos):
-        # Check if there are contents
-        try:
-            apps = collection["applications"]
-            first_app = apps[0]
-        except TypeError as e:
-            QMessageBox.critical(self, 'OSC-DL: Critical Collection Validator Error',
-                                 'This collection seems to have 0 apps. Instructions unclear!\n'
-                                 'Loading of collection has been stopped.\n'
-                                 'Please report this incident.\n\n'
-                                 f'Exception: {e}')
-            raise e
-
-    def load_collection(self):
-        global HOST
-        id, ok = QInputDialog.getText(self, 'Load OSC Collection',
-                                      'Enter the ID associated with your collection.\n'
-                                      'The ID is in all-caps, and matches the collection YAML name. \n\n'
-                                      'If you are testing a local collection, please use the Collection Editor tool.',
-                                      QLineEdit.Normal)
-        if not ok:
-            return
-
-        collection_req = requests.get(
-            f"https://raw.githubusercontent.com/dhtdht020/OSCDL-Collections/master/v1/collection/{id}.yml")
-        repos_req = requests.get(
-            f"https://raw.githubusercontent.com/dhtdht020/oscdl-updateserver/master/v1/announcement/repositories.yml")
-        collection_file = collection_req.text
-        repos_file = repos_req.text
-
-        if collection_req.status_code != 200:
-            QMessageBox.critical(self, 'OSC-DL: Critical Collections Error',
-                                 'Could not find this collection or connect to the collection server.\n'
-                                 'Please check your internet connection, or report this incident.')
-        if repos_req.status_code != 200:
-            QMessageBox.critical(self, 'OSC-DL: Critical Repository List Error',
-                                 'Could not connect to the repository list server.\n'
-                                 'Please check your internet connection, or report this incident.')
-        else:
-            parsed_collection = yaml.load(collection_file, Loader=yaml.FullLoader)
-            parsed_repos = yaml.load(repos_file, Loader=yaml.FullLoader)
-            # Validate collection
-            self.validate_collection(parsed_collection, parsed_repos)
-            # Disconnect repository signals while nobody's looking :eyes:
-            self.ui.ReposComboBox.currentIndexChanged.disconnect(self.changed_host)
-            self.ui.listAppsWidget.currentItemChanged.disconnect(self.selection_changed)
-
-            collection_internal_name = parsed_collection["metadata"]["host"]
-            collection_host_name = parsed_repos["repositories"][collection_internal_name]["name"]
-            collection_host_addr = parsed_repos["repositories"][collection_internal_name]["host"]
-            collection_contents = parsed_collection["applications"]
-
-            HOST = collection_host_addr
-
-            # Get dropdown index of repo by name
-            repo_index = self.ui.ReposComboBox.findText(collection_host_name)
-            # Set current dropdown index
-            self.ui.ReposComboBox.setCurrentIndex(repo_index)
-
-            # Set displayed repo info
-            display_name = parsed_collection["metadata"]["name"]
-            description = parsed_collection["metadata"]["description"]
-            author = parsed_collection["metadata"]["author"]
-            self.ui.RepositoryNameLabel.setText(f"Collection: {display_name}")
-            self.ui.RepositoryDescLabel.setText(f"Made by {author}. {description}")
-
-            # Clear list and repopulate with collection
-            self.ui.listAppsWidget.clear()
-            amount = 0
-            for i in collection_contents:
-                self.ui.listAppsWidget.addItem(i)
-                amount += 1
-
-            # Set apps amount
-            self.ui.AppsAmountLabel.setText(f"{amount} Apps")
-
-            # Reconnect repository signals. Good. Nobody noticed.
-            self.ui.ReposComboBox.currentIndexChanged.connect(self.changed_host)
-            self.ui.listAppsWidget.currentItemChanged.connect(self.selection_changed)
-
-            # Select row 0
-            self.ui.listAppsWidget.setCurrentRow(0)
 
     def download_button(self):
         data = self.ui.listAppsWidget.currentItem().data(Qt.UserRole)

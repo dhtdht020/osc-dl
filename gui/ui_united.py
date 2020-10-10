@@ -40,8 +40,6 @@ class Ui_MainWindow(object):
         self.actionCheck_for_Updates.setObjectName(u"actionCheck_for_Updates")
         self.actionClose_the_shop = QAction(MainWindow)
         self.actionClose_the_shop.setObjectName(u"actionClose_the_shop")
-        self.actionAdd_Fake_Application = QAction(MainWindow)
-        self.actionAdd_Fake_Application.setObjectName(u"actionAdd_Fake_Application")
         self.actionDisplay_Banner = QAction(MainWindow)
         self.actionDisplay_Banner.setObjectName(u"actionDisplay_Banner")
         self.actionLoad_Collection = QAction(MainWindow)
@@ -402,8 +400,6 @@ class Ui_MainWindow(object):
         self.menuOpen_Shop_Channel_DL.setObjectName(u"menuOpen_Shop_Channel_DL")
         self.menuHomebrew_Browser = QMenu(self.menuClients)
         self.menuHomebrew_Browser.setObjectName(u"menuHomebrew_Browser")
-        self.menuCollections = QMenu(self.menubar)
-        self.menuCollections.setObjectName(u"menuCollections")
         MainWindow.setMenuBar(self.menubar)
         self.statusBar = QStatusBar(MainWindow)
         self.statusBar.setObjectName(u"statusBar")
@@ -412,7 +408,6 @@ class Ui_MainWindow(object):
 
         self.menubar.addAction(self.menuAbout.menuAction())
         self.menubar.addAction(self.menuClients.menuAction())
-        self.menubar.addAction(self.menuCollections.menuAction())
         self.menubar.addAction(self.menuDebug.menuAction())
         self.menuAbout.addAction(self.actionAbout_OSC_DL)
         self.menuDebug.addAction(self.actionEnable_Log_File)
@@ -427,12 +422,11 @@ class Ui_MainWindow(object):
         self.menuOpen_Shop_Channel_DL.addAction(self.actionCheck_for_Updates)
         self.menuOpen_Shop_Channel_DL.addAction(self.actionRefresh)
         self.menuHomebrew_Browser.addAction(self.actionDownload_HBB_Client_Latest)
-        self.menuCollections.addAction(self.actionLoad_Collection)
 
         self.retranslateUi(MainWindow)
 
         self.listAppsWidget.setCurrentRow(-1)
-        self.tabMetadata.setCurrentIndex(2)
+        self.tabMetadata.setCurrentIndex(0)
 
 
         QMetaObject.connectSlotsByName(MainWindow)
@@ -449,7 +443,6 @@ class Ui_MainWindow(object):
         self.actionDownload_HBB_Client_Latest.setText(QCoreApplication.translate("MainWindow", u"Download HBB Client", None))
         self.actionCheck_for_Updates.setText(QCoreApplication.translate("MainWindow", u"Check for Updates", None))
         self.actionClose_the_shop.setText(QCoreApplication.translate("MainWindow", u"Close the shop", None))
-        self.actionAdd_Fake_Application.setText(QCoreApplication.translate("MainWindow", u"Add Fake Listing", None))
         self.actionDisplay_Banner.setText(QCoreApplication.translate("MainWindow", u"Reload Banner", None))
         self.actionLoad_Collection.setText(QCoreApplication.translate("MainWindow", u"Load Collection", None))
         self.actionRefresh.setText(QCoreApplication.translate("MainWindow", u"Refresh List", None))
@@ -492,7 +485,7 @@ class Ui_MainWindow(object):
         self.tabMetadata.setTabText(self.tabMetadata.indexOf(self.RawTab), QCoreApplication.translate("MainWindow", u"Controllers", None))
         self.FileNameLabel.setText(QCoreApplication.translate("MainWindow", u"Output File", None))
         self.ViewMetadataBtn.setText(QCoreApplication.translate("MainWindow", u"Download", None))
-        self.WiiLoadButton.setText(QCoreApplication.translate("MainWindow", u"WiiLoad", None))
+        self.WiiLoadButton.setText(QCoreApplication.translate("MainWindow", u"Send to Wii", None))
         self.menuAbout.setTitle(QCoreApplication.translate("MainWindow", u"About", None))
         self.menuDebug.setTitle(QCoreApplication.translate("MainWindow", u"Debug", None))
         self.menuExperimental.setTitle(QCoreApplication.translate("MainWindow", u"Experimental", None))
@@ -500,6 +493,5 @@ class Ui_MainWindow(object):
         self.menuClients.setTitle(QCoreApplication.translate("MainWindow", u"Clients", None))
         self.menuOpen_Shop_Channel_DL.setTitle(QCoreApplication.translate("MainWindow", u"Open Shop Channel DL", None))
         self.menuHomebrew_Browser.setTitle(QCoreApplication.translate("MainWindow", u"Homebrew Browser", None))
-        self.menuCollections.setTitle(QCoreApplication.translate("MainWindow", u"Collections", None))
     # retranslateUi
 

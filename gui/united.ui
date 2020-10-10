@@ -401,7 +401,7 @@ background-color: rgba(255, 255, 255, 0);
            </rect>
           </property>
           <property name="currentIndex">
-           <number>2</number>
+           <number>0</number>
           </property>
           <widget class="QWidget" name="GeneralTab">
            <attribute name="title">
@@ -829,7 +829,7 @@ p, li { white-space: pre-wrap; }
            </rect>
           </property>
           <property name="text">
-           <string>WiiLoad</string>
+           <string>Send to Wii</string>
           </property>
          </widget>
         </widget>
@@ -898,15 +898,8 @@ p, li { white-space: pre-wrap; }
     <addaction name="menuHomebrew_Browser"/>
     <addaction name="menuOpen_Shop_Channel_DL"/>
    </widget>
-   <widget class="QMenu" name="menuCollections">
-    <property name="title">
-     <string>Collections</string>
-    </property>
-    <addaction name="actionLoad_Collection"/>
-   </widget>
    <addaction name="menuAbout"/>
    <addaction name="menuClients"/>
-   <addaction name="menuCollections"/>
    <addaction name="menuDebug"/>
   </widget>
   <widget class="QStatusBar" name="statusBar">
@@ -954,11 +947,6 @@ p, li { white-space: pre-wrap; }
   <action name="actionClose_the_shop">
    <property name="text">
     <string>Close the shop</string>
-   </property>
-  </action>
-  <action name="actionAdd_Fake_Application">
-   <property name="text">
-    <string>Add Fake Listing</string>
    </property>
   </action>
   <action name="actionDisplay_Banner">
