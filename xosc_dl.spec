@@ -53,4 +53,4 @@ exe = EXE(pyz,
           upx=True,
           upx_exclude=[],
           runtime_tmpdir=None,
-          console=False, icon='oscicon.ico')
+          console=True, icon='oscicon.ico')
