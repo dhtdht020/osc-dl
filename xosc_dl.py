@@ -20,7 +20,7 @@ from PySide2 import QtGui
 from PySide2.QtCore import Qt, QObject
 from PySide2.QtGui import QIcon, QColor
 from PySide2.QtWidgets import QApplication, QMainWindow, QInputDialog, QLineEdit, QMessageBox, QSplashScreen, QLabel, \
-    QListWidgetItem, QFileDialog
+    QListWidgetItem, QFileDialog, QListWidget
 
 import download
 import gui.ui_united
@@ -161,6 +161,10 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         self.ui.RefreshListBtn.clicked.connect(self.repopulate)
         self.ui.ViewMetadataBtn.clicked.connect(self.download_button)
         self.ui.WiiLoadButton.clicked.connect(self.wiiload_button)
+
+
+        # Search Bar
+        self.ui.SearchBar.textChanged.connect(self.search_bar)
 
 
         # Others
@@ -641,6 +645,26 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
 
         except Exception:
             pass
+
+    def search_bar(self):
+        text = self.ui.SearchBar.text()
+        n = 0
+        results = []
+        # Filter items with search term
+        for i in self.ui.listAppsWidget.findItems(text, Qt.MatchContains):
+            # print(i.text())
+            results.append(i.text())
+            n += 1
+
+        # Get All Items
+        for i in self.ui.listAppsWidget.findItems("", Qt.MatchContains):
+            # Hide and unhide!
+            if i.text() in results:
+                i.setHidden(False)
+            else:
+                i.setHidden(True)
+        self.ui.DebugSearchResultsAmount.setText(f"{n} Results")
+        self.ui.DebugSearchTerm.setText(f"Term: {text}")
 
 
 if __name__ == "__main__":

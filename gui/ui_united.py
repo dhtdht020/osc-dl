@@ -151,6 +151,29 @@ class Ui_MainWindow(object):
 
         self.verticalLayout_2.addWidget(self.LibraryTopFrame)
 
+        self.SearchFrame = QFrame(self.LibraryContentFrame)
+        self.SearchFrame.setObjectName(u"SearchFrame")
+        sizePolicy3 = QSizePolicy(QSizePolicy.Preferred, QSizePolicy.Preferred)
+        sizePolicy3.setHorizontalStretch(0)
+        sizePolicy3.setVerticalStretch(0)
+        sizePolicy3.setHeightForWidth(self.SearchFrame.sizePolicy().hasHeightForWidth())
+        self.SearchFrame.setSizePolicy(sizePolicy3)
+        self.SearchFrame.setMaximumSize(QSize(16777215, 20))
+        self.SearchFrame.setFrameShape(QFrame.StyledPanel)
+        self.SearchFrame.setFrameShadow(QFrame.Raised)
+        self.horizontalLayout_5 = QHBoxLayout(self.SearchFrame)
+        self.horizontalLayout_5.setObjectName(u"horizontalLayout_5")
+        self.horizontalLayout_5.setContentsMargins(0, 0, 0, 0)
+        self.SearchBar = QLineEdit(self.SearchFrame)
+        self.SearchBar.setObjectName(u"SearchBar")
+        sizePolicy1.setHeightForWidth(self.SearchBar.sizePolicy().hasHeightForWidth())
+        self.SearchBar.setSizePolicy(sizePolicy1)
+
+        self.horizontalLayout_5.addWidget(self.SearchBar)
+
+
+        self.verticalLayout_2.addWidget(self.SearchFrame)
+
         self.listAppsWidget = QListWidget(self.LibraryContentFrame)
         self.listAppsWidget.setObjectName(u"listAppsWidget")
         sizePolicy1.setHeightForWidth(self.listAppsWidget.sizePolicy().hasHeightForWidth())
@@ -199,11 +222,11 @@ class Ui_MainWindow(object):
 
         self.SelectionInfoBox = QGroupBox(self.centralwidget)
         self.SelectionInfoBox.setObjectName(u"SelectionInfoBox")
-        sizePolicy3 = QSizePolicy(QSizePolicy.Fixed, QSizePolicy.Preferred)
-        sizePolicy3.setHorizontalStretch(0)
-        sizePolicy3.setVerticalStretch(0)
-        sizePolicy3.setHeightForWidth(self.SelectionInfoBox.sizePolicy().hasHeightForWidth())
-        self.SelectionInfoBox.setSizePolicy(sizePolicy3)
+        sizePolicy4 = QSizePolicy(QSizePolicy.Fixed, QSizePolicy.Preferred)
+        sizePolicy4.setHorizontalStretch(0)
+        sizePolicy4.setVerticalStretch(0)
+        sizePolicy4.setHeightForWidth(self.SelectionInfoBox.sizePolicy().hasHeightForWidth())
+        self.SelectionInfoBox.setSizePolicy(sizePolicy4)
         self.SelectionInfoBox.setMaximumSize(QSize(271, 16777215))
         self.verticalLayout_3 = QVBoxLayout(self.SelectionInfoBox)
         self.verticalLayout_3.setObjectName(u"verticalLayout_3")
@@ -405,6 +428,32 @@ class Ui_MainWindow(object):
         self.statusBar.setObjectName(u"statusBar")
         self.statusBar.setSizeGripEnabled(False)
         MainWindow.setStatusBar(self.statusBar)
+        self.DebugDock = QDockWidget(MainWindow)
+        self.DebugDock.setObjectName(u"DebugDock")
+        self.DebugDock.setFloating(True)
+        self.DebugDock.setFeatures(QDockWidget.DockWidgetClosable)
+        self.DebugDock.setAllowedAreas(Qt.NoDockWidgetArea)
+        self.dockWidgetContents = QWidget()
+        self.dockWidgetContents.setObjectName(u"dockWidgetContents")
+        self.verticalLayout_5 = QVBoxLayout(self.dockWidgetContents)
+        self.verticalLayout_5.setObjectName(u"verticalLayout_5")
+        self.DebugSearchTerm = QLabel(self.dockWidgetContents)
+        self.DebugSearchTerm.setObjectName(u"DebugSearchTerm")
+        font2 = QFont()
+        font2.setBold(True)
+        font2.setUnderline(True)
+        font2.setWeight(75)
+        self.DebugSearchTerm.setFont(font2)
+
+        self.verticalLayout_5.addWidget(self.DebugSearchTerm)
+
+        self.DebugSearchResultsAmount = QLabel(self.dockWidgetContents)
+        self.DebugSearchResultsAmount.setObjectName(u"DebugSearchResultsAmount")
+
+        self.verticalLayout_5.addWidget(self.DebugSearchResultsAmount)
+
+        self.DebugDock.setWidget(self.dockWidgetContents)
+        MainWindow.addDockWidget(Qt.LeftDockWidgetArea, self.DebugDock)
 
         self.menubar.addAction(self.menuAbout.menuAction())
         self.menubar.addAction(self.menuClients.menuAction())
@@ -455,6 +504,7 @@ class Ui_MainWindow(object):
         self.RefreshListBtn.setText(QCoreApplication.translate("MainWindow", u"Refresh Apps", None))
         self.RepositoryDescLabel.setText(QCoreApplication.translate("MainWindow", u"Repository Description", None))
         self.AppsAmountLabel.setText(QCoreApplication.translate("MainWindow", u"0 Apps", None))
+        self.SearchBar.setPlaceholderText(QCoreApplication.translate("MainWindow", u"Search Application..", None))
         self.announcementLabel.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p><span style=\" font-weight:600;\">Announcement Header: </span>Announcement Content.</p></body></html>", None))
         self.announcementURLLabel.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p><a href=\"https://google.com\"><span style=\" text-decoration: underline; color:#ffff00;\">Announcement URL</span></a></p></body></html>", None))
         self.SelectionInfoBox.setTitle(QCoreApplication.translate("MainWindow", u"Application Metadata", None))
@@ -493,5 +543,8 @@ class Ui_MainWindow(object):
         self.menuClients.setTitle(QCoreApplication.translate("MainWindow", u"Clients", None))
         self.menuOpen_Shop_Channel_DL.setTitle(QCoreApplication.translate("MainWindow", u"Open Shop Channel DL", None))
         self.menuHomebrew_Browser.setTitle(QCoreApplication.translate("MainWindow", u"Homebrew Browser", None))
+        self.DebugDock.setWindowTitle(QCoreApplication.translate("MainWindow", u"Search Debugger", None))
+        self.DebugSearchTerm.setText(QCoreApplication.translate("MainWindow", u"Term", None))
+        self.DebugSearchResultsAmount.setText(QCoreApplication.translate("MainWindow", u"Results", None))
     # retranslateUi
 
