@@ -473,19 +473,6 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         self.ui.progressBar.setValue(100)
 
     def populate_list(self):
-        # Can't have a list when there's no connection :P
-        # try:
-        #    self.applist = parsecontents.list(repo=HOST)
-        # except Exception:
-        #    QMessageBox.critical(self, 'OSC-DL: Critical Network Error',
-        #                         'Could not connect to the Open Shop Channel server.\n'
-        #                         'Cannot continue. :(\n'
-        #                         'Please check your internet connection, or report this incident.')
-        #    sys.exit(1)
-        # for item in self.applist:
-        #    self.ui.listAppsWidget.addItem(item)
-        # self.ui.listAppsWidget.setCurrentRow(0)
-        # self.ui.AppsAmountLabel.setText(str(self.ui.listAppsWidget.count()) + " Apps")
         if not splash.isHidden():
             splash.showMessage(f"Connecting to server..", color=splash_color)
         json_req = requests.get(f"https://api.oscwii.org/v1/{HOST_NAME}/packages")
@@ -665,6 +652,32 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
                 i.setHidden(True)
         if text == "":
             self.ui.AppsAmountLabel.setText(f"{n} Apps")
+        elif text == "OPEN THE SHOP":
+            # Easter Egg :/
+            self.ui.listAppsWidget.clear()
+            shop_opener = QListWidgetItem()
+            shop_opener.setText("Shop Opener")
+            self.ui.listAppsWidget.addItem(shop_opener)
+            self.ui.listAppsWidget.setStyleSheet("background-color: qconicalgradient(cx:0.5, cy:0.5, angle:0, "
+                                            "stop:0 rgba(35, 40, 3, 255), stop:0.16 rgba(136, 106, 22, 255), "
+                                            "stop:0.225 rgba(166, 140, 41, 255), stop:0.285 rgba(204, 181, 74, 255), "
+                                            "stop:0.345 rgba(235, 219, 102, 255), stop:0.415 rgba(245, 236, 112, 255),"
+                                            " stop:0.52 rgba(209, 190, 76, 255), stop:0.57 rgba(187, 156, 51, 255), "
+                                            "stop:0.635 rgba(168, 142, 42, 255), stop:0.695 rgba(202, 174, 68, 255), "
+                                            "stop:0.75 rgba(218, 202, 86, 255), stop:0.815 rgba(208, 187, 73, 255), "
+                                            "stop:0.88 rgba(187, 156, 51, 255), stop:0.935 rgba(137, 108, 26, 255), "
+                                            "stop:1 rgba(35, 40, 3, 255));")
+            self.ui.SearchBar.setText("")
+            self.ui.SearchBar.setDisabled(True)
+            self.ui.SearchBar.setPlaceholderText("Do it. Open the shop. Right now.")
+            self.ui.listAppsWidget.setCurrentItem(shop_opener)
+            self.ui.ViewMetadataBtn.setText("Open the shop")
+            self.ui.ViewMetadataBtn.clicked.disconnect(self.download_button)
+            self.ui.WiiLoadButton.setHidden(True)
+            self.ui.ReposComboBox.setHidden(True)
+            self.ui.RefreshListBtn.setHidden(True)
+            self.ui.RepositoryLabel.setHidden(True)
+
         else:
             self.ui.AppsAmountLabel.setText(f"{n} Results")
 
