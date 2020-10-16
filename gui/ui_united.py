@@ -428,32 +428,6 @@ class Ui_MainWindow(object):
         self.statusBar.setObjectName(u"statusBar")
         self.statusBar.setSizeGripEnabled(False)
         MainWindow.setStatusBar(self.statusBar)
-        self.DebugDock = QDockWidget(MainWindow)
-        self.DebugDock.setObjectName(u"DebugDock")
-        self.DebugDock.setFloating(True)
-        self.DebugDock.setFeatures(QDockWidget.DockWidgetClosable)
-        self.DebugDock.setAllowedAreas(Qt.NoDockWidgetArea)
-        self.dockWidgetContents = QWidget()
-        self.dockWidgetContents.setObjectName(u"dockWidgetContents")
-        self.verticalLayout_5 = QVBoxLayout(self.dockWidgetContents)
-        self.verticalLayout_5.setObjectName(u"verticalLayout_5")
-        self.DebugSearchTerm = QLabel(self.dockWidgetContents)
-        self.DebugSearchTerm.setObjectName(u"DebugSearchTerm")
-        font2 = QFont()
-        font2.setBold(True)
-        font2.setUnderline(True)
-        font2.setWeight(75)
-        self.DebugSearchTerm.setFont(font2)
-
-        self.verticalLayout_5.addWidget(self.DebugSearchTerm)
-
-        self.DebugSearchResultsAmount = QLabel(self.dockWidgetContents)
-        self.DebugSearchResultsAmount.setObjectName(u"DebugSearchResultsAmount")
-
-        self.verticalLayout_5.addWidget(self.DebugSearchResultsAmount)
-
-        self.DebugDock.setWidget(self.dockWidgetContents)
-        MainWindow.addDockWidget(Qt.LeftDockWidgetArea, self.DebugDock)
 
         self.menubar.addAction(self.menuAbout.menuAction())
         self.menubar.addAction(self.menuClients.menuAction())
@@ -504,7 +478,7 @@ class Ui_MainWindow(object):
         self.RefreshListBtn.setText(QCoreApplication.translate("MainWindow", u"Refresh Apps", None))
         self.RepositoryDescLabel.setText(QCoreApplication.translate("MainWindow", u"Repository Description", None))
         self.AppsAmountLabel.setText(QCoreApplication.translate("MainWindow", u"0 Apps", None))
-        self.SearchBar.setPlaceholderText(QCoreApplication.translate("MainWindow", u"Search Application..", None))
+        self.SearchBar.setPlaceholderText(QCoreApplication.translate("MainWindow", u"Search Applications..", None))
         self.announcementLabel.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p><span style=\" font-weight:600;\">Announcement Header: </span>Announcement Content.</p></body></html>", None))
         self.announcementURLLabel.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p><a href=\"https://google.com\"><span style=\" text-decoration: underline; color:#ffff00;\">Announcement URL</span></a></p></body></html>", None))
         self.SelectionInfoBox.setTitle(QCoreApplication.translate("MainWindow", u"Application Metadata", None))
@@ -543,8 +517,5 @@ class Ui_MainWindow(object):
         self.menuClients.setTitle(QCoreApplication.translate("MainWindow", u"Clients", None))
         self.menuOpen_Shop_Channel_DL.setTitle(QCoreApplication.translate("MainWindow", u"Open Shop Channel DL", None))
         self.menuHomebrew_Browser.setTitle(QCoreApplication.translate("MainWindow", u"Homebrew Browser", None))
-        self.DebugDock.setWindowTitle(QCoreApplication.translate("MainWindow", u"Search Debugger", None))
-        self.DebugSearchTerm.setText(QCoreApplication.translate("MainWindow", u"Term", None))
-        self.DebugSearchResultsAmount.setText(QCoreApplication.translate("MainWindow", u"Results", None))
     # retranslateUi
 

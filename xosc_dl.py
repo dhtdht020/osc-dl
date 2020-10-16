@@ -663,8 +663,10 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
                 i.setHidden(False)
             else:
                 i.setHidden(True)
-        self.ui.DebugSearchResultsAmount.setText(f"{n} Results")
-        self.ui.DebugSearchTerm.setText(f"Term: {text}")
+        if text == "":
+            self.ui.AppsAmountLabel.setText(f"{n} Apps")
+        else:
+            self.ui.AppsAmountLabel.setText(f"{n} Results")
 
 
 if __name__ == "__main__":
