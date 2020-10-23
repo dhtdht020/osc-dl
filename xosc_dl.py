@@ -162,15 +162,12 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         self.ui.ViewMetadataBtn.clicked.connect(self.download_button)
         self.ui.WiiLoadButton.clicked.connect(self.wiiload_button)
 
-
         # Search Bar
         self.ui.SearchBar.textChanged.connect(self.search_bar)
-
 
         # Others
         self.ui.ReposComboBox.currentIndexChanged.connect(self.changed_host)
         self.ui.listAppsWidget.currentItemChanged.connect(self.selection_changed)
-
 
         # Actions
         # -- Debug
@@ -501,12 +498,28 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
                     release_date = release_date_dict[i].value
                     controllers = controllers_dict[i].value
                     self.ui.listAppsWidget.addItem(display_name)
-                    self.ui.listAppsWidget.item(i).setData(Qt.UserRole, [internal_name,
-                                                                         display_name,
-                                                                         extracted_size,
-                                                                         category,
-                                                                         release_date,
-                                                                         controllers])
+                    list_item = self.ui.listAppsWidget.item(i)
+                    list_item.setData(Qt.UserRole, [internal_name,
+                                                    display_name,
+                                                    extracted_size,
+                                                    category,
+                                                    release_date,
+                                                    controllers])
+
+                    # Set category icon
+
+                    if category == "utilities":
+                        list_item.setIcon(QIcon(resource_path("assets/gui/icons/category/utility.png")))
+                    elif category == "games":
+                        list_item.setIcon(QIcon(resource_path("assets/gui/icons/category/game.png")))
+                    elif category == "emulators":
+                        list_item.setIcon(QIcon(resource_path("assets/gui/icons/category/emulator.png")))
+                    elif category == "media":
+                        list_item.setIcon(QIcon(resource_path("assets/gui/icons/category/media.png")))
+                    elif category == "demos":
+                        list_item.setIcon(QIcon(resource_path("assets/gui/icons/category/demo.png")))
+
+
                     # self.ui.listAppsWidget.setItemData(i, [internal_name, display_name], Qt.UserRole)
                     if not splash.isHidden():
                         splash.showMessage(f"Loaded {i} apps..", color=splash_color)
@@ -659,14 +672,14 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
             shop_opener.setText("Shop Opener")
             self.ui.listAppsWidget.addItem(shop_opener)
             self.ui.listAppsWidget.setStyleSheet("background-color: qconicalgradient(cx:0.5, cy:0.5, angle:0, "
-                                            "stop:0 rgba(35, 40, 3, 255), stop:0.16 rgba(136, 106, 22, 255), "
-                                            "stop:0.225 rgba(166, 140, 41, 255), stop:0.285 rgba(204, 181, 74, 255), "
-                                            "stop:0.345 rgba(235, 219, 102, 255), stop:0.415 rgba(245, 236, 112, 255),"
-                                            " stop:0.52 rgba(209, 190, 76, 255), stop:0.57 rgba(187, 156, 51, 255), "
-                                            "stop:0.635 rgba(168, 142, 42, 255), stop:0.695 rgba(202, 174, 68, 255), "
-                                            "stop:0.75 rgba(218, 202, 86, 255), stop:0.815 rgba(208, 187, 73, 255), "
-                                            "stop:0.88 rgba(187, 156, 51, 255), stop:0.935 rgba(137, 108, 26, 255), "
-                                            "stop:1 rgba(35, 40, 3, 255));")
+                                                 "stop:0 rgba(35, 40, 3, 255), stop:0.16 rgba(136, 106, 22, 255), "
+                                                 "stop:0.225 rgba(166, 140, 41, 255), stop:0.285 rgba(204, 181, 74, 255), "
+                                                 "stop:0.345 rgba(235, 219, 102, 255), stop:0.415 rgba(245, 236, 112, 255),"
+                                                 " stop:0.52 rgba(209, 190, 76, 255), stop:0.57 rgba(187, 156, 51, 255), "
+                                                 "stop:0.635 rgba(168, 142, 42, 255), stop:0.695 rgba(202, 174, 68, 255), "
+                                                 "stop:0.75 rgba(218, 202, 86, 255), stop:0.815 rgba(208, 187, 73, 255), "
+                                                 "stop:0.88 rgba(187, 156, 51, 255), stop:0.935 rgba(137, 108, 26, 255), "
+                                                 "stop:1 rgba(35, 40, 3, 255));")
             self.ui.SearchBar.setText("")
             self.ui.SearchBar.setDisabled(True)
             self.ui.SearchBar.setPlaceholderText("Do it. Open the shop. Right now.")

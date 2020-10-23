@@ -172,25 +172,49 @@
                  </widget>
                 </item>
                 <item>
-                 <widget class="QPushButton" name="RefreshListBtn">
-                  <property name="enabled">
-                   <bool>true</bool>
-                  </property>
+                 <widget class="QComboBox" name="ReposComboBox_2">
                   <property name="minimumSize">
                    <size>
-                    <width>111</width>
-                    <height>0</height>
+                    <width>70</width>
+                    <height>21</height>
                    </size>
                   </property>
                   <property name="maximumSize">
                    <size>
-                    <width>111</width>
+                    <width>70</width>
                     <height>16777215</height>
                    </size>
                   </property>
-                  <property name="text">
-                   <string>Refresh Apps</string>
-                  </property>
+                  <item>
+                   <property name="text">
+                    <string>All Apps</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>Utilties</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>Emulators</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>Games</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>Media</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>Demos</string>
+                   </property>
+                  </item>
                  </widget>
                 </item>
                </layout>
@@ -702,6 +726,34 @@ p, li { white-space: pre-wrap; }
             </property>
             <property name="text">
              <string>Long Description</string>
+            </property>
+           </widget>
+           <widget class="QPushButton" name="RefreshListBtn">
+            <property name="enabled">
+             <bool>true</bool>
+            </property>
+            <property name="geometry">
+             <rect>
+              <x>60</x>
+              <y>190</y>
+              <width>111</width>
+              <height>23</height>
+             </rect>
+            </property>
+            <property name="minimumSize">
+             <size>
+              <width>111</width>
+              <height>0</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>111</width>
+              <height>16777215</height>
+             </size>
+            </property>
+            <property name="text">
+             <string>Refresh Apps</string>
             </property>
            </widget>
           </widget>
