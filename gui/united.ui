@@ -172,7 +172,7 @@
                  </widget>
                 </item>
                 <item>
-                 <widget class="QComboBox" name="ReposComboBox_2">
+                 <widget class="QComboBox" name="CategoriesComboBox">
                   <property name="minimumSize">
                    <size>
                     <width>70</width>
@@ -192,7 +192,7 @@
                   </item>
                   <item>
                    <property name="text">
-                    <string>Utilties</string>
+                    <string>Utilities</string>
                    </property>
                   </item>
                   <item>

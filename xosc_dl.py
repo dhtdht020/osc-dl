@@ -167,6 +167,7 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
 
         # Others
         self.ui.ReposComboBox.currentIndexChanged.connect(self.changed_host)
+        self.ui.CategoriesComboBox.currentIndexChanged.connect(self.changed_category)
         self.ui.listAppsWidget.currentItemChanged.connect(self.selection_changed)
 
         # Actions
@@ -356,7 +357,6 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
             self.ui.progressBar.setValue(100)
             self.status_message(escape_ansi(console_output.getvalue()))
         else:
-            print("Cancelled.")
             self.ui.progressBar.setValue(0)
             self.status_message("Cancelled Download.")
 
@@ -464,16 +464,22 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         repo_data = self.ui.ReposComboBox.itemData(index, Qt.UserRole)
         self.ui.RepositoryNameLabel.setText(repo_data[0])
         self.ui.RepositoryDescLabel.setText(repo_data[2])
-
+        self.ui.CategoriesComboBox.currentIndexChanged.disconnect(self.changed_category)
+        self.ui.CategoriesComboBox.setCurrentIndex(0)
         self.ui.listAppsWidget.clear()
         self.populate_list()
         self.ui.progressBar.setValue(100)
+        self.ui.CategoriesComboBox.currentIndexChanged.connect(self.changed_category)
 
-    def populate_list(self):
+    def populate_list(self, category="all"):
         if not splash.isHidden():
             splash.showMessage(f"Connecting to server..", color=splash_color)
-        json_req = requests.get(f"https://api.oscwii.org/v1/{HOST_NAME}/packages")
-        loaded_json = json.loads(json_req.text)
+        if category == "all":
+            json_req = requests.get(f"https://api.oscwii.org/v1/{HOST_NAME}/packages")
+            loaded_json = json.loads(json_req.text)
+        else:
+            json_req = requests.get(f"https://api.oscwii.org/v1/{HOST_NAME}/category/{category}/packages")
+            loaded_json = json.loads(json_req.text)
         if json_req.status_code == 200:
             i = 0
             ongoing = True
@@ -693,6 +699,23 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
 
         else:
             self.ui.AppsAmountLabel.setText(f"{n} Results")
+
+    def changed_category(self):
+        category = "all"
+
+        if self.ui.CategoriesComboBox.currentText() == "Utilities":
+            category = "utilities"
+        elif self.ui.CategoriesComboBox.currentText() == "Emulators":
+            category = "emulators"
+        elif self.ui.CategoriesComboBox.currentText() == "Games":
+            category = "games"
+        elif self.ui.CategoriesComboBox.currentText() == "Media":
+            category = "media"
+        elif self.ui.CategoriesComboBox.currentText() == "Demos":
+            category = "demos"
+
+        self.ui.listAppsWidget.clear()
+        self.populate_list(category)
 
 
 if __name__ == "__main__":
