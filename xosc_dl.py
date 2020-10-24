@@ -154,11 +154,11 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
                                                   "themes"], Qt.UserRole)
 
     def assign_initial_actions(self):
+        # Connect signals
         if not splash.isHidden():
             splash.showMessage(f"Finishing (1/3)..", color=splash_color)
         # Buttons
         self.ui.CopyDirectLinkBtn.clicked.connect(self.copy_download_link_button)
-        self.ui.RefreshListBtn.clicked.connect(self.repopulate)
         self.ui.ViewMetadataBtn.clicked.connect(self.download_button)
         self.ui.WiiLoadButton.clicked.connect(self.wiiload_button)
 
