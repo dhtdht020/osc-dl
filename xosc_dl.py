@@ -3,7 +3,7 @@ import json
 from datetime import datetime
 
 import yaml
-import sentry_sdk
+#import sentry_sdk
 import os
 import re
 import socket
@@ -53,15 +53,15 @@ def resource_path(relative_path):
     return os.path.join(os.path.abspath("."), relative_path)
 
 
-if updater.is_frozen():
-    # Init sentry
-    sentry_sdk.init(
-        "https://619963fe9ec346e1b032fb19ea1632c8@o456896.ingest.sentry.io/5450395",
-        traces_sample_rate=1.0
-    )
-
-    with sentry_sdk.configure_scope() as scope:
-        scope.set_tag("osc.release", VERSION)
+#if updater.is_frozen():
+#    # Init sentry
+#    sentry_sdk.init(
+#        "https://619963fe9ec346e1b032fb19ea1632c8@o456896.ingest.sentry.io/5450395",
+#        traces_sample_rate=1.0
+#    )
+#
+#    with sentry_sdk.configure_scope() as scope:
+#        scope.set_tag("osc.release", VERSION)
 
 
 # G U I
