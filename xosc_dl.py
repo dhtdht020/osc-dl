@@ -12,7 +12,7 @@ from contextlib import redirect_stdout
 
 import logging  # for logs
 from functools import partial
-from jsonpath_ng import jsonpath, parse
+from jsonpath_ng import parse
 
 import requests
 import pyperclip
@@ -346,14 +346,11 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         self.status_message(f"Downloading {self.app_name} from Open Shop Channel..")
         path_to_file, _ = QFileDialog.getSaveFileName(None, 'Save Application', self.ui.FileNameLineEdit.text())
         output = path_to_file
-        extract = self.ui.ExtractAppCheckbox.isChecked()
-        if extract is True:
-            logging.info("Set to extract app too!")
         self.ui.progressBar.setValue(25)
         console_output = io.StringIO()
         if output != '':
             with redirect_stdout(console_output):
-                download.get(app_name=self.app_name, repo=HOST, output=output, extract=extract)
+                download.get(app_name=self.app_name, repo=HOST, output=output)
             self.ui.progressBar.setValue(100)
             self.status_message(escape_ansi(console_output.getvalue()))
         else:
