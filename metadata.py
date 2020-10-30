@@ -1,7 +1,6 @@
 import parsecontents
 import requests
 import lxml.etree
-import dateparser
 import locale
 
 
@@ -53,21 +52,6 @@ def get(app_name, repo="hbb1.oscwii.org"):
     except Exception:
         short_description = "Unknown"
 
-    try:
-        long_description = root.find('long_description').text
-    except Exception:
-        long_description = "Unknown"
-
-    try:
-        release_date = root.find('release_date').text
-    except Exception:
-        release_date = "Unknown"
-
-    try:
-        contributors = root.find('contributors').text
-    except Exception:
-        contributors = "Unknown"
-
     print("\n=========== Application Metadata ===========")
     print(f"Application:  {display_name}")
     print(f"Developer:    {developer}")
@@ -76,7 +60,6 @@ def get(app_name, repo="hbb1.oscwii.org"):
     print("============================================\n")
 
 
-# experimental, for use by xosc-dl
 def icon(app_name, repo="hbb1.oscwii.org"):
     try:
         request = requests.get("https://" + repo+ "/hbb/"+ app_name + ".png")
@@ -137,19 +120,6 @@ def dictionary(app_name, repo="hbb1.oscwii.org"):
         long_description = "No description provided"
 
     try:
-        try:
-            parsed_date = dateparser.parse(root.find('release_date').text)
-            if parsed_date is not None:
-                readable_date = parsed_date.strftime('%x')
-                release_date = root.find('release_date').text + " (" + readable_date + ")"
-            else:
-                release_date = root.find('release_date').text + " [RAW]"
-        except Exception:
-            release_date = root.find('release_date').text + " [RAW]"
-    except Exception:
-        release_date = "Unknown"
-
-    try:
         contributors = root.find('contributors').text
     except Exception:
         contributors = "None"
@@ -159,7 +129,6 @@ def dictionary(app_name, repo="hbb1.oscwii.org"):
             "version": version,
             "short_description": short_description,
             "long_description": long_description,
-            "release_date": release_date,
             "contributors": contributors
             }
 
