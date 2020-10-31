@@ -1,3 +1,6 @@
+import os
+import sys
+
 import parsecontents
 import requests
 import lxml.etree
@@ -10,6 +13,13 @@ try:
     locale.setlocale(locale.LC_ALL, 'en_GB')
 except locale.Error:
     pass
+
+
+# Get resource when frozen with PyInstaller
+def resource_path(relative_path):
+    if hasattr(sys, '_MEIPASS'):
+        return os.path.join(sys._MEIPASS, relative_path)
+    return os.path.join(os.path.abspath("."), relative_path)
 
 
 def get(app_name, repo="hbb1.oscwii.org"):
@@ -66,10 +76,14 @@ def icon(app_name, repo="hbb1.oscwii.org"):
         icon = request.content
         # If icon is not there
         if str(request.status_code) != "200":
-            icon = requests.get(
-                "https://raw.githubusercontent.com/dhtdht020/oscdl-updateserver/master/v1/assets/missing.png").content
+            with open(resource_path("assets/gui/missing.png"), mode='rb') as file:
+                icon = file.read()
+                file.close()
+            # icon = resource_path("assets/gui/missing.png")
     except Exception:
-        icon = requests.get("https://raw.githubusercontent.com/dhtdht020/oscdl-updateserver/master/v1/assets/missing.png").content
+        with open(resource_path("assets/gui/missing.png"), mode='rb') as file:
+            icon = file.read()
+            file.close()
     return icon
 
 

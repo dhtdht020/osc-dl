@@ -3,7 +3,7 @@ import json
 from datetime import datetime
 
 import yaml
-#import sentry_sdk
+# import sentry_sdk
 import os
 import re
 import socket
@@ -25,7 +25,6 @@ from PySide2.QtWidgets import QApplication, QMainWindow, QInputDialog, QLineEdit
 import download
 import gui.ui_united
 import metadata
-import parsecontents
 import updater
 import wiiload
 
@@ -53,7 +52,7 @@ def resource_path(relative_path):
     return os.path.join(os.path.abspath("."), relative_path)
 
 
-#if updater.is_frozen():
+# if updater.is_frozen():
 #    # Init sentry
 #    sentry_sdk.init(
 #        "https://619963fe9ec346e1b032fb19ea1632c8@o456896.ingest.sentry.io/5450395",
@@ -169,6 +168,7 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         self.ui.ReposComboBox.currentIndexChanged.connect(self.changed_host)
         self.ui.CategoriesComboBox.currentIndexChanged.connect(self.changed_category)
         self.ui.listAppsWidget.currentItemChanged.connect(self.selection_changed)
+        self.ui.tabMetadata.currentChanged.connect(self.tab_changed)
 
         # Actions
         # -- Debug
@@ -181,6 +181,14 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         # ---- OSC-DL
         self.ui.actionCheck_for_Updates.triggered.connect(partial(self.check_for_updates_action))
         self.ui.actionRefresh.triggered.connect(partial(self.repopulate))
+
+    # When user switches to a different tab
+    def tab_changed(self):
+        if self.ui.tabMetadata.currentIndex() == 1:
+            self.ui.longDescriptionBrowser.setText("Loading description..")
+            self.repaint()
+            app_name = self.ui.listAppsWidget.currentItem().data(Qt.UserRole)[0]
+            self.ui.longDescriptionBrowser.setText(metadata.dictionary(app_name, repo=HOST).get("long_description"))
 
     # When user selects a different homebrew from the list
     def selection_changed(self):
@@ -195,35 +203,47 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         if app_name is not None:
             # Set active tab to first
             self.ui.tabMetadata.setCurrentIndex(0)
-            # Set text to Loading
+
+            # Hide icon
             self.ui.HomebrewIconLabel.hide()
-            self.ui.appname.setText("")
-            self.ui.SelectionInfoBox.setTitle("Metadata: Loading..")
-            self.ui.label_displayname.setText("Loading..")
-            self.ui.version.setText("")
-            self.ui.filesize.setText("")
-            self.ui.releasedate.setText("")
-            self.ui.HomebrewCategoryLabel.setText("")
-            self.ui.developer.setText("")
-            self.ui.label_description.setText("")
+
             # Clear supported controllers:
             self.ui.SupportedControllersListWidget.clear()
 
-            self.repaint()
-
-            info = metadata.dictionary(app_name, repo=HOST)
+            # info = metadata.dictionary(app_name, repo=HOST)
             data = self.ui.listAppsWidget.currentItem().data(Qt.UserRole)
-            # Get actual metadata
+
+            # -- Get actual metadata
+            # App Name
             self.ui.appname.setText(data[1])
             self.ui.SelectionInfoBox.setTitle("Metadata: " + data[1])
             self.ui.label_displayname.setText(data[1])
-            self.ui.version.setText(info.get("version"))
+
+            # File Size
             try:
                 self.ui.filesize.setText(metadata.file_size(data[2]))
             except KeyError:
                 self.ui.filesize.setText("Unknown")
 
-            # Get controllers
+            # Category
+
+            if data[3] == "demos":
+                self.ui.HomebrewCategoryLabel.setText("Demo")
+            elif data[3] == "emulators":
+                self.ui.HomebrewCategoryLabel.setText("Emulator")
+            elif data[3] == "games":
+                self.ui.HomebrewCategoryLabel.setText("Game")
+            elif data[3] == "media":
+                self.ui.HomebrewCategoryLabel.setText("Media")
+            elif data[3] == "utilities":
+                self.ui.HomebrewCategoryLabel.setText("Utility")
+            else:
+                self.ui.HomebrewCategoryLabel.setText("")
+
+            # Release Date
+            self.ui.releasedate.setText(datetime.fromtimestamp(int(data[4])).strftime('%B %e, %Y at %R'))
+
+            # Controllers
             controllers = self.parse_controllers(data[5])
             # Add icons for Wii Remotes
             if controllers[0] > 1:
@@ -275,26 +295,22 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
                 item.setToolTip("This app is confirmed to support SDHC cards.")
                 self.ui.SupportedControllersListWidget.addItem(item)
 
-            if data[3] == "demos":
-                self.ui.HomebrewCategoryLabel.setText("Demo")
-            elif data[3] == "emulators":
-                self.ui.HomebrewCategoryLabel.setText("Emulator")
-            elif data[3] == "games":
-                self.ui.HomebrewCategoryLabel.setText("Game")
-            elif data[3] == "media":
-                self.ui.HomebrewCategoryLabel.setText("Media")
-            elif data[3] == "utilities":
-                self.ui.HomebrewCategoryLabel.setText("Utility")
-            else:
-                self.ui.HomebrewCategoryLabel.setText("")
+            # Version
+            self.ui.version.setText(data[6])
 
-            self.ui.releasedate.setText(datetime.fromtimestamp(int(data[4])).strftime('%B %e, %Y at %R'))
-            self.ui.developer.setText(info.get("coder"))
-            if info.get("short_description") == "Unknown":
+            # Coder
+            self.ui.developer.setText(data[7])
+
+            # Short Description
+            if data[8] == "":
                 self.ui.label_description.setText("No description specified.")
             else:
-                self.ui.label_description.setText(info.get("short_description"))
-            self.ui.longDescriptionBrowser.setText(info.get("long_description"))
+                self.ui.label_description.setText(data[8])
+
+            # Long Description
+            self.ui.longDescriptionBrowser.setText(data[9])
+
+            # File Name Line Edit
             self.ui.FileNameLineEdit.setText(app_name + ".zip")
             self.ui.DirectLinkLineEdit.setText(metadata.url(app_name, repo=HOST))
         self.ui.progressBar.setValue(0)
@@ -492,6 +508,14 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
                                                            expression=f"$[*].release_date")
             controllers_dict = self.parse_json_expression(json=loaded_json,
                                                           expression=f"$[*].controllers")
+            version_dict = self.parse_json_expression(json=loaded_json,
+                                                      expression=f"$[*].version")
+            coder_dict = self.parse_json_expression(json=loaded_json,
+                                                    expression=f"$[*].coder")
+            short_description_dict = self.parse_json_expression(json=loaded_json,
+                                                                expression=f"$[*].short_description")
+            long_description_dict = self.parse_json_expression(json=loaded_json,
+                                                               expression=f"$[*].long_description")
             while ongoing is True:
                 try:
                     internal_name = internal_name_dict[i].value
@@ -500,6 +524,10 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
                     category = category_dict[i].value
                     release_date = release_date_dict[i].value
                     controllers = controllers_dict[i].value
+                    version = version_dict[i].value
+                    coder = coder_dict[i].value
+                    short_description = short_description_dict[i].value
+                    long_description = long_description_dict[i].value
                     self.ui.listAppsWidget.addItem(display_name)
                     list_item = self.ui.listAppsWidget.item(i)
                     list_item.setData(Qt.UserRole, [internal_name,
@@ -507,7 +535,11 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
                                                     extracted_size,
                                                     category,
                                                     release_date,
-                                                    controllers])
+                                                    controllers,
+                                                    version,
+                                                    coder,
+                                                    short_description,
+                                                    long_description])
 
                     # Set category icon
 
@@ -521,7 +553,6 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
                         list_item.setIcon(QIcon(resource_path("assets/gui/icons/category/media.png")))
                     elif category == "demos":
                         list_item.setIcon(QIcon(resource_path("assets/gui/icons/category/demo.png")))
-
 
                     # self.ui.listAppsWidget.setItemData(i, [internal_name, display_name], Qt.UserRole)
                     if not splash.isHidden():
@@ -596,7 +627,6 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         self.ui.ExtractAppCheckbox.setDisabled(True)
         self.ui.menubar.setDisabled(True)
         self.ui.ReposComboBox.setDisabled(True)
-        self.ui.RefreshListBtn.setDisabled(True)
         logging.critical('OSC GODS:CLOSED THE SHOP')
         self.status_message("The shop is now closed")
 
@@ -691,7 +721,6 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
             self.ui.ViewMetadataBtn.clicked.disconnect(self.download_button)
             self.ui.WiiLoadButton.setHidden(True)
             self.ui.ReposComboBox.setHidden(True)
-            self.ui.RefreshListBtn.setHidden(True)
             self.ui.RepositoryLabel.setHidden(True)
 
         else:
