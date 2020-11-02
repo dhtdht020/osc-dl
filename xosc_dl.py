@@ -1,6 +1,8 @@
 import io
 import json
 from datetime import datetime
+from os import listdir
+from os.path import isfile, join
 
 import yaml
 # import sentry_sdk
@@ -18,9 +20,9 @@ import requests
 import pyperclip
 from PySide2 import QtGui
 from PySide2.QtCore import Qt, QObject
-from PySide2.QtGui import QIcon, QColor
+from PySide2.QtGui import QIcon, QColor, QMovie
 from PySide2.QtWidgets import QApplication, QMainWindow, QInputDialog, QLineEdit, QMessageBox, QSplashScreen, QLabel, \
-    QListWidgetItem, QFileDialog, QListWidget
+    QListWidgetItem, QFileDialog, QListWidget, QAction
 
 import download
 import gui.ui_united
@@ -90,12 +92,14 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         self.ui.actionClear_Log.setIcon(QIcon(resource_path("assets/gui/icons/clear-log.png")))
         self.ui.actionClose_the_shop.setIcon(QIcon(resource_path("assets/gui/icons/close-shop.png")))
         self.ui.menuExperimental.setIcon(QIcon(resource_path("assets/gui/icons/experimental.png")))
+        self.ui.actionSelect_Theme.setIcon(QIcon(resource_path("assets/gui/icons/theme.png")))
         # DEBUG -> EXPERIMENTAL
         self.ui.menuAnnouncement_Banner.setIcon(QIcon(resource_path("assets/gui/icons/announcement-banner.png")))
         # DEBUG -> EXPERIMENTAL -> ANNOUNCEMENT BANNER
         self.ui.actionDisplay_Banner.setIcon(QIcon(resource_path("assets/gui/icons/announcement-banner-reload.png")))
 
         self.populate()
+
         self.selection_changed()
         self.status_message("Ready to download")
         self.ui.progressBar.setHidden(False)
@@ -175,6 +179,7 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         self.ui.actionEnable_Log_File.triggered.connect(self.turn_log_on)
         self.ui.actionClose_the_shop.triggered.connect(self.close_the_shop)
         self.ui.actionDisplay_Banner.triggered.connect(self.load_announcement_banner)
+        self.ui.actionSelect_Theme.triggered.connect(self.select_theme_action)
         # -- Clients
         # ---- Homebrew Browser
         self.ui.actionDownload_HBB_Client_Latest.triggered.connect(partial(self.download_latest_hbb_action))
@@ -742,6 +747,18 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
 
         self.ui.listAppsWidget.clear()
         self.populate_list(category)
+
+    def select_theme_action(self):
+        path = resource_path("assets/themes")
+        theme_files = [f for f in listdir(path) if isfile(join(path, f))]
+
+        theme, ok = QInputDialog.getItem(self, "Experimental: Select Theme",
+                                         "Choose theme to use from the list", theme_files, 0, False)
+        if not ok:
+            return
+
+        with open(resource_path(f"assets/themes/{theme}"), "r") as fh:
+            self.setStyleSheet(fh.read())
 
 
 if __name__ == "__main__":

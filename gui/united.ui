@@ -25,10 +25,16 @@
   <property name="windowTitle">
    <string>Open Shop Channel Downloader - Library</string>
   </property>
+  <property name="styleSheet">
+   <string notr="true"/>
+  </property>
   <property name="dockOptions">
    <set>QMainWindow::AllowTabbedDocks|QMainWindow::AnimatedDocks</set>
   </property>
   <widget class="QWidget" name="centralwidget">
+   <property name="accessibleName">
+    <string>centralcontainer</string>
+   </property>
    <layout class="QHBoxLayout" name="horizontalLayout_2">
     <item>
      <widget class="QGroupBox" name="AppsLibraryBox">
@@ -477,6 +483,9 @@ background-color: rgba(255, 255, 255, 0);
            <number>0</number>
           </property>
           <widget class="QWidget" name="GeneralTab">
+           <property name="accessibleName">
+            <string>tabcontent</string>
+           </property>
            <attribute name="title">
             <string>General</string>
            </attribute>
@@ -486,7 +495,7 @@ background-color: rgba(255, 255, 255, 0);
               <x>10</x>
               <y>100</y>
               <width>221</width>
-              <height>131</height>
+              <height>156</height>
              </rect>
             </property>
             <layout class="QFormLayout" name="MetaLayout">
@@ -694,6 +703,9 @@ background-color: rgba(255, 255, 255, 0);
            </widget>
           </widget>
           <widget class="QWidget" name="Description">
+           <property name="accessibleName">
+            <string>tabcontent</string>
+           </property>
            <attribute name="title">
             <string>Description</string>
            </attribute>
@@ -730,6 +742,9 @@ p, li { white-space: pre-wrap; }
            </widget>
           </widget>
           <widget class="QWidget" name="RawTab">
+           <property name="accessibleName">
+            <string>tabcontent</string>
+           </property>
            <attribute name="title">
             <string>Controllers</string>
            </attribute>
@@ -944,6 +959,7 @@ p, li { white-space: pre-wrap; }
       <addaction name="actionDisplay_Banner"/>
      </widget>
      <addaction name="menuAnnouncement_Banner"/>
+     <addaction name="actionSelect_Theme"/>
     </widget>
     <addaction name="actionEnable_Log_File"/>
     <addaction name="actionClear_Log"/>
@@ -1038,6 +1054,11 @@ p, li { white-space: pre-wrap; }
    </property>
    <property name="shortcut">
     <string>F5</string>
+   </property>
+  </action>
+  <action name="actionSelect_Theme">
+   <property name="text">
+    <string>Select Theme</string>
    </property>
   </action>
  </widget>
