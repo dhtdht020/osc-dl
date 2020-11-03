@@ -20,6 +20,11 @@ QLineEdit {
     border-style: hidden;
 }
 
+QTextBrowser {
+    background-color: #ddd;
+    border-style: hidden;
+}
+
 QStatusBar {
     background-color: #222;
     color: white;
@@ -35,13 +40,35 @@ QMenuBar {
     color: white;
 }
 
+QMenuBar::item {
+    color: rgba(255,255,255,.6);;
+    background-color: #375a7f;
+}
+
+QMenuBar::item:selected {
+    color: white;
+}
+
+QMessageBox {
+    background-color: #222;
+}
+
+QInputDialog {
+    background-color: #222;
+}
+
+QCheckBox {
+    color: white;
+}
+
+
 [accessibleName="tabcontent"] {
     background-color: #444;
 }
 
 QTabWidget::pane {
     border: 0px solid black;
-    background: white;
+    background: #444;
 }
 
 QTabWidget::tab-bar:top {
@@ -49,7 +76,7 @@ QTabWidget::tab-bar:top {
 }
 
 QTabWidget::tab-bar:bottom {
-    bottom: 1px;
+    bottom: 0px;
 }
 
 QTabWidget::tab-bar:left {
@@ -60,12 +87,9 @@ QTabWidget::tab-bar:right {
     left: 1px;
 }
 
-QTabBar::tab {
-    border: 1px solid black;
-}
-
 QTabBar::tab:selected {
-    background: white;
+    background: #444;
+    color: white;
 }
 
 QTabBar::tab:!selected {
