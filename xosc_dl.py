@@ -164,6 +164,7 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         self.ui.CopyDirectLinkBtn.clicked.connect(self.copy_download_link_button)
         self.ui.ViewMetadataBtn.clicked.connect(self.download_button)
         self.ui.WiiLoadButton.clicked.connect(self.wiiload_button)
+        self.ui.ReturnToMainBtn.clicked.connect(self.return_to_all_apps_btn)
 
         # Search Bar
         self.ui.SearchBar.textChanged.connect(self.search_bar)
@@ -173,6 +174,7 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         self.ui.CategoriesComboBox.currentIndexChanged.connect(self.changed_category)
         self.ui.listAppsWidget.currentItemChanged.connect(self.selection_changed)
         self.ui.tabMetadata.currentChanged.connect(self.tab_changed)
+        self.ui.developer_profile_btn.clicked.connect(self.developer_profile)
 
         # Actions
         # -- Debug
@@ -477,6 +479,12 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         self.repopulate()
 
     def repopulate(self):
+        # Make sure everything is hidden / shown
+        self.ui.ReturnToMainBtn.setHidden(True)
+        self.ui.CategoriesComboBox.setHidden(False)
+        self.ui.ReposComboBox.setHidden(False)
+        self.ui.RepositoryLabel.setHidden(False)
+
         self.status_message("Reloading list..")
         index = self.ui.ReposComboBox.currentIndex()
         repo_data = self.ui.ReposComboBox.itemData(index, Qt.UserRole)
@@ -489,12 +497,15 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         self.ui.progressBar.setValue(100)
         self.ui.CategoriesComboBox.currentIndexChanged.connect(self.changed_category)
 
-    def populate_list(self, category="all"):
+    def populate_list(self, category="all", coder=None):
         if not splash.isHidden():
             splash.showMessage(f"Connecting to server..", color=splash_color)
         if category == "all":
             json_req = requests.get(f"https://api.oscwii.org/v1/{HOST_NAME}/packages")
             loaded_json = json.loads(json_req.text)
+            if coder is not None:
+                json_req = requests.get(f"https://api.oscwii.org/v1/{HOST_NAME}/coder/{coder}/packages/")
+                loaded_json = json.loads(json_req.text)
         else:
             json_req = requests.get(f"https://api.oscwii.org/v1/{HOST_NAME}/category/{category}/packages")
             loaded_json = json.loads(json_req.text)
@@ -746,7 +757,42 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
             category = "demos"
 
         self.ui.listAppsWidget.clear()
-        self.populate_list(category)
+        self.populate_list(category=category)
+
+    def developer_profile(self):
+        developer = self.ui.developer.text()
+
+        # Disconnect categories
+        self.ui.CategoriesComboBox.currentIndexChanged.disconnect(self.changed_category)
+        self.ui.CategoriesComboBox.setCurrentIndex(0)
+        self.ui.CategoriesComboBox.currentIndexChanged.connect(self.changed_category)
+
+        # Hide unneeded elements
+        self.ui.CategoriesComboBox.setHidden(True)
+        self.ui.ReposComboBox.setHidden(True)
+        self.ui.RepositoryLabel.setHidden(True)
+        self.ui.ReturnToMainBtn.setHidden(False)
+
+        # Set information
+        self.ui.RepositoryNameLabel.setText(f"Developer Profile: {developer}")
+        self.ui.RepositoryDescLabel.setText(f"Showing all apps made by the developer \"{developer}\".")
+
+        self.ui.listAppsWidget.clear()
+
+        self.populate_list(coder=developer)
+
+    def return_to_all_apps_btn(self):
+
+        # Unhide unneeded elements
+        self.ui.ReturnToMainBtn.setHidden(True)
+        self.ui.CategoriesComboBox.setHidden(False)
+        self.ui.ReposComboBox.setHidden(False)
+        self.ui.RepositoryLabel.setHidden(False)
+
+        # Return to host
+        self.changed_host()
+
+
 
     def select_theme_action(self):
         path = resource_path("assets/themes")

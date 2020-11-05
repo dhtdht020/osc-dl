@@ -1,13 +1,16 @@
-/* Beta: Official osc-dl dark theme stylesheet */
+/*
+ * Beta: Official osc-dl dark theme stylesheet
+ * Color Palette: https://colorhunt.co/palette/643
+ */
 
 [accessibleName="centralcontainer"] {
-    background-color: #222;
+    background-color: #26282b;
 }
 
 QGroupBox {
     color: white;
-    background-color: #303030;
-    border: #303030;
+    background-color: #26282b;
+    border: #26282b;
     padding-top: 15px;
 }
 
@@ -16,33 +19,46 @@ QLabel {
 }
 
 QLineEdit {
-    background-color: #ddd;
+    background-color: #555a63;
+    color: white;
     border-style: hidden;
+}
+
+QPushButton {
+    background-color: #5f85db;
+    color: white;
+    border-style: hidden;
+}
+
+QPushButton:hover {
+    background-color: #90b8f8;
 }
 
 QTextBrowser {
-    background-color: #ddd;
+    background-color: #555a63;
     border-style: hidden;
+    color: white;
 }
 
 QStatusBar {
-    background-color: #222;
+    background-color: #26282b;
     color: white;
 }
 
 QListWidget {
-    background-color: #ddd;
+    background-color: #353941;
     border-style: hidden;
+    color: white;
 }
 
 QMenuBar {
-    background-color: #375a7f;
+    background-color: #353941;
     color: white;
 }
 
 QMenuBar::item {
     color: rgba(255,255,255,.6);;
-    background-color: #375a7f;
+    background-color: #353941;
 }
 
 QMenuBar::item:selected {
@@ -50,11 +66,11 @@ QMenuBar::item:selected {
 }
 
 QMessageBox {
-    background-color: #222;
+    background-color: #26282b;
 }
 
 QInputDialog {
-    background-color: #222;
+    background-color: #26282b;
 }
 
 QCheckBox {
@@ -63,12 +79,12 @@ QCheckBox {
 
 
 [accessibleName="tabcontent"] {
-    background-color: #444;
+    background-color: #353941;
 }
 
 QTabWidget::pane {
     border: 0px solid black;
-    background: #444;
+    background: #353941;
 }
 
 QTabWidget::tab-bar:top {
@@ -88,7 +104,7 @@ QTabWidget::tab-bar:right {
 }
 
 QTabBar::tab:selected {
-    background: #444;
+    background: #353941;
     color: white;
 }
 

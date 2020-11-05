@@ -123,6 +123,13 @@ class Ui_MainWindow(object):
 
         self.horizontalLayout_3.addWidget(self.CategoriesComboBox)
 
+        self.ReturnToMainBtn = QPushButton(self.LibraryTopFrameTop)
+        self.ReturnToMainBtn.setObjectName(u"ReturnToMainBtn")
+        self.ReturnToMainBtn.setMaximumSize(QSize(161, 16777215))
+        self.ReturnToMainBtn.setVisible(False)
+
+        self.horizontalLayout_3.addWidget(self.ReturnToMainBtn)
+
 
         self.verticalLayout_4.addWidget(self.LibraryTopFrameTop)
 
@@ -250,22 +257,10 @@ class Ui_MainWindow(object):
         self.GeneralTab.setObjectName(u"GeneralTab")
         self.formLayoutWidget = QWidget(self.GeneralTab)
         self.formLayoutWidget.setObjectName(u"formLayoutWidget")
-        self.formLayoutWidget.setGeometry(QRect(10, 100, 221, 156))
+        self.formLayoutWidget.setGeometry(QRect(10, 100, 221, 131))
         self.MetaLayout = QFormLayout(self.formLayoutWidget)
         self.MetaLayout.setObjectName(u"MetaLayout")
         self.MetaLayout.setContentsMargins(0, 0, 0, 0)
-        self.label_appname = QLabel(self.formLayoutWidget)
-        self.label_appname.setObjectName(u"label_appname")
-
-        self.MetaLayout.setWidget(0, QFormLayout.LabelRole, self.label_appname)
-
-        self.appname = QLineEdit(self.formLayoutWidget)
-        self.appname.setObjectName(u"appname")
-        self.appname.setEchoMode(QLineEdit.Normal)
-        self.appname.setReadOnly(True)
-
-        self.MetaLayout.setWidget(0, QFormLayout.FieldRole, self.appname)
-
         self.label_version = QLabel(self.formLayoutWidget)
         self.label_version.setObjectName(u"label_version")
 
@@ -283,12 +278,10 @@ class Ui_MainWindow(object):
 
         self.MetaLayout.setWidget(2, QFormLayout.LabelRole, self.label_developer)
 
-        self.developer = QLineEdit(self.formLayoutWidget)
-        self.developer.setObjectName(u"developer")
-        self.developer.setEchoMode(QLineEdit.Normal)
-        self.developer.setReadOnly(True)
+        self.label_releasedate = QLabel(self.formLayoutWidget)
+        self.label_releasedate.setObjectName(u"label_releasedate")
 
-        self.MetaLayout.setWidget(2, QFormLayout.FieldRole, self.developer)
+        self.MetaLayout.setWidget(3, QFormLayout.LabelRole, self.label_releasedate)
 
         self.releasedate = QLineEdit(self.formLayoutWidget)
         self.releasedate.setObjectName(u"releasedate")
@@ -296,11 +289,6 @@ class Ui_MainWindow(object):
         self.releasedate.setReadOnly(True)
 
         self.MetaLayout.setWidget(3, QFormLayout.FieldRole, self.releasedate)
-
-        self.label_releasedate = QLabel(self.formLayoutWidget)
-        self.label_releasedate.setObjectName(u"label_releasedate")
-
-        self.MetaLayout.setWidget(3, QFormLayout.LabelRole, self.label_releasedate)
 
         self.label_filesize = QLabel(self.formLayoutWidget)
         self.label_filesize.setObjectName(u"label_filesize")
@@ -313,6 +301,43 @@ class Ui_MainWindow(object):
         self.filesize.setReadOnly(True)
 
         self.MetaLayout.setWidget(4, QFormLayout.FieldRole, self.filesize)
+
+        self.appname = QLineEdit(self.formLayoutWidget)
+        self.appname.setObjectName(u"appname")
+        self.appname.setEchoMode(QLineEdit.Normal)
+        self.appname.setReadOnly(True)
+
+        self.MetaLayout.setWidget(0, QFormLayout.FieldRole, self.appname)
+
+        self.label_appname = QLabel(self.formLayoutWidget)
+        self.label_appname.setObjectName(u"label_appname")
+
+        self.MetaLayout.setWidget(0, QFormLayout.LabelRole, self.label_appname)
+
+        self.frame = QFrame(self.formLayoutWidget)
+        self.frame.setObjectName(u"frame")
+        self.frame.setMinimumSize(QSize(149, 20))
+        self.frame.setFrameShape(QFrame.StyledPanel)
+        self.frame.setFrameShadow(QFrame.Raised)
+        self.developer = QLineEdit(self.frame)
+        self.developer.setObjectName(u"developer")
+        self.developer.setGeometry(QRect(0, 0, 151, 20))
+        self.developer.setEchoMode(QLineEdit.Normal)
+        self.developer.setReadOnly(True)
+        self.developer_profile_btn = QPushButton(self.frame)
+        self.developer_profile_btn.setObjectName(u"developer_profile_btn")
+        self.developer_profile_btn.setGeometry(QRect(130, -1, 21, 22))
+        self.developer_profile_btn.setFont(font)
+        self.developer_profile_btn.setStyleSheet(u"QPushButton {\n"
+"	border: none;\n"
+"	background: none;\n"
+"}\n"
+"\n"
+"QPushButton:hover {\n"
+"	color: #0078D7;\n"
+"}")
+
+        self.MetaLayout.setWidget(2, QFormLayout.FieldRole, self.frame)
 
         self.label_description = QLabel(self.GeneralTab)
         self.label_description.setObjectName(u"label_description")
@@ -495,6 +520,7 @@ class Ui_MainWindow(object):
         self.CategoriesComboBox.setItemText(4, QCoreApplication.translate("MainWindow", u"Media", None))
         self.CategoriesComboBox.setItemText(5, QCoreApplication.translate("MainWindow", u"Demos", None))
 
+        self.ReturnToMainBtn.setText(QCoreApplication.translate("MainWindow", u"Return to All Apps", None))
         self.RepositoryDescLabel.setText(QCoreApplication.translate("MainWindow", u"Repository Description", None))
         self.AppsAmountLabel.setText(QCoreApplication.translate("MainWindow", u"0 Apps", None))
         self.SearchBar.setPlaceholderText(QCoreApplication.translate("MainWindow", u"Search Applications..", None))
@@ -504,13 +530,14 @@ class Ui_MainWindow(object):
 #if QT_CONFIG(accessibility)
         self.GeneralTab.setAccessibleName(QCoreApplication.translate("MainWindow", u"tabcontent", None))
 #endif // QT_CONFIG(accessibility)
-        self.label_appname.setText(QCoreApplication.translate("MainWindow", u"App Name", None))
-        self.appname.setText("")
-        self.appname.setPlaceholderText("")
         self.label_version.setText(QCoreApplication.translate("MainWindow", u"Version", None))
         self.label_developer.setText(QCoreApplication.translate("MainWindow", u"Developer", None))
         self.label_releasedate.setText(QCoreApplication.translate("MainWindow", u"Release Date", None))
         self.label_filesize.setText(QCoreApplication.translate("MainWindow", u"File Size", None))
+        self.appname.setText("")
+        self.appname.setPlaceholderText("")
+        self.label_appname.setText(QCoreApplication.translate("MainWindow", u"App Name", None))
+        self.developer_profile_btn.setText(QCoreApplication.translate("MainWindow", u">", None))
         self.label_description.setText(QCoreApplication.translate("MainWindow", u"Description", None))
         self.label_displayname.setText(QCoreApplication.translate("MainWindow", u"Title", None))
         self.HomebrewIconLabel.setText(QCoreApplication.translate("MainWindow", u"No homebrew icon. Aw.", None))
