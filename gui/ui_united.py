@@ -268,6 +268,7 @@ class Ui_MainWindow(object):
 
         self.version = QLineEdit(self.formLayoutWidget)
         self.version.setObjectName(u"version")
+        self.version.setMinimumSize(QSize(149, 20))
         self.version.setEchoMode(QLineEdit.Normal)
         self.version.setReadOnly(True)
 
@@ -285,6 +286,7 @@ class Ui_MainWindow(object):
 
         self.releasedate = QLineEdit(self.formLayoutWidget)
         self.releasedate.setObjectName(u"releasedate")
+        self.releasedate.setMinimumSize(QSize(149, 20))
         self.releasedate.setEchoMode(QLineEdit.Normal)
         self.releasedate.setReadOnly(True)
 
@@ -297,6 +299,7 @@ class Ui_MainWindow(object):
 
         self.filesize = QLineEdit(self.formLayoutWidget)
         self.filesize.setObjectName(u"filesize")
+        self.filesize.setMinimumSize(QSize(149, 20))
         self.filesize.setEchoMode(QLineEdit.Normal)
         self.filesize.setReadOnly(True)
 
@@ -304,6 +307,7 @@ class Ui_MainWindow(object):
 
         self.appname = QLineEdit(self.formLayoutWidget)
         self.appname.setObjectName(u"appname")
+        self.appname.setMinimumSize(QSize(149, 20))
         self.appname.setEchoMode(QLineEdit.Normal)
         self.appname.setReadOnly(True)
 
