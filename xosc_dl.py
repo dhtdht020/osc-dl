@@ -743,7 +743,10 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
             self.ui.RepositoryLabel.setHidden(True)
 
         else:
-            self.ui.AppsAmountLabel.setText(f"{n} Results")
+            if n == 1:
+                self.ui.AppsAmountLabel.setText(f"{n} Result")
+            else:
+                self.ui.AppsAmountLabel.setText(f"{n} Results")
 
     def changed_category(self):
         category = "all"
