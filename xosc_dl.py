@@ -490,7 +490,10 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         repo_data = self.ui.ReposComboBox.itemData(index, Qt.UserRole)
         self.ui.RepositoryNameLabel.setText(repo_data[0])
         self.ui.RepositoryDescLabel.setText(repo_data[2])
-        self.ui.CategoriesComboBox.currentIndexChanged.disconnect(self.changed_category)
+        try:
+            self.ui.CategoriesComboBox.currentIndexChanged.disconnect(self.changed_category)
+        except Exception:
+            pass
         self.ui.CategoriesComboBox.setCurrentIndex(0)
         self.ui.listAppsWidget.clear()
         self.populate_list()
@@ -782,7 +785,6 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         self.populate_list(coder=developer)
 
     def return_to_all_apps_btn(self):
-
         # Unhide unneeded elements
         self.ui.ReturnToMainBtn.setHidden(True)
         self.ui.CategoriesComboBox.setHidden(False)
@@ -791,8 +793,6 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
 
         # Return to host
         self.changed_host()
-
-
 
     def select_theme_action(self):
         path = resource_path("assets/themes")
