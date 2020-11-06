@@ -666,14 +666,7 @@ background-color: rgba(255, 255, 255, 0);
                  </font>
                 </property>
                 <property name="styleSheet">
-                 <string notr="true">QPushButton {
-	border: none;
-	background: none;
-}
-
-QPushButton:hover {
-	color: #0078D7;
-}</string>
+                 <string notr="true"/>
                 </property>
                 <property name="text">
                  <string>&gt;</string>

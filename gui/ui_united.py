@@ -332,14 +332,7 @@ class Ui_MainWindow(object):
         self.developer_profile_btn.setObjectName(u"developer_profile_btn")
         self.developer_profile_btn.setGeometry(QRect(130, -1, 21, 22))
         self.developer_profile_btn.setFont(font)
-        self.developer_profile_btn.setStyleSheet(u"QPushButton {\n"
-"	border: none;\n"
-"	background: none;\n"
-"}\n"
-"\n"
-"QPushButton:hover {\n"
-"	color: #0078D7;\n"
-"}")
+        self.developer_profile_btn.setStyleSheet(u"")
 
         self.MetaLayout.setWidget(2, QFormLayout.FieldRole, self.frame)
 

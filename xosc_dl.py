@@ -98,8 +98,8 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         # DEBUG -> EXPERIMENTAL -> ANNOUNCEMENT BANNER
         self.ui.actionDisplay_Banner.setIcon(QIcon(resource_path("assets/gui/icons/announcement-banner-reload.png")))
 
+        self.populate_stylesheets()
         self.populate()
-
         self.selection_changed()
         self.status_message("Ready to download")
         self.ui.progressBar.setHidden(False)
@@ -410,7 +410,7 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
 
         # download.get() cannot save to our own file-like object.
         # Alt fix: add a file parameter to write to instead?
-        url = f"https://{HOST}/hbb/{self.app_name}/{self.app_name}.zip"
+        url = f"https://{HOST}/hbb/{app_name}/{app_name}.zip"
         r = requests.get(url)
 
         self.status_message("Preparing app...")
@@ -824,6 +824,19 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
 
         with open(resource_path(f"assets/themes/{theme}"), "r") as fh:
             self.setStyleSheet(fh.read())
+
+    def populate_stylesheets(self):
+        # Developer Profile Button
+        self.ui.developer_profile_btn.setStyleSheet(f"""
+        QPushButton {{
+            border: none;
+            background: none;
+        }}
+
+        QPushButton:hover {{
+            color: #0078D7;
+        }}
+        """)
 
 
 if __name__ == "__main__":
