@@ -381,8 +381,19 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
             self.status_message("Cancelled Download.")
 
     def wiiload_button(self):
-        ip, ok = QInputDialog.getText(self, 'WiiLoad IP Address',
-                                      'Enter the IP address of your Wii:',
+        data = self.ui.listAppsWidget.currentItem().data(Qt.UserRole)
+        app_name = data[0]
+        app_display_name = data[1]
+
+        ip, ok = QInputDialog.getText(self, 'Send to Wii: Enter IP address',
+                                      'Enter the IP address of your Wii.\n'
+                                      'The selected app will be sent through the network to your Wii.\n\n'
+                                      f'App to send: {app_display_name}\n\n'
+                                      'To find your Wii\'s IP address:\n'
+                                      '1) Enter the Homebrew Channel.\n'
+                                      '2) Press the home button on the Wii Remote.\n'
+                                      '3) Copy the IP address written in the top left corner.\n\n'
+                                      'IP address (e.g. 192.168.1...):',
                                       QLineEdit.Normal)
         if not ok:
             return
@@ -394,9 +405,7 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
             QMessageBox.warning(self, 'Invalid IP Address', 'This IP address is invalid.')
             return
 
-        data = self.ui.listAppsWidget.currentItem().data(Qt.UserRole)
-        self.app_name = data[0]
-        self.status_message("Downloading " + self.app_name + " from Open Shop Channel..")
+        self.status_message("Downloading " + app_name + " from Open Shop Channel..")
         self.ui.progressBar.setValue(25)
 
         # download.get() cannot save to our own file-like object.
@@ -484,6 +493,8 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         self.ui.CategoriesComboBox.setHidden(False)
         self.ui.ReposComboBox.setHidden(False)
         self.ui.RepositoryLabel.setHidden(False)
+
+        self.ui.SearchBar.setText("")
 
         self.status_message("Reloading list..")
         index = self.ui.ReposComboBox.currentIndex()
@@ -767,6 +778,11 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
 
     def developer_profile(self):
         developer = self.ui.developer.text()
+
+        # Begin
+        self.status_message(f"Loading developer profile for \"{developer}\"..")
+
+        self.ui.SearchBar.setText("")
 
         # Disconnect categories
         self.ui.CategoriesComboBox.currentIndexChanged.disconnect(self.changed_category)
