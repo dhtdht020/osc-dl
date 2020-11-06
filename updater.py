@@ -105,13 +105,6 @@ def get_announcement():
     if not parsed_yaml["information"]["display"]:
         return
     # Check YAML version for compatibility, Shows warning on other versions
-    elif parsed_yaml["version"] != 2:
-        announcement_header = "Warning:"
-        announcement_content = "Your build of OSC-DL is out of date! Check for updates at Client -> OSC-DL -> Check " \
-                               "for Updates "
-        announcement_website_label_text = "Releases"
-        announcement_website_label_color = "#ffff00"
-        announcement_website_url = "https://github.com/dhtdht020/osc-dl/releases"
 
     announcement = f'<html><head/><body><p><span style=" font-weight:600;">{announcement_header} ' \
                    f'</span>{announcement_content}'
