@@ -515,13 +515,13 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         if not splash.isHidden():
             splash.showMessage(f"Connecting to server..", color=splash_color)
         if category == "all":
-            json_req = requests.get(f"https://api.oscwii.org/v1/{HOST_NAME}/packages")
+            json_req = requests.get(f"https://api.oscwii.org/v2/{HOST_NAME}/packages")
             loaded_json = json.loads(json_req.text)
             if coder is not None:
-                json_req = requests.get(f"https://api.oscwii.org/v1/{HOST_NAME}/coder/{coder}/packages/")
+                json_req = requests.get(f"https://api.oscwii.org/v2/{HOST_NAME}/packages?coder={coder}")
                 loaded_json = json.loads(json_req.text)
         else:
-            json_req = requests.get(f"https://api.oscwii.org/v1/{HOST_NAME}/category/{category}/packages")
+            json_req = requests.get(f"https://api.oscwii.org/v2/{HOST_NAME}/packages?category={category}")
             loaded_json = json.loads(json_req.text)
         if json_req.status_code == 200:
             i = 0
