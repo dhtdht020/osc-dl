@@ -114,7 +114,7 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
     def populate(self):
         if not splash.isHidden():
             splash.showMessage(f"Loading contents..", color=splash_color)
-        self.ui.actionAbout_OSC_DL.setText(f"osc-dl Version v{VERSION} by dhtdht020")
+        self.ui.actionAbout_OSC_DL.setText(f"osc-dl v{VERSION} by dhtdht020")
         self.populate_repositories()
         self.populate_list()
         self.assign_initial_actions()
