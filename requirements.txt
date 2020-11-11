@@ -4,6 +4,6 @@ halo~=0.0.31
 packaging~=20.4
 PyYAML~=5.3.1
 pyperclip~=1.8.1
-urllib3~=1.25.11
+urllib3~=1.26.0
 sentry_sdk~=0.19.2
 jsonpath_ng~=1.5.2
