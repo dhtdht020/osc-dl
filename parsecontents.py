@@ -144,5 +144,5 @@ def dl_list(file, display="False", repo="hbb1.oscwii.org"):
                 print(line)
             else:
                 if query(term=line, repo=repo) is True:
-                    metadata.get(app_name=line, type="default", repo=repo)
+                    metadata.get(app_name=line, repo=repo)
                     download.get(app_name=line, repo=repo)
