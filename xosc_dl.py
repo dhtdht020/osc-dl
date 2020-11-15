@@ -512,94 +512,98 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         self.ui.CategoriesComboBox.currentIndexChanged.connect(self.changed_category)
 
     def populate_list(self, category="all", coder=None):
-        if not splash.isHidden():
-            splash.showMessage(f"Connecting to server..", color=splash_color)
-        if category == "all":
-            json_req = requests.get(f"https://api.oscwii.org/v2/{HOST_NAME}/packages")
-            loaded_json = json.loads(json_req.text)
-            if coder is not None:
-                json_req = requests.get(f"https://api.oscwii.org/v2/{HOST_NAME}/packages?coder={coder}")
+        try:
+            if not splash.isHidden():
+                splash.showMessage(f"Connecting to server..", color=splash_color)
+            if category == "all":
+                json_req = requests.get(f"https://api.oscwii.org/v2/{HOST_NAME}/packages")
                 loaded_json = json.loads(json_req.text)
-        else:
-            json_req = requests.get(f"https://api.oscwii.org/v2/{HOST_NAME}/packages?category={category}")
-            loaded_json = json.loads(json_req.text)
-        if json_req.status_code == 200:
-            i = 0
-            ongoing = True
-            internal_name_dict = self.parse_json_expression(json=loaded_json,
-                                                            expression=f"$[*].internal_name")
-            display_name_dict = self.parse_json_expression(json=loaded_json,
-                                                           expression=f"$[*].display_name")
-            extracted_size_dict = self.parse_json_expression(json=loaded_json,
-                                                             expression=f"$[*].extracted")
-            category_dict = self.parse_json_expression(json=loaded_json,
-                                                       expression=f"$[*].category")
-            release_date_dict = self.parse_json_expression(json=loaded_json,
-                                                           expression=f"$[*].release_date")
-            controllers_dict = self.parse_json_expression(json=loaded_json,
-                                                          expression=f"$[*].controllers")
-            version_dict = self.parse_json_expression(json=loaded_json,
-                                                      expression=f"$[*].version")
-            coder_dict = self.parse_json_expression(json=loaded_json,
-                                                    expression=f"$[*].coder")
-            short_description_dict = self.parse_json_expression(json=loaded_json,
-                                                                expression=f"$[*].short_description")
-            long_description_dict = self.parse_json_expression(json=loaded_json,
-                                                               expression=f"$[*].long_description")
-            while ongoing is True:
-                try:
-                    internal_name = internal_name_dict[i].value
-                    display_name = display_name_dict[i].value
-                    extracted_size = extracted_size_dict[i].value
-                    category = category_dict[i].value
-                    release_date = release_date_dict[i].value
-                    controllers = controllers_dict[i].value
-                    version = version_dict[i].value
-                    coder = coder_dict[i].value
-                    short_description = short_description_dict[i].value
-                    long_description = long_description_dict[i].value
-                    self.ui.listAppsWidget.addItem(display_name)
-                    list_item = self.ui.listAppsWidget.item(i)
-                    list_item.setData(Qt.UserRole, [internal_name,
-                                                    display_name,
-                                                    extracted_size,
-                                                    category,
-                                                    release_date,
-                                                    controllers,
-                                                    version,
-                                                    coder,
-                                                    short_description,
-                                                    long_description])
+                if coder is not None:
+                    json_req = requests.get(f"https://api.oscwii.org/v2/{HOST_NAME}/packages?coder={coder}")
+                    loaded_json = json.loads(json_req.text)
+            else:
+                json_req = requests.get(f"https://api.oscwii.org/v2/{HOST_NAME}/packages?category={category}")
+                loaded_json = json.loads(json_req.text)
+            if json_req.status_code == 200:
+                i = 0
+                ongoing = True
+                internal_name_dict = self.parse_json_expression(json=loaded_json,
+                                                                expression=f"$[*].internal_name")
+                display_name_dict = self.parse_json_expression(json=loaded_json,
+                                                               expression=f"$[*].display_name")
+                extracted_size_dict = self.parse_json_expression(json=loaded_json,
+                                                                 expression=f"$[*].extracted")
+                category_dict = self.parse_json_expression(json=loaded_json,
+                                                           expression=f"$[*].category")
+                release_date_dict = self.parse_json_expression(json=loaded_json,
+                                                               expression=f"$[*].release_date")
+                controllers_dict = self.parse_json_expression(json=loaded_json,
+                                                              expression=f"$[*].controllers")
+                version_dict = self.parse_json_expression(json=loaded_json,
+                                                          expression=f"$[*].version")
+                coder_dict = self.parse_json_expression(json=loaded_json,
+                                                        expression=f"$[*].coder")
+                short_description_dict = self.parse_json_expression(json=loaded_json,
+                                                                    expression=f"$[*].short_description")
+                long_description_dict = self.parse_json_expression(json=loaded_json,
+                                                                   expression=f"$[*].long_description")
+                while ongoing is True:
+                    try:
+                        internal_name = internal_name_dict[i].value
+                        display_name = display_name_dict[i].value
+                        extracted_size = extracted_size_dict[i].value
+                        category = category_dict[i].value
+                        release_date = release_date_dict[i].value
+                        controllers = controllers_dict[i].value
+                        version = version_dict[i].value
+                        coder = coder_dict[i].value
+                        short_description = short_description_dict[i].value
+                        long_description = long_description_dict[i].value
+                        self.ui.listAppsWidget.addItem(display_name)
+                        list_item = self.ui.listAppsWidget.item(i)
+                        list_item.setData(Qt.UserRole, [internal_name,
+                                                        display_name,
+                                                        extracted_size,
+                                                        category,
+                                                        release_date,
+                                                        controllers,
+                                                        version,
+                                                        coder,
+                                                        short_description,
+                                                        long_description])
 
-                    # Set category icon
+                        # Set category icon
 
-                    if category == "utilities":
-                        list_item.setIcon(QIcon(resource_path("assets/gui/icons/category/utility.png")))
-                    elif category == "games":
-                        list_item.setIcon(QIcon(resource_path("assets/gui/icons/category/game.png")))
-                    elif category == "emulators":
-                        list_item.setIcon(QIcon(resource_path("assets/gui/icons/category/emulator.png")))
-                    elif category == "media":
-                        list_item.setIcon(QIcon(resource_path("assets/gui/icons/category/media.png")))
-                    elif category == "demos":
-                        list_item.setIcon(QIcon(resource_path("assets/gui/icons/category/demo.png")))
+                        if category == "utilities":
+                            list_item.setIcon(QIcon(resource_path("assets/gui/icons/category/utility.png")))
+                        elif category == "games":
+                            list_item.setIcon(QIcon(resource_path("assets/gui/icons/category/game.png")))
+                        elif category == "emulators":
+                            list_item.setIcon(QIcon(resource_path("assets/gui/icons/category/emulator.png")))
+                        elif category == "media":
+                            list_item.setIcon(QIcon(resource_path("assets/gui/icons/category/media.png")))
+                        elif category == "demos":
+                            list_item.setIcon(QIcon(resource_path("assets/gui/icons/category/demo.png")))
 
-                    # self.ui.listAppsWidget.setItemData(i, [internal_name, display_name], Qt.UserRole)
-                    if not splash.isHidden():
-                        splash.showMessage(f"Loaded {i} apps..", color=splash_color)
-                    i += 1
-                except IndexError:
-                    ongoing = False
+                        # self.ui.listAppsWidget.setItemData(i, [internal_name, display_name], Qt.UserRole)
+                        if not splash.isHidden():
+                            splash.showMessage(f"Loaded {i} apps..", color=splash_color)
+                        i += 1
+                    except IndexError:
+                        ongoing = False
 
-            self.sort_list_alphabetically()
-            self.ui.listAppsWidget.setCurrentRow(0)
-            self.ui.AppsAmountLabel.setText(str(self.ui.listAppsWidget.count()) + " Apps")
+                self.sort_list_alphabetically()
+                self.ui.listAppsWidget.setCurrentRow(0)
+                self.ui.AppsAmountLabel.setText(str(self.ui.listAppsWidget.count()) + " Apps")
 
-        else:
+        except Exception as e:
             QMessageBox.critical(self, 'OSC-DL: Critical Network Error',
                                  'Could not connect to the Open Shop Channel server.\n'
                                  'Cannot continue. :(\n'
-                                 'Please check your internet connection, or report this incident.')
+                                 'Please check your internet connection, or report this incident.\n\n'
+                                 f'Exception: {e}')
+            sys.exit(1)
+
 
     # Actions
 
