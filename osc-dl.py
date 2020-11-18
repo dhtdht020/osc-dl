@@ -1,7 +1,6 @@
 import argparse
 import io
 import socket
-import sentry_sdk
 
 import requests
 
@@ -14,13 +13,6 @@ import utils
 import os
 
 from sys import exit
-
-if updater.is_frozen():
-    # Init sentry
-    sentry_sdk.init(
-        "https://619963fe9ec346e1b032fb19ea1632c8@o456896.ingest.sentry.io/5450395",
-        traces_sample_rate=1.0
-    )
 
 if os.name == 'nt':
     # Initialize color on Windows
