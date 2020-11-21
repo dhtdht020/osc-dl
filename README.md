@@ -1,18 +1,15 @@
+
 # Open Shop Channel DL [![Actions Status](https://github.com/dhtdht020/osc-dl/workflows/Build/badge.svg)](https://github.com/dhtdht020/osc-dl/actions) [![Discord Server](https://img.shields.io/discord/426478571389976577.svg)](https://discord.gg/by6mR5N) [![Downloads](https://img.shields.io/github/downloads/dhtdht020/osc-dl/total)](https://github.com/dhtdht020/osc-dl/releases) [![License](https://img.shields.io/badge/Open%20Source-GPL--3.0-lightgrey.svg)](https://github.com/dhtdht020/osc-dl/blob/master/LICENSE)
 
-OSC-DL is an advanced Python 3 command line utility for obtaining homebrew from the Open Shop Channel repository, and scraping it's contents.
+OSCDL is a cross platform desktop client for the Open Shop Channel homebrew repository, coded in Python 3.
 
-Currently, the following features are implemented:
+With OSCDL, you can download hundreds of homebrew apps and themes to your computer or wirelessly send them directly to the Wii.
 
-- Listing all apps on the remote repository.
-- Obtaining and parsing metadata.
-- Downloading individual apps or the entire repository.
+![Preview](https://user-images.githubusercontent.com/18469146/99693749-600e2c00-2a94-11eb-975a-0f3c25402c04.png)
 
-![Preview](https://raw.githubusercontent.com/dhtdht020/osc-dl/master/assets/readme-image1.svg?sanitize=true)
+## Installing OSCDL
 
-## Installing OSC-DL
-
-I recommend using the latest [release build](https://github.com/dhtdht020/osc-dl/releases), as it's a onefile variation of the program useful for avoiding dependency hell.
+I recommend using the latest [release](https://github.com/dhtdht020/osc-dl/releases), as it's a more convenient onefile variation of the program with an installer.
 
 ##### Manual Download:
 
@@ -20,18 +17,19 @@ Make sure Python 3 is installed and used.
 
 1. `git clone https://github.com/dhtdht020/osc-dl.git`
 2. `cd osc-dl`
-2. `pip3 install -r requirements.txt`
-3. `python3 osc-dl.py`
+2. `pip3 install -r requirements_GUI.txt`
+3. `python3 xosc-dl.py`
 
-##### Manual Download of GUI:
+##### Manual Download of CLI version:
 
 1. `git clone https://github.com/dhtdht020/osc-dl.git`
 2. `cd osc-dl`
-2. `pip3 install -r requirements_GUI.txt`
-3. `python3 xosc_dl.py`
+2. `pip3 install -r requirements.txt`
+3. `python3 osc_dl.py`
 
 
-## Downloading Homebrew (get command)
+## CLI Guide:
+### Downloading Homebrew (get command)
 
 You can download homebrew from the Open Shop Channel by using `osc-dl get`
 
@@ -43,7 +41,7 @@ The following arguments can be used
 - `-c / --noconfirm` Disable download confirmation message after application metadata displays.
 - `-o / --output` Output file name.
 
-## Homebrew Metadata (meta command)
+### Homebrew Metadata (meta command)
 
 You can obtain visual metadata or metadata items about homebrew applications in the Open Shop Channel by using `osc-dl meta`
 
@@ -74,7 +72,7 @@ The following arguments can be used
 - `-t / --type` Type of metadata to obtain (display_name, developer, version, short_description, long_description, release_date, contributors)
 - `-o / --output` Output file name.
 
-## List Homebrew (list command)
+### List Homebrew (list command)
 
 You can list the names of all homebrew on the Open Shop Channel repository by using `osc-dl list`
 
@@ -82,7 +80,7 @@ Example usage: `osc-dl list`
 
 Currently, there are no arguments, although a way to filter the results or save to a file is planned.
 
-## Querying Homebrew (query command)
+### Querying Homebrew (query command)
 
 You can search homebrew available on the Open Shop Channel by using `osc-dl query`
 
@@ -95,13 +93,10 @@ The following arguments can be used
 - `-n / --name` Required. Name of homebrew app to query.
 - `-v / --verify` Caused query to return "True" if the app is present and "False" if it isn't.
 
-## Download Everything (get-all command)
+### Download Everything (get-all command)
 
 This command was intended for debugging, and we don't recommend using it, as it might have an unexpected behaviour.
 
 Example usage: `osc-dl get-all`
 
 This command is not maintained nor supported, and although specified in help, setting output directory is not possible at the time.
-
-
-
