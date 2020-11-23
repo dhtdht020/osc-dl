@@ -5,4 +5,4 @@ packaging~=20.4
 PyYAML~=5.3.1
 pyperclip~=1.8.1
 jsonpath_ng~=1.5.2
-PySide2~=5.15.1 # GUI exclusive
+PySide2~=5.15.2 # GUI exclusive
