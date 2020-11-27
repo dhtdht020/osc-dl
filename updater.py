@@ -8,7 +8,7 @@ from packaging import version
 
 def current_version():
     prefix = "1.2."
-    beta_number = "10"
+    beta_number = "11"
 
     version_number = prefix + beta_number
 
@@ -35,24 +35,6 @@ def is_frozen():
     else:
         # Running in a normal Python script, not packaged by PyInstaller.
         return False
-
-
-def init_update():
-    if is_frozen() is True:
-        print('Packaged with PyInstaller.')
-    else:
-        print('Running in a normal Python script, not packaged by PyInstaller.')
-
-    print("Get the latest version from https://github.com/dhtdht020/osc-dl/\n")
-
-    if check_update() is True:
-        print("OSC-DL is out of date.")
-        print("Latest released version: " + latest_version())
-        print("Current version: " + current_version())
-    else:
-        print("You are up to date.")
-        print("Latest released version: " + latest_version())
-        print("Current version: " + current_version())
 
 
 def check_update():
@@ -87,6 +69,7 @@ def get_type():
     return 'Unknown System, Never saw this before. Damn.'
 
 
+# Get announcement banner from the announcements repo
 def get_announcement():
     yaml_file = requests.get("https://raw.githubusercontent.com/dhtdht020/oscdl-updateserver/master/v1/announcement"
                              "/alert.yml").text
@@ -115,16 +98,3 @@ def get_announcement():
 
     return announcement, announcement_url, announcement_banner_color, announcement_banner_text_color, announcement_website_enabled
 
-
-def obtain_splash():
-    version_name = current_version()
-    splash_image = requests.get(f"https://raw.githubusercontent.com/dhtdht020/oscdl-updateserver/master/v1/assets"
-                                f"/{version_name}/splash.png")
-
-    if str(splash_image.status_code) != "200":
-        splash_image = requests.get("https://raw.githubusercontent.com/dhtdht020/oscdl-updateserver/master/v1/assets"
-                                    "/splash.png")
-
-    splash = splash_image.content
-
-    return splash

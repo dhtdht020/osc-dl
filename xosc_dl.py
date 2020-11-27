@@ -27,6 +27,7 @@ import download
 import gui.ui_united
 import metadata
 import updater
+import utils
 import wiiload
 
 VERSION = updater.current_version()
@@ -38,12 +39,6 @@ else:
 
 HOST = "hbb1.oscwii.org"
 HOST_NAME = "primary"
-
-
-# escape ansi for stdout output of download status
-def escape_ansi(line):
-    ansi_escape = re.compile(r'(\x9B|\x1B\[)[0-?]*[ -/]*[@-~]')
-    return ansi_escape.sub('', line)
 
 
 # Get resource when frozen with PyInstaller
@@ -102,7 +97,7 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
     def populate(self):
         if not splash.isHidden():
             splash.showMessage(f"Loading contents..", color=splash_color)
-        self.ui.actionAbout_OSC_DL.setText(f"osc-dl v{VERSION} by dhtdht020")
+        self.ui.actionAbout_OSC_DL.setText(f"OSCDL v{VERSION} by dhtdht020")
         self.populate_repositories()
         self.populate_list()
         self.assign_initial_actions()
@@ -173,7 +168,7 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         # -- Clients
         # ---- Homebrew Browser
         self.ui.actionDownload_HBB_Client_Latest.triggered.connect(partial(self.download_latest_hbb_action))
-        # ---- OSC-DL
+        # ---- OSCDL
         self.ui.actionCheck_for_Updates.triggered.connect(partial(self.check_for_updates_action))
         self.ui.actionRefresh.triggered.connect(partial(self.repopulate))
 
@@ -183,7 +178,7 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
             self.ui.longDescriptionBrowser.setText("Loading description..")
             self.repaint()
             app_name = self.ui.listAppsWidget.currentItem().data(Qt.UserRole)[0]
-            self.ui.longDescriptionBrowser.setText(metadata.dictionary(app_name, repo=HOST).get("long_description"))
+            self.ui.longDescriptionBrowser.setText(metadata.long_description(app_name, repo=HOST))
 
     # When user selects a different homebrew from the list
     def selection_changed(self):
@@ -202,10 +197,10 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
             # Hide icon
             self.ui.HomebrewIconLabel.hide()
 
-            # Clear supported controllers:
+            # Clear supported controllers listview:
             self.ui.SupportedControllersListWidget.clear()
 
-            # info = metadata.dictionary(app_name, repo=HOST)
+            # Set data
             data = self.ui.listAppsWidget.currentItem().data(Qt.UserRole)
 
             # -- Get actual metadata
@@ -221,25 +216,13 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
                 self.ui.filesize.setText("Unknown")
 
             # Category
-
-            if data[3] == "demos":
-                self.ui.HomebrewCategoryLabel.setText("Demo")
-            elif data[3] == "emulators":
-                self.ui.HomebrewCategoryLabel.setText("Emulator")
-            elif data[3] == "games":
-                self.ui.HomebrewCategoryLabel.setText("Game")
-            elif data[3] == "media":
-                self.ui.HomebrewCategoryLabel.setText("Media")
-            elif data[3] == "utilities":
-                self.ui.HomebrewCategoryLabel.setText("Utility")
-            else:
-                self.ui.HomebrewCategoryLabel.setText("")
+            self.ui.HomebrewCategoryLabel.setText(metadata.category_display_name(data[3]))
 
             # Release Date
             self.ui.releasedate.setText(datetime.fromtimestamp(int(data[4])).strftime('%B %e, %Y at %R'))
 
             # Controllers
-            controllers = self.parse_controllers(data[5])
+            controllers = metadata.parse_controllers(data[5])
             # Add icons for Wii Remotes
             if controllers[0] > 1:
                 item = QListWidgetItem()
@@ -318,36 +301,6 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         data = self.ui.listAppsWidget.currentItem().data(Qt.UserRole)
         self.app_name = data[0]
 
-    def parse_controllers(self, controllers):
-        wii_remotes = 0
-        nunchuk = classic_controller = gamecube_controller = wii_zapper = keyboard = sdhc_compatible = False
-        # Wii Remotes
-        if "wwww" in controllers:
-            wii_remotes = 4
-        elif "www" in controllers:
-            wii_remotes = 3
-        elif "ww" in controllers:
-            wii_remotes = 2
-        elif "w" in controllers:
-            wii_remotes = 1
-
-        # nunchuk
-        if "n" in controllers:
-            nunchuk = True
-        # Classic Controller
-        if "c" in controllers:
-            classic_controller = True
-        if "g" in controllers:
-            gamecube_controller = True
-        if "z" in controllers:
-            wii_zapper = True
-        if "k" in controllers:
-            keyboard = True
-        if "s" in controllers:
-            sdhc_compatible = True
-
-        return wii_remotes, nunchuk, classic_controller, gamecube_controller, wii_zapper, keyboard, sdhc_compatible
-
     def trugh(self, text):
         return QObject.tr(self, text)
 
@@ -363,7 +316,7 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
             with redirect_stdout(console_output):
                 download.get(app_name=self.app_name, repo=HOST, output=output)
             self.ui.progressBar.setValue(100)
-            self.status_message(escape_ansi(console_output.getvalue()))
+            self.status_message(utils.escape_ansi(console_output.getvalue()))
         else:
             self.ui.progressBar.setValue(0)
             self.status_message("Cancelled Download.")
@@ -503,115 +456,106 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         try:
             if not splash.isHidden():
                 splash.showMessage(f"Connecting to server..", color=splash_color)
-            if category == "all":
-                json_req = requests.get(f"https://api.oscwii.org/v2/{HOST_NAME}/packages")
-                loaded_json = json.loads(json_req.text)
-                if coder is not None:
-                    json_req = requests.get(f"https://api.oscwii.org/v2/{HOST_NAME}/packages?coder={coder}")
-                    loaded_json = json.loads(json_req.text)
-            else:
-                json_req = requests.get(f"https://api.oscwii.org/v2/{HOST_NAME}/packages?category={category}")
-                loaded_json = json.loads(json_req.text)
-            if json_req.status_code == 200:
-                i = 0
-                ongoing = True
-                internal_name_dict = self.parse_json_expression(json=loaded_json,
-                                                                expression=f"$[*].internal_name")
-                display_name_dict = self.parse_json_expression(json=loaded_json,
-                                                               expression=f"$[*].display_name")
-                extracted_size_dict = self.parse_json_expression(json=loaded_json,
-                                                                 expression=f"$[*].extracted")
-                category_dict = self.parse_json_expression(json=loaded_json,
-                                                           expression=f"$[*].category")
-                release_date_dict = self.parse_json_expression(json=loaded_json,
-                                                               expression=f"$[*].release_date")
-                controllers_dict = self.parse_json_expression(json=loaded_json,
-                                                              expression=f"$[*].controllers")
-                version_dict = self.parse_json_expression(json=loaded_json,
-                                                          expression=f"$[*].version")
-                coder_dict = self.parse_json_expression(json=loaded_json,
-                                                        expression=f"$[*].coder")
-                short_description_dict = self.parse_json_expression(json=loaded_json,
-                                                                    expression=f"$[*].short_description")
-                long_description_dict = self.parse_json_expression(json=loaded_json,
-                                                                   expression=f"$[*].long_description")
-                while ongoing is True:
-                    try:
-                        internal_name = internal_name_dict[i].value
-                        display_name = display_name_dict[i].value
-                        extracted_size = extracted_size_dict[i].value
-                        category = category_dict[i].value
-                        release_date = release_date_dict[i].value
-                        controllers = controllers_dict[i].value
-                        version = version_dict[i].value
-                        coder = coder_dict[i].value
-                        short_description = short_description_dict[i].value
-                        long_description = long_description_dict[i].value
-                        self.ui.listAppsWidget.addItem(display_name)
-                        list_item = self.ui.listAppsWidget.item(i)
-                        list_item.setData(Qt.UserRole, [internal_name,
-                                                        display_name,
-                                                        extracted_size,
-                                                        category,
-                                                        release_date,
-                                                        controllers,
-                                                        version,
-                                                        coder,
-                                                        short_description,
-                                                        long_description])
 
-                        # Set category icon
-
-                        if category == "utilities":
-                            list_item.setIcon(QIcon(resource_path("assets/gui/icons/category/utility.png")))
-                        elif category == "games":
-                            list_item.setIcon(QIcon(resource_path("assets/gui/icons/category/game.png")))
-                        elif category == "emulators":
-                            list_item.setIcon(QIcon(resource_path("assets/gui/icons/category/emulator.png")))
-                        elif category == "media":
-                            list_item.setIcon(QIcon(resource_path("assets/gui/icons/category/media.png")))
-                        elif category == "demos":
-                            list_item.setIcon(QIcon(resource_path("assets/gui/icons/category/demo.png")))
-
-                        # self.ui.listAppsWidget.setItemData(i, [internal_name, display_name], Qt.UserRole)
-                        if not splash.isHidden():
-                            splash.showMessage(f"Loaded {i} apps..", color=splash_color)
-                        i += 1
-                    except IndexError:
-                        ongoing = False
-
-                self.sort_list_alphabetically()
-                self.ui.listAppsWidget.setCurrentRow(0)
-                self.ui.AppsAmountLabel.setText(str(self.ui.listAppsWidget.count()) + " Apps")
+            # Get apps json
+            loaded_json = metadata.get_apps(host_name=HOST_NAME, category=category, coder=coder)
+            i = 0
+            ongoing = True
+            internal_name_dict = utils.parse_json_expression(json=loaded_json,
+                                                            expression=f"$[*].internal_name")
+            display_name_dict = utils.parse_json_expression(json=loaded_json,
+                                                           expression=f"$[*].display_name")
+            extracted_size_dict = utils.parse_json_expression(json=loaded_json,
+                                                             expression=f"$[*].extracted")
+            category_dict = utils.parse_json_expression(json=loaded_json,
+                                                       expression=f"$[*].category")
+            release_date_dict = utils.parse_json_expression(json=loaded_json,
+                                                           expression=f"$[*].release_date")
+            controllers_dict = utils.parse_json_expression(json=loaded_json,
+                                                          expression=f"$[*].controllers")
+            version_dict = utils.parse_json_expression(json=loaded_json,
+                                                      expression=f"$[*].version")
+            coder_dict = utils.parse_json_expression(json=loaded_json,
+                                                    expression=f"$[*].coder")
+            short_description_dict = utils.parse_json_expression(json=loaded_json,
+                                                                expression=f"$[*].short_description")
+            long_description_dict = utils.parse_json_expression(json=loaded_json,
+                                                               expression=f"$[*].long_description")
+            while ongoing is True:
+                try:
+                    internal_name = internal_name_dict[i].value
+                    display_name = display_name_dict[i].value
+                    extracted_size = extracted_size_dict[i].value
+                    category = category_dict[i].value
+                    release_date = release_date_dict[i].value
+                    controllers = controllers_dict[i].value
+                    version = version_dict[i].value
+                    coder = coder_dict[i].value
+                    short_description = short_description_dict[i].value
+                    long_description = long_description_dict[i].value
+                    self.ui.listAppsWidget.addItem(display_name)
+                    list_item = self.ui.listAppsWidget.item(i)
+                    list_item.setData(Qt.UserRole, [internal_name,
+                                                    display_name,
+                                                    extracted_size,
+                                                    category,
+                                                    release_date,
+                                                    controllers,
+                                                    version,
+                                                    coder,
+                                                    short_description,
+                                                    long_description])
+                    # Set category icon
+                    if category == "utilities":
+                        list_item.setIcon(QIcon(resource_path("assets/gui/icons/category/utility.png")))
+                    elif category == "games":
+                        list_item.setIcon(QIcon(resource_path("assets/gui/icons/category/game.png")))
+                    elif category == "emulators":
+                        list_item.setIcon(QIcon(resource_path("assets/gui/icons/category/emulator.png")))
+                    elif category == "media":
+                        list_item.setIcon(QIcon(resource_path("assets/gui/icons/category/media.png")))
+                    elif category == "demos":
+                        list_item.setIcon(QIcon(resource_path("assets/gui/icons/category/demo.png")))
+                    # self.ui.listAppsWidget.setItemData(i, [internal_name, display_name], Qt.UserRole)
+                    if not splash.isHidden():
+                        splash.showMessage(f"Loaded {i} apps..", color=splash_color)
+                    i += 1
+                except IndexError:
+                    ongoing = False
+            self.sort_list_alphabetically()
+            self.ui.listAppsWidget.setCurrentRow(0)
+            self.ui.AppsAmountLabel.setText(str(self.ui.listAppsWidget.count()) + " Apps")
 
         except Exception as e:
-            QMessageBox.critical(self, 'OSC-DL: Critical Network Error',
+            QMessageBox.critical(self, 'OSCDL: Critical Network Error',
                                  'Could not connect to the Open Shop Channel server.\n'
                                  'Cannot continue. :(\n'
                                  'Please check your internet connection, or report this incident.\n\n'
                                  f'Exception: {e}')
             sys.exit(1)
 
-
     # Actions
-
+    # Enable log
     def turn_log_on(self):
-        logging.basicConfig(filename='osc-dl-gui.log', level=logging.DEBUG,
+        logging.basicConfig(filename='oscdl-gui.log', level=logging.DEBUG,
                             format="%(asctime)s | %(levelname)s:%(name)s:%(message)s")
         logging.info('User chose to enable log file. Hello there!')
-        logging.info("OSC-DL v" + DISPLAY_VERSION + ": Running on " + updater.get_type())
+        logging.info("OSCDL v" + DISPLAY_VERSION + ": Running on " + updater.get_type())
         self.status_message('DEBUG: Enabled log file. To disable, exit the program.')
         self.ui.actionEnable_Log_File.setDisabled(True)
         self.ui.actionClear_Log.setEnabled(True)
         self.ui.actionClear_Log.triggered.connect(self.clear_log)
 
+    # Clear log file
     def clear_log(self):
-        open("osc-dl-gui.log", 'w').close()
+        open("oscdl-gui.log", 'w').close()
         self.status_message('DEBUG: Removed / cleared log file.')
 
+    # Sort apps in app list in alphabetical, ascending order.
     def sort_list_alphabetically(self):
         self.ui.listAppsWidget.sortItems(Qt.AscendingOrder)
 
+    # Download Homebrew Browser
     def download_latest_hbb_action(self):
         self.status_message("Downloading Homebrew Browser from Open Shop Channel..")
         path_to_file, _ = QFileDialog.getSaveFileName(None, 'Save Application', "homebrew_browser_v0.3.9e.zip")
@@ -625,20 +569,21 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
             self.ui.progressBar.setValue(0)
             self.status_message(f"Cancelled Download.")
 
+    # Check for updates dialog
     def check_for_updates_action(self):
         self.status_message("Checking for updates..")
         if updater.check_update() is True:
             latest = updater.latest_version()
-            self.status_message("New version available! (" + updater.latest_version() + ") OSC-DL is out of date.")
-            QMessageBox.warning(self, 'OSC-DL is out of date',
+            self.status_message("New version available! (" + updater.latest_version() + ") OSCDL is out of date.")
+            QMessageBox.warning(self, 'OSCDL is out of date',
                                 'Please go to GitHub and obtain the latest release\n'
                                 'Newest Version: ' + latest)
         else:
-            self.status_message("OSC-DL is up to date!")
-            QMessageBox.information(self, 'OSC-DL is up to date',
-                                    'You are running the latest version of OSC-DL!\n')
+            self.status_message("OSCDL is up to date!")
+            QMessageBox.information(self, 'OSCDL is up to date',
+                                    'You are running the latest version of OSCDL!\n')
 
-    # in case OSC gods are angry
+    # In case OSC gods are angry
     def close_the_shop(self):
         # Close the shop
         logging.critical('OSC GODS:CLOSING THE SHOP')
@@ -649,15 +594,12 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         self.ui.ExtractAppCheckbox.setDisabled(True)
         self.ui.menubar.setDisabled(True)
         self.ui.ReposComboBox.setDisabled(True)
+        self.ui.CategoriesComboBox.setDisabled(True)
+        self.ui.SupportedControllersListWidget.setDisabled(True)
         logging.critical('OSC GODS:CLOSED THE SHOP')
         self.status_message("The shop is now closed")
 
-    def parse_json_expression(self, json, expression):
-        json_expression = parse(expression)
-        json_thing = json_expression.find(json)
-
-        return json_thing
-
+    # Load app icon
     def load_icon(self, app_name, repo):
         # Gets raw image data from server
         data = metadata.icon(app_name=app_name, repo=repo)
@@ -720,37 +662,13 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
                 i.setHidden(True)
         if text == "":
             self.ui.AppsAmountLabel.setText(f"{n} Apps")
-        elif text == "OPEN THE SHOP":
-            # Easter Egg :/
-            self.ui.listAppsWidget.clear()
-            shop_opener = QListWidgetItem()
-            shop_opener.setText("Shop Opener")
-            self.ui.listAppsWidget.addItem(shop_opener)
-            self.ui.listAppsWidget.setStyleSheet("background-color: qconicalgradient(cx:0.5, cy:0.5, angle:0, "
-                                                 "stop:0 rgba(35, 40, 3, 255), stop:0.16 rgba(136, 106, 22, 255), "
-                                                 "stop:0.225 rgba(166, 140, 41, 255), stop:0.285 rgba(204, 181, 74, 255), "
-                                                 "stop:0.345 rgba(235, 219, 102, 255), stop:0.415 rgba(245, 236, 112, 255),"
-                                                 " stop:0.52 rgba(209, 190, 76, 255), stop:0.57 rgba(187, 156, 51, 255), "
-                                                 "stop:0.635 rgba(168, 142, 42, 255), stop:0.695 rgba(202, 174, 68, 255), "
-                                                 "stop:0.75 rgba(218, 202, 86, 255), stop:0.815 rgba(208, 187, 73, 255), "
-                                                 "stop:0.88 rgba(187, 156, 51, 255), stop:0.935 rgba(137, 108, 26, 255), "
-                                                 "stop:1 rgba(35, 40, 3, 255));")
-            self.ui.SearchBar.setText("")
-            self.ui.SearchBar.setDisabled(True)
-            self.ui.SearchBar.setPlaceholderText("Do it. Open the shop. Right now.")
-            self.ui.listAppsWidget.setCurrentItem(shop_opener)
-            self.ui.ViewMetadataBtn.setText("Open the shop")
-            self.ui.ViewMetadataBtn.clicked.disconnect(self.download_button)
-            self.ui.WiiLoadButton.setHidden(True)
-            self.ui.ReposComboBox.setHidden(True)
-            self.ui.RepositoryLabel.setHidden(True)
-
         else:
             if n == 1:
                 self.ui.AppsAmountLabel.setText(f"{n} Result")
             else:
                 self.ui.AppsAmountLabel.setText(f"{n} Results")
 
+    # When a different category is selected
     def changed_category(self):
         category = "all"
 
@@ -768,6 +686,7 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         self.ui.listAppsWidget.clear()
         self.populate_list(category=category)
 
+    # Load developer profile
     def developer_profile(self):
         developer = self.ui.developer.text()
 
@@ -795,6 +714,7 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
 
         self.populate_list(coder=developer)
 
+    # Return from developer view to normal view
     def return_to_all_apps_btn(self):
         # Unhide unneeded elements
         self.ui.ReturnToMainBtn.setHidden(True)
@@ -805,6 +725,7 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         # Return to host
         self.changed_host()
 
+    # Select theme dialog
     def select_theme_action(self):
         path = resource_path("assets/themes")
         theme_files = [f for f in listdir(path) if isfile(join(path, f))]
@@ -817,6 +738,7 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         with open(resource_path(f"assets/themes/{theme}"), "r") as fh:
             self.setStyleSheet(fh.read())
 
+    # Set default stylesheet
     def populate_stylesheets(self):
         # Developer Profile Button
         self.ui.developer_profile_btn.setStyleSheet(f"""

@@ -5,11 +5,8 @@ import socket
 import requests
 
 import download
-import parsecontents
 import updater
-import metadata
 import wiiload
-import utils
 import os
 
 from sys import exit
@@ -17,6 +14,11 @@ from sys import exit
 if os.name == 'nt':
     # Initialize color on Windows
     os.system('color')
+
+print("!!!!!!!!!!!!!!!\n"
+      "OSCDL CLI is currently being rewritten, and currently has most of its functionality removed or changed.\n"
+      "Please use CLI version 1.2.10 available at https://github.com/dhtdht020/osc-dl/releases/tag/1.2.10\n"
+      "!!!!!!!!!!!!!!!")
 
 build = 0
 year = "2020"
@@ -241,14 +243,6 @@ if args.cmd is None:
     print("\nRun \""+osc_dl+" --help\" for help.")
 
 
-# list of apps on server command
-if args.cmd == 'list':
-    if args.host is None:
-        args.host = "hbb1.oscwii.org"
-
-    parsecontents.get(repo=args.host, raw=args.raw)
-
-
 # Modern Code here :S
 if args.cmd == 'transmit':
     if args.host is None:
@@ -259,8 +253,6 @@ if args.cmd == 'transmit':
     if not ok:
         print(f"Error DL0001: The IP address '{args.ip}' is invalid! Please correct it!")
         exit(1)
-
-    parsecontents.query(term=args.name, repo=args.host)
 
     url = f"https://{args.host}/hbb/{args.name}/{args.name}.zip"
     r = requests.get(url)
@@ -310,70 +302,10 @@ if args.cmd == 'transmit':
 
     print('100% - App transmitted!')
 
-
-# update osc-dl command
-if args.cmd == 'update':
-    updater.init_update()
-
-
 # query app command
 if args.cmd == 'query':
     if args.host is None:
         args.host = "hbb1.oscwii.org"
-
-    if args.verify is False:
-        parsecontents.query(args.name, repo=args.host)
-    else:
-        parsecontents.query_verify(args.name, repo=args.host)
-
-
-# get metadata command
-if args.cmd == 'meta':
-    if args.host is None:
-        args.host = "hbb1.oscwii.org"
-
-    appmeta = metadata.get(app_name=args.name, repo=args.host)
-    if appmeta is not None:
-        print(appmeta)
-
-
-# get list of repos on server command
-if args.cmd == 'repo-list':
-    parsecontents.repository_list()
-
-
-# export data to file command
-if args.cmd == 'export':
-    if args.host is None:
-        args.host = "hbb1.oscwii.org"
-
-    if args.type == "list":
-        txt_path = utils.export_app_list(repo=args.host)
-        print("Exported application list to " + txt_path)
-
-
-# get the entire repo command
-if args.cmd == 'get-all':
-    args.output = "default"
-
-    if args.host is None:
-        args.host = "hbb1.oscwii.org"
-
-    if args.extract is None:
-        args.extract = False
-
-    download.everything(extract=args.extract, repo=args.host)
-
-
-# get list file command
-if args.cmd == 'get-list':
-    if args.host is None:
-        args.host = "hbb1.oscwii.org"
-
-    if args.display is True:
-        parsecontents.dl_list(file=args.file, display=True, repo=args.host)
-    else:
-        parsecontents.dl_list(file=args.file, repo=args.host)
 
 
 # get command
@@ -389,13 +321,7 @@ if args.cmd == 'get':
         args.extract = False
 
     if args.noconfirm is True:
-        if parsecontents.query(term=args.name, repo=args.host) is False:
-            exit(0)
-        metadata.get(app_name=args.name, type="default", repo=args.host)
         download.get(app_name=args.name, output=args.output, extract=args.extract, repo=args.host)
 
     if args.noconfirm is False:
-        if parsecontents.query(term=args.name, repo=args.host) is False:
-            exit(0)
-        download.confirm(app_name=args.name, repo=args.host)
         download.get(app_name=args.name, output=args.output, repo=args.host)

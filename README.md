@@ -29,6 +29,9 @@ Make sure Python 3 is installed and used.
 
 
 ## CLI Guide:
+Important: OSCDL CLI on master is currently being rewritten, and currently has most of its functionality removed or changed.
+
+Please use CLI version 1.2.10 available at https://github.com/dhtdht020/osc-dl/releases/tag/1.2.10
 ### Downloading Homebrew (get command)
 
 You can download homebrew from the Open Shop Channel by using `osc-dl get`
