@@ -27,7 +27,7 @@ def get(app_name, output=None, extract=False, repo="hbb1.oscwii.org"):
         print(GREEN + "Download success! Output: " + output)
 
     else:
-        print(FAIL + "Download failed. HTTP status code is not 200.")
+        print(FAIL + f"Download failed. HTTP status code is {str(app_data.status_code)}, not 200.")
 
 
 def hbb(output):
