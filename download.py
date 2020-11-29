@@ -15,15 +15,19 @@ def get(app_name, output=None, extract=False, repo="hbb1.oscwii.org"):
     except requests.exceptions.SSLError:
         app_data = requests.get("http://" + repo + "/hbb/" + app_name + "/" + app_name + ".zip")
 
-    with open(output, "wb") as app_data_file:
-        app_data_file.write(app_data.content)
+    if app_data.status_code == 200:
+        with open(output, "wb") as app_data_file:
+            app_data_file.write(app_data.content)
 
-    # Extract to ExtractedApps if needed
-    if extract is True:
-        with ZipFile(output, 'r') as zip_ref:
-            zip_ref.extractall("ExtractedApps")
+        # Extract to ExtractedApps if needed
+        if extract is True:
+            with ZipFile(output, 'r') as zip_ref:
+                zip_ref.extractall("ExtractedApps")
 
-    print(GREEN + "Download success! Output: " + output)
+        print(GREEN + "Download success! Output: " + output)
+
+    else:
+        print(FAIL + "Download failed. HTTP status code is not 200.")
 
 
 def hbb(output):
