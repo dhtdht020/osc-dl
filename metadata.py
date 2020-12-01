@@ -4,16 +4,10 @@ import sys
 
 import requests
 import lxml.etree
-import locale
-import yaml
 
 
 GREEN = '\033[92m'
 FAIL = '\033[91m'
-try:
-    locale.setlocale(locale.LC_ALL, 'en_GB')
-except locale.Error:
-    pass
 
 
 # Get resource when frozen with PyInstaller
@@ -113,6 +107,7 @@ def category_display_name(category):
         return ""
 
 
+# Parse controllers string
 def parse_controllers(controllers):
     wii_remotes = 0
     nunchuk = classic_controller = gamecube_controller = wii_zapper = keyboard = sdhc_compatible = False
@@ -144,3 +139,24 @@ def parse_controllers(controllers):
         sdhc_compatible = True
 
     return wii_remotes, nunchuk, classic_controller, gamecube_controller, wii_zapper, keyboard, sdhc_compatible
+
+
+# API-related functions
+class API:
+    packages = get_apps()
+    host_name = "primary"
+
+    # Change repository
+    def set_host(self, host):
+        if host == self.host_name:
+            pass
+        else:
+            self.host_name = host
+            self.packages = get_apps(host_name=host)
+
+    # Metadata for given application
+    def information(self, internal_name):
+        for i in self.packages:
+            if i["internal_name"] == internal_name:
+                return i
+        return
