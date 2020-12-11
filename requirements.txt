@@ -4,3 +4,4 @@ packaging~=20.7
 PyYAML~=5.3.1
 pyperclip~=1.8.1
 psutil~=5.7.3
+jsonpath_ng~=1.5.2
