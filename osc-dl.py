@@ -10,7 +10,6 @@ import wiiload
 import hosts as repos
 
 repos = repos.Hosts()
-metadata_api = metadata.API()
 
 parser = argparse.ArgumentParser()
 subparser = parser.add_subparsers(dest='cmd')
@@ -113,6 +112,7 @@ if args.cmd == "send":
 
 # Hosts
 if args.cmd == "show":
+    metadata_api = metadata.API()
     metadata_api.set_host(args.host)
     information = metadata_api.information(args.app)
     if information:
