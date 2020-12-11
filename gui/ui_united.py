@@ -53,12 +53,18 @@ class Ui_MainWindow(object):
         self.centralwidget.setObjectName(u"centralwidget")
         self.horizontalLayout_2 = QHBoxLayout(self.centralwidget)
         self.horizontalLayout_2.setObjectName(u"horizontalLayout_2")
-        self.AppsLibraryBox = QGroupBox(self.centralwidget)
-        self.AppsLibraryBox.setObjectName(u"AppsLibraryBox")
-        self.verticalLayout = QVBoxLayout(self.AppsLibraryBox)
+        self.tabWidget = QTabWidget(self.centralwidget)
+        self.tabWidget.setObjectName(u"tabWidget")
+        sizePolicy1 = QSizePolicy(QSizePolicy.Ignored, QSizePolicy.Preferred)
+        sizePolicy1.setHorizontalStretch(0)
+        sizePolicy1.setVerticalStretch(0)
+        sizePolicy1.setHeightForWidth(self.tabWidget.sizePolicy().hasHeightForWidth())
+        self.tabWidget.setSizePolicy(sizePolicy1)
+        self.LibraryTab = QWidget()
+        self.LibraryTab.setObjectName(u"LibraryTab")
+        self.verticalLayout = QVBoxLayout(self.LibraryTab)
         self.verticalLayout.setObjectName(u"verticalLayout")
-        self.verticalLayout.setContentsMargins(-1, 4, -1, -1)
-        self.LibraryContentFrame = QFrame(self.AppsLibraryBox)
+        self.LibraryContentFrame = QFrame(self.LibraryTab)
         self.LibraryContentFrame.setObjectName(u"LibraryContentFrame")
         self.verticalLayout_2 = QVBoxLayout(self.LibraryContentFrame)
         self.verticalLayout_2.setObjectName(u"verticalLayout_2")
@@ -74,11 +80,11 @@ class Ui_MainWindow(object):
         self.verticalLayout_4.setContentsMargins(0, 0, 0, 0)
         self.LibraryTopFrameTop = QFrame(self.LibraryTopFrame)
         self.LibraryTopFrameTop.setObjectName(u"LibraryTopFrameTop")
-        sizePolicy1 = QSizePolicy(QSizePolicy.Minimum, QSizePolicy.Minimum)
-        sizePolicy1.setHorizontalStretch(0)
-        sizePolicy1.setVerticalStretch(0)
-        sizePolicy1.setHeightForWidth(self.LibraryTopFrameTop.sizePolicy().hasHeightForWidth())
-        self.LibraryTopFrameTop.setSizePolicy(sizePolicy1)
+        sizePolicy2 = QSizePolicy(QSizePolicy.Minimum, QSizePolicy.Minimum)
+        sizePolicy2.setHorizontalStretch(0)
+        sizePolicy2.setVerticalStretch(0)
+        sizePolicy2.setHeightForWidth(self.LibraryTopFrameTop.sizePolicy().hasHeightForWidth())
+        self.LibraryTopFrameTop.setSizePolicy(sizePolicy2)
         self.LibraryTopFrameTop.setMaximumSize(QSize(16777215, 25))
         self.LibraryTopFrameTop.setFrameShape(QFrame.NoFrame)
         self.LibraryTopFrameTop.setLineWidth(0)
@@ -143,11 +149,8 @@ class Ui_MainWindow(object):
         self.horizontalLayout.setContentsMargins(0, 0, 0, 0)
         self.RepositoryDescLabel = QLabel(self.LibraryTopFrameBottom)
         self.RepositoryDescLabel.setObjectName(u"RepositoryDescLabel")
-        sizePolicy2 = QSizePolicy(QSizePolicy.Ignored, QSizePolicy.Preferred)
-        sizePolicy2.setHorizontalStretch(0)
-        sizePolicy2.setVerticalStretch(0)
-        sizePolicy2.setHeightForWidth(self.RepositoryDescLabel.sizePolicy().hasHeightForWidth())
-        self.RepositoryDescLabel.setSizePolicy(sizePolicy2)
+        sizePolicy1.setHeightForWidth(self.RepositoryDescLabel.sizePolicy().hasHeightForWidth())
+        self.RepositoryDescLabel.setSizePolicy(sizePolicy1)
         self.RepositoryDescLabel.setMaximumSize(QSize(16777215, 16777215))
         self.RepositoryDescLabel.setLineWidth(0)
 
@@ -181,8 +184,8 @@ class Ui_MainWindow(object):
         self.horizontalLayout_5.setContentsMargins(0, 0, 0, 0)
         self.SearchBar = QLineEdit(self.SearchFrame)
         self.SearchBar.setObjectName(u"SearchBar")
-        sizePolicy1.setHeightForWidth(self.SearchBar.sizePolicy().hasHeightForWidth())
-        self.SearchBar.setSizePolicy(sizePolicy1)
+        sizePolicy2.setHeightForWidth(self.SearchBar.sizePolicy().hasHeightForWidth())
+        self.SearchBar.setSizePolicy(sizePolicy2)
 
         self.horizontalLayout_5.addWidget(self.SearchBar)
 
@@ -191,16 +194,13 @@ class Ui_MainWindow(object):
 
         self.listAppsWidget = QListWidget(self.LibraryContentFrame)
         self.listAppsWidget.setObjectName(u"listAppsWidget")
-        sizePolicy1.setHeightForWidth(self.listAppsWidget.sizePolicy().hasHeightForWidth())
-        self.listAppsWidget.setSizePolicy(sizePolicy1)
+        sizePolicy2.setHeightForWidth(self.listAppsWidget.sizePolicy().hasHeightForWidth())
+        self.listAppsWidget.setSizePolicy(sizePolicy2)
         self.listAppsWidget.setBaseSize(QSize(581, 281))
 
         self.verticalLayout_2.addWidget(self.listAppsWidget)
 
-
-        self.verticalLayout.addWidget(self.LibraryContentFrame)
-
-        self.announcement = QFrame(self.AppsLibraryBox)
+        self.announcement = QFrame(self.LibraryContentFrame)
         self.announcement.setObjectName(u"announcement")
         self.announcement.setMaximumSize(QSize(16777215, 21))
         self.announcement.setVisible(False)
@@ -230,18 +230,185 @@ class Ui_MainWindow(object):
         self.horizontalLayout_4.addWidget(self.announcementURLLabel)
 
 
-        self.verticalLayout.addWidget(self.announcement)
+        self.verticalLayout_2.addWidget(self.announcement)
 
 
-        self.horizontalLayout_2.addWidget(self.AppsLibraryBox)
+        self.verticalLayout.addWidget(self.LibraryContentFrame)
+
+        self.tabWidget.addTab(self.LibraryTab, "")
+        self.SDCardTab = QWidget()
+        self.SDCardTab.setObjectName(u"SDCardTab")
+        self.verticalLayout_7 = QVBoxLayout(self.SDCardTab)
+        self.verticalLayout_7.setObjectName(u"verticalLayout_7")
+        self.ExternalMediaContentFrame = QFrame(self.SDCardTab)
+        self.ExternalMediaContentFrame.setObjectName(u"ExternalMediaContentFrame")
+        self.verticalLayout_5 = QVBoxLayout(self.ExternalMediaContentFrame)
+        self.verticalLayout_5.setObjectName(u"verticalLayout_5")
+        self.verticalLayout_5.setContentsMargins(0, 0, 0, 0)
+        self.ternalMediaTopFrame = QFrame(self.ExternalMediaContentFrame)
+        self.ternalMediaTopFrame.setObjectName(u"ternalMediaTopFrame")
+        self.ternalMediaTopFrame.setMaximumSize(QSize(16777215, 45))
+        self.ternalMediaTopFrame.setFrameShape(QFrame.NoFrame)
+        self.ternalMediaTopFrame.setFrameShadow(QFrame.Plain)
+        self.ternalMediaTopFrame.setLineWidth(0)
+        self.verticalLayout_6 = QVBoxLayout(self.ternalMediaTopFrame)
+        self.verticalLayout_6.setObjectName(u"verticalLayout_6")
+        self.verticalLayout_6.setContentsMargins(0, 0, 0, 0)
+        self.ternalMediaTopFrameTop = QFrame(self.ternalMediaTopFrame)
+        self.ternalMediaTopFrameTop.setObjectName(u"ternalMediaTopFrameTop")
+        sizePolicy2.setHeightForWidth(self.ternalMediaTopFrameTop.sizePolicy().hasHeightForWidth())
+        self.ternalMediaTopFrameTop.setSizePolicy(sizePolicy2)
+        self.ternalMediaTopFrameTop.setMaximumSize(QSize(16777215, 25))
+        self.ternalMediaTopFrameTop.setFrameShape(QFrame.NoFrame)
+        self.ternalMediaTopFrameTop.setLineWidth(0)
+        self.horizontalLayout_6 = QHBoxLayout(self.ternalMediaTopFrameTop)
+        self.horizontalLayout_6.setObjectName(u"horizontalLayout_6")
+        self.horizontalLayout_6.setContentsMargins(0, 0, 0, 0)
+        self.ExternalStorageNameLabel = QLabel(self.ternalMediaTopFrameTop)
+        self.ExternalStorageNameLabel.setObjectName(u"ExternalStorageNameLabel")
+        self.ExternalStorageNameLabel.setFont(font)
+        self.ExternalStorageNameLabel.setStyleSheet(u"")
+
+        self.horizontalLayout_6.addWidget(self.ExternalStorageNameLabel)
+
+        self.DriveLabel = QLabel(self.ternalMediaTopFrameTop)
+        self.DriveLabel.setObjectName(u"DriveLabel")
+        self.DriveLabel.setMinimumSize(QSize(32, 0))
+        self.DriveLabel.setMaximumSize(QSize(32, 16777215))
+
+        self.horizontalLayout_6.addWidget(self.DriveLabel)
+
+        self.DrivesComboBox = QComboBox(self.ternalMediaTopFrameTop)
+        self.DrivesComboBox.setObjectName(u"DrivesComboBox")
+        self.DrivesComboBox.setEnabled(True)
+        self.DrivesComboBox.setMinimumSize(QSize(61, 21))
+        self.DrivesComboBox.setMaximumSize(QSize(61, 16777215))
+
+        self.horizontalLayout_6.addWidget(self.DrivesComboBox)
+
+
+        self.verticalLayout_6.addWidget(self.ternalMediaTopFrameTop)
+
+        self.ternalMediaTopFrameBottom = QFrame(self.ternalMediaTopFrame)
+        self.ternalMediaTopFrameBottom.setObjectName(u"ternalMediaTopFrameBottom")
+        self.ternalMediaTopFrameBottom.setFrameShape(QFrame.NoFrame)
+        self.ternalMediaTopFrameBottom.setFrameShadow(QFrame.Plain)
+        self.ternalMediaTopFrameBottom.setLineWidth(0)
+        self.horizontalLayout_7 = QHBoxLayout(self.ternalMediaTopFrameBottom)
+        self.horizontalLayout_7.setObjectName(u"horizontalLayout_7")
+        self.horizontalLayout_7.setContentsMargins(0, 0, 0, 0)
+        self.StorageDescLabel = QLabel(self.ternalMediaTopFrameBottom)
+        self.StorageDescLabel.setObjectName(u"StorageDescLabel")
+        sizePolicy1.setHeightForWidth(self.StorageDescLabel.sizePolicy().hasHeightForWidth())
+        self.StorageDescLabel.setSizePolicy(sizePolicy1)
+        self.StorageDescLabel.setMaximumSize(QSize(16777215, 16777215))
+        self.StorageDescLabel.setLineWidth(0)
+
+        self.horizontalLayout_7.addWidget(self.StorageDescLabel)
+
+        self.StorageAppsAmountLabel = QLabel(self.ternalMediaTopFrameBottom)
+        self.StorageAppsAmountLabel.setObjectName(u"StorageAppsAmountLabel")
+        self.StorageAppsAmountLabel.setMaximumSize(QSize(60, 16777215))
+        self.StorageAppsAmountLabel.setAlignment(Qt.AlignRight|Qt.AlignTrailing|Qt.AlignVCenter)
+
+        self.horizontalLayout_7.addWidget(self.StorageAppsAmountLabel)
+
+
+        self.verticalLayout_6.addWidget(self.ternalMediaTopFrameBottom)
+
+
+        self.verticalLayout_5.addWidget(self.ternalMediaTopFrame)
+
+        self.StorageSearchFrame = QFrame(self.ExternalMediaContentFrame)
+        self.StorageSearchFrame.setObjectName(u"StorageSearchFrame")
+        sizePolicy3.setHeightForWidth(self.StorageSearchFrame.sizePolicy().hasHeightForWidth())
+        self.StorageSearchFrame.setSizePolicy(sizePolicy3)
+        self.StorageSearchFrame.setMaximumSize(QSize(16777215, 20))
+        self.StorageSearchFrame.setFrameShape(QFrame.StyledPanel)
+        self.StorageSearchFrame.setFrameShadow(QFrame.Raised)
+        self.horizontalLayout_8 = QHBoxLayout(self.StorageSearchFrame)
+        self.horizontalLayout_8.setObjectName(u"horizontalLayout_8")
+        self.horizontalLayout_8.setContentsMargins(0, 0, 0, 0)
+        self.StorageSearchBar = QLineEdit(self.StorageSearchFrame)
+        self.StorageSearchBar.setObjectName(u"StorageSearchBar")
+        sizePolicy2.setHeightForWidth(self.StorageSearchBar.sizePolicy().hasHeightForWidth())
+        self.StorageSearchBar.setSizePolicy(sizePolicy2)
+
+        self.horizontalLayout_8.addWidget(self.StorageSearchBar)
+
+
+        self.verticalLayout_5.addWidget(self.StorageSearchFrame)
+
+        self.StorageAppListWidget = QListWidget(self.ExternalMediaContentFrame)
+        self.StorageAppListWidget.setObjectName(u"StorageAppListWidget")
+        sizePolicy2.setHeightForWidth(self.StorageAppListWidget.sizePolicy().hasHeightForWidth())
+        self.StorageAppListWidget.setSizePolicy(sizePolicy2)
+        self.StorageAppListWidget.setBaseSize(QSize(581, 281))
+
+        self.verticalLayout_5.addWidget(self.StorageAppListWidget)
+
+        self.announcementStorage = QFrame(self.ExternalMediaContentFrame)
+        self.announcementStorage.setObjectName(u"announcementStorage")
+        self.announcementStorage.setMaximumSize(QSize(16777215, 21))
+        self.announcementStorage.setVisible(False)
+        self.announcementStorage.setStyleSheet(u"QFrame {\n"
+"background-color: rgb(255, 85, 0);\n"
+"color: rgb(255, 255, 255);\n"
+"}")
+        self.announcementStorage.setFrameShape(QFrame.StyledPanel)
+        self.announcementStorage.setFrameShadow(QFrame.Raised)
+        self.horizontalLayout_9 = QHBoxLayout(self.announcementStorage)
+        self.horizontalLayout_9.setObjectName(u"horizontalLayout_9")
+        self.horizontalLayout_9.setContentsMargins(3, 0, 3, 0)
+        self.announcementLabelStorage = QLabel(self.announcementStorage)
+        self.announcementLabelStorage.setObjectName(u"announcementLabelStorage")
+        self.announcementLabelStorage.setOpenExternalLinks(True)
+
+        self.horizontalLayout_9.addWidget(self.announcementLabelStorage)
+
+        self.announcementURLLabelStorage = QLabel(self.announcementStorage)
+        self.announcementURLLabelStorage.setObjectName(u"announcementURLLabelStorage")
+        self.announcementURLLabelStorage.setStyleSheet(u"QLabel {\n"
+"background-color: rgba(255, 255, 255, 0);\n"
+"}")
+        self.announcementURLLabelStorage.setAlignment(Qt.AlignRight|Qt.AlignTrailing|Qt.AlignVCenter)
+        self.announcementURLLabelStorage.setOpenExternalLinks(True)
+
+        self.horizontalLayout_9.addWidget(self.announcementURLLabelStorage)
+
+
+        self.verticalLayout_5.addWidget(self.announcementStorage)
+
+
+        self.verticalLayout_7.addWidget(self.ExternalMediaContentFrame)
+
+        self.StorageDebugOutputLabel = QLabel(self.SDCardTab)
+        self.StorageDebugOutputLabel.setObjectName(u"StorageDebugOutputLabel")
+        sizePolicy4 = QSizePolicy(QSizePolicy.Preferred, QSizePolicy.Maximum)
+        sizePolicy4.setHorizontalStretch(0)
+        sizePolicy4.setVerticalStretch(0)
+        sizePolicy4.setHeightForWidth(self.StorageDebugOutputLabel.sizePolicy().hasHeightForWidth())
+        self.StorageDebugOutputLabel.setSizePolicy(sizePolicy4)
+
+        self.verticalLayout_7.addWidget(self.StorageDebugOutputLabel)
+
+        self.StorageDebugOutput = QTextBrowser(self.SDCardTab)
+        self.StorageDebugOutput.setObjectName(u"StorageDebugOutput")
+        self.StorageDebugOutput.setMaximumSize(QSize(16777215, 100))
+
+        self.verticalLayout_7.addWidget(self.StorageDebugOutput)
+
+        self.tabWidget.addTab(self.SDCardTab, "")
+
+        self.horizontalLayout_2.addWidget(self.tabWidget)
 
         self.SelectionInfoBox = QGroupBox(self.centralwidget)
         self.SelectionInfoBox.setObjectName(u"SelectionInfoBox")
-        sizePolicy4 = QSizePolicy(QSizePolicy.Fixed, QSizePolicy.Preferred)
-        sizePolicy4.setHorizontalStretch(0)
-        sizePolicy4.setVerticalStretch(0)
-        sizePolicy4.setHeightForWidth(self.SelectionInfoBox.sizePolicy().hasHeightForWidth())
-        self.SelectionInfoBox.setSizePolicy(sizePolicy4)
+        sizePolicy5 = QSizePolicy(QSizePolicy.Fixed, QSizePolicy.Preferred)
+        sizePolicy5.setHorizontalStretch(0)
+        sizePolicy5.setVerticalStretch(0)
+        sizePolicy5.setHeightForWidth(self.SelectionInfoBox.sizePolicy().hasHeightForWidth())
+        self.SelectionInfoBox.setSizePolicy(sizePolicy5)
         self.SelectionInfoBox.setMaximumSize(QSize(271, 16777215))
         self.verticalLayout_3 = QVBoxLayout(self.SelectionInfoBox)
         self.verticalLayout_3.setObjectName(u"verticalLayout_3")
@@ -479,7 +646,9 @@ class Ui_MainWindow(object):
 
         self.retranslateUi(MainWindow)
 
+        self.tabWidget.setCurrentIndex(0)
         self.listAppsWidget.setCurrentRow(-1)
+        self.StorageAppListWidget.setCurrentRow(-1)
         self.tabMetadata.setCurrentIndex(0)
 
 
@@ -507,7 +676,6 @@ class Ui_MainWindow(object):
 #if QT_CONFIG(accessibility)
         self.centralwidget.setAccessibleName(QCoreApplication.translate("MainWindow", u"centralcontainer", None))
 #endif // QT_CONFIG(accessibility)
-        self.AppsLibraryBox.setTitle(QCoreApplication.translate("MainWindow", u"Apps Library", None))
         self.RepositoryNameLabel.setText(QCoreApplication.translate("MainWindow", u"Repository Name", None))
         self.RepositoryLabel.setText(QCoreApplication.translate("MainWindow", u"Repository:", None))
         self.CategoriesComboBox.setItemText(0, QCoreApplication.translate("MainWindow", u"All Apps", None))
@@ -523,6 +691,16 @@ class Ui_MainWindow(object):
         self.SearchBar.setPlaceholderText(QCoreApplication.translate("MainWindow", u"Search Applications..", None))
         self.announcementLabel.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p><span style=\" font-weight:600;\">Announcement Header: </span>Announcement Content.</p></body></html>", None))
         self.announcementURLLabel.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p><a href=\"https://google.com\"><span style=\" text-decoration: underline; color:#ffff00;\">Announcement URL</span></a></p></body></html>", None))
+        self.tabWidget.setTabText(self.tabWidget.indexOf(self.LibraryTab), QCoreApplication.translate("MainWindow", u"Apps Library", None))
+        self.ExternalStorageNameLabel.setText(QCoreApplication.translate("MainWindow", u"Storage Volume", None))
+        self.DriveLabel.setText(QCoreApplication.translate("MainWindow", u"Drive:", None))
+        self.StorageDescLabel.setText(QCoreApplication.translate("MainWindow", u"Storage Volume Description", None))
+        self.StorageAppsAmountLabel.setText(QCoreApplication.translate("MainWindow", u"0 Apps", None))
+        self.StorageSearchBar.setPlaceholderText(QCoreApplication.translate("MainWindow", u"Search Applications..", None))
+        self.announcementLabelStorage.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p><span style=\" font-weight:600;\">Announcement Header: </span>Announcement Content.</p></body></html>", None))
+        self.announcementURLLabelStorage.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p><a href=\"https://google.com\"><span style=\" text-decoration: underline; color:#ffff00;\">Announcement URL</span></a></p></body></html>", None))
+        self.StorageDebugOutputLabel.setText(QCoreApplication.translate("MainWindow", u"Debug:", None))
+        self.tabWidget.setTabText(self.tabWidget.indexOf(self.SDCardTab), QCoreApplication.translate("MainWindow", u"SD Card", None))
         self.SelectionInfoBox.setTitle(QCoreApplication.translate("MainWindow", u"Application Metadata", None))
 #if QT_CONFIG(accessibility)
         self.GeneralTab.setAccessibleName(QCoreApplication.translate("MainWindow", u"tabcontent", None))
