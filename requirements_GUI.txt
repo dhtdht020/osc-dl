@@ -3,6 +3,6 @@ requests~=2.25.1
 packaging~=20.8
 PyYAML~=5.3.1
 pyperclip~=1.8.1
-psutil~=5.7.3
+psutil~=5.8.0
 jsonpath_ng~=1.5.2
 PySide2~=5.15.2 # GUI exclusive
