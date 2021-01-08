@@ -9,3 +9,6 @@ class SDManagement:
             if disk.opts == "rw,removable":
                 self.disks.append(disk)
         return self.disks
+
+    def get_apps(self, disk):
+        pass

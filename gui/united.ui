@@ -1209,7 +1209,7 @@ p, li { white-space: pre-wrap; }
             <string>tabcontent</string>
            </property>
            <attribute name="title">
-            <string>Controllers</string>
+            <string>Peripherals</string>
            </attribute>
            <widget class="QLabel" name="DirectLinkLabel">
             <property name="geometry">
@@ -1260,7 +1260,7 @@ p, li { white-space: pre-wrap; }
              </rect>
             </property>
             <property name="text">
-             <string>Supported Controllers:</string>
+             <string>Supported Peripherals:</string>
             </property>
            </widget>
            <widget class="QListWidget" name="SupportedControllersListWidget">

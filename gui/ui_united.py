@@ -3,7 +3,7 @@
 ################################################################################
 ## Form generated from reading UI file 'united.ui'
 ##
-## Created by: Qt User Interface Compiler version 5.15.1
+## Created by: Qt User Interface Compiler version 5.15.2
 ##
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
@@ -734,9 +734,9 @@ class Ui_MainWindow(object):
 #endif // QT_CONFIG(accessibility)
         self.DirectLinkLabel.setText(QCoreApplication.translate("MainWindow", u"Direct Link", None))
         self.CopyDirectLinkBtn.setText(QCoreApplication.translate("MainWindow", u"Copy", None))
-        self.SupportedControllersLabel.setText(QCoreApplication.translate("MainWindow", u"Supported Controllers:", None))
+        self.SupportedControllersLabel.setText(QCoreApplication.translate("MainWindow", u"Supported Peripherals:", None))
         self.ExtractAppCheckbox.setText(QCoreApplication.translate("MainWindow", u"Extract Downloaded App", None))
-        self.tabMetadata.setTabText(self.tabMetadata.indexOf(self.RawTab), QCoreApplication.translate("MainWindow", u"Controllers", None))
+        self.tabMetadata.setTabText(self.tabMetadata.indexOf(self.RawTab), QCoreApplication.translate("MainWindow", u"Peripherals", None))
         self.FileNameLabel.setText(QCoreApplication.translate("MainWindow", u"Output File", None))
         self.ViewMetadataBtn.setText(QCoreApplication.translate("MainWindow", u"Download", None))
         self.WiiLoadButton.setText(QCoreApplication.translate("MainWindow", u"Send to Wii", None))
