@@ -3,7 +3,6 @@ from datetime import datetime
 from os import listdir
 from os.path import isfile, join
 
-import psutil
 import yaml
 import os
 import socket
@@ -27,9 +26,7 @@ import metadata
 import updater
 import utils
 import wiiload
-from sdmanage import SDManagement
 
-storage_media = SDManagement()
 
 VERSION = updater.current_version()
 BRANCH = updater.get_branch()
@@ -90,9 +87,6 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         self.ui.statusBar.addPermanentWidget(self.ui.progressBar)
         self.load_announcement_banner()
 
-        # Storage Volume Tab
-        self.populate_drive_list()
-
     # show given status message on bottom status bar
     def status_message(self, message):
         self.ui.statusBar.showMessage(message)
@@ -105,14 +99,6 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         self.populate_repositories()
         self.populate_list()
         self.assign_initial_actions()
-
-    # Populate list of available drives
-    def populate_drive_list(self):
-        disks = storage_media.get_disks()
-        self.ui.StorageDebugOutput.append("Removable Devices Detected:")
-        for disk in disks:
-            self.ui.DrivesComboBox.addItem(disk.device)
-            self.ui.StorageDebugOutput.append(str(disk))
 
     # Populate list of repositories
     def populate_repositories(self):
