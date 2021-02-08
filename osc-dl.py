@@ -7,12 +7,21 @@ import requests
 import download
 import metadata
 import wiiload
+import updater
 import hosts as repos
 
 repos = repos.Hosts()
 
-parser = argparse.ArgumentParser()
+parser = argparse.ArgumentParser(add_help=False,
+                                 description=f"Open Shop Channel Downloader v{updater.current_version()} {updater.get_branch()}",
+                                 epilog="OSCDL, Open Source Software by dhtdht020. https://github.com/dhtdht020.")
 subparser = parser.add_subparsers(dest='cmd')
+
+# Set help information
+parser._positionals.title = 'The following commands are available'
+parser._optionals.title = 'The following options are available'
+parser.add_argument('-h', '--help', action='help', default=argparse.SUPPRESS,
+                    help='Displays an help screen like this one.')
 
 # Get - downloads application
 get = subparser.add_parser(name='get', help="Download application.")
@@ -21,7 +30,7 @@ send = subparser.add_parser(name='send', help="Send application to Wii.")
 # Show - displays information about an application
 show = subparser.add_parser(name='show', help="Show information about an application.")
 # Hosts - displays available repositories
-hosts = subparser.add_parser(name='hosts', help="List of available hosts.")
+hosts = subparser.add_parser(name='hosts', help="List available hosts.")
 
 # Get arguments
 get.add_argument("app", type=str,
@@ -47,7 +56,14 @@ args = parser.parse_args()
 
 # Get
 if args.cmd == "get":
-    download.get(app_name=args.app, repo=repos.name(args.host)["host"])
+    if args.app == "all":
+        OpenShopChannel = metadata.API()
+        OpenShopChannel.set_host(args.host)
+        print(f"Starting download of all packages from \"{args.host}\" @ {repos.name(args.host)['host']}..")
+        for package in OpenShopChannel.packages:
+            download.get(app_name=package["internal_name"], repo=repos.name(args.host)["host"])
+    else:
+        download.get(app_name=args.app, repo=repos.name(args.host)["host"])
 
 # Send
 if args.cmd == "send":
