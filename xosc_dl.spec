@@ -35,6 +35,7 @@ a = Analysis(['xosc_dl.py'],
                     ('assets/gui/icons/category/media.png', './assets/gui/icons/category/'),
                     ('assets/gui/icons/category/utility.png', './assets/gui/icons/category/'),
                     ('assets/gui/splash.png', './assets/gui/'),
+                    ('assets/gui/sendwiisplash.png', './assets/gui/'),
                     ('assets/gui/missing.png', './assets/gui/'),
                     ('assets/themes/oscdark.qss', './assets/themes/'),
                     ('assets/gui/icons/update-wizard.png', './assets/gui/icons/')],
@@ -61,4 +62,4 @@ exe = EXE(pyz,
           upx=True,
           upx_exclude=[],
           runtime_tmpdir=None,
-          console=True, icon='oscicon.ico')
+          console=False, icon='oscicon.ico')

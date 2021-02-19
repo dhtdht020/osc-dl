@@ -1,4 +1,6 @@
 import io
+import argparse
+import re
 from datetime import datetime
 from os import listdir
 from os.path import isfile, join
@@ -17,15 +19,18 @@ import pyperclip
 from PySide2 import QtGui
 from PySide2.QtCore import Qt, QObject
 from PySide2.QtGui import QIcon, QColor
-from PySide2.QtWidgets import QApplication, QMainWindow, QInputDialog, QLineEdit, QMessageBox, QSplashScreen, QLabel, \
-    QListWidgetItem, QFileDialog
+from PySide2.QtWidgets import QApplication, QMainWindow, QDialog, QInputDialog, QLineEdit, QMessageBox, QSplashScreen, \
+    QLabel, \
+    QListWidgetItem, QFileDialog, QProgressBar
 
 import download
 import gui.ui_united
+import gui.dialog.ui_sendtowii2
 import metadata
 import updater
 import utils
 import wiiload
+import hosts as repos
 
 
 VERSION = updater.current_version()
@@ -38,12 +43,27 @@ else:
 HOST = "hbb1.oscwii.org"
 HOST_NAME = "primary"
 
+# Set argparse
+parser = argparse.ArgumentParser(add_help=False,
+                                 description=f"Open Shop Channel Downloader v{updater.current_version()} {updater.get_branch()}",
+                                 epilog="OSCDL, Open Source Software by dhtdht020. https://github.com/dhtdht020.")
+parser.add_argument("-s", "--sendtowii", type=str,
+                  help="Application to send.")
+args = parser.parse_args()
+
 
 # Get resource when frozen with PyInstaller
 def resource_path(relative_path):
     if hasattr(sys, '_MEIPASS'):
         return os.path.join(sys._MEIPASS, relative_path)
     return os.path.join(os.path.abspath("."), relative_path)
+
+
+# Actions to perform only when the program is frozen:
+if updater.is_frozen():
+    logging.basicConfig(level=logging.DEBUG)
+    logging.info(f"Open Shop Channel Downloader v{updater.current_version()} {updater.get_branch()}")
+    logging.info(f"OSCDL, Open Source Software by dhtdht020. https://github.com/dhtdht020.\n\n\n")
 
 
 # G U I
@@ -400,7 +420,7 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
             self.ui.progressBar.setValue(progress)
             self.repaint()
 
-        file_name = f'{self.app_name}.zip'
+        file_name = f'{app_name}.zip'
         conn.send(bytes(file_name, 'utf-8') + b'\x00')
 
         self.ui.progressBar.setValue(100)
@@ -459,52 +479,22 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
             # Get apps json
             loaded_json = metadata.get_apps(host_name=HOST_NAME, category=category, coder=coder)
             i = 0
-            ongoing = True
-            internal_name_dict = utils.parse_json_expression(json=loaded_json,
-                                                            expression=f"$[*].internal_name")
-            display_name_dict = utils.parse_json_expression(json=loaded_json,
-                                                           expression=f"$[*].display_name")
-            extracted_size_dict = utils.parse_json_expression(json=loaded_json,
-                                                             expression=f"$[*].extracted")
-            category_dict = utils.parse_json_expression(json=loaded_json,
-                                                       expression=f"$[*].category")
-            release_date_dict = utils.parse_json_expression(json=loaded_json,
-                                                           expression=f"$[*].release_date")
-            controllers_dict = utils.parse_json_expression(json=loaded_json,
-                                                          expression=f"$[*].controllers")
-            version_dict = utils.parse_json_expression(json=loaded_json,
-                                                      expression=f"$[*].version")
-            coder_dict = utils.parse_json_expression(json=loaded_json,
-                                                    expression=f"$[*].coder")
-            short_description_dict = utils.parse_json_expression(json=loaded_json,
-                                                                expression=f"$[*].short_description")
-            long_description_dict = utils.parse_json_expression(json=loaded_json,
-                                                               expression=f"$[*].long_description")
-            while ongoing is True:
+            for package in loaded_json:
                 try:
-                    internal_name = internal_name_dict[i].value
-                    display_name = display_name_dict[i].value
-                    extracted_size = extracted_size_dict[i].value
-                    category = category_dict[i].value
-                    release_date = release_date_dict[i].value
-                    controllers = controllers_dict[i].value
-                    version = version_dict[i].value
-                    coder = coder_dict[i].value
-                    short_description = short_description_dict[i].value
-                    long_description = long_description_dict[i].value
-                    self.ui.listAppsWidget.addItem(display_name)
+                    self.ui.listAppsWidget.addItem(package["display_name"])
                     list_item = self.ui.listAppsWidget.item(i)
-                    list_item.setData(Qt.UserRole, [internal_name,
-                                                    display_name,
-                                                    extracted_size,
-                                                    category,
-                                                    release_date,
-                                                    controllers,
-                                                    version,
-                                                    coder,
-                                                    short_description,
-                                                    long_description])
+                    list_item.setData(Qt.UserRole, [package["internal_name"],
+                                                    package["display_name"],
+                                                    package["extracted"],
+                                                    package["category"],
+                                                    package["release_date"],
+                                                    package["controllers"],
+                                                    package["version"],
+                                                    package["coder"],
+                                                    package["short_description"],
+                                                    package["long_description"]])
                     # Set category icon
+                    category = package["category"]
                     if category == "utilities":
                         list_item.setIcon(QIcon(resource_path("assets/gui/icons/category/utility.png")))
                     elif category == "games":
@@ -752,18 +742,185 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         """)
 
 
+class SendWiiDialog(gui.dialog.ui_sendtowii2.Ui_MainWindow, QMainWindow):
+    def __init__(self):
+        super(SendWiiDialog, self).__init__()
+        self.ui = gui.dialog.ui_sendtowii2.Ui_MainWindow()
+        self.ui.setupUi(self)
+
+        # Set title and icon of window
+        self.setWindowTitle(f"Send to Wii")
+        app_icon = QIcon(resource_path("assets/gui/windowicon.png"))
+        self.setWindowIcon(app_icon)
+
+        # Set app
+        protocol_regex_1 = re.compile(r"(?<=://).*$")  # Match after oscdl://
+        protocol_regex_2 = re.compile(r"([^/]+)")      # Match before /
+        protocol_regex_3 = re.compile(r"[^.]*")        # Match before dot "."
+        protocol_regex_4 = re.compile(r"[^.]*$")       # Match after dot "."
+        result = protocol_regex_1.search(str(args.sendtowii)).group(0)
+        if "/" in result:
+            result = protocol_regex_2.search(result).group(0)
+
+        self.app_name = protocol_regex_3.search(result).group(0)
+        self.host_name = protocol_regex_4.search(result).group(0)
+
+        # Get host
+        repositories = repos.Hosts()
+        for repo in repositories.list():
+            if repo["name"] == self.host_name:
+                self.host = repo
+
+        try:
+            # Get app
+            OpenShopChannel = metadata.API()
+            OpenShopChannel.set_host(self.host["name"])
+            for package in OpenShopChannel.packages:
+                if package["internal_name"].lower() == self.app_name.lower():
+                    self.app = package
+                    self.app_name = package["internal_name"]
+        except Exception as e:
+            QMessageBox.critical(self, 'OSCDL: Could not find application',
+                                 'OSCDL could not locate the specified app or repository.\n'
+                                 'Cannot continue. :(\n'
+                                 'Please check your internet connection, or report this incident.\n\n'
+                                 f'Exception String: {e}')
+            sys.exit(1)
+
+        self.populate_data(app=self.app)
+        self.load_icon(app=self.app, repo=self.host)
+        self.connect_signals()
+
+    def populate_data(self, app):
+        self.ui.appname.setText(app["display_name"])
+        self.ui.version.setText(app["version"])
+        self.ui.developer.setText(app["coder"])
+        self.ui.releasedate.setText(str(app["release_date"]))
+        self.ui.filesize.setText(metadata.file_size(app["zip_size"]))
+
+    def connect_signals(self):
+        # Connect Qt widget signals
+        self.ui.IPEdit.textChanged.connect(self.ip_edited)
+        self.ui.SendButton.clicked.connect(self.send_prep)
+
+    def ip_edited(self):
+        # Set send button to enabled if has text in it
+        if self.ui.IPEdit.text() == "":
+            self.ui.SendButton.setDisabled(True)
+        else:
+            self.ui.SendButton.setEnabled(True)
+
+    def load_icon(self, app, repo):
+        # Gets raw image data from server
+        data = metadata.icon(app_name=app["internal_name"], repo=repo["host"])
+
+        # Loads image
+        image = QtGui.QImage()
+        image.loadFromData(data)
+
+        # Adds image to label
+        lbl = self.ui.HomebrewIconLabel
+        lbl.setPixmap(QtGui.QPixmap(image))
+        lbl.show()
+
+    def send_prep(self):
+        self.ui.InstructionsLabel.hide()
+        self.ui.StatusLabel.setHidden(False)
+        self.ui.ProgressBar.setHidden(False)
+        self.send()
+
+    def send(self):
+        ip_match = wiiload.validate_ip_regex(self.ui.IPEdit.text())
+        if ip_match is None:
+            logging.warning('Invalid IP Address: ' + self.ui.IPEdit.text())
+            QMessageBox.warning(self, 'Invalid IP Address', 'This IP address is invalid.')
+            return
+
+        self.ui.StatusLabel.setText("Downloading " + self.app["display_name"] + " from Open Shop Channel..")
+        self.ui.ProgressBar.setValue(25)
+
+        url = f"https://{self.host['host']}/hbb/{self.app_name}/{self.app_name}.zip"
+        print(f"https://{self.host['host']}/hbb/{self.app_name}/{self.app_name}.zip")
+        r = requests.get(url)
+
+        self.ui.StatusLabel.setText("Preparing app...")
+        self.ui.ProgressBar.setValue(40)
+
+        zipped_app = io.BytesIO(r.content)
+        zip_buf = io.BytesIO()
+
+        # Our zip file should only contain one directory with the app data in it,
+        # but the downloaded file contains an apps/ directory. We're removing that here.
+        wiiload.organize_zip(zipped_app, zip_buf)
+
+        # preparing
+        prep = wiiload.prepare(zip_buf)
+
+        file_size = prep[0]
+        compressed_size = prep[1]
+        chunks = prep[2]
+
+        # connecting
+        self.ui.StatusLabel.setText('Connecting to the HBC...')
+        self.ui.ProgressBar.setValue(50)
+
+        try:
+            conn = wiiload.connect(self.ui.IPEdit.text())
+        except socket.error as e:
+            logging.error('Error while connecting to the HBC. Please check the IP address and try again.')
+            QMessageBox.warning(self, 'Connection error',
+                                'Error while connecting to the HBC. Please check the IP address and try again.')
+            logging.error(f'WiiLoad: {e}')
+            self.ui.ProgressBar.setValue(0)
+            self.ui.StatusLabel.setText('Error: Could not connect to the Homebrew Channel. :(')
+
+            return
+
+        wiiload.handshake(conn, compressed_size, file_size)
+
+        # Sending file
+        self.ui.StatusLabel.setText('Sending app...')
+
+        chunk_num = 1
+        for chunk in chunks:
+            conn.send(chunk)
+
+            chunk_num += 1
+            progress = round(chunk_num / len(chunks) * 50) + 50
+            self.ui.ProgressBar.setValue(progress)
+            self.ui.StatusLabel.setText(f"Sending application ({progress}%)")
+            print(progress)
+            self.repaint()
+
+        file_name = f'{self.app_name}.zip'
+        conn.send(bytes(file_name, 'utf-8') + b'\x00')
+
+        self.ui.ProgressBar.setValue(100)
+        self.ui.StatusLabel.setText('App transmitted!')
+        logging.info(f"App transmitted to HBC at {self.ui.IPEdit.text()}")
+
+
 if __name__ == "__main__":
-    global splash
-    global splash_color
     app = QApplication()
+    if args.sendtowii:
+        image = QtGui.QImage(resource_path("assets/gui/sendwiisplash.png"))
+        sendsplash_color = QColor("White")
+        sendsplash = QSplashScreen(QtGui.QPixmap(image))
+        sendsplash.show()
+        window = SendWiiDialog()
+        window.show()
+        sendsplash.hide()
+        app.exec_()
+    else:
+        global splash
+        global splash_color
+        # Splash
+        image = QtGui.QImage(resource_path("assets/gui/splash.png"))
+        splash_color = QColor("White")
+        splash = QSplashScreen(QtGui.QPixmap(image))
+        splash.show()
 
-    # Splash
-    image = QtGui.QImage(resource_path("assets/gui/splash.png"))
-    splash_color = QColor("White")
-    splash = QSplashScreen(QtGui.QPixmap(image))
-    splash.show()
-
-    window = MainWindow()
-    window.show()
-    splash.hide()
-    app.exec_()
+        window = MainWindow()
+        window.show()
+        splash.hide()
+        app.exec_()

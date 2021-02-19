@@ -3,4 +3,3 @@ requests~=2.25.1
 packaging~=20.9
 PyYAML~=5.4
 pyperclip~=1.8.1
-jsonpath_ng~=1.5.2
