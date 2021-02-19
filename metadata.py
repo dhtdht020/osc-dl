@@ -35,6 +35,11 @@ def icon(app_name, repo="hbb1.oscwii.org"):
     return icon
 
 
+def icon_url(app_name, repo="hbb1.oscwii.org"):
+    return "https://" + repo+ "/hbb/"+ app_name + ".png"
+
+
+
 # Get direct download url of app. Should be replaced with API response sooner or later.
 def url(app_name, repo="hbb1.oscwii.org"):
     app_url = "https://" + repo + "/hbb/" + app_name + "/" + app_name + ".zip"

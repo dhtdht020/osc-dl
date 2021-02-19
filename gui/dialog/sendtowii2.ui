@@ -133,7 +133,7 @@ background-color: rgb(255, 255, 255);
         </widget>
        </item>
        <item>
-        <widget class="QLabel" name="HomebrewIconLabel">
+        <widget class="QWebEngineView" name="HomebrewIconView" native="true">
          <property name="minimumSize">
           <size>
            <width>128</width>
@@ -147,15 +147,9 @@ background-color: rgb(255, 255, 255);
           </size>
          </property>
          <property name="styleSheet">
-          <string notr="true">QLabel {
+          <string notr="true">QWidget {
 	background-color: #eff1fa;
 }</string>
-         </property>
-         <property name="text">
-          <string>No homebrew icon. Aw.</string>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignCenter</set>
          </property>
         </widget>
        </item>
@@ -424,21 +418,21 @@ background-color: rgb(255, 255, 255);
        </item>
        <item>
         <widget class="QLabel" name="StatusLabel">
-         <property name="text">
-          <string>Sending to Wii..</string>
-         </property>
          <property name="visible">
           <bool>false</bool>
+         </property>
+         <property name="text">
+          <string>Sending to Wii..</string>
          </property>
         </widget>
        </item>
        <item>
         <widget class="QProgressBar" name="ProgressBar">
-         <property name="value">
-          <number>0</number>
-         </property>
          <property name="visible">
           <bool>false</bool>
+         </property>
+         <property name="value">
+          <number>0</number>
          </property>
         </widget>
        </item>
@@ -458,6 +452,14 @@ background-color: rgb(255, 255, 255);
    </layout>
   </widget>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>QWebEngineView</class>
+   <extends>QWidget</extends>
+   <header>PySide2.QtWebEngineWidgets</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>

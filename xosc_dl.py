@@ -16,8 +16,8 @@ from functools import partial
 
 import requests
 import pyperclip
-from PySide2 import QtGui
-from PySide2.QtCore import Qt, QObject
+from PySide2 import QtGui, QtWebEngine
+from PySide2.QtCore import Qt, QObject, QUrl
 from PySide2.QtGui import QIcon, QColor
 from PySide2.QtWidgets import QApplication, QMainWindow, QDialog, QInputDialog, QLineEdit, QMessageBox, QSplashScreen, \
     QLabel, \
@@ -98,6 +98,10 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         self.ui.menuAnnouncement_Banner.setIcon(QIcon(resource_path("assets/gui/icons/announcement-banner.png")))
         # DEBUG -> EXPERIMENTAL -> ANNOUNCEMENT BANNER
         self.ui.actionDisplay_Banner.setIcon(QIcon(resource_path("assets/gui/icons/announcement-banner-reload.png")))
+
+        # Set icon view stuff
+        self.ui.HomebrewIconView.setStyleSheet("background:transparent")
+        self.ui.HomebrewIconView.setContextMenuPolicy(Qt.NoContextMenu)
 
         self.populate_stylesheets()
         self.populate()
@@ -590,17 +594,11 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
 
     # Load app icon
     def load_icon(self, app_name, repo):
-        # Gets raw image data from server
-        data = metadata.icon(app_name=app_name, repo=repo)
+        # Set background transparent
+        self.ui.HomebrewIconView.page().setBackgroundColor(Qt.transparent)
 
-        # Loads image
-        image = QtGui.QImage()
-        image.loadFromData(data)
-
-        # Adds image to label
-        lbl = self.ui.HomebrewIconLabel
-        lbl.setPixmap(QtGui.QPixmap(image))
-        lbl.show()
+        # Load icon
+        self.ui.HomebrewIconView.page().setHtml(f'<style>* {{margin: 0; padding: 0;}}</style> <img ondragstart="return false" style="overflow: hidden; margin: 0; padding: 0; height: 48; width: 128;" src="https://{repo}/hbb/{app_name}.png">')
 
     def load_announcement_banner(self):
         if not splash.isHidden():
@@ -753,6 +751,10 @@ class SendWiiDialog(gui.dialog.ui_sendtowii2.Ui_MainWindow, QMainWindow):
         app_icon = QIcon(resource_path("assets/gui/windowicon.png"))
         self.setWindowIcon(app_icon)
 
+        # Set icon view stuff
+        self.ui.HomebrewIconView.setStyleSheet("background:transparent")
+        self.ui.HomebrewIconView.setContextMenuPolicy(Qt.NoContextMenu)
+
         # Set app
         protocol_regex_1 = re.compile(r"(?<=://).*$")  # Match after oscdl://
         protocol_regex_2 = re.compile(r"([^/]+)")      # Match before /
@@ -788,7 +790,7 @@ class SendWiiDialog(gui.dialog.ui_sendtowii2.Ui_MainWindow, QMainWindow):
             sys.exit(1)
 
         self.populate_data(app=self.app)
-        self.load_icon(app=self.app, repo=self.host)
+        self.load_icon(app=self.app)
         self.connect_signals()
 
     def populate_data(self, app):
@@ -810,18 +812,13 @@ class SendWiiDialog(gui.dialog.ui_sendtowii2.Ui_MainWindow, QMainWindow):
         else:
             self.ui.SendButton.setEnabled(True)
 
-    def load_icon(self, app, repo):
-        # Gets raw image data from server
-        data = metadata.icon(app_name=app["internal_name"], repo=repo["host"])
+    def load_icon(self, app):
+        # Set background transparent
+        self.ui.HomebrewIconView.page().setBackgroundColor(Qt.transparent)
 
-        # Loads image
-        image = QtGui.QImage()
-        image.loadFromData(data)
-
-        # Adds image to label
-        lbl = self.ui.HomebrewIconLabel
-        lbl.setPixmap(QtGui.QPixmap(image))
-        lbl.show()
+        # Load icon
+        self.ui.HomebrewIconView.page().setHtml(
+            f'<style>* {{margin: 0; padding: 0;}}</style> <img ondragstart="return false" style="overflow: hidden; margin: 0; padding: 0; height: 48; width: 128;" src="{app["icon_url"]}">')
 
     def send_prep(self):
         self.ui.InstructionsLabel.hide()

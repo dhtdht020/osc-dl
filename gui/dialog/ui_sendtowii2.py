@@ -12,6 +12,8 @@ from PySide2.QtCore import *
 from PySide2.QtGui import *
 from PySide2.QtWidgets import *
 
+from PySide2.QtWebEngineWidgets import QWebEngineView
+
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
@@ -68,16 +70,15 @@ class Ui_MainWindow(object):
 
         self.horizontalLayout_2.addWidget(self.SendToWiiTitleFrame)
 
-        self.HomebrewIconLabel = QLabel(self.TitleFrame)
-        self.HomebrewIconLabel.setObjectName(u"HomebrewIconLabel")
-        self.HomebrewIconLabel.setMinimumSize(QSize(128, 48))
-        self.HomebrewIconLabel.setMaximumSize(QSize(128, 48))
-        self.HomebrewIconLabel.setStyleSheet(u"QLabel {\n"
+        self.HomebrewIconView = QWebEngineView(self.TitleFrame)
+        self.HomebrewIconView.setObjectName(u"HomebrewIconView")
+        self.HomebrewIconView.setMinimumSize(QSize(128, 48))
+        self.HomebrewIconView.setMaximumSize(QSize(128, 48))
+        self.HomebrewIconView.setStyleSheet(u"QWidget {\n"
 "	background-color: #eff1fa;\n"
 "}")
-        self.HomebrewIconLabel.setAlignment(Qt.AlignCenter)
 
-        self.horizontalLayout_2.addWidget(self.HomebrewIconLabel)
+        self.horizontalLayout_2.addWidget(self.HomebrewIconView)
 
 
         self.verticalLayout.addWidget(self.TitleFrame)
@@ -238,8 +239,8 @@ class Ui_MainWindow(object):
 
         self.ProgressBar = QProgressBar(self.InstructionsFrame)
         self.ProgressBar.setObjectName(u"ProgressBar")
-        self.ProgressBar.setValue(0)
         self.ProgressBar.setVisible(False)
+        self.ProgressBar.setValue(0)
 
         self.verticalLayout_2.addWidget(self.ProgressBar)
 
@@ -265,7 +266,6 @@ class Ui_MainWindow(object):
         self.centralwidget.setAccessibleName(QCoreApplication.translate("MainWindow", u"background", None))
 #endif // QT_CONFIG(accessibility)
         self.TitleLabel.setText(QCoreApplication.translate("MainWindow", u"Send to Wii", None))
-        self.HomebrewIconLabel.setText(QCoreApplication.translate("MainWindow", u"No homebrew icon. Aw.", None))
         self.HelpLabel.setText(QCoreApplication.translate("MainWindow", u"The following application will be sent:", None))
         self.label_version.setText(QCoreApplication.translate("MainWindow", u"Version", None))
         self.label_developer.setText(QCoreApplication.translate("MainWindow", u"Developer", None))
