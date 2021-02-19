@@ -1027,6 +1027,7 @@ p, li { white-space: pre-wrap; }
      <string>About</string>
     </property>
     <addaction name="actionAbout_OSC_DL"/>
+    <addaction name="actionIcons_provided_by"/>
    </widget>
    <widget class="QMenu" name="menuDebug">
     <property name="title">
@@ -1143,6 +1144,14 @@ p, li { white-space: pre-wrap; }
   <action name="actionSelect_Theme">
    <property name="text">
     <string>Select Theme</string>
+   </property>
+  </action>
+  <action name="actionIcons_provided_by">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="text">
+    <string>Icons provided by Icons8</string>
    </property>
   </action>
  </widget>
