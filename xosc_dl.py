@@ -15,7 +15,6 @@ import logging  # for logs
 from functools import partial
 
 import requests
-import pyperclip
 from PySide2 import QtGui, QtWebEngine
 from PySide2.QtCore import Qt, QObject, QUrl
 from PySide2.QtGui import QIcon, QColor
@@ -434,7 +433,7 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
     def copy_download_link_button(self):
         data = self.ui.listAppsWidget.currentItem().data(Qt.UserRole)
         self.app_name = data[0]
-        pyperclip.copy(metadata.url(self.app_name, repo=HOST))
+        QApplication.clipboard().setText(metadata.url(self.app_name, repo=HOST))
         self.status_message(f"Copied the download link for {self.app_name} to clipboard")
 
     def changed_host(self):
