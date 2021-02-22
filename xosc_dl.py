@@ -15,12 +15,11 @@ import logging  # for logs
 from functools import partial
 
 import requests
-from PySide2 import QtGui, QtWebEngine
-from PySide2.QtCore import Qt, QObject, QUrl
+from PySide2 import QtGui
+from PySide2.QtCore import Qt, QObject
 from PySide2.QtGui import QIcon, QColor
-from PySide2.QtWidgets import QApplication, QMainWindow, QDialog, QInputDialog, QLineEdit, QMessageBox, QSplashScreen, \
-    QLabel, \
-    QListWidgetItem, QFileDialog, QProgressBar
+from PySide2.QtWidgets import QApplication, QMainWindow, QInputDialog, QLineEdit, QMessageBox, QSplashScreen, \
+    QListWidgetItem, QFileDialog
 
 import download
 import gui.ui_united
