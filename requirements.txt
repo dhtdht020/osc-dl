@@ -2,4 +2,4 @@ lxml~=4.6.2
 requests~=2.25.1
 packaging~=20.9
 PyYAML~=5.4
-pyperclip~=1.8.1
+pyperclip~=1.8.2
