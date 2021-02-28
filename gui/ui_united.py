@@ -111,7 +111,7 @@ class Ui_MainWindow(object):
         self.ReposComboBox.setObjectName(u"ReposComboBox")
         self.ReposComboBox.setEnabled(True)
         self.ReposComboBox.setMinimumSize(QSize(161, 21))
-        self.ReposComboBox.setMaximumSize(QSize(161, 16777215))
+        self.ReposComboBox.setMaximumSize(QSize(161, 21))
 
         self.horizontalLayout_3.addWidget(self.ReposComboBox)
 
@@ -123,8 +123,8 @@ class Ui_MainWindow(object):
         self.CategoriesComboBox.addItem("")
         self.CategoriesComboBox.addItem("")
         self.CategoriesComboBox.setObjectName(u"CategoriesComboBox")
-        self.CategoriesComboBox.setMinimumSize(QSize(70, 21))
-        self.CategoriesComboBox.setMaximumSize(QSize(70, 16777215))
+        self.CategoriesComboBox.setMinimumSize(QSize(90, 21))
+        self.CategoriesComboBox.setMaximumSize(QSize(90, 21))
 
         self.horizontalLayout_3.addWidget(self.CategoriesComboBox)
 
@@ -358,10 +358,6 @@ class Ui_MainWindow(object):
         self.progressBar.setGeometry(QRect(150, 0, 91, 23))
         self.progressBar.setVisible(False)
         self.progressBar.setValue(0)
-        self.HomebrewIconLabel = QLabel(self.GeneralTab)
-        self.HomebrewIconLabel.setObjectName(u"HomebrewIconLabel")
-        self.HomebrewIconLabel.setGeometry(QRect(150, 200, 128, 48))
-        self.HomebrewIconLabel.setAlignment(Qt.AlignCenter)
         self.HomebrewCategoryLabel = QLabel(self.GeneralTab)
         self.HomebrewCategoryLabel.setObjectName(u"HomebrewCategoryLabel")
         self.HomebrewCategoryLabel.setGeometry(QRect(147, 10, 81, 48))
@@ -547,7 +543,6 @@ class Ui_MainWindow(object):
         self.developer_profile_btn.setText(QCoreApplication.translate("MainWindow", u">", None))
         self.label_description.setText(QCoreApplication.translate("MainWindow", u"Description", None))
         self.label_displayname.setText(QCoreApplication.translate("MainWindow", u"Title", None))
-        self.HomebrewIconLabel.setText(QCoreApplication.translate("MainWindow", u"No homebrew icon. Aw.", None))
         self.HomebrewCategoryLabel.setText(QCoreApplication.translate("MainWindow", u"Category", None))
         self.tabMetadata.setTabText(self.tabMetadata.indexOf(self.GeneralTab), QCoreApplication.translate("MainWindow", u"General", None))
 #if QT_CONFIG(accessibility)

@@ -172,7 +172,7 @@
                   <property name="maximumSize">
                    <size>
                     <width>161</width>
-                    <height>16777215</height>
+                    <height>21</height>
                    </size>
                   </property>
                  </widget>
@@ -181,14 +181,14 @@
                  <widget class="QComboBox" name="CategoriesComboBox">
                   <property name="minimumSize">
                    <size>
-                    <width>70</width>
+                    <width>90</width>
                     <height>21</height>
                    </size>
                   </property>
                   <property name="maximumSize">
                    <size>
-                    <width>70</width>
-                    <height>16777215</height>
+                    <width>90</width>
+                    <height>21</height>
                    </size>
                   </property>
                   <item>

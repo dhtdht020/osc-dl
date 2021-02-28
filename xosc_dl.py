@@ -97,6 +97,13 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         # DEBUG -> EXPERIMENTAL -> ANNOUNCEMENT BANNER
         self.ui.actionDisplay_Banner.setIcon(QIcon(resource_path("assets/gui/icons/announcement-banner-reload.png")))
 
+        # CATEGORIES COMBOBOX
+        self.ui.CategoriesComboBox.setItemIcon(1, QIcon(resource_path("assets/gui/icons/category/utility.png")))
+        self.ui.CategoriesComboBox.setItemIcon(2, QIcon(resource_path("assets/gui/icons/category/emulator.png")))
+        self.ui.CategoriesComboBox.setItemIcon(3, QIcon(resource_path("assets/gui/icons/category/game.png")))
+        self.ui.CategoriesComboBox.setItemIcon(4, QIcon(resource_path("assets/gui/icons/category/media.png")))
+        self.ui.CategoriesComboBox.setItemIcon(5, QIcon(resource_path("assets/gui/icons/category/demo.png")))
+
         # Set icon view stuff
         self.ui.HomebrewIconView.setStyleSheet("background:transparent")
         self.ui.HomebrewIconView.setContextMenuPolicy(Qt.NoContextMenu)
@@ -214,9 +221,6 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         if app_name is not None:
             # Set active tab to first
             self.ui.tabMetadata.setCurrentIndex(0)
-
-            # Hide icon
-            self.ui.HomebrewIconLabel.hide()
 
             # Clear supported controllers listview:
             self.ui.SupportedControllersListWidget.clear()
