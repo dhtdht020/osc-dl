@@ -1,6 +1,4 @@
 import io
-import argparse
-import re
 from datetime import datetime
 from os import listdir
 from os.path import isfile, join
@@ -23,12 +21,10 @@ from PySide2.QtWidgets import QApplication, QMainWindow, QInputDialog, QLineEdit
 
 import download
 import gui.ui_united
-import gui.dialog.ui_sendtowii2
 import metadata
 import updater
 import utils
 import wiiload
-import hosts as repos
 
 
 VERSION = updater.current_version()
@@ -40,14 +36,6 @@ else:
 
 HOST = "hbb1.oscwii.org"
 HOST_NAME = "primary"
-
-# Set argparse
-parser = argparse.ArgumentParser(add_help=False,
-                                 description=f"Open Shop Channel Downloader v{updater.current_version()} {updater.get_branch()}",
-                                 epilog="OSCDL, Open Source Software by dhtdht020. https://github.com/dhtdht020.")
-parser.add_argument("-s", "--sendtowii", type=str,
-                  help="Application to send.")
-args = parser.parse_args()
 
 
 # Get resource when frozen with PyInstaller
@@ -742,184 +730,19 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         """)
 
 
-class SendWiiDialog(gui.dialog.ui_sendtowii2.Ui_MainWindow, QMainWindow):
-    def __init__(self):
-        super(SendWiiDialog, self).__init__()
-        self.ui = gui.dialog.ui_sendtowii2.Ui_MainWindow()
-        self.ui.setupUi(self)
-
-        # Set title and icon of window
-        self.setWindowTitle(f"Send to Wii")
-        app_icon = QIcon(resource_path("assets/gui/windowicon.png"))
-        self.setWindowIcon(app_icon)
-
-        # Set icon view stuff
-        self.ui.HomebrewIconView.setStyleSheet("background:transparent")
-        self.ui.HomebrewIconView.setContextMenuPolicy(Qt.NoContextMenu)
-
-        # Set app
-        protocol_regex_1 = re.compile(r"(?<=://).*$")  # Match after oscdl://
-        protocol_regex_2 = re.compile(r"([^/]+)")      # Match before /
-        protocol_regex_3 = re.compile(r"[^.]*")        # Match before dot "."
-        protocol_regex_4 = re.compile(r"[^.]*$")       # Match after dot "."
-        result = protocol_regex_1.search(str(args.sendtowii)).group(0)
-        if "/" in result:
-            result = protocol_regex_2.search(result).group(0)
-
-        self.app_name = protocol_regex_3.search(result).group(0)
-        self.host_name = protocol_regex_4.search(result).group(0)
-
-        # Get host
-        repositories = repos.Hosts()
-        for repo in repositories.list():
-            if repo["name"] == self.host_name:
-                self.host = repo
-
-        try:
-            # Get app
-            OpenShopChannel = metadata.API()
-            OpenShopChannel.set_host(self.host["name"])
-            for package in OpenShopChannel.packages:
-                if package["internal_name"].lower() == self.app_name.lower():
-                    self.app = package
-                    self.app_name = package["internal_name"]
-        except Exception as e:
-            QMessageBox.critical(self, 'OSCDL: Could not find application',
-                                 'OSCDL could not locate the specified app or repository.\n'
-                                 'Cannot continue. :(\n'
-                                 'Please check your internet connection, or report this incident.\n\n'
-                                 f'Exception String: {e}')
-            sys.exit(1)
-
-        self.populate_data(app=self.app)
-        self.load_icon(app=self.app)
-        self.connect_signals()
-
-    def populate_data(self, app):
-        self.ui.appname.setText(app["display_name"])
-        self.ui.version.setText(app["version"])
-        self.ui.developer.setText(app["coder"])
-        self.ui.releasedate.setText(str(app["release_date"]))
-        self.ui.filesize.setText(metadata.file_size(app["zip_size"]))
-
-    def connect_signals(self):
-        # Connect Qt widget signals
-        self.ui.IPEdit.textChanged.connect(self.ip_edited)
-        self.ui.SendButton.clicked.connect(self.send_prep)
-
-    def ip_edited(self):
-        # Set send button to enabled if has text in it
-        if self.ui.IPEdit.text() == "":
-            self.ui.SendButton.setDisabled(True)
-        else:
-            self.ui.SendButton.setEnabled(True)
-
-    def load_icon(self, app):
-        # Set background transparent
-        self.ui.HomebrewIconView.page().setBackgroundColor(Qt.transparent)
-
-        # Load icon
-        self.ui.HomebrewIconView.page().setHtml(
-            f'<style>* {{margin: 0; padding: 0;}}</style> <img ondragstart="return false" style="overflow: hidden; margin: 0; padding: 0; height: 48; width: 128;" src="{app["icon_url"]}">')
-
-    def send_prep(self):
-        self.ui.InstructionsLabel.hide()
-        self.ui.StatusLabel.setHidden(False)
-        self.ui.ProgressBar.setHidden(False)
-        self.send()
-
-    def send(self):
-        ip_match = wiiload.validate_ip_regex(self.ui.IPEdit.text())
-        if ip_match is None:
-            logging.warning('Invalid IP Address: ' + self.ui.IPEdit.text())
-            QMessageBox.warning(self, 'Invalid IP Address', 'This IP address is invalid.')
-            return
-
-        self.ui.StatusLabel.setText("Downloading " + self.app["display_name"] + " from Open Shop Channel..")
-        self.ui.ProgressBar.setValue(25)
-
-        url = f"https://{self.host['host']}/hbb/{self.app_name}/{self.app_name}.zip"
-        print(f"https://{self.host['host']}/hbb/{self.app_name}/{self.app_name}.zip")
-        r = requests.get(url)
-
-        self.ui.StatusLabel.setText("Preparing app...")
-        self.ui.ProgressBar.setValue(40)
-
-        zipped_app = io.BytesIO(r.content)
-        zip_buf = io.BytesIO()
-
-        # Our zip file should only contain one directory with the app data in it,
-        # but the downloaded file contains an apps/ directory. We're removing that here.
-        wiiload.organize_zip(zipped_app, zip_buf)
-
-        # preparing
-        prep = wiiload.prepare(zip_buf)
-
-        file_size = prep[0]
-        compressed_size = prep[1]
-        chunks = prep[2]
-
-        # connecting
-        self.ui.StatusLabel.setText('Connecting to the HBC...')
-        self.ui.ProgressBar.setValue(50)
-
-        try:
-            conn = wiiload.connect(self.ui.IPEdit.text())
-        except socket.error as e:
-            logging.error('Error while connecting to the HBC. Please check the IP address and try again.')
-            QMessageBox.warning(self, 'Connection error',
-                                'Error while connecting to the HBC. Please check the IP address and try again.')
-            logging.error(f'WiiLoad: {e}')
-            self.ui.ProgressBar.setValue(0)
-            self.ui.StatusLabel.setText('Error: Could not connect to the Homebrew Channel. :(')
-
-            return
-
-        wiiload.handshake(conn, compressed_size, file_size)
-
-        # Sending file
-        self.ui.StatusLabel.setText('Sending app...')
-
-        chunk_num = 1
-        for chunk in chunks:
-            conn.send(chunk)
-
-            chunk_num += 1
-            progress = round(chunk_num / len(chunks) * 50) + 50
-            self.ui.ProgressBar.setValue(progress)
-            self.ui.StatusLabel.setText(f"Sending application ({progress}%)")
-            print(progress)
-            self.repaint()
-
-        file_name = f'{self.app_name}.zip'
-        conn.send(bytes(file_name, 'utf-8') + b'\x00')
-
-        self.ui.ProgressBar.setValue(100)
-        self.ui.StatusLabel.setText('App transmitted!')
-        logging.info(f"App transmitted to HBC at {self.ui.IPEdit.text()}")
-
-
 if __name__ == "__main__":
     app = QApplication()
-    if args.sendtowii:
-        image = QtGui.QImage(resource_path("assets/gui/sendwiisplash.png"))
-        sendsplash_color = QColor("White")
-        sendsplash = QSplashScreen(QtGui.QPixmap(image))
-        sendsplash.show()
-        window = SendWiiDialog()
-        window.show()
-        sendsplash.hide()
-        app.exec_()
-    else:
-        global splash
-        global splash_color
-        # Splash
-        image = QtGui.QImage(resource_path("assets/gui/splash.png"))
-        splash_color = QColor("White")
-        splash = QSplashScreen(QtGui.QPixmap(image))
-        splash.show()
 
-        window = MainWindow()
-        window.show()
-        splash.hide()
-        app.exec_()
+    global splash
+    global splash_color
+
+    # Splash
+    image = QtGui.QImage(resource_path("assets/gui/splash.png"))
+    splash_color = QColor("White")
+    splash = QSplashScreen(QtGui.QPixmap(image))
+    splash.show()
+
+    window = MainWindow()
+    window.show()
+    splash.hide()
+    app.exec_()
