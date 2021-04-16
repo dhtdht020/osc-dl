@@ -92,10 +92,6 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         self.ui.CategoriesComboBox.setItemIcon(4, QIcon(resource_path("assets/gui/icons/category/media.png")))
         self.ui.CategoriesComboBox.setItemIcon(5, QIcon(resource_path("assets/gui/icons/category/demo.png")))
 
-        # Set icon view stuff
-        self.ui.HomebrewIconView.setStyleSheet("background:transparent")
-        self.ui.HomebrewIconView.setContextMenuPolicy(Qt.NoContextMenu)
-
         self.populate_stylesheets()
         self.populate()
         self.selection_changed()
