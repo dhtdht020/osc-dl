@@ -12,8 +12,6 @@ from PySide2.QtCore import *
 from PySide2.QtGui import *
 from PySide2.QtWidgets import *
 
-from PySide2.QtWebEngineWidgets import QWebEngineView
-
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
@@ -358,6 +356,10 @@ class Ui_MainWindow(object):
         self.progressBar.setGeometry(QRect(150, 0, 91, 23))
         self.progressBar.setVisible(False)
         self.progressBar.setValue(0)
+        self.HomebrewIconLabel = QLabel(self.GeneralTab)
+        self.HomebrewIconLabel.setObjectName(u"HomebrewIconLabel")
+        self.HomebrewIconLabel.setGeometry(QRect(10, 10, 128, 48))
+        self.HomebrewIconLabel.setAlignment(Qt.AlignCenter)
         self.HomebrewCategoryLabel = QLabel(self.GeneralTab)
         self.HomebrewCategoryLabel.setObjectName(u"HomebrewCategoryLabel")
         self.HomebrewCategoryLabel.setGeometry(QRect(147, 10, 81, 48))
@@ -368,9 +370,6 @@ class Ui_MainWindow(object):
         font1.setWeight(75)
         self.HomebrewCategoryLabel.setFont(font1)
         self.HomebrewCategoryLabel.setAlignment(Qt.AlignCenter)
-        self.HomebrewIconView = QWebEngineView(self.GeneralTab)
-        self.HomebrewIconView.setObjectName(u"HomebrewIconView")
-        self.HomebrewIconView.setGeometry(QRect(10, 10, 128, 48))
         self.tabMetadata.addTab(self.GeneralTab, "")
         self.Description = QWidget()
         self.Description.setObjectName(u"Description")
@@ -543,6 +542,7 @@ class Ui_MainWindow(object):
         self.developer_profile_btn.setText(QCoreApplication.translate("MainWindow", u">", None))
         self.label_description.setText(QCoreApplication.translate("MainWindow", u"Description", None))
         self.label_displayname.setText(QCoreApplication.translate("MainWindow", u"Title", None))
+        self.HomebrewIconLabel.setText(QCoreApplication.translate("MainWindow", u"No homebrew icon. Aw.", None))
         self.HomebrewCategoryLabel.setText(QCoreApplication.translate("MainWindow", u"Category", None))
         self.tabMetadata.setTabText(self.tabMetadata.indexOf(self.GeneralTab), QCoreApplication.translate("MainWindow", u"General", None))
 #if QT_CONFIG(accessibility)

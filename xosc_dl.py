@@ -210,6 +210,9 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
             # Set active tab to first
             self.ui.tabMetadata.setCurrentIndex(0)
 
+            # Hide icon
+            self.ui.HomebrewIconLabel.hide()
+
             # Clear supported controllers listview:
             self.ui.SupportedControllersListWidget.clear()
 
@@ -584,11 +587,17 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
 
     # Load app icon
     def load_icon(self, app_name, repo):
-        # Set background transparent
-        self.ui.HomebrewIconView.page().setBackgroundColor(Qt.transparent)
+        # Gets raw image data from server
+        data = metadata.icon(app_name=app_name, repo=repo)
 
-        # Load icon
-        self.ui.HomebrewIconView.page().setHtml(f'<style>* {{margin: 0; padding: 0;}}</style> <img ondragstart="return false" style="overflow: hidden; margin: 0; padding: 0; height: 48; width: 128;" src="https://{repo}/hbb/{app_name}.png">')
+        # Loads image
+        image = QtGui.QImage()
+        image.loadFromData(data)
+
+        # Adds image to label
+        lbl = self.ui.HomebrewIconLabel
+        lbl.setPixmap(QtGui.QPixmap(image))
+        lbl.show()
 
     def load_announcement_banner(self):
         if not splash.isHidden():

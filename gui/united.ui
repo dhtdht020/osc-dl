@@ -745,6 +745,22 @@ background-color: rgba(255, 255, 255, 0);
              <number>0</number>
             </property>
            </widget>
+           <widget class="QLabel" name="HomebrewIconLabel">
+            <property name="geometry">
+             <rect>
+              <x>10</x>
+              <y>10</y>
+              <width>128</width>
+              <height>48</height>
+             </rect>
+            </property>
+            <property name="text">
+             <string>No homebrew icon. Aw.</string>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignCenter</set>
+            </property>
+           </widget>
            <widget class="QLabel" name="HomebrewCategoryLabel">
             <property name="geometry">
              <rect>
@@ -767,16 +783,6 @@ background-color: rgba(255, 255, 255, 0);
             </property>
             <property name="alignment">
              <set>Qt::AlignCenter</set>
-            </property>
-           </widget>
-           <widget class="QWebEngineView" name="HomebrewIconView" native="true">
-            <property name="geometry">
-             <rect>
-              <x>10</x>
-              <y>10</y>
-              <width>128</width>
-              <height>48</height>
-             </rect>
             </property>
            </widget>
           </widget>
@@ -1149,14 +1155,6 @@ p, li { white-space: pre-wrap; }
    </property>
   </action>
  </widget>
- <customwidgets>
-  <customwidget>
-   <class>QWebEngineView</class>
-   <extends>QWidget</extends>
-   <header>PySide2.QtWebEngineWidgets</header>
-   <container>1</container>
-  </customwidget>
- </customwidgets>
  <resources/>
  <connections/>
 </ui>
