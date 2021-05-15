@@ -3,14 +3,14 @@
 ################################################################################
 ## Form generated from reading UI file 'united.ui'
 ##
-## Created by: Qt User Interface Compiler version 5.15.2
+## Created by: Qt User Interface Compiler version 6.1.0
 ##
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
 
-from PySide2.QtCore import *
-from PySide2.QtGui import *
-from PySide2.QtWidgets import *
+from PySide6.QtCore import *
+from PySide6.QtGui import *
+from PySide6.QtWidgets import *
 
 
 class Ui_MainWindow(object):
@@ -92,7 +92,6 @@ class Ui_MainWindow(object):
         self.RepositoryNameLabel.setObjectName(u"RepositoryNameLabel")
         font = QFont()
         font.setBold(True)
-        font.setWeight(75)
         self.RepositoryNameLabel.setFont(font)
         self.RepositoryNameLabel.setStyleSheet(u"")
 
@@ -260,7 +259,7 @@ class Ui_MainWindow(object):
         self.GeneralTab.setObjectName(u"GeneralTab")
         self.formLayoutWidget = QWidget(self.GeneralTab)
         self.formLayoutWidget.setObjectName(u"formLayoutWidget")
-        self.formLayoutWidget.setGeometry(QRect(10, 100, 221, 131))
+        self.formLayoutWidget.setGeometry(QRect(10, 100, 223, 131))
         self.MetaLayout = QFormLayout(self.formLayoutWidget)
         self.MetaLayout.setObjectName(u"MetaLayout")
         self.MetaLayout.setContentsMargins(0, 0, 0, 0)
@@ -333,7 +332,7 @@ class Ui_MainWindow(object):
         self.developer.setReadOnly(True)
         self.developer_profile_btn = QPushButton(self.frame)
         self.developer_profile_btn.setObjectName(u"developer_profile_btn")
-        self.developer_profile_btn.setGeometry(QRect(130, -1, 21, 22))
+        self.developer_profile_btn.setGeometry(QRect(130, -1, 16, 22))
         self.developer_profile_btn.setFont(font)
         self.developer_profile_btn.setStyleSheet(u"")
 
@@ -364,10 +363,9 @@ class Ui_MainWindow(object):
         self.HomebrewCategoryLabel.setObjectName(u"HomebrewCategoryLabel")
         self.HomebrewCategoryLabel.setGeometry(QRect(147, 10, 81, 48))
         font1 = QFont()
-        font1.setFamily(u"Arial")
+        font1.setFamilies([u"Arial"])
         font1.setPointSize(11)
         font1.setBold(True)
-        font1.setWeight(75)
         self.HomebrewCategoryLabel.setFont(font1)
         self.HomebrewCategoryLabel.setAlignment(Qt.AlignCenter)
         self.tabMetadata.addTab(self.GeneralTab, "")
@@ -398,12 +396,12 @@ class Ui_MainWindow(object):
         self.SupportedControllersListWidget = QListWidget(self.RawTab)
         self.SupportedControllersListWidget.setObjectName(u"SupportedControllersListWidget")
         self.SupportedControllersListWidget.setGeometry(QRect(10, 30, 221, 141))
-        self.SupportedControllersListWidget.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
+        self.SupportedControllersListWidget.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOn)
         self.SupportedControllersListWidget.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
         self.SupportedControllersListWidget.setDragDropMode(QAbstractItemView.NoDragDrop)
+        self.SupportedControllersListWidget.setIconSize(QSize(30, 30))
         self.SupportedControllersListWidget.setMovement(QListView.Static)
-        self.SupportedControllersListWidget.setGridSize(QSize(65, 65))
-        self.SupportedControllersListWidget.setViewMode(QListView.IconMode)
+        self.SupportedControllersListWidget.setViewMode(QListView.ListMode)
         self.SupportedControllersListWidget.setWordWrap(True)
         self.ExtractAppCheckbox = QCheckBox(self.RawTab)
         self.ExtractAppCheckbox.setObjectName(u"ExtractAppCheckbox")
@@ -441,7 +439,7 @@ class Ui_MainWindow(object):
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QMenuBar(MainWindow)
         self.menubar.setObjectName(u"menubar")
-        self.menubar.setGeometry(QRect(0, 0, 900, 21))
+        self.menubar.setGeometry(QRect(0, 0, 900, 22))
         self.menuAbout = QMenu(self.menubar)
         self.menuAbout.setObjectName(u"menuAbout")
         self.menuDebug = QMenu(self.menubar)
@@ -484,7 +482,7 @@ class Ui_MainWindow(object):
         self.retranslateUi(MainWindow)
 
         self.listAppsWidget.setCurrentRow(-1)
-        self.tabMetadata.setCurrentIndex(0)
+        self.tabMetadata.setCurrentIndex(2)
 
 
         QMetaObject.connectSlotsByName(MainWindow)
@@ -549,11 +547,11 @@ class Ui_MainWindow(object):
         self.Description.setAccessibleName(QCoreApplication.translate("MainWindow", u"tabcontent", None))
 #endif // QT_CONFIG(accessibility)
         self.longDescriptionBrowser.setHtml(QCoreApplication.translate("MainWindow", u"<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><meta charset=\"utf-8\" /><style type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
+"</style></head><body style=\" font-family:'Segoe UI'; font-size:9pt; font-weight:400; font-style:normal;\">\n"
 "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:'Cantarell'; font-size:10pt;\">         </span></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">        </p></body></html>", None))
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:'MS Shell Dlg 2'; font-size:8.25pt;\">        </span></p></body></html>", None))
         self.LongDescLabel.setText(QCoreApplication.translate("MainWindow", u"Long Description", None))
         self.tabMetadata.setTabText(self.tabMetadata.indexOf(self.Description), QCoreApplication.translate("MainWindow", u"Description", None))
 #if QT_CONFIG(accessibility)
