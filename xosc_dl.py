@@ -431,8 +431,8 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         global HOST_NAME
         index = self.ui.ReposComboBox.currentIndex()
         repo_data = self.ui.ReposComboBox.itemData(index, Qt.UserRole)
-        HOST = repo_data["display_name"]
-        HOST_NAME = repo_data["category"]
+        HOST = repo_data[1]
+        HOST_NAME = repo_data[3]
         self.ui.RepositoryNameLabel.setText(repo_data[0])
         self.ui.RepositoryDescLabel.setText(repo_data[2])
         self.status_message(f"Loading {HOST} repository..")
