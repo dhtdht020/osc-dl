@@ -684,10 +684,16 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         self.ui.ReposComboBox.setHidden(True)
         self.ui.RepositoryLabel.setHidden(True)
         self.ui.ReturnToMainBtn.setHidden(False)
+        self.ui.ViewDevWebsite.setHidden(False)
 
         # Set information
         self.ui.RepositoryNameLabel.setText(f"Developer Profile: {developer}")
         self.ui.RepositoryDescLabel.setText(f"Showing all apps made by the developer \"{developer}\".")
+
+        # Set website URL
+        self.ui.ViewDevWebsite.setText(f'<html><head/><body><p><a href="https://oscwii.org/library?coder={developer}">'
+                                       f'<span style=" text-decoration: underline; color:#0000ff;">Profile on '
+                                       f'Website</span></a></p></body></html>')
 
         self.ui.listAppsWidget.clear()
 
@@ -697,7 +703,7 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
     def return_to_all_apps_btn(self):
         # Unhide unneeded elements
         self.ui.ReturnToMainBtn.setHidden(True)
-        self.ui.ReturnToMainBtn.setHidden(True)
+        self.ui.ViewDevWebsite.setHidden(True)
         self.ui.CategoriesComboBox.setHidden(False)
         self.ui.ReposComboBox.setHidden(False)
         self.ui.RepositoryLabel.setHidden(False)
