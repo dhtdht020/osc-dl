@@ -17,13 +17,13 @@ class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         if not MainWindow.objectName():
             MainWindow.setObjectName(u"MainWindow")
-        MainWindow.resize(900, 410)
+        MainWindow.resize(900, 415)
         sizePolicy = QSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(MainWindow.sizePolicy().hasHeightForWidth())
         MainWindow.setSizePolicy(sizePolicy)
-        MainWindow.setMinimumSize(QSize(900, 410))
+        MainWindow.setMinimumSize(QSize(900, 415))
         MainWindow.setStyleSheet(u"")
         MainWindow.setDockOptions(QMainWindow.AllowTabbedDocks|QMainWindow.AnimatedDocks)
         self.actionAbout_OSC_DL = QAction(MainWindow)
@@ -196,6 +196,7 @@ class Ui_MainWindow(object):
         sizePolicy1.setHeightForWidth(self.listAppsWidget.sizePolicy().hasHeightForWidth())
         self.listAppsWidget.setSizePolicy(sizePolicy1)
         self.listAppsWidget.setBaseSize(QSize(581, 281))
+        self.listAppsWidget.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
 
         self.verticalLayout_2.addWidget(self.listAppsWidget)
 
@@ -363,7 +364,6 @@ class Ui_MainWindow(object):
         self.HomebrewCategoryLabel.setObjectName(u"HomebrewCategoryLabel")
         self.HomebrewCategoryLabel.setGeometry(QRect(147, 10, 81, 48))
         font1 = QFont()
-        font1.setFamilies([u"Arial"])
         font1.setPointSize(11)
         font1.setBold(True)
         self.HomebrewCategoryLabel.setFont(font1)
@@ -482,7 +482,7 @@ class Ui_MainWindow(object):
         self.retranslateUi(MainWindow)
 
         self.listAppsWidget.setCurrentRow(-1)
-        self.tabMetadata.setCurrentIndex(2)
+        self.tabMetadata.setCurrentIndex(0)
 
 
         QMetaObject.connectSlotsByName(MainWindow)

@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>900</width>
-    <height>410</height>
+    <height>415</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -19,7 +19,7 @@
   <property name="minimumSize">
    <size>
     <width>900</width>
-    <height>410</height>
+    <height>415</height>
    </size>
   </property>
   <property name="windowTitle">
@@ -372,6 +372,9 @@
               <height>281</height>
              </size>
             </property>
+            <property name="horizontalScrollBarPolicy">
+             <enum>Qt::ScrollBarAlwaysOff</enum>
+            </property>
             <property name="currentRow">
              <number>-1</number>
             </property>
@@ -495,7 +498,7 @@ background-color: rgba(255, 255, 255, 0);
            </rect>
           </property>
           <property name="currentIndex">
-           <number>2</number>
+           <number>0</number>
           </property>
           <widget class="QWidget" name="GeneralTab">
            <property name="accessibleName">
@@ -769,7 +772,6 @@ background-color: rgba(255, 255, 255, 0);
             </property>
             <property name="font">
              <font>
-              <family>Arial</family>
               <pointsize>11</pointsize>
               <bold>true</bold>
              </font>

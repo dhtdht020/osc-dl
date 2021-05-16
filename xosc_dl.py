@@ -1,3 +1,4 @@
+import asyncio
 import io
 from datetime import datetime
 from os import listdir
@@ -15,9 +16,9 @@ from functools import partial
 import requests
 from PySide6 import QtGui
 from PySide6.QtCore import Qt, QObject
-from PySide6.QtGui import QIcon, QColor
+from PySide6.QtGui import QIcon, QColor, QFont
 from PySide6.QtWidgets import QApplication, QMainWindow, QInputDialog, QLineEdit, QMessageBox, QSplashScreen, \
-    QListWidgetItem, QFileDialog
+    QListWidgetItem, QFileDialog, QLabel, QWidget, QHBoxLayout, QLayout
 
 import download
 import gui.ui_united
@@ -25,7 +26,6 @@ import metadata
 import updater
 import utils
 import wiiload
-
 
 VERSION = updater.current_version()
 BRANCH = updater.get_branch()
@@ -472,10 +472,16 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
             # Get apps json
             loaded_json = metadata.get_apps(host_name=HOST_NAME, category=category, coder=coder)
             i = 0
+
             for package in loaded_json:
                 try:
-                    self.ui.listAppsWidget.addItem(package["display_name"])
+                    self.ui.listAppsWidget.addItem(f"{package['display_name']}\n"
+                                                   f"{metadata.file_size(package['extracted'])} | "
+                                                   f"{package['version']} | "
+                                                   f"{package['coder']} | "
+                                                   f"{package['short_description']}")
                     list_item = self.ui.listAppsWidget.item(i)
+
                     list_item.setData(Qt.UserRole, [package["internal_name"],
                                                     package["display_name"],
                                                     package["extracted"],
@@ -750,4 +756,4 @@ if __name__ == "__main__":
     window = MainWindow()
     window.show()
     splash.hide()
-    app.exec_()
+    app.exec()
