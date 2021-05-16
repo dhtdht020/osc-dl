@@ -14,10 +14,10 @@ import logging  # for logs
 from functools import partial
 
 import requests
-from PySide6 import QtGui
-from PySide6.QtCore import Qt, QObject
-from PySide6.QtGui import QIcon, QColor, QFont
-from PySide6.QtWidgets import QApplication, QMainWindow, QInputDialog, QLineEdit, QMessageBox, QSplashScreen, \
+from PySide2 import QtGui
+from PySide2.QtCore import Qt, QObject
+from PySide2.QtGui import QIcon, QColor, QFont
+from PySide2.QtWidgets import QApplication, QMainWindow, QInputDialog, QLineEdit, QMessageBox, QSplashScreen, \
     QListWidgetItem, QFileDialog, QLabel, QWidget, QHBoxLayout, QLayout
 
 import download
@@ -756,4 +756,4 @@ if __name__ == "__main__":
     window = MainWindow()
     window.show()
     splash.hide()
-    app.exec()
+    app.exec_()
