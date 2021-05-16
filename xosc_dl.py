@@ -199,7 +199,7 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         try:
             # app_name = self.ui.listAppsWidget.currentItem().text()
             data = self.ui.listAppsWidget.currentItem().data(Qt.UserRole)
-            app_name = data[0]
+            app_name = data["internal_name"]
         except Exception:
             app_name = None
         if app_name is not None:
@@ -217,24 +217,24 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
 
             # -- Get actual metadata
             # App Name
-            self.ui.appname.setText(data[1])
-            self.ui.SelectionInfoBox.setTitle("Metadata: " + data[1])
-            self.ui.label_displayname.setText(data[1])
+            self.ui.appname.setText(data["display_name"])
+            self.ui.SelectionInfoBox.setTitle("Metadata: " + data["display_name"])
+            self.ui.label_displayname.setText(data["display_name"])
 
             # File Size
             try:
-                self.ui.filesize.setText(metadata.file_size(data[2]))
+                self.ui.filesize.setText(metadata.file_size(data["extracted"]))
             except KeyError:
                 self.ui.filesize.setText("Unknown")
 
             # Category
-            self.ui.HomebrewCategoryLabel.setText(metadata.category_display_name(data[3]))
+            self.ui.HomebrewCategoryLabel.setText(metadata.category_display_name(data["category"]))
 
             # Release Date
-            self.ui.releasedate.setText(datetime.fromtimestamp(int(data[4])).strftime('%B %e, %Y at %R'))
+            self.ui.releasedate.setText(datetime.fromtimestamp(int(data["release_date"])).strftime('%B %e, %Y at %R'))
 
             # Controllers
-            controllers = metadata.parse_controllers(data[5])
+            controllers = metadata.parse_controllers(data["controllers"])
             # Add icons for Wii Remotes
             if controllers[0] > 1:
                 item = QListWidgetItem()
@@ -286,19 +286,19 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
                 self.ui.SupportedControllersListWidget.addItem(item)
 
             # Version
-            self.ui.version.setText(data[6])
+            self.ui.version.setText(data["version"])
 
             # Coder
-            self.ui.developer.setText(data[7])
+            self.ui.developer.setText(data["coder"])
 
             # Short Description
-            if data[8] == "":
+            if data["short_description"] == "":
                 self.ui.label_description.setText("No description specified.")
             else:
-                self.ui.label_description.setText(data[8])
+                self.ui.label_description.setText(data["short_description"])
 
             # Long Description
-            self.ui.longDescriptionBrowser.setText(data[9])
+            self.ui.longDescriptionBrowser.setText(data["long_description"])
 
             # File Name Line Edit
             self.ui.FileNameLineEdit.setText(app_name + ".zip")
@@ -311,14 +311,14 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
 
     def view_metadata(self):
         data = self.ui.listAppsWidget.currentItem().data(Qt.UserRole)
-        self.app_name = data[0]
+        self.app_name = data["internal_name"]
 
     def trugh(self, text):
         return QObject.tr(self, text)
 
     def download_button(self):
         data = self.ui.listAppsWidget.currentItem().data(Qt.UserRole)
-        self.app_name = data[0]
+        self.app_name = data["internal_name"]
         self.status_message(f"Downloading {self.app_name} from Open Shop Channel..")
         path_to_file, _ = QFileDialog.getSaveFileName(None, 'Save Application', self.ui.FileNameLineEdit.text())
         output = path_to_file
@@ -335,8 +335,8 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
 
     def wiiload_button(self):
         data = self.ui.listAppsWidget.currentItem().data(Qt.UserRole)
-        app_name = data[0]
-        app_display_name = data[1]
+        app_name = data["internal_name"]
+        app_display_name = data["display_name"]
 
         ip, ok = QInputDialog.getText(self, 'Send to Wii: Enter IP address',
                                       'Enter the IP address of your Wii.\n'
@@ -422,7 +422,7 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
 
     def copy_download_link_button(self):
         data = self.ui.listAppsWidget.currentItem().data(Qt.UserRole)
-        self.app_name = data[0]
+        self.app_name = data["internal_name"]
         QApplication.clipboard().setText(metadata.url(self.app_name, repo=HOST))
         self.status_message(f"Copied the download link for {self.app_name} to clipboard")
 
@@ -431,8 +431,8 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         global HOST_NAME
         index = self.ui.ReposComboBox.currentIndex()
         repo_data = self.ui.ReposComboBox.itemData(index, Qt.UserRole)
-        HOST = repo_data[1]
-        HOST_NAME = repo_data[3]
+        HOST = repo_data["display_name"]
+        HOST_NAME = repo_data["category"]
         self.ui.RepositoryNameLabel.setText(repo_data[0])
         self.ui.RepositoryDescLabel.setText(repo_data[2])
         self.status_message(f"Loading {HOST} repository..")
@@ -482,16 +482,7 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
                                                    f"{package['short_description']}")
                     list_item = self.ui.listAppsWidget.item(i)
 
-                    list_item.setData(Qt.UserRole, [package["internal_name"],
-                                                    package["display_name"],
-                                                    package["extracted"],
-                                                    package["category"],
-                                                    package["release_date"],
-                                                    package["controllers"],
-                                                    package["version"],
-                                                    package["coder"],
-                                                    package["short_description"],
-                                                    package["long_description"]])
+                    list_item.setData(Qt.UserRole, package)
                     # Set category icon
                     category = package["category"]
                     if category == "utilities":
@@ -705,6 +696,7 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
     # Return from developer view to normal view
     def return_to_all_apps_btn(self):
         # Unhide unneeded elements
+        self.ui.ReturnToMainBtn.setHidden(True)
         self.ui.ReturnToMainBtn.setHidden(True)
         self.ui.CategoriesComboBox.setHidden(False)
         self.ui.ReposComboBox.setHidden(False)
