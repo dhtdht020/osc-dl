@@ -189,7 +189,7 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         if self.ui.tabMetadata.currentIndex() == 1:
             self.ui.longDescriptionBrowser.setText("Loading description..")
             self.repaint()
-            app_name = self.ui.listAppsWidget.currentItem().data(Qt.UserRole)[0]
+            app_name = self.ui.listAppsWidget.currentItem().data(Qt.UserRole)["internal_name"]
             self.ui.longDescriptionBrowser.setText(metadata.long_description(app_name, repo=HOST))
 
     # When user selects a different homebrew from the list
