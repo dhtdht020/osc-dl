@@ -650,7 +650,10 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
             else:
                 i.setHidden(True)
         if text == "":
-            self.ui.AppsAmountLabel.setText(f"{n} Apps")
+            if n == 1:
+                self.ui.AppsAmountLabel.setText(f"{n} App")
+            else:
+                self.ui.AppsAmountLabel.setText(f"{n} Apps")
         else:
             if n == 1:
                 self.ui.AppsAmountLabel.setText(f"{n} Result")
