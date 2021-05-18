@@ -329,31 +329,25 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         self.ui.progressBar.setValue(0)
         console_output = io.StringIO()
         if output != '':
-            with redirect_stdout(console_output):
-                # get url to app
-                url = download.get_url(app_name=self.app_name, repo=HOST)
-
-                # stream file, so I can iterate
-                response = requests.get(url, stream=True)
-                total_size = int(response.headers.get('content-length', 0))
-
-                # set progress bar
-                self.ui.progressBar.setMaximum(total_size)
-
-                block_size = 1024  # 1 Kibibyte
-
-                if response.status_code == 200:
-                    # disable download button
-                    self.ui.ViewMetadataBtn.setEnabled(False)
-                    # disable apps list
-                    self.ui.listAppsWidget.setEnabled(False)
-
-                    with open(output, "wb") as app_data_file:
-                        for data in response.iter_content(block_size):
-                            self.ui.progressBar.setValue(self.ui.progressBar.value() + 1024)
-                            self.status_message(f"Downloading {self.app_name} from Open Shop Channel.. ({metadata.file_size(self.ui.progressBar.value())}/{metadata.file_size(total_size)})")
-                            app.processEvents()
-                            app_data_file.write(data)
+            # get url to app
+            url = download.get_url(app_name=self.app_name, repo=HOST)
+            # stream file, so I can iterate
+            response = requests.get(url, stream=True)
+            total_size = int(response.headers.get('content-length', 0))
+            # set progress bar
+            self.ui.progressBar.setMaximum(total_size)
+            block_size = 1024  # 1 Kibibyte
+            if response.status_code == 200:
+                # disable download button
+                self.ui.ViewMetadataBtn.setEnabled(False)
+                # disable apps list
+                self.ui.listAppsWidget.setEnabled(False)
+                with open(output, "wb") as app_data_file:
+                    for data in response.iter_content(block_size):
+                        self.ui.progressBar.setValue(self.ui.progressBar.value() + 1024)
+                        self.status_message(f"Downloading {self.app_name} from Open Shop Channel.. ({metadata.file_size(self.ui.progressBar.value())}/{metadata.file_size(total_size)})")
+                        app.processEvents()
+                        app_data_file.write(data)
 
             self.ui.progressBar.setValue(100)
             self.ui.progressBar.setMaximum(100)
@@ -572,14 +566,39 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         self.status_message("Downloading Homebrew Browser from Open Shop Channel..")
         path_to_file, _ = QFileDialog.getSaveFileName(None, 'Save Application', "homebrew_browser_v0.3.9e.zip")
         output = path_to_file
-        self.ui.progressBar.setValue(25)
-        if output != "":
-            download.hbb(output)
+
+        self.ui.progressBar.setValue(0)
+        if output != '':
+            # get url to app
+            url = "https://wii.guide/assets/files/homebrew_browser_v0.3.9e.zip"
+            # stream file, so I can iterate
+            response = requests.get(url, stream=True)
+            total_size = int(response.headers.get('content-length', 0))
+            # set progress bar
+            self.ui.progressBar.setMaximum(total_size)
+            block_size = 1024  # 1 Kibibyte
+            if response.status_code == 200:
+                # disable download button
+                self.ui.ViewMetadataBtn.setEnabled(False)
+                # disable apps list
+                self.ui.listAppsWidget.setEnabled(False)
+                with open(output, "wb") as app_data_file:
+                    for data in response.iter_content(block_size):
+                        self.ui.progressBar.setValue(self.ui.progressBar.value() + 1024)
+                        self.status_message(
+                            f"Downloading Homebrew Browser from Open Shop Channel.. ({metadata.file_size(self.ui.progressBar.value())}/{metadata.file_size(total_size)})")
+                        app.processEvents()
+                        app_data_file.write(data)
             self.ui.progressBar.setValue(100)
+            self.ui.progressBar.setMaximum(100)
+            self.ui.ViewMetadataBtn.setEnabled(True)
+            self.ui.listAppsWidget.setEnabled(True)
             self.status_message(f"Download success! Output: {output}")
         else:
             self.ui.progressBar.setValue(0)
-            self.status_message(f"Cancelled Download.")
+            self.ui.ViewMetadataBtn.setEnabled(True)
+            self.ui.listAppsWidget.setEnabled(True)
+            self.status_message("Cancelled Download.")
 
     # Check for updates dialog
     def check_for_updates_action(self):
