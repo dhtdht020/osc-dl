@@ -64,6 +64,10 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         app_icon = QIcon(resource_path("assets/gui/windowicon.png"))
         self.setWindowIcon(app_icon)
 
+        self.current_category = "all"
+        self.current_developer = ""
+        self.repo_data = None
+
         # Set GUI Icons
 
         # ABOUT
@@ -134,10 +138,10 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
                 n += 1
 
             index = self.ui.ReposComboBox.currentIndex()
-            repo_data = self.ui.ReposComboBox.itemData(index, Qt.UserRole)
+            self.repo_data = self.ui.ReposComboBox.itemData(index, Qt.UserRole)
 
-            self.ui.RepositoryNameLabel.setText(repo_data[0])
-            self.ui.RepositoryDescLabel.setText(repo_data[2])
+            self.ui.RepositoryNameLabel.setText(self.repo_data[0])
+            self.ui.RepositoryDescLabel.setText(self.repo_data[2])
         except Exception:
             # Add base repos
             self.ui.ReposComboBox.addItem("Open Shop Channel")
@@ -430,11 +434,11 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         global HOST
         global HOST_NAME
         index = self.ui.ReposComboBox.currentIndex()
-        repo_data = self.ui.ReposComboBox.itemData(index, Qt.UserRole)
-        HOST = repo_data[1]
-        HOST_NAME = repo_data[3]
-        self.ui.RepositoryNameLabel.setText(repo_data[0])
-        self.ui.RepositoryDescLabel.setText(repo_data[2])
+        self.repo_data = self.ui.ReposComboBox.itemData(index, Qt.UserRole)
+        HOST = self.repo_data[1]
+        HOST_NAME = self.repo_data[3]
+        self.ui.RepositoryNameLabel.setText(self.repo_data[0])
+        self.ui.RepositoryDescLabel.setText(self.repo_data[2])
         self.status_message(f"Loading {HOST} repository..")
         logging.info(f"Loading {HOST}")
         self.ui.progressBar.setValue(20)
@@ -629,8 +633,14 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         # Filter items with search term
         for i in self.ui.listAppsWidget.findItems(text, Qt.MatchContains):
             # print(i.text())
-            results.append(i.text())
-            n += 1
+            if self.current_category == "all" and (self.current_developer in i.data(Qt.UserRole)["coder"]):
+                results.append(i.text())
+                n += 1
+            elif i.data(Qt.UserRole)["category"] == self.current_category and (self.current_developer in i.data(Qt.UserRole)["coder"]):
+                results.append(i.text())
+                n += 1
+            else:
+                pass
 
         # Get All Items
         for i in self.ui.listAppsWidget.findItems("", Qt.MatchContains):
@@ -649,32 +659,32 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
 
     # When a different category is selected
     def changed_category(self):
-        category = "all"
+        self.current_category = "all"
 
         if self.ui.CategoriesComboBox.currentText() == "Utilities":
-            category = "utilities"
+            self.current_category = "utilities"
         elif self.ui.CategoriesComboBox.currentText() == "Emulators":
-            category = "emulators"
+            self.current_category = "emulators"
         elif self.ui.CategoriesComboBox.currentText() == "Games":
-            category = "games"
+            self.current_category = "games"
         elif self.ui.CategoriesComboBox.currentText() == "Media":
-            category = "media"
+            self.current_category = "media"
         elif self.ui.CategoriesComboBox.currentText() == "Demos":
-            category = "demos"
+            self.current_category = "demos"
 
         # hide anything from a different category
         for i in range(self.ui.listAppsWidget.count()):
             item = self.ui.listAppsWidget.item(i)
-            if category == "all":
+            if self.current_category == "all":
                 item.setHidden(False)
-            elif item.data(Qt.UserRole)["category"] != category:
+            elif item.data(Qt.UserRole)["category"] != self.current_category:
                 item.setHidden(True)
             else:
                 item.setHidden(False)
 
     # Load developer profile
     def developer_profile(self):
-        developer = self.ui.developer.text()
+        self.current_developer = self.ui.developer.text()
 
         self.ui.SearchBar.setText("")
 
@@ -691,18 +701,18 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         self.ui.ViewDevWebsite.setHidden(False)
 
         # Set information
-        self.ui.RepositoryNameLabel.setText(f"Developer Profile: {developer}")
-        self.ui.RepositoryDescLabel.setText(f"Showing all apps made by the developer \"{developer}\".")
+        self.ui.RepositoryNameLabel.setText(f"Developer Profile: {self.current_developer}")
+        self.ui.RepositoryDescLabel.setText(f"Showing all apps made by the developer \"{self.current_developer}\".")
 
         # Set website URL
-        self.ui.ViewDevWebsite.setText(f'<html><head/><body><p><a href="https://oscwii.org/library?coder={developer}">'
+        self.ui.ViewDevWebsite.setText(f'<html><head/><body><p><a href="https://oscwii.org/library?coder={self.current_developer}">'
                                        f'<span style=" text-decoration: underline; color:#0000ff;">Profile on '
                                        f'Website</span></a></p></body></html>')
 
         # hide anything from a different coder
         for i in range(self.ui.listAppsWidget.count()):
             item = self.ui.listAppsWidget.item(i)
-            if item.data(Qt.UserRole)["coder"] != developer:
+            if item.data(Qt.UserRole)["coder"] != self.current_developer:
                 item.setHidden(True)
 
     # Return from developer view to normal view
@@ -713,6 +723,12 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         self.ui.CategoriesComboBox.setHidden(False)
         self.ui.ReposComboBox.setHidden(False)
         self.ui.RepositoryLabel.setHidden(False)
+
+        # set repo title and description
+        self.ui.RepositoryNameLabel.setText(self.repo_data[0])
+        self.ui.RepositoryDescLabel.setText(self.repo_data[2])
+
+        self.current_developer = ""
 
         # show all items
         for i in range(self.ui.listAppsWidget.count()):
