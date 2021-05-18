@@ -320,14 +320,16 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
     def trugh(self, text):
         return QObject.tr(self, text)
 
-    def download_button(self):
+    def download_button(self, ask=True):
         data = self.ui.listAppsWidget.currentItem().data(Qt.UserRole)
         self.app_name = data["internal_name"]
         self.status_message(f"Downloading {self.app_name} from Open Shop Channel..")
-        path_to_file, _ = QFileDialog.getSaveFileName(None, 'Save Application', self.ui.FileNameLineEdit.text())
-        output = path_to_file
+        if ask:
+            path_to_file, _ = QFileDialog.getSaveFileName(None, 'Save Application', self.ui.FileNameLineEdit.text())
+            output = path_to_file
+        else:
+            output = f"{self.app_name}"
         self.ui.progressBar.setValue(0)
-        console_output = io.StringIO()
         if output != '':
             # get url to app
             url = download.get_url(app_name=self.app_name, repo=HOST)
@@ -354,6 +356,7 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
             self.ui.ViewMetadataBtn.setEnabled(True)
             self.ui.listAppsWidget.setEnabled(True)
             self.status_message(f"Download success! Output: {output}")
+            return output
         else:
             self.ui.progressBar.setValue(0)
             self.ui.ViewMetadataBtn.setEnabled(True)
@@ -390,13 +393,19 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
 
         # download.get() cannot save to our own file-like object.
         # Alt fix: add a file parameter to write to instead?
+
         url = f"https://{HOST}/hbb/{app_name}/{app_name}.zip"
-        r = requests.get(url)
 
         self.status_message("Preparing app...")
         self.ui.progressBar.setValue(40)
 
-        zipped_app = io.BytesIO(r.content)
+        # get app
+        path_to_app = self.download_button(ask=False)
+
+        with open(path_to_app, 'rb') as f:
+            content = f.read()
+
+        zipped_app = io.BytesIO(content)
         zip_buf = io.BytesIO()
 
         # Our zip file should only contain one directory with the app data in it,
