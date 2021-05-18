@@ -201,7 +201,6 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         if not splash.isHidden():
             splash.showMessage(f"Finishing (2/3) - Loading first app..", color=splash_color)
         try:
-            # app_name = self.ui.listAppsWidget.currentItem().text()
             data = self.ui.listAppsWidget.currentItem().data(Qt.UserRole)
             app_name = data["internal_name"]
         except Exception:
@@ -338,7 +337,7 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
             total_size = int(response.headers.get('content-length', 0))
             # set progress bar
             self.ui.progressBar.setMaximum(total_size)
-            block_size = 1024  # 1 Kibibyte
+            block_size = 1024
             if response.status_code == 200:
                 # disable download button
                 self.ui.ViewMetadataBtn.setEnabled(False)
@@ -523,12 +522,11 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
                         list_item.setIcon(QIcon(resource_path("assets/gui/icons/category/media.png")))
                     elif category == "demos":
                         list_item.setIcon(QIcon(resource_path("assets/gui/icons/category/demo.png")))
-                    # self.ui.listAppsWidget.setItemData(i, [internal_name, display_name], Qt.UserRole)
                     if not splash.isHidden():
                         splash.showMessage(f"Loaded {i} apps..", color=splash_color)
                     i += 1
                 except IndexError:
-                    ongoing = False
+                    pass
             self.sort_list_alphabetically()
             self.ui.listAppsWidget.setCurrentRow(0)
             self.ui.AppsAmountLabel.setText(str(self.ui.listAppsWidget.count()) + " Apps")
@@ -577,7 +575,7 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
             total_size = int(response.headers.get('content-length', 0))
             # set progress bar
             self.ui.progressBar.setMaximum(total_size)
-            block_size = 1024  # 1 Kibibyte
+            block_size = 1024
             if response.status_code == 200:
                 # disable download button
                 self.ui.ViewMetadataBtn.setEnabled(False)
@@ -680,7 +678,7 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         n = 0
         results = []
 
-        # ! not part of search - hidden credits
+        # ! not part of search - joke
         if text == "wii bric":
             self.ui.listAppsWidget.clear()
             item = QListWidgetItem()
@@ -693,7 +691,6 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
 
         # Filter items with search term
         for i in self.ui.listAppsWidget.findItems(text, Qt.MatchContains):
-            # print(i.text())
             if self.current_category == "all" and (self.current_developer in i.data(Qt.UserRole)["coder"]):
                 results.append(i.text())
                 n += 1
