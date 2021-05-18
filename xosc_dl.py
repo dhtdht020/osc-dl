@@ -326,15 +326,44 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         self.status_message(f"Downloading {self.app_name} from Open Shop Channel..")
         path_to_file, _ = QFileDialog.getSaveFileName(None, 'Save Application', self.ui.FileNameLineEdit.text())
         output = path_to_file
-        self.ui.progressBar.setValue(25)
+        self.ui.progressBar.setValue(0)
         console_output = io.StringIO()
         if output != '':
             with redirect_stdout(console_output):
-                download.get(app_name=self.app_name, repo=HOST, output=output)
+                # get url to app
+                url = download.get_url(app_name=self.app_name, repo=HOST)
+
+                # stream file, so I can iterate
+                response = requests.get(url, stream=True)
+                total_size = int(response.headers.get('content-length', 0))
+
+                # set progress bar
+                self.ui.progressBar.setMaximum(total_size)
+
+                block_size = 1024  # 1 Kibibyte
+
+                if response.status_code == 200:
+                    # disable download button
+                    self.ui.ViewMetadataBtn.setEnabled(False)
+                    # disable apps list
+                    self.ui.listAppsWidget.setEnabled(False)
+
+                    with open(output, "wb") as app_data_file:
+                        for data in response.iter_content(block_size):
+                            self.ui.progressBar.setValue(self.ui.progressBar.value() + 1024)
+                            self.status_message(f"Downloading {self.app_name} from Open Shop Channel.. ({metadata.file_size(self.ui.progressBar.value())}/{metadata.file_size(total_size)})")
+                            app.processEvents()
+                            app_data_file.write(data)
+
             self.ui.progressBar.setValue(100)
-            self.status_message(utils.escape_ansi(console_output.getvalue()))
+            self.ui.progressBar.setMaximum(100)
+            self.ui.ViewMetadataBtn.setEnabled(True)
+            self.ui.listAppsWidget.setEnabled(True)
+            self.status_message(f"Download success! Output: {output}")
         else:
             self.ui.progressBar.setValue(0)
+            self.ui.ViewMetadataBtn.setEnabled(True)
+            self.ui.listAppsWidget.setEnabled(True)
             self.status_message("Cancelled Download.")
 
     def wiiload_button(self):
@@ -767,6 +796,7 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
 
 
 if __name__ == "__main__":
+    global app
     app = QApplication()
 
     global splash
