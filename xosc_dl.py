@@ -705,9 +705,9 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         self.ui.RepositoryDescLabel.setText(f"Showing all apps made by the developer \"{self.current_developer}\".")
 
         # Set website URL
-        self.ui.ViewDevWebsite.setText(f'<html><head/><body><p><a href="https://oscwii.org/library?coder={self.current_developer}">'
+        self.ui.ViewDevWebsite.setText(f'<a href="https://oscwii.org/library?coder={self.current_developer}">'
                                        f'<span style=" text-decoration: underline; color:#0000ff;">Profile on '
-                                       f'Website</span></a></p></body></html>')
+                                       f'Website</span></a>')
 
         # hide anything from a different coder
         for i in range(self.ui.listAppsWidget.count()):
