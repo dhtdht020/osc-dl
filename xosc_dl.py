@@ -662,15 +662,19 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         elif self.ui.CategoriesComboBox.currentText() == "Demos":
             category = "demos"
 
-        self.ui.listAppsWidget.clear()
-        self.populate_list(category=category)
+        # hide anything from a different category
+        for i in range(self.ui.listAppsWidget.count()):
+            item = self.ui.listAppsWidget.item(i)
+            if category == "all":
+                item.setHidden(False)
+            elif item.data(Qt.UserRole)["category"] != category:
+                item.setHidden(True)
+            else:
+                item.setHidden(False)
 
     # Load developer profile
     def developer_profile(self):
         developer = self.ui.developer.text()
-
-        # Begin
-        self.status_message(f"Loading developer profile for \"{developer}\"..")
 
         self.ui.SearchBar.setText("")
 
@@ -695,9 +699,11 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
                                        f'<span style=" text-decoration: underline; color:#0000ff;">Profile on '
                                        f'Website</span></a></p></body></html>')
 
-        self.ui.listAppsWidget.clear()
-
-        self.populate_list(coder=developer)
+        # hide anything from a different coder
+        for i in range(self.ui.listAppsWidget.count()):
+            item = self.ui.listAppsWidget.item(i)
+            if item.data(Qt.UserRole)["coder"] != developer:
+                item.setHidden(True)
 
     # Return from developer view to normal view
     def return_to_all_apps_btn(self):
@@ -708,8 +714,10 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         self.ui.ReposComboBox.setHidden(False)
         self.ui.RepositoryLabel.setHidden(False)
 
-        # Return to host
-        self.changed_host()
+        # show all items
+        for i in range(self.ui.listAppsWidget.count()):
+            item = self.ui.listAppsWidget.item(i)
+            item.setHidden(False)
 
     # Select theme dialog
     def select_theme_action(self):
