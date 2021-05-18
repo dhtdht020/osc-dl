@@ -391,14 +391,6 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         self.status_message("Downloading " + app_name + " from Open Shop Channel..")
         self.ui.progressBar.setValue(25)
 
-        # download.get() cannot save to our own file-like object.
-        # Alt fix: add a file parameter to write to instead?
-
-        url = f"https://{HOST}/hbb/{app_name}/{app_name}.zip"
-
-        self.status_message("Preparing app...")
-        self.ui.progressBar.setValue(40)
-
         # get app
         path_to_app = self.download_button(ask=False)
 
@@ -546,7 +538,7 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
                                  'Could not connect to the Open Shop Channel server.\n'
                                  'Cannot continue. :(\n'
                                  'Please check your internet connection, or report this incident.\n\n'
-                                 f'Exception: {e}')
+                                 f'{e}')
             sys.exit(1)
 
     # Actions
@@ -611,12 +603,12 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
 
     # Check for updates dialog
     def check_for_updates_action(self):
-        self.status_message("Checking for updates..")
+        self.status_message("Checking for updates.. This will take a few moments..")
         if updater.check_update() is True:
             latest = updater.latest_version()
             self.status_message("New version available! (" + updater.latest_version() + ") OSCDL is out of date.")
             QMessageBox.warning(self, 'OSCDL is out of date',
-                                'Please go to GitHub and obtain the latest release\n'
+                                'Please go to the GitHub page and obtain the latest release\n'
                                 'Newest Version: ' + latest)
         else:
             self.status_message("OSCDL is up to date!")
@@ -626,7 +618,6 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
     # In case OSC gods are angry
     def close_the_shop(self):
         # Close the shop
-        logging.critical('OSC GODS:CLOSING THE SHOP')
         self.ui.listAppsWidget.setDisabled(True)
         self.ui.ViewMetadataBtn.setDisabled(True)
         self.ui.WiiLoadButton.setDisabled(True)
@@ -636,6 +627,7 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         self.ui.ReposComboBox.setDisabled(True)
         self.ui.CategoriesComboBox.setDisabled(True)
         self.ui.SupportedControllersListWidget.setDisabled(True)
+        self.ui.SearchBar.setDisabled(True)
         logging.critical('OSC GODS:CLOSED THE SHOP')
         self.status_message("The shop is now closed")
 
@@ -687,6 +679,18 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         text = self.ui.SearchBar.text()
         n = 0
         results = []
+
+        # ! not part of search - hidden credits
+        if text == "wii bric":
+            self.ui.listAppsWidget.clear()
+            item = QListWidgetItem()
+            item.setText("Wii Pong\n"
+                         "9.000MiB | 9.0.0.0 | Danbo | Wii Pong")
+            item.setIcon(QIcon(resource_path("assets/gui/icons/bricks.png")))
+            self.ui.listAppsWidget.addItem(item)
+            self.close_the_shop()
+            return
+
         # Filter items with search term
         for i in self.ui.listAppsWidget.findItems(text, Qt.MatchContains):
             # print(i.text())
