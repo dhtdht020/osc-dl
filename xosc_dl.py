@@ -659,18 +659,11 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
 
     # When a different category is selected
     def changed_category(self):
-        self.current_category = "all"
 
-        if self.ui.CategoriesComboBox.currentText() == "Utilities":
-            self.current_category = "utilities"
-        elif self.ui.CategoriesComboBox.currentText() == "Emulators":
-            self.current_category = "emulators"
-        elif self.ui.CategoriesComboBox.currentText() == "Games":
-            self.current_category = "games"
-        elif self.ui.CategoriesComboBox.currentText() == "Media":
-            self.current_category = "media"
-        elif self.ui.CategoriesComboBox.currentText() == "Demos":
-            self.current_category = "demos"
+        if self.ui.CategoriesComboBox.currentText() == "All Apps":
+            self.current_category = "all"
+        else:
+            self.current_category = self.ui.CategoriesComboBox.currentText().lower()
 
         # hide anything from a different category
         for i in range(self.ui.listAppsWidget.count()):
@@ -681,6 +674,9 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
                 item.setHidden(True)
             else:
                 item.setHidden(False)
+
+        # count apps
+        self.search_bar()
 
     # Load developer profile
     def developer_profile(self):
@@ -715,6 +711,9 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
             if item.data(Qt.UserRole)["coder"] != self.current_developer:
                 item.setHidden(True)
 
+        # count apps
+        self.search_bar()
+
     # Return from developer view to normal view
     def return_to_all_apps_btn(self):
         # Unhide unneeded elements
@@ -734,6 +733,9 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         for i in range(self.ui.listAppsWidget.count()):
             item = self.ui.listAppsWidget.item(i)
             item.setHidden(False)
+
+        # count apps
+        self.search_bar()
 
     # Select theme dialog
     def select_theme_action(self):
