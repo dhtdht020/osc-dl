@@ -687,10 +687,8 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
 
         self.ui.SearchBar.setText("")
 
-        # Disconnect categories
-        self.ui.CategoriesComboBox.currentIndexChanged.disconnect(self.changed_category)
+        # Set category
         self.ui.CategoriesComboBox.setCurrentIndex(0)
-        self.ui.CategoriesComboBox.currentIndexChanged.connect(self.changed_category)
 
         # Hide unneeded elements
         self.ui.CategoriesComboBox.setHidden(True)
