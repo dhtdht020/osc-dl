@@ -358,6 +358,7 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
                 # disable download button
                 self.ui.ViewMetadataBtn.setEnabled(False)
                 self.ui.WiiLoadButton.setEnabled(False)
+                self.ui.ReposComboBox.setEnabled(False)
                 # disable apps list
                 self.ui.listAppsWidget.setEnabled(False)
                 with open(output, "wb") as app_data_file:
@@ -375,6 +376,7 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
             self.ui.ViewMetadataBtn.setEnabled(True)
             self.ui.WiiLoadButton.setEnabled(True)
             self.ui.listAppsWidget.setEnabled(True)
+            self.ui.ReposComboBox.setEnabled(True)
             self.status_message(f"Download success! Output: {output}")
             return output
         else:
@@ -382,6 +384,7 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
             self.ui.ViewMetadataBtn.setEnabled(True)
             self.ui.WiiLoadButton.setEnabled(True)
             self.ui.listAppsWidget.setEnabled(True)
+            self.ui.ReposComboBox.setEnabled(True)
             self.status_message("Cancelled Download.")
 
     def wiiload_button(self):
@@ -494,7 +497,6 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         self.ui.RepositoryDescLabel.setText(self.repo_data[2])
         self.status_message(f"Loading {HOST} repository..")
         logging.info(f"Loading {HOST}")
-        self.ui.progressBar.setValue(20)
         self.repopulate()
 
     def repopulate(self):
@@ -518,7 +520,6 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         self.ui.CategoriesComboBox.setCurrentIndex(0)
         self.ui.listAppsWidget.clear()
         self.populate_list()
-        self.ui.progressBar.setValue(100)
         self.ui.CategoriesComboBox.currentIndexChanged.connect(self.changed_category)
 
     def populate_list(self, category="all", coder=None):
