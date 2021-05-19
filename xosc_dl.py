@@ -54,10 +54,12 @@ if updater.is_frozen():
 
 # G U I
 class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
-    def __init__(self):
+    def __init__(self, test_mode=False):
         super(MainWindow, self).__init__()
         self.ui = gui.ui_united.Ui_MainWindow()
         self.ui.setupUi(self)
+
+        self.test_mode = test_mode
 
         # Set title and icon of window
         self.setWindowTitle(f"Open Shop Channel Downloader v{DISPLAY_VERSION} - Library")
@@ -110,8 +112,11 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
 
     # populate UI elements
     def populate(self):
-        if not splash.isHidden():
-            splash.showMessage(f"Loading contents..", color=splash_color)
+        try:
+            if not splash.isHidden():
+                splash.showMessage(f"Loading contents..", color=splash_color)
+        except NameError:
+            pass
         self.ui.actionAbout_OSC_DL.setText(f"OSCDL v{VERSION} by dhtdht020")
         self.populate_repositories()
         self.populate_list()
@@ -133,8 +138,11 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
                 name = i
                 self.ui.ReposComboBox.addItem(display_name)
                 self.ui.ReposComboBox.setItemData(n, [display_name, host, description, name], Qt.UserRole)
-                if not splash.isHidden():
-                    splash.showMessage(f"Loaded {n} repositories..", color=splash_color)
+                try:
+                    if not splash.isHidden():
+                        splash.showMessage(f"Loaded {n} repositories..", color=splash_color)
+                except NameError:
+                    pass
                 n += 1
 
             index = self.ui.ReposComboBox.currentIndex()
@@ -157,8 +165,11 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
 
     def assign_initial_actions(self):
         # Connect signals
-        if not splash.isHidden():
-            splash.showMessage(f"Finishing (1/3)..", color=splash_color)
+        try:
+            if not splash.isHidden():
+                splash.showMessage(f"Finishing (1/3)..", color=splash_color)
+        except NameError:
+            pass
         # Buttons
         self.ui.CopyDirectLinkBtn.clicked.connect(self.copy_download_link_button)
         self.ui.ViewMetadataBtn.clicked.connect(self.download_button)
@@ -198,8 +209,11 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
 
     # When user selects a different homebrew from the list
     def selection_changed(self):
-        if not splash.isHidden():
-            splash.showMessage(f"Finishing (2/3) - Loading first app..", color=splash_color)
+        try:
+            if not splash.isHidden():
+                splash.showMessage(f"Finishing (2/3) - Loading first app..", color=splash_color)
+        except NameError:
+            pass
         try:
             data = self.ui.listAppsWidget.currentItem().data(Qt.UserRole)
             app_name = data["internal_name"]
@@ -325,7 +339,7 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         self.status_message(f"Downloading {self.app_name} from Open Shop Channel..")
 
         # determine if should ask for path
-        if self.sender().objectName() == "ViewMetadataBtn":
+        if (self.sender().objectName() == "ViewMetadataBtn") and not self.test_mode:
             path_to_file, _ = QFileDialog.getSaveFileName(None, 'Save Application', self.ui.FileNameLineEdit.text())
             output = path_to_file
         else:
@@ -350,18 +364,23 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
                     for data in response.iter_content(block_size):
                         self.ui.progressBar.setValue(self.ui.progressBar.value() + 1024)
                         self.status_message(f"Downloading {self.app_name} from Open Shop Channel.. ({metadata.file_size(self.ui.progressBar.value())}/{metadata.file_size(total_size)})")
-                        app.processEvents()
+                        try:
+                            app.processEvents()
+                        except NameError:
+                            pass
                         app_data_file.write(data)
 
             self.ui.progressBar.setValue(100)
             self.ui.progressBar.setMaximum(100)
             self.ui.ViewMetadataBtn.setEnabled(True)
             self.ui.WiiLoadButton.setEnabled(True)
+            self.ui.listAppsWidget.setEnabled(True)
             self.status_message(f"Download success! Output: {output}")
             return output
         else:
             self.ui.progressBar.setValue(0)
             self.ui.ViewMetadataBtn.setEnabled(True)
+            self.ui.WiiLoadButton.setEnabled(True)
             self.ui.listAppsWidget.setEnabled(True)
             self.status_message("Cancelled Download.")
 
@@ -444,7 +463,10 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
             chunk_num += 1
             progress = round(chunk_num / len(chunks) * 50) + 50
             self.ui.progressBar.setValue(progress)
-            app.processEvents()
+            try:
+                app.processEvents()
+            except NameError:
+                pass
 
         file_name = f'{app_name}.zip'
         conn.send(bytes(file_name, 'utf-8') + b'\x00')
@@ -501,8 +523,11 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
 
     def populate_list(self, category="all", coder=None):
         try:
-            if not splash.isHidden():
-                splash.showMessage(f"Connecting to server..", color=splash_color)
+            try:
+                if not splash.isHidden():
+                    splash.showMessage(f"Connecting to server..", color=splash_color)
+            except NameError:
+                pass
 
             # Get apps json
             loaded_json = metadata.get_apps(host_name=HOST_NAME, category=category, coder=coder)
@@ -530,8 +555,11 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
                         list_item.setIcon(QIcon(resource_path("assets/gui/icons/category/media.png")))
                     elif category == "demos":
                         list_item.setIcon(QIcon(resource_path("assets/gui/icons/category/demo.png")))
-                    if not splash.isHidden():
-                        splash.showMessage(f"Loaded {i} apps..", color=splash_color)
+                    try:
+                        if not splash.isHidden():
+                            splash.showMessage(f"Loaded {i} apps..", color=splash_color)
+                    except NameError:
+                        pass
                     i += 1
                 except IndexError:
                     pass
@@ -594,7 +622,10 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
                         self.ui.progressBar.setValue(self.ui.progressBar.value() + 1024)
                         self.status_message(
                             f"Downloading Homebrew Browser from Open Shop Channel.. ({metadata.file_size(self.ui.progressBar.value())}/{metadata.file_size(total_size)})")
-                        app.processEvents()
+                        try:
+                            app.processEvents()
+                        except NameError:
+                            pass
                         app_data_file.write(data)
             self.ui.progressBar.setValue(100)
             self.ui.progressBar.setMaximum(100)
@@ -652,8 +683,11 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         lbl.show()
 
     def load_announcement_banner(self):
-        if not splash.isHidden():
-            splash.showMessage(f"Finishing (3/3) - Checking for announcements..", color=splash_color)
+        try:
+            if not splash.isHidden():
+                splash.showMessage(f"Finishing (3/3) - Checking for announcements..", color=splash_color)
+        except NameError:
+            pass
         try:
             announcement = updater.get_announcement()
             announcement_label = announcement[0]

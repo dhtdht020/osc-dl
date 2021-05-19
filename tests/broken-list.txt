@@ -1,4 +1,0 @@
-WiiVNC
-wiixplorer
-appdoesnotexist
-WiiVNC
