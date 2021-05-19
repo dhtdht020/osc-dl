@@ -343,6 +343,7 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
             if response.status_code == 200:
                 # disable download button
                 self.ui.ViewMetadataBtn.setEnabled(False)
+                self.ui.WiiLoadButton.setEnabled(False)
                 # disable apps list
                 self.ui.listAppsWidget.setEnabled(False)
                 with open(output, "wb") as app_data_file:
@@ -355,7 +356,7 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
             self.ui.progressBar.setValue(100)
             self.ui.progressBar.setMaximum(100)
             self.ui.ViewMetadataBtn.setEnabled(True)
-            self.ui.listAppsWidget.setEnabled(True)
+            self.ui.WiiLoadButton.setEnabled(True)
             self.status_message(f"Download success! Output: {output}")
             return output
         else:
