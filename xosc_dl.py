@@ -319,11 +319,13 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
     def trugh(self, text):
         return QObject.tr(self, text)
 
-    def download_button(self, ask=True):
+    def download_button(self):
         data = self.ui.listAppsWidget.currentItem().data(Qt.UserRole)
         self.app_name = data["internal_name"]
         self.status_message(f"Downloading {self.app_name} from Open Shop Channel..")
-        if ask:
+
+        # determine if should ask for path
+        if self.sender().objectName() == "ViewMetadataBtn":
             path_to_file, _ = QFileDialog.getSaveFileName(None, 'Save Application', self.ui.FileNameLineEdit.text())
             output = path_to_file
         else:
@@ -391,7 +393,7 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         self.ui.progressBar.setValue(25)
 
         # get app
-        path_to_app = self.download_button(ask=False)
+        path_to_app = self.download_button()
 
         with open(path_to_app, 'rb') as f:
             content = f.read()
@@ -442,6 +444,9 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
 
         file_name = f'{app_name}.zip'
         conn.send(bytes(file_name, 'utf-8') + b'\x00')
+
+        # delete application zip file
+        os.remove(path_to_app)
 
         self.ui.progressBar.setValue(100)
         self.status_message('App transmitted!')
