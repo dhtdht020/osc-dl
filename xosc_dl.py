@@ -333,21 +333,35 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
     def trugh(self, text):
         return QObject.tr(self, text)
 
-    def download_button(self):
+    def download_button(self, hbb=False):
         data = self.ui.listAppsWidget.currentItem().data(Qt.UserRole)
         self.app_name = data["internal_name"]
         self.status_message(f"Downloading {self.app_name} from Open Shop Channel..")
 
+        if self.sender():
+            object_name = self.sender().objectName()
+        else:
+            object_name = None
+
         # determine if should ask for path
-        if (self.sender().objectName() == "ViewMetadataBtn") and not self.test_mode:
-            path_to_file, _ = QFileDialog.getSaveFileName(None, 'Save Application', self.ui.FileNameLineEdit.text())
+        if (object_name != "WiiLoadButton") and not self.test_mode:
+            if hbb:
+                path_to_file, _ = QFileDialog.getSaveFileName(None, 'Save Homebrew Browser', "homebrew_browser_v0.3.9e.zip")
+            else:
+                path_to_file, _ = QFileDialog.getSaveFileName(None, 'Save Application', self.ui.FileNameLineEdit.text())
             output = path_to_file
         else:
-            output = f"{self.app_name}.zip"
+            if hbb:
+                output = f"homebrew_browser_v0.3.9e.zip"
+            else:
+                output = f"{self.app_name}.zip"
         self.ui.progressBar.setValue(0)
         if output != '':
             # get url to app
-            url = download.get_url(app_name=self.app_name, repo=HOST)
+            if hbb:
+                url = "https://wii.guide/assets/files/homebrew_browser_v0.3.9e.zip"
+            else:
+                url = download.get_url(app_name=self.app_name, repo=HOST)
             # stream file, so I can iterate
             response = requests.get(url, stream=True)
             total_size = int(response.headers.get('content-length', 0))
@@ -364,7 +378,10 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
                 with open(output, "wb") as app_data_file:
                     for data in response.iter_content(block_size):
                         self.ui.progressBar.setValue(self.ui.progressBar.value() + 1024)
-                        self.status_message(f"Downloading {self.app_name} from Open Shop Channel.. ({metadata.file_size(self.ui.progressBar.value())}/{metadata.file_size(total_size)})")
+                        if hbb:
+                            self.status_message(f"Downloading Homebrew Browser from Open Shop Channel.. ({metadata.file_size(self.ui.progressBar.value())}/{metadata.file_size(total_size)})")
+                        else:
+                            self.status_message(f"Downloading {self.app_name} from Open Shop Channel.. ({metadata.file_size(self.ui.progressBar.value())}/{metadata.file_size(total_size)})")
                         try:
                             app.processEvents()
                         except NameError:
@@ -599,45 +616,7 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
 
     # Download Homebrew Browser
     def download_latest_hbb_action(self):
-        self.status_message("Downloading Homebrew Browser from Open Shop Channel..")
-        path_to_file, _ = QFileDialog.getSaveFileName(None, 'Save Application', "homebrew_browser_v0.3.9e.zip")
-        output = path_to_file
-
-        self.ui.progressBar.setValue(0)
-        if output != '':
-            # get url to app
-            url = "https://wii.guide/assets/files/homebrew_browser_v0.3.9e.zip"
-            # stream file, so I can iterate
-            response = requests.get(url, stream=True)
-            total_size = int(response.headers.get('content-length', 0))
-            # set progress bar
-            self.ui.progressBar.setMaximum(total_size)
-            block_size = 1024
-            if response.status_code == 200:
-                # disable download button
-                self.ui.ViewMetadataBtn.setEnabled(False)
-                # disable apps list
-                self.ui.listAppsWidget.setEnabled(False)
-                with open(output, "wb") as app_data_file:
-                    for data in response.iter_content(block_size):
-                        self.ui.progressBar.setValue(self.ui.progressBar.value() + 1024)
-                        self.status_message(
-                            f"Downloading Homebrew Browser from Open Shop Channel.. ({metadata.file_size(self.ui.progressBar.value())}/{metadata.file_size(total_size)})")
-                        try:
-                            app.processEvents()
-                        except NameError:
-                            pass
-                        app_data_file.write(data)
-            self.ui.progressBar.setValue(100)
-            self.ui.progressBar.setMaximum(100)
-            self.ui.ViewMetadataBtn.setEnabled(True)
-            self.ui.listAppsWidget.setEnabled(True)
-            self.status_message(f"Download success! Output: {output}")
-        else:
-            self.ui.progressBar.setValue(0)
-            self.ui.ViewMetadataBtn.setEnabled(True)
-            self.ui.listAppsWidget.setEnabled(True)
-            self.status_message("Cancelled Download.")
+        self.download_button(hbb=True)
 
     # Check for updates dialog
     def check_for_updates_action(self):
