@@ -329,7 +329,7 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
             path_to_file, _ = QFileDialog.getSaveFileName(None, 'Save Application', self.ui.FileNameLineEdit.text())
             output = path_to_file
         else:
-            output = f"{self.app_name}"
+            output = f"{self.app_name}.zip"
         self.ui.progressBar.setValue(0)
         if output != '':
             # get url to app
@@ -426,6 +426,9 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
             self.ui.progressBar.setValue(0)
             self.status_message('Error: Could not connect to the Homebrew Channel. :(')
 
+            # delete application zip file
+            os.remove(path_to_app)
+
             return
 
         wiiload.handshake(conn, compressed_size, file_size)
@@ -440,7 +443,7 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
             chunk_num += 1
             progress = round(chunk_num / len(chunks) * 50) + 50
             self.ui.progressBar.setValue(progress)
-            self.repaint()
+            app.processEvents()
 
         file_name = f'{app_name}.zip'
         conn.send(bytes(file_name, 'utf-8') + b'\x00')
@@ -454,9 +457,8 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
 
     def copy_download_link_button(self):
         data = self.ui.listAppsWidget.currentItem().data(Qt.UserRole)
-        self.app_name = data["internal_name"]
-        QApplication.clipboard().setText(metadata.url(self.app_name, repo=HOST))
-        self.status_message(f"Copied the download link for {self.app_name} to clipboard")
+        QApplication.clipboard().setText(metadata.url(data['internal_name'], repo=HOST))
+        self.status_message(f"Copied the download link for \"{data['display_name']}\" to clipboard")
 
     def changed_host(self):
         global HOST
