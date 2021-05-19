@@ -1,0 +1,24 @@
+name: Run GUI Tests
+
+on: [push]
+
+jobs:
+  Build:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [windows-latest, ubuntu-latest, macos-latest]
+
+    steps:
+    - name: Obtain latest version of the repository
+      uses: actions/checkout@v1
+    - name: Set up Python 3
+      uses: actions/setup-python@v1
+      with:
+        python-version: '3.x'
+    - name: Install requirements with PIP
+      run: pip install -r requirements.txt
+    - name: Install pytest
+      run: pip install pytest pytest-qt
+    - name: Run tests
+      run: pytest test.py
