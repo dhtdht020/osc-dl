@@ -58,7 +58,7 @@ def get_apps(host_name="primary", category="all", coder=None):
         return json.loads('''
         [{
             "category": "demos", 
-            "coder": "dhtdht020", 
+            "coder": "-", 
             "contributors": "", 
             "controllers": "", 
             "display_name": "1 : You are not connected to the internet.", 
@@ -81,7 +81,7 @@ def get_apps(host_name="primary", category="all", coder=None):
         },
         {
             "category": "demos", 
-            "coder": "dhtdht020", 
+            "coder": "-", 
             "contributors": "", 
             "controllers": "", 
             "display_name": "2 : The server is potentially down.", 
