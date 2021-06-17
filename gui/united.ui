@@ -1134,7 +1134,7 @@ p, li { white-space: pre-wrap; }
   </action>
   <action name="actionDownload_HBB_Client_Latest">
    <property name="text">
-    <string>Download HBB Client</string>
+    <string>Download Homebrew Browser</string>
    </property>
   </action>
   <action name="actionCheck_for_Updates">
@@ -1149,7 +1149,7 @@ p, li { white-space: pre-wrap; }
   </action>
   <action name="actionDisplay_Banner">
    <property name="text">
-    <string>Reload Banner</string>
+    <string>Reload Announcement Banner</string>
    </property>
   </action>
   <action name="actionLoad_Collection">
