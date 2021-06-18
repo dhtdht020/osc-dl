@@ -1,5 +1,6 @@
 import argparse
 import io
+import os
 from datetime import datetime
 
 import requests
@@ -9,6 +10,10 @@ import metadata
 import wiiload
 import updater
 import hosts as repos
+
+if os.name == 'nt':
+    # Initialize color on Windows
+    os.system('color')
 
 repos = repos.Hosts()
 
