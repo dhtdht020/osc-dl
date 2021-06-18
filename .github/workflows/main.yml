@@ -19,7 +19,7 @@ jobs:
     - name: Install requirements with PIP
       run: pip install -r requirements.txt
     - name: Install pyinstaller
-      run: pip install git+https://github.com/pyinstaller/pyinstaller.git
+      run: pip install git+https://github.com/pyinstaller/pyinstaller.git@develop
     - name: Build Open Shop Channel Downloader
       run: pyinstaller --onefile --icon=oscicon.ico osc-dl.py
     - name: Publish Build Artifacts
