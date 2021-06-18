@@ -1,5 +1,5 @@
 import pytest
-from PySide2 import QtCore
+from PySide6 import QtCore
 
 import xosc_dl
 
