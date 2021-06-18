@@ -16,7 +16,7 @@ def current_version():
 
 
 def get_branch():
-    branch = "Stable"
+    branch = "MASTER / DEV BUILD"
     return branch
 
 
