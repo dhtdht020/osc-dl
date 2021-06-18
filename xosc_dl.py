@@ -98,7 +98,6 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         self.ui.CategoriesComboBox.setItemIcon(4, QIcon(resource_path("assets/gui/icons/category/media.png")))
         self.ui.CategoriesComboBox.setItemIcon(5, QIcon(resource_path("assets/gui/icons/category/demo.png")))
 
-        self.populate_stylesheets()
         self.populate()
         self.selection_changed()
         self.status_message("Ready to download")
@@ -830,20 +829,6 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
 
         with open(resource_path(f"assets/themes/{theme}"), "r") as fh:
             self.setStyleSheet(fh.read())
-
-    # Set default stylesheet
-    def populate_stylesheets(self):
-        # Developer Profile Button
-        self.ui.developer_profile_btn.setStyleSheet(f"""
-        QPushButton {{
-            border: none;
-            background: none;
-        }}
-
-        QPushButton:hover {{
-            color: #0078D7;
-        }}
-        """)
 
 
 if __name__ == "__main__":

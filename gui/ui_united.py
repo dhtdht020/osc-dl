@@ -189,8 +189,9 @@ class Ui_MainWindow(object):
         sizePolicy4.setHeightForWidth(self.SearchFrame.sizePolicy().hasHeightForWidth())
         self.SearchFrame.setSizePolicy(sizePolicy4)
         self.SearchFrame.setMaximumSize(QSize(16777215, 20))
-        self.SearchFrame.setFrameShape(QFrame.StyledPanel)
-        self.SearchFrame.setFrameShadow(QFrame.Raised)
+        self.SearchFrame.setFrameShape(QFrame.NoFrame)
+        self.SearchFrame.setFrameShadow(QFrame.Plain)
+        self.SearchFrame.setLineWidth(0)
         self.horizontalLayout_5 = QHBoxLayout(self.SearchFrame)
         self.horizontalLayout_5.setObjectName(u"horizontalLayout_5")
         self.horizontalLayout_5.setContentsMargins(0, 0, 0, 0)
@@ -346,12 +347,22 @@ class Ui_MainWindow(object):
         self.developer.setReadOnly(True)
         self.developer_profile_btn = QPushButton(self.frame)
         self.developer_profile_btn.setObjectName(u"developer_profile_btn")
-        self.developer_profile_btn.setGeometry(QRect(130, -1, 16, 22))
+        self.developer_profile_btn.setGeometry(QRect(129, -1, 21, 21))
         font1 = QFont()
         font1.setPointSize(14)
         font1.setBold(True)
+        font1.setItalic(False)
+        font1.setUnderline(False)
         self.developer_profile_btn.setFont(font1)
-        self.developer_profile_btn.setStyleSheet(u"")
+        self.developer_profile_btn.setStyleSheet(u"QPushButton {\n"
+"	background-color: transparent;\n"
+"    border: none;\n"
+"    outline: none;\n"
+"}\n"
+"\n"
+"QPushButton:hover {\n"
+"    color: #0078D7;\n"
+"}")
 
         self.MetaLayout.setWidget(2, QFormLayout.FieldRole, self.frame)
 
@@ -554,7 +565,7 @@ class Ui_MainWindow(object):
         self.appname.setText("")
         self.appname.setPlaceholderText("")
         self.label_appname.setText(QCoreApplication.translate("MainWindow", u"App Name", None))
-        self.developer_profile_btn.setText(QCoreApplication.translate("MainWindow", u">", None))
+        self.developer_profile_btn.setText(QCoreApplication.translate("MainWindow", u"\u2794", None))
         self.label_description.setText(QCoreApplication.translate("MainWindow", u"Description", None))
         self.label_displayname.setText(QCoreApplication.translate("MainWindow", u"Title", None))
         self.HomebrewIconLabel.setText(QCoreApplication.translate("MainWindow", u"No homebrew icon. Aw.", None))

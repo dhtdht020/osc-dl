@@ -346,10 +346,13 @@
              </size>
             </property>
             <property name="frameShape">
-             <enum>QFrame::StyledPanel</enum>
+             <enum>QFrame::NoFrame</enum>
             </property>
             <property name="frameShadow">
-             <enum>QFrame::Raised</enum>
+             <enum>QFrame::Plain</enum>
+            </property>
+            <property name="lineWidth">
+             <number>0</number>
             </property>
             <layout class="QHBoxLayout" name="horizontalLayout_5">
              <property name="leftMargin">
@@ -677,23 +680,33 @@ background-color: rgba(255, 255, 255, 0);
                <widget class="QPushButton" name="developer_profile_btn">
                 <property name="geometry">
                  <rect>
-                  <x>130</x>
+                  <x>129</x>
                   <y>-1</y>
-                  <width>16</width>
-                  <height>22</height>
+                  <width>21</width>
+                  <height>21</height>
                  </rect>
                 </property>
                 <property name="font">
                  <font>
                   <pointsize>14</pointsize>
+                  <italic>false</italic>
                   <bold>true</bold>
+                  <underline>false</underline>
                  </font>
                 </property>
                 <property name="styleSheet">
-                 <string notr="true"/>
+                 <string notr="true">QPushButton {
+	background-color: transparent;
+    border: none;
+    outline: none;
+}
+
+QPushButton:hover {
+    color: #0078D7;
+}</string>
                 </property>
                 <property name="text">
-                 <string>&gt;</string>
+                 <string>➔</string>
                 </property>
                </widget>
               </widget>
