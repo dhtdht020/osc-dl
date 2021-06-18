@@ -76,7 +76,6 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         self.ui.actionAbout_OSC_DL.setIcon(QIcon(resource_path("assets/gui/icons/about-open-version.png")))
         # CLIENTS
         self.ui.menuHomebrew_Browser.setIcon(QIcon(resource_path("assets/gui/icons/hbb-icon.png")))
-        self.ui.menuOpen_Shop_Channel_DL.setIcon(QIcon(resource_path("assets/gui/icons/oscdl-icon.png")))
         self.ui.actionDownload_HBB_Client_Latest.setIcon(QIcon(resource_path("assets/gui/icons/download.png")))
         self.ui.actionCheck_for_Updates.setIcon(QIcon(resource_path("assets/gui/icons/check-for-updates.png")))
         self.ui.actionRefresh.setIcon(QIcon(resource_path("assets/gui/icons/refresh.png")))

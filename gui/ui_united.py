@@ -133,8 +133,8 @@ class Ui_MainWindow(object):
         self.CategoriesComboBox.addItem("")
         self.CategoriesComboBox.addItem("")
         self.CategoriesComboBox.setObjectName(u"CategoriesComboBox")
-        self.CategoriesComboBox.setMinimumSize(QSize(90, 21))
-        self.CategoriesComboBox.setMaximumSize(QSize(90, 21))
+        self.CategoriesComboBox.setMinimumSize(QSize(100, 21))
+        self.CategoriesComboBox.setMaximumSize(QSize(100, 21))
 
         self.horizontalLayout_3.addWidget(self.CategoriesComboBox)
 
@@ -477,8 +477,6 @@ class Ui_MainWindow(object):
         self.menuAnnouncement_Banner.setObjectName(u"menuAnnouncement_Banner")
         self.menuClients = QMenu(self.menubar)
         self.menuClients.setObjectName(u"menuClients")
-        self.menuOpen_Shop_Channel_DL = QMenu(self.menuClients)
-        self.menuOpen_Shop_Channel_DL.setObjectName(u"menuOpen_Shop_Channel_DL")
         self.menuHomebrew_Browser = QMenu(self.menuClients)
         self.menuHomebrew_Browser.setObjectName(u"menuHomebrew_Browser")
         MainWindow.setMenuBar(self.menubar)
@@ -501,9 +499,9 @@ class Ui_MainWindow(object):
         self.menuExperimental.addAction(self.actionSelect_Theme)
         self.menuAnnouncement_Banner.addAction(self.actionDisplay_Banner)
         self.menuClients.addAction(self.menuHomebrew_Browser.menuAction())
-        self.menuClients.addAction(self.menuOpen_Shop_Channel_DL.menuAction())
-        self.menuOpen_Shop_Channel_DL.addAction(self.actionCheck_for_Updates)
-        self.menuOpen_Shop_Channel_DL.addAction(self.actionRefresh)
+        self.menuClients.addSeparator()
+        self.menuClients.addAction(self.actionCheck_for_Updates)
+        self.menuClients.addAction(self.actionRefresh)
         self.menuHomebrew_Browser.addAction(self.actionDownload_HBB_Client_Latest)
 
         self.retranslateUi(MainWindow)
@@ -596,7 +594,6 @@ class Ui_MainWindow(object):
         self.menuExperimental.setTitle(QCoreApplication.translate("MainWindow", u"Experimental", None))
         self.menuAnnouncement_Banner.setTitle(QCoreApplication.translate("MainWindow", u"Announcement Banner", None))
         self.menuClients.setTitle(QCoreApplication.translate("MainWindow", u"Clients", None))
-        self.menuOpen_Shop_Channel_DL.setTitle(QCoreApplication.translate("MainWindow", u"Open Shop Channel DL", None))
         self.menuHomebrew_Browser.setTitle(QCoreApplication.translate("MainWindow", u"Homebrew Browser", None))
     # retranslateUi
 

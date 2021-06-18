@@ -202,13 +202,13 @@
                  <widget class="QComboBox" name="CategoriesComboBox">
                   <property name="minimumSize">
                    <size>
-                    <width>90</width>
+                    <width>100</width>
                     <height>21</height>
                    </size>
                   </property>
                   <property name="maximumSize">
                    <size>
-                    <width>90</width>
+                    <width>100</width>
                     <height>21</height>
                    </size>
                   </property>
@@ -1081,13 +1081,6 @@ p, li { white-space: pre-wrap; }
     <property name="title">
      <string>Clients</string>
     </property>
-    <widget class="QMenu" name="menuOpen_Shop_Channel_DL">
-     <property name="title">
-      <string>Open Shop Channel DL</string>
-     </property>
-     <addaction name="actionCheck_for_Updates"/>
-     <addaction name="actionRefresh"/>
-    </widget>
     <widget class="QMenu" name="menuHomebrew_Browser">
      <property name="title">
       <string>Homebrew Browser</string>
@@ -1095,7 +1088,9 @@ p, li { white-space: pre-wrap; }
      <addaction name="actionDownload_HBB_Client_Latest"/>
     </widget>
     <addaction name="menuHomebrew_Browser"/>
-    <addaction name="menuOpen_Shop_Channel_DL"/>
+    <addaction name="separator"/>
+    <addaction name="actionCheck_for_Updates"/>
+    <addaction name="actionRefresh"/>
    </widget>
    <addaction name="menuAbout"/>
    <addaction name="menuClients"/>
