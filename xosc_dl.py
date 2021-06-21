@@ -352,7 +352,14 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
             if hbb:
                 output = f"homebrew_browser_v0.3.9e.zip"
             else:
-                output = f"{self.app_name}.zip"
+                # create output dir
+                if os.name == 'nt':
+                    dir_path = '%s\\OSCDL\\' % os.environ['APPDATA']
+                    if not os.path.exists(dir_path):
+                        os.makedirs(dir_path)
+                    output = f'%s{self.app_name}' % dir_path
+                else:
+                    output = f"{self.app_name}.zip"
         self.ui.progressBar.setValue(0)
         if output != '':
             # get url to app
@@ -373,6 +380,7 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
                 self.ui.ReposComboBox.setEnabled(False)
                 # disable apps list
                 self.ui.listAppsWidget.setEnabled(False)
+
                 with open(output, "wb") as app_data_file:
                     for data in response.iter_content(block_size):
                         self.ui.progressBar.setValue(self.ui.progressBar.value() + 1024)
