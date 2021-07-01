@@ -98,6 +98,13 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         self.ui.CategoriesComboBox.setItemIcon(4, QIcon(resource_path("assets/gui/icons/category/media.png")))
         self.ui.CategoriesComboBox.setItemIcon(5, QIcon(resource_path("assets/gui/icons/category/demo.png")))
 
+        # PERIPHERALS LABEL
+        self.ui.SupportedControllersLabelIcon.setPixmap(
+            QtGui.QPixmap(resource_path("assets/gui/icons/titles/light/peripherals.png")).scaledToWidth(21))
+        # MORE OPTIONS LABEL
+        self.ui.MoreOptionsIconLabel.setPixmap(
+            QtGui.QPixmap(resource_path("assets/gui/icons/titles/light/options.png")).scaledToWidth(21))
+
         self.populate()
         self.selection_changed()
         self.status_message("Ready to download")

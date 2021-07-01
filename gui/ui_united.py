@@ -3,7 +3,7 @@
 ################################################################################
 ## Form generated from reading UI file 'united.ui'
 ##
-## Created by: Qt User Interface Compiler version 6.1.1
+## Created by: Qt User Interface Compiler version 6.1.2
 ##
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
@@ -206,6 +206,8 @@ class Ui_MainWindow(object):
         self.verticalLayout_2.addWidget(self.SearchFrame)
 
         self.listAppsWidget = QListWidget(self.LibraryContentFrame)
+        QListWidgetItem(self.listAppsWidget)
+        QListWidgetItem(self.listAppsWidget)
         self.listAppsWidget.setObjectName(u"listAppsWidget")
         sizePolicy1.setHeightForWidth(self.listAppsWidget.sizePolicy().hasHeightForWidth())
         self.listAppsWidget.setSizePolicy(sizePolicy1)
@@ -407,22 +409,13 @@ class Ui_MainWindow(object):
         self.tabMetadata.addTab(self.Description, "")
         self.RawTab = QWidget()
         self.RawTab.setObjectName(u"RawTab")
-        self.DirectLinkLabel = QLabel(self.RawTab)
-        self.DirectLinkLabel.setObjectName(u"DirectLinkLabel")
-        self.DirectLinkLabel.setGeometry(QRect(10, 190, 91, 20))
-        self.DirectLinkLineEdit = QLineEdit(self.RawTab)
-        self.DirectLinkLineEdit.setObjectName(u"DirectLinkLineEdit")
-        self.DirectLinkLineEdit.setGeometry(QRect(10, 210, 151, 20))
-        self.DirectLinkLineEdit.setReadOnly(True)
-        self.CopyDirectLinkBtn = QPushButton(self.RawTab)
-        self.CopyDirectLinkBtn.setObjectName(u"CopyDirectLinkBtn")
-        self.CopyDirectLinkBtn.setGeometry(QRect(170, 210, 61, 21))
-        self.SupportedControllersLabel = QLabel(self.RawTab)
-        self.SupportedControllersLabel.setObjectName(u"SupportedControllersLabel")
-        self.SupportedControllersLabel.setGeometry(QRect(10, 10, 221, 16))
         self.SupportedControllersListWidget = QListWidget(self.RawTab)
         self.SupportedControllersListWidget.setObjectName(u"SupportedControllersListWidget")
-        self.SupportedControllersListWidget.setGeometry(QRect(10, 30, 221, 141))
+        self.SupportedControllersListWidget.setGeometry(QRect(0, 21, 246, 121))
+        self.SupportedControllersListWidget.setStyleSheet(u"QListWidget {\n"
+"	border: unset;\n"
+"	background-color: #fafafa;\n"
+"}")
         self.SupportedControllersListWidget.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOn)
         self.SupportedControllersListWidget.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
         self.SupportedControllersListWidget.setDragDropMode(QAbstractItemView.NoDragDrop)
@@ -430,9 +423,63 @@ class Ui_MainWindow(object):
         self.SupportedControllersListWidget.setMovement(QListView.Static)
         self.SupportedControllersListWidget.setViewMode(QListView.ListMode)
         self.SupportedControllersListWidget.setWordWrap(True)
-        self.ExtractAppCheckbox = QCheckBox(self.RawTab)
+        self.SupportedControllerHeaderFrame = QFrame(self.RawTab)
+        self.SupportedControllerHeaderFrame.setObjectName(u"SupportedControllerHeaderFrame")
+        self.SupportedControllerHeaderFrame.setGeometry(QRect(0, 0, 246, 21))
+        self.SupportedControllerHeaderFrame.setStyleSheet(u"QFrame {\n"
+"	background-color: #363636;\n"
+"	color: white;\n"
+"	border: unset;\n"
+"}")
+        self.SupportedControllerHeaderFrame.setFrameShape(QFrame.StyledPanel)
+        self.SupportedControllerHeaderFrame.setFrameShadow(QFrame.Raised)
+        self.SupportedControllersLabelIcon = QLabel(self.SupportedControllerHeaderFrame)
+        self.SupportedControllersLabelIcon.setObjectName(u"SupportedControllersLabelIcon")
+        self.SupportedControllersLabelIcon.setGeometry(QRect(10, 0, 21, 21))
+        self.SupportedControllersLabel = QLabel(self.SupportedControllerHeaderFrame)
+        self.SupportedControllersLabel.setObjectName(u"SupportedControllersLabel")
+        self.SupportedControllersLabel.setGeometry(QRect(40, 0, 181, 21))
+        self.SupportedControllersLabel.setFont(font)
+        self.SupportedControllersLabel.setStyleSheet(u"")
+        self.MoreOptionsHeaderFrame = QFrame(self.RawTab)
+        self.MoreOptionsHeaderFrame.setObjectName(u"MoreOptionsHeaderFrame")
+        self.MoreOptionsHeaderFrame.setGeometry(QRect(0, 150, 246, 21))
+        self.MoreOptionsHeaderFrame.setStyleSheet(u"QFrame {\n"
+"	background-color: #363636;\n"
+"	color: white;\n"
+"	border: unset;\n"
+"}")
+        self.MoreOptionsHeaderFrame.setFrameShape(QFrame.StyledPanel)
+        self.MoreOptionsHeaderFrame.setFrameShadow(QFrame.Raised)
+        self.MoreOptionsIconLabel = QLabel(self.MoreOptionsHeaderFrame)
+        self.MoreOptionsIconLabel.setObjectName(u"MoreOptionsIconLabel")
+        self.MoreOptionsIconLabel.setGeometry(QRect(10, 0, 21, 21))
+        self.MoreOptionsLabel = QLabel(self.MoreOptionsHeaderFrame)
+        self.MoreOptionsLabel.setObjectName(u"MoreOptionsLabel")
+        self.MoreOptionsLabel.setGeometry(QRect(40, 0, 181, 21))
+        self.MoreOptionsLabel.setFont(font)
+        self.MoreOptionsLabel.setStyleSheet(u"")
+        self.MoreOptionsFrame = QFrame(self.RawTab)
+        self.MoreOptionsFrame.setObjectName(u"MoreOptionsFrame")
+        self.MoreOptionsFrame.setGeometry(QRect(0, 170, 246, 71))
+        self.MoreOptionsFrame.setStyleSheet(u"QFrame[accessibleName=\"ContainerFrame\"] {\n"
+"	background-color: #fafafa;\n"
+"}")
+        self.MoreOptionsFrame.setFrameShape(QFrame.StyledPanel)
+        self.MoreOptionsFrame.setFrameShadow(QFrame.Raised)
+        self.CopyDirectLinkBtn = QPushButton(self.MoreOptionsFrame)
+        self.CopyDirectLinkBtn.setObjectName(u"CopyDirectLinkBtn")
+        self.CopyDirectLinkBtn.setGeometry(QRect(180, 40, 61, 21))
+        self.DirectLinkLineEdit = QLineEdit(self.MoreOptionsFrame)
+        self.DirectLinkLineEdit.setObjectName(u"DirectLinkLineEdit")
+        self.DirectLinkLineEdit.setGeometry(QRect(10, 40, 161, 20))
+        self.DirectLinkLineEdit.setReadOnly(True)
+        self.ExtractAppCheckbox = QCheckBox(self.MoreOptionsFrame)
         self.ExtractAppCheckbox.setObjectName(u"ExtractAppCheckbox")
-        self.ExtractAppCheckbox.setGeometry(QRect(10, 170, 271, 31))
+        self.ExtractAppCheckbox.setGeometry(QRect(10, 0, 271, 31))
+        self.DirectLinkLabel = QLabel(self.MoreOptionsFrame)
+        self.DirectLinkLabel.setObjectName(u"DirectLinkLabel")
+        self.DirectLinkLabel.setGeometry(QRect(10, 20, 91, 21))
         self.tabMetadata.addTab(self.RawTab, "")
 
         self.verticalLayout_3.addWidget(self.MetadataTabsFrame)
@@ -550,6 +597,17 @@ class Ui_MainWindow(object):
         self.RepositoryDescLabel.setText(QCoreApplication.translate("MainWindow", u"Repository Description", None))
         self.AppsAmountLabel.setText(QCoreApplication.translate("MainWindow", u"0 Apps", None))
         self.SearchBar.setPlaceholderText(QCoreApplication.translate("MainWindow", u"Search Applications..", None))
+
+        __sortingEnabled = self.listAppsWidget.isSortingEnabled()
+        self.listAppsWidget.setSortingEnabled(False)
+        ___qlistwidgetitem = self.listAppsWidget.item(0)
+        ___qlistwidgetitem.setText(QCoreApplication.translate("MainWindow", u"Test 1\n"
+"1.7MiB | 1.0.0 | Someone | Test app", None));
+        ___qlistwidgetitem1 = self.listAppsWidget.item(1)
+        ___qlistwidgetitem1.setText(QCoreApplication.translate("MainWindow", u"Test 2\n"
+"1.7MiB | 1.0.0 | Someone | Test app sequel which has the same file size and version for some reason who knows why not me", None));
+        self.listAppsWidget.setSortingEnabled(__sortingEnabled)
+
         self.announcementLabel.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p><span style=\" font-weight:600;\">Announcement Header: </span>Announcement Content.</p></body></html>", None))
         self.announcementURLLabel.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p><a href=\"https://google.com\"><span style=\" text-decoration: underline; color:#ffff00;\">Announcement URL</span></a></p></body></html>", None))
         self.SelectionInfoBox.setTitle(QCoreApplication.translate("MainWindow", u"Application Metadata", None))
@@ -581,10 +639,16 @@ class Ui_MainWindow(object):
 #if QT_CONFIG(accessibility)
         self.RawTab.setAccessibleName(QCoreApplication.translate("MainWindow", u"tabcontent", None))
 #endif // QT_CONFIG(accessibility)
-        self.DirectLinkLabel.setText(QCoreApplication.translate("MainWindow", u"Direct Link", None))
-        self.CopyDirectLinkBtn.setText(QCoreApplication.translate("MainWindow", u"Copy", None))
+        self.SupportedControllersLabelIcon.setText("")
         self.SupportedControllersLabel.setText(QCoreApplication.translate("MainWindow", u"Supported Peripherals:", None))
+        self.MoreOptionsIconLabel.setText("")
+        self.MoreOptionsLabel.setText(QCoreApplication.translate("MainWindow", u"More Options:", None))
+#if QT_CONFIG(accessibility)
+        self.MoreOptionsFrame.setAccessibleName(QCoreApplication.translate("MainWindow", u"ContainerFrame", None))
+#endif // QT_CONFIG(accessibility)
+        self.CopyDirectLinkBtn.setText(QCoreApplication.translate("MainWindow", u"Copy", None))
         self.ExtractAppCheckbox.setText(QCoreApplication.translate("MainWindow", u"Extract Downloaded App", None))
+        self.DirectLinkLabel.setText(QCoreApplication.translate("MainWindow", u"Direct Link", None))
         self.tabMetadata.setTabText(self.tabMetadata.indexOf(self.RawTab), QCoreApplication.translate("MainWindow", u"Peripherals", None))
         self.FileNameLabel.setText(QCoreApplication.translate("MainWindow", u"Output File", None))
         self.ViewMetadataBtn.setText(QCoreApplication.translate("MainWindow", u"Download", None))
