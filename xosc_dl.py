@@ -1,5 +1,6 @@
 import asyncio
 import io
+import platform
 from datetime import datetime
 from os import listdir
 from os.path import isfile, join
@@ -841,6 +842,10 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
 if __name__ == "__main__":
     global app
     app = QApplication()
+
+    # set windows style for macOS users
+    if platform.system() == "Darwin":
+        app.setStyle('Fusion')
 
     global splash
     global splash_color
