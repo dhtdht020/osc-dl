@@ -908,8 +908,6 @@ p, li { white-space: pre-wrap; }
             </property>
             <property name="styleSheet">
              <string notr="true">QFrame {
-	background-color: #363636;
-	color: white;
 	border: unset;
 }</string>
             </property>
@@ -930,6 +928,9 @@ p, li { white-space: pre-wrap; }
              </property>
              <property name="text">
               <string/>
+             </property>
+             <property name="scaledContents">
+              <bool>true</bool>
              </property>
             </widget>
             <widget class="QLabel" name="SupportedControllersLabel">
@@ -965,8 +966,6 @@ p, li { white-space: pre-wrap; }
             </property>
             <property name="styleSheet">
              <string notr="true">QFrame {
-	background-color: #363636;
-	color: white;
 	border: unset;
 }</string>
             </property>
@@ -987,6 +986,9 @@ p, li { white-space: pre-wrap; }
              </property>
              <property name="text">
               <string/>
+             </property>
+             <property name="scaledContents">
+              <bool>true</bool>
              </property>
             </widget>
             <widget class="QLabel" name="MoreOptionsLabel">

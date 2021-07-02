@@ -425,8 +425,6 @@ class Ui_MainWindow(object):
         self.SupportedControllerHeaderFrame.setObjectName(u"SupportedControllerHeaderFrame")
         self.SupportedControllerHeaderFrame.setGeometry(QRect(0, 0, 246, 21))
         self.SupportedControllerHeaderFrame.setStyleSheet(u"QFrame {\n"
-"	background-color: #363636;\n"
-"	color: white;\n"
 "	border: unset;\n"
 "}")
         self.SupportedControllerHeaderFrame.setFrameShape(QFrame.StyledPanel)
@@ -434,6 +432,7 @@ class Ui_MainWindow(object):
         self.SupportedControllersLabelIcon = QLabel(self.SupportedControllerHeaderFrame)
         self.SupportedControllersLabelIcon.setObjectName(u"SupportedControllersLabelIcon")
         self.SupportedControllersLabelIcon.setGeometry(QRect(10, 0, 21, 21))
+        self.SupportedControllersLabelIcon.setScaledContents(True)
         self.SupportedControllersLabel = QLabel(self.SupportedControllerHeaderFrame)
         self.SupportedControllersLabel.setObjectName(u"SupportedControllersLabel")
         self.SupportedControllersLabel.setGeometry(QRect(40, 0, 181, 21))
@@ -443,8 +442,6 @@ class Ui_MainWindow(object):
         self.MoreOptionsHeaderFrame.setObjectName(u"MoreOptionsHeaderFrame")
         self.MoreOptionsHeaderFrame.setGeometry(QRect(0, 150, 246, 21))
         self.MoreOptionsHeaderFrame.setStyleSheet(u"QFrame {\n"
-"	background-color: #363636;\n"
-"	color: white;\n"
 "	border: unset;\n"
 "}")
         self.MoreOptionsHeaderFrame.setFrameShape(QFrame.StyledPanel)
@@ -452,6 +449,7 @@ class Ui_MainWindow(object):
         self.MoreOptionsIconLabel = QLabel(self.MoreOptionsHeaderFrame)
         self.MoreOptionsIconLabel.setObjectName(u"MoreOptionsIconLabel")
         self.MoreOptionsIconLabel.setGeometry(QRect(10, 0, 21, 21))
+        self.MoreOptionsIconLabel.setScaledContents(True)
         self.MoreOptionsLabel = QLabel(self.MoreOptionsHeaderFrame)
         self.MoreOptionsLabel.setObjectName(u"MoreOptionsLabel")
         self.MoreOptionsLabel.setGeometry(QRect(40, 0, 181, 21))

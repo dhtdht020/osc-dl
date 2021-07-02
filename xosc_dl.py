@@ -100,10 +100,10 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
 
         # PERIPHERALS LABEL
         self.ui.SupportedControllersLabelIcon.setPixmap(
-            QtGui.QPixmap(resource_path("assets/gui/icons/titles/light/peripherals.png")).scaledToWidth(21))
+            QtGui.QPixmap(resource_path("assets/gui/icons/titles/light/peripherals.png")))
         # MORE OPTIONS LABEL
         self.ui.MoreOptionsIconLabel.setPixmap(
-            QtGui.QPixmap(resource_path("assets/gui/icons/titles/light/options.png")).scaledToWidth(21))
+            QtGui.QPixmap(resource_path("assets/gui/icons/titles/light/options.png")))
 
         self.populate()
         self.selection_changed()
