@@ -403,18 +403,6 @@
             <property name="currentRow">
              <number>-1</number>
             </property>
-            <item>
-             <property name="text">
-              <string>Test 1
-1.7MiB | 1.0.0 | Someone | Test app</string>
-             </property>
-            </item>
-            <item>
-             <property name="text">
-              <string>Test 2
-1.7MiB | 1.0.0 | Someone | Test app sequel which has the same file size and version for some reason who knows why not me</string>
-             </property>
-            </item>
            </widget>
           </item>
          </layout>

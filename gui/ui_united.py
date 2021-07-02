@@ -206,8 +206,6 @@ class Ui_MainWindow(object):
         self.verticalLayout_2.addWidget(self.SearchFrame)
 
         self.listAppsWidget = QListWidget(self.LibraryContentFrame)
-        QListWidgetItem(self.listAppsWidget)
-        QListWidgetItem(self.listAppsWidget)
         self.listAppsWidget.setObjectName(u"listAppsWidget")
         sizePolicy1.setHeightForWidth(self.listAppsWidget.sizePolicy().hasHeightForWidth())
         self.listAppsWidget.setSizePolicy(sizePolicy1)
@@ -597,17 +595,6 @@ class Ui_MainWindow(object):
         self.RepositoryDescLabel.setText(QCoreApplication.translate("MainWindow", u"Repository Description", None))
         self.AppsAmountLabel.setText(QCoreApplication.translate("MainWindow", u"0 Apps", None))
         self.SearchBar.setPlaceholderText(QCoreApplication.translate("MainWindow", u"Search Applications..", None))
-
-        __sortingEnabled = self.listAppsWidget.isSortingEnabled()
-        self.listAppsWidget.setSortingEnabled(False)
-        ___qlistwidgetitem = self.listAppsWidget.item(0)
-        ___qlistwidgetitem.setText(QCoreApplication.translate("MainWindow", u"Test 1\n"
-"1.7MiB | 1.0.0 | Someone | Test app", None));
-        ___qlistwidgetitem1 = self.listAppsWidget.item(1)
-        ___qlistwidgetitem1.setText(QCoreApplication.translate("MainWindow", u"Test 2\n"
-"1.7MiB | 1.0.0 | Someone | Test app sequel which has the same file size and version for some reason who knows why not me", None));
-        self.listAppsWidget.setSortingEnabled(__sortingEnabled)
-
         self.announcementLabel.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p><span style=\" font-weight:600;\">Announcement Header: </span>Announcement Content.</p></body></html>", None))
         self.announcementURLLabel.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p><a href=\"https://google.com\"><span style=\" text-decoration: underline; color:#ffff00;\">Announcement URL</span></a></p></body></html>", None))
         self.SelectionInfoBox.setTitle(QCoreApplication.translate("MainWindow", u"Application Metadata", None))
