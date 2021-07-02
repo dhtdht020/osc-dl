@@ -1,9 +1,9 @@
 name: Run GUI Tests
 
-on: [push]
+on: [push, pull_request]
 
 jobs:
-  Build:
+  TestGUI:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
