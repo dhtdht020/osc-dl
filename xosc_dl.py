@@ -1,6 +1,7 @@
 import asyncio
 import io
 import platform
+import threading
 from datetime import datetime
 from os import listdir
 from os.path import isfile, join
@@ -15,9 +16,9 @@ import logging  # for logs
 from functools import partial
 
 import requests
-from PySide6 import QtGui
-from PySide6.QtCore import Qt, QObject
-from PySide6.QtGui import QIcon, QColor, QFont
+from PySide6 import QtGui, QtCore
+from PySide6.QtCore import Qt, QObject, QSize
+from PySide6.QtGui import QIcon, QColor, QFont, QPixmap, QMovie
 from PySide6.QtWidgets import QApplication, QMainWindow, QInputDialog, QLineEdit, QMessageBox, QSplashScreen, \
     QListWidgetItem, QFileDialog, QLabel, QWidget, QHBoxLayout, QLayout
 
@@ -55,6 +56,7 @@ if updater.is_frozen():
 
 # G U I
 class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
+    IconSignal = QtCore.Signal(QPixmap)
     def __init__(self, test_mode=False):
         super(MainWindow, self).__init__()
         self.ui = gui.ui_united.Ui_MainWindow()
@@ -108,6 +110,11 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         # real icons test: if realicons is specified, set size of icon to 171x64
         if utils.is_test("realicons"):
             self.ui.listAppsWidget.setIconSize(QSize(171, 32))
+
+        # create spinner movie
+        self.spinner = QMovie(resource_path("assets/gui/icons/spinner.gif"))
+        self.spinner.setScaledSize(QSize(32, 32))
+        self.spinner.start()
 
         self.populate()
         self.selection_changed()
@@ -233,8 +240,8 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
             # Set active tab to first
             self.ui.tabMetadata.setCurrentIndex(0)
 
-            # Hide icon
-            self.ui.HomebrewIconLabel.hide()
+            # Set loading animation
+            self.ui.HomebrewIconLabel.setMovie(self.spinner)
 
             # Clear supported controllers listview:
             self.ui.SupportedControllersListWidget.clear()
@@ -333,7 +340,8 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         self.ui.progressBar.setValue(0)
         self.repaint()
         # Load icon
-        self.load_icon(app_name=app_name, repo=HOST)
+        t = threading.Thread(target=self.load_icon, args=[app_name, HOST])
+        t.start()
         self.status_message("Ready to download")
 
     def view_metadata(self):
@@ -673,17 +681,22 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
 
     # Load app icon
     def load_icon(self, app_name, repo):
+        self.IconSignal.connect(self.ui.HomebrewIconLabel.setPixmap)
         # Gets raw image data from server
-        data = metadata.icon(app_name=app_name, repo=repo)
+        # Check if still relevant
+        if self.ui.FileNameLineEdit.text().replace('.zip', '') == app_name:
+            data = metadata.icon(app_name=app_name, repo=repo)
 
-        # Loads image
-        image = QtGui.QImage()
-        image.loadFromData(data)
+            # Loads image
+            image = QtGui.QImage()
+            image.loadFromData(data)
 
-        # Adds image to label
-        lbl = self.ui.HomebrewIconLabel
-        lbl.setPixmap(QtGui.QPixmap(image))
-        lbl.show()
+            # Adds image to label
+            # Once again check if still relevant
+            if self.ui.FileNameLineEdit.text().replace('.zip', '') == app_name:
+                lbl = self.ui.HomebrewIconLabel
+                self.IconSignal.emit(QPixmap(image))
+                lbl.show()
 
     def load_announcement_banner(self):
         try:
