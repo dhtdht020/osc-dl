@@ -523,7 +523,7 @@ background-color: rgba(255, 255, 255, 0);
            </rect>
           </property>
           <property name="currentIndex">
-           <number>0</number>
+           <number>2</number>
           </property>
           <widget class="QWidget" name="GeneralTab">
            <property name="accessibleName">
@@ -874,15 +874,14 @@ p, li { white-space: pre-wrap; }
             <property name="geometry">
              <rect>
               <x>0</x>
-              <y>21</y>
+              <y>0</y>
               <width>246</width>
-              <height>121</height>
+              <height>244</height>
              </rect>
             </property>
             <property name="styleSheet">
              <string notr="true">QListWidget {
 	border: unset;
-	background-color: #fafafa;
 }</string>
             </property>
             <property name="verticalScrollBarPolicy">
@@ -909,198 +908,6 @@ p, li { white-space: pre-wrap; }
             <property name="wordWrap">
              <bool>true</bool>
             </property>
-           </widget>
-           <widget class="QFrame" name="SupportedControllerHeaderFrame">
-            <property name="geometry">
-             <rect>
-              <x>0</x>
-              <y>0</y>
-              <width>246</width>
-              <height>21</height>
-             </rect>
-            </property>
-            <property name="styleSheet">
-             <string notr="true">QFrame {
-	border: unset;
-}</string>
-            </property>
-            <property name="frameShape">
-             <enum>QFrame::StyledPanel</enum>
-            </property>
-            <property name="frameShadow">
-             <enum>QFrame::Raised</enum>
-            </property>
-            <widget class="QLabel" name="SupportedControllersLabelIcon">
-             <property name="geometry">
-              <rect>
-               <x>10</x>
-               <y>0</y>
-               <width>21</width>
-               <height>21</height>
-              </rect>
-             </property>
-             <property name="text">
-              <string/>
-             </property>
-             <property name="scaledContents">
-              <bool>true</bool>
-             </property>
-            </widget>
-            <widget class="QLabel" name="SupportedControllersLabel">
-             <property name="geometry">
-              <rect>
-               <x>40</x>
-               <y>0</y>
-               <width>181</width>
-               <height>21</height>
-              </rect>
-             </property>
-             <property name="font">
-              <font>
-               <bold>true</bold>
-              </font>
-             </property>
-             <property name="styleSheet">
-              <string notr="true"/>
-             </property>
-             <property name="text">
-              <string>Supported Peripherals:</string>
-             </property>
-            </widget>
-           </widget>
-           <widget class="QFrame" name="MoreOptionsHeaderFrame">
-            <property name="geometry">
-             <rect>
-              <x>0</x>
-              <y>150</y>
-              <width>246</width>
-              <height>21</height>
-             </rect>
-            </property>
-            <property name="styleSheet">
-             <string notr="true">QFrame {
-	border: unset;
-}</string>
-            </property>
-            <property name="frameShape">
-             <enum>QFrame::StyledPanel</enum>
-            </property>
-            <property name="frameShadow">
-             <enum>QFrame::Raised</enum>
-            </property>
-            <widget class="QLabel" name="MoreOptionsIconLabel">
-             <property name="geometry">
-              <rect>
-               <x>10</x>
-               <y>0</y>
-               <width>21</width>
-               <height>21</height>
-              </rect>
-             </property>
-             <property name="text">
-              <string/>
-             </property>
-             <property name="scaledContents">
-              <bool>true</bool>
-             </property>
-            </widget>
-            <widget class="QLabel" name="MoreOptionsLabel">
-             <property name="geometry">
-              <rect>
-               <x>40</x>
-               <y>0</y>
-               <width>181</width>
-               <height>21</height>
-              </rect>
-             </property>
-             <property name="font">
-              <font>
-               <bold>true</bold>
-              </font>
-             </property>
-             <property name="styleSheet">
-              <string notr="true"/>
-             </property>
-             <property name="text">
-              <string>More Options:</string>
-             </property>
-            </widget>
-           </widget>
-           <widget class="QFrame" name="MoreOptionsFrame">
-            <property name="geometry">
-             <rect>
-              <x>0</x>
-              <y>170</y>
-              <width>246</width>
-              <height>71</height>
-             </rect>
-            </property>
-            <property name="accessibleName">
-             <string>ContainerFrame</string>
-            </property>
-            <property name="styleSheet">
-             <string notr="true">QFrame[accessibleName=&quot;ContainerFrame&quot;] {
-	background-color: #fafafa;
-}</string>
-            </property>
-            <property name="frameShape">
-             <enum>QFrame::StyledPanel</enum>
-            </property>
-            <property name="frameShadow">
-             <enum>QFrame::Raised</enum>
-            </property>
-            <widget class="QPushButton" name="CopyDirectLinkBtn">
-             <property name="geometry">
-              <rect>
-               <x>180</x>
-               <y>40</y>
-               <width>61</width>
-               <height>21</height>
-              </rect>
-             </property>
-             <property name="text">
-              <string>Copy</string>
-             </property>
-            </widget>
-            <widget class="QLineEdit" name="DirectLinkLineEdit">
-             <property name="geometry">
-              <rect>
-               <x>10</x>
-               <y>40</y>
-               <width>161</width>
-               <height>20</height>
-              </rect>
-             </property>
-             <property name="readOnly">
-              <bool>true</bool>
-             </property>
-            </widget>
-            <widget class="QCheckBox" name="ExtractAppCheckbox">
-             <property name="geometry">
-              <rect>
-               <x>10</x>
-               <y>0</y>
-               <width>271</width>
-               <height>31</height>
-              </rect>
-             </property>
-             <property name="text">
-              <string>Extract Downloaded App</string>
-             </property>
-            </widget>
-            <widget class="QLabel" name="DirectLinkLabel">
-             <property name="geometry">
-              <rect>
-               <x>10</x>
-               <y>20</y>
-               <width>91</width>
-               <height>21</height>
-              </rect>
-             </property>
-             <property name="text">
-              <string>Direct Link</string>
-             </property>
-            </widget>
            </widget>
           </widget>
          </widget>
@@ -1202,7 +1009,7 @@ p, li { white-space: pre-wrap; }
    </widget>
    <widget class="QMenu" name="menuDebug">
     <property name="title">
-     <string>Debug</string>
+     <string>Options</string>
     </property>
     <widget class="QMenu" name="menuExperimental">
      <property name="title">
@@ -1217,6 +1024,8 @@ p, li { white-space: pre-wrap; }
      <addaction name="menuAnnouncement_Banner"/>
      <addaction name="actionSelect_Theme"/>
     </widget>
+    <addaction name="actionCopy_Direct_Link"/>
+    <addaction name="separator"/>
     <addaction name="actionEnable_Log_File"/>
     <addaction name="actionClear_Log"/>
     <addaction name="separator"/>
@@ -1318,6 +1127,11 @@ p, li { white-space: pre-wrap; }
    </property>
    <property name="text">
     <string>Icons provided by Icons8</string>
+   </property>
+  </action>
+  <action name="actionCopy_Direct_Link">
+   <property name="text">
+    <string>Copy Direct Link to App</string>
    </property>
   </action>
  </widget>

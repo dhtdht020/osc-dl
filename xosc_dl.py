@@ -101,13 +101,6 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         self.ui.CategoriesComboBox.setItemIcon(4, QIcon(resource_path("assets/gui/icons/category/media.png")))
         self.ui.CategoriesComboBox.setItemIcon(5, QIcon(resource_path("assets/gui/icons/category/demo.png")))
 
-        # PERIPHERALS LABEL
-        self.ui.SupportedControllersLabelIcon.setPixmap(
-            QtGui.QPixmap(resource_path("assets/gui/icons/titles/light/peripherals.png")))
-        # MORE OPTIONS LABEL
-        self.ui.MoreOptionsIconLabel.setPixmap(
-            QtGui.QPixmap(resource_path("assets/gui/icons/titles/light/options.png")))
-
         # real icons test: if realicons is specified, set size of icon to 171x64
         if utils.is_test("realicons"):
             self.ui.listAppsWidget.setIconSize(QSize(171, 32))
@@ -191,7 +184,7 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         except NameError:
             pass
         # Buttons
-        self.ui.CopyDirectLinkBtn.clicked.connect(self.copy_download_link_button)
+        self.ui.actionCopy_Direct_Link.triggered.connect(self.copy_download_link_button)
         self.ui.ViewMetadataBtn.clicked.connect(self.download_button)
         self.ui.WiiLoadButton.clicked.connect(self.wiiload_button)
         self.ui.ReturnToMainBtn.clicked.connect(self.return_to_all_apps_btn)
@@ -348,7 +341,6 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
 
             # File Name Line Edit
             self.ui.FileNameLineEdit.setText(app_name + ".zip")
-            self.ui.DirectLinkLineEdit.setText(metadata.url(app_name, repo=HOST))
         self.ui.progressBar.setValue(0)
         self.repaint()
         # Load icon
