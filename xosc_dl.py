@@ -672,7 +672,6 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         self.ui.ViewMetadataBtn.setDisabled(True)
         self.ui.WiiLoadButton.setDisabled(True)
         self.ui.progressBar.setDisabled(True)
-        self.ui.ExtractAppCheckbox.setDisabled(True)
         self.ui.menubar.setDisabled(True)
         self.ui.ReposComboBox.setDisabled(True)
         self.ui.CategoriesComboBox.setDisabled(True)
