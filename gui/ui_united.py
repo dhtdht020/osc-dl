@@ -501,7 +501,7 @@ class Ui_MainWindow(object):
         self.retranslateUi(MainWindow)
 
         self.listAppsWidget.setCurrentRow(-1)
-        self.tabMetadata.setCurrentIndex(2)
+        self.tabMetadata.setCurrentIndex(0)
 
 
         QMetaObject.connectSlotsByName(MainWindow)

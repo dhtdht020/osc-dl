@@ -1,4 +1,3 @@
-import asyncio
 import io
 import platform
 import threading
@@ -10,7 +9,6 @@ import yaml
 import os
 import socket
 import sys
-from contextlib import redirect_stdout
 
 import logging  # for logs
 from functools import partial
@@ -18,9 +16,9 @@ from functools import partial
 import requests
 from PySide6 import QtGui, QtCore
 from PySide6.QtCore import Qt, QObject, QSize
-from PySide6.QtGui import QIcon, QColor, QFont, QPixmap, QMovie
+from PySide6.QtGui import QIcon, QColor, QPixmap, QMovie
 from PySide6.QtWidgets import QApplication, QMainWindow, QInputDialog, QLineEdit, QMessageBox, QSplashScreen, \
-    QListWidgetItem, QFileDialog, QLabel, QWidget, QHBoxLayout, QLayout
+    QListWidgetItem, QFileDialog
 
 import download
 import gui.ui_united

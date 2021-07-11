@@ -523,7 +523,7 @@ background-color: rgba(255, 255, 255, 0);
            </rect>
           </property>
           <property name="currentIndex">
-           <number>2</number>
+           <number>0</number>
           </property>
           <widget class="QWidget" name="GeneralTab">
            <property name="accessibleName">
