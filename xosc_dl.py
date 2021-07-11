@@ -57,6 +57,7 @@ if updater.is_frozen():
 # G U I
 class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
     IconSignal = QtCore.Signal(QPixmap)
+    LongDescriptionSignal = QtCore.Signal(str)
     def __init__(self, test_mode=False):
         super(MainWindow, self).__init__()
         self.ui = gui.ui_united.Ui_MainWindow()
@@ -115,6 +116,8 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         self.spinner = QMovie(resource_path("assets/gui/icons/spinner.gif"))
         self.spinner.setScaledSize(QSize(32, 32))
         self.spinner.start()
+
+        self.ui.longDescriptionLoadingSpinner.setMovie(self.spinner)
 
         self.populate()
         self.selection_changed()
@@ -219,10 +222,19 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
     # When user switches to a different tab
     def tab_changed(self):
         if self.ui.tabMetadata.currentIndex() == 1:
-            self.ui.longDescriptionBrowser.setText("Loading description..")
-            self.repaint()
-            app_name = self.ui.listAppsWidget.currentItem().data(Qt.UserRole)["internal_name"]
-            self.ui.longDescriptionBrowser.setText(metadata.long_description(app_name, repo=HOST))
+            t = threading.Thread(target=self.load_long_description)
+            t.start()
+
+    # Load long description
+    def load_long_description(self):
+        self.LongDescriptionSignal.connect(self.ui.longDescriptionBrowser.setText)
+
+        self.ui.longDescriptionLoadingSpinner.setVisible(True)
+        self.LongDescriptionSignal.emit("Loading description..")
+
+        app_name = self.ui.listAppsWidget.currentItem().data(Qt.UserRole)["internal_name"]
+        self.LongDescriptionSignal.emit(metadata.long_description(app_name, repo=HOST))
+        self.ui.longDescriptionLoadingSpinner.setVisible(False)
 
     # When user selects a different homebrew from the list
     def selection_changed(self):

@@ -342,7 +342,7 @@ class Ui_MainWindow(object):
         self.frame.setFrameShadow(QFrame.Raised)
         self.developer = QLineEdit(self.frame)
         self.developer.setObjectName(u"developer")
-        self.developer.setGeometry(QRect(0, 0, 151, 20))
+        self.developer.setGeometry(QRect(0, 0, 149, 20))
         self.developer.setEchoMode(QLineEdit.Normal)
         self.developer.setReadOnly(True)
         self.developer_profile_btn = QPushButton(self.frame)
@@ -404,6 +404,9 @@ class Ui_MainWindow(object):
         self.longDescriptionBrowser.setStyleSheet(u"QTextBrowser {\n"
 "	border-style: hidden;\n"
 "}")
+        self.longDescriptionLoadingSpinner = QLabel(self.Description)
+        self.longDescriptionLoadingSpinner.setObjectName(u"longDescriptionLoadingSpinner")
+        self.longDescriptionLoadingSpinner.setGeometry(QRect(210, 210, 32, 32))
         self.tabMetadata.addTab(self.Description, "")
         self.RawTab = QWidget()
         self.RawTab.setObjectName(u"RawTab")
@@ -620,6 +623,7 @@ class Ui_MainWindow(object):
 "p, li { white-space: pre-wrap; }\n"
 "</style></head><body style=\" font-family:'Segoe UI'; font-size:9pt; font-weight:400; font-style:normal;\">\n"
 "<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br /></p></body></html>", None))
+        self.longDescriptionLoadingSpinner.setText("")
         self.tabMetadata.setTabText(self.tabMetadata.indexOf(self.Description), QCoreApplication.translate("MainWindow", u"Description", None))
 #if QT_CONFIG(accessibility)
         self.RawTab.setAccessibleName(QCoreApplication.translate("MainWindow", u"tabcontent", None))
