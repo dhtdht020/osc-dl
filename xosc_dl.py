@@ -105,6 +105,10 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         self.ui.MoreOptionsIconLabel.setPixmap(
             QtGui.QPixmap(resource_path("assets/gui/icons/titles/light/options.png")))
 
+        # real icons test: if realicons is specified, set size of icon to 171x64
+        if utils.is_test("realicons"):
+            self.ui.listAppsWidget.setIconSize(QSize(171, 32))
+
         self.populate()
         self.selection_changed()
         self.status_message("Ready to download")
@@ -577,16 +581,21 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
                     list_item.setData(Qt.UserRole, package)
                     # Set category icon
                     category = package["category"]
-                    if category == "utilities":
-                        list_item.setIcon(QIcon(resource_path("assets/gui/icons/category/utility.png")))
-                    elif category == "games":
-                        list_item.setIcon(QIcon(resource_path("assets/gui/icons/category/game.png")))
-                    elif category == "emulators":
-                        list_item.setIcon(QIcon(resource_path("assets/gui/icons/category/emulator.png")))
-                    elif category == "media":
-                        list_item.setIcon(QIcon(resource_path("assets/gui/icons/category/media.png")))
-                    elif category == "demos":
-                        list_item.setIcon(QIcon(resource_path("assets/gui/icons/category/demo.png")))
+
+                    # real icons test: if realicons is specified, set icon
+                    if utils.is_test("realicons"):
+                        list_item.setIcon(QIcon(resource_path("assets/gui/icons/category/testicon.png")))
+                    else:
+                        if category == "utilities":
+                            list_item.setIcon(QIcon(resource_path("assets/gui/icons/category/utility.png")))
+                        elif category == "games":
+                            list_item.setIcon(QIcon(resource_path("assets/gui/icons/category/game.png")))
+                        elif category == "emulators":
+                            list_item.setIcon(QIcon(resource_path("assets/gui/icons/category/emulator.png")))
+                        elif category == "media":
+                            list_item.setIcon(QIcon(resource_path("assets/gui/icons/category/media.png")))
+                        elif category == "demos":
+                            list_item.setIcon(QIcon(resource_path("assets/gui/icons/category/demo.png")))
                     try:
                         if not splash.isHidden():
                             splash.showMessage(f"Loaded {i} apps..", color=splash_color)
