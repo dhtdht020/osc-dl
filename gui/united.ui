@@ -532,187 +532,6 @@ background-color: rgba(255, 255, 255, 0);
            <attribute name="title">
             <string>General</string>
            </attribute>
-           <widget class="QWidget" name="formLayoutWidget">
-            <property name="geometry">
-             <rect>
-              <x>10</x>
-              <y>100</y>
-              <width>223</width>
-              <height>131</height>
-             </rect>
-            </property>
-            <layout class="QFormLayout" name="MetaLayout">
-             <item row="1" column="0">
-              <widget class="QLabel" name="label_version">
-               <property name="text">
-                <string>Version</string>
-               </property>
-              </widget>
-             </item>
-             <item row="1" column="1">
-              <widget class="QLineEdit" name="version">
-               <property name="minimumSize">
-                <size>
-                 <width>149</width>
-                 <height>20</height>
-                </size>
-               </property>
-               <property name="echoMode">
-                <enum>QLineEdit::Normal</enum>
-               </property>
-               <property name="readOnly">
-                <bool>true</bool>
-               </property>
-              </widget>
-             </item>
-             <item row="2" column="0">
-              <widget class="QLabel" name="label_developer">
-               <property name="text">
-                <string>Developer</string>
-               </property>
-              </widget>
-             </item>
-             <item row="3" column="0">
-              <widget class="QLabel" name="label_releasedate">
-               <property name="text">
-                <string>Release Date</string>
-               </property>
-              </widget>
-             </item>
-             <item row="3" column="1">
-              <widget class="QLineEdit" name="releasedate">
-               <property name="minimumSize">
-                <size>
-                 <width>149</width>
-                 <height>20</height>
-                </size>
-               </property>
-               <property name="echoMode">
-                <enum>QLineEdit::Normal</enum>
-               </property>
-               <property name="readOnly">
-                <bool>true</bool>
-               </property>
-              </widget>
-             </item>
-             <item row="4" column="0">
-              <widget class="QLabel" name="label_filesize">
-               <property name="text">
-                <string>File Size</string>
-               </property>
-              </widget>
-             </item>
-             <item row="4" column="1">
-              <widget class="QLineEdit" name="filesize">
-               <property name="minimumSize">
-                <size>
-                 <width>149</width>
-                 <height>20</height>
-                </size>
-               </property>
-               <property name="echoMode">
-                <enum>QLineEdit::Normal</enum>
-               </property>
-               <property name="readOnly">
-                <bool>true</bool>
-               </property>
-              </widget>
-             </item>
-             <item row="0" column="1">
-              <widget class="QLineEdit" name="appname">
-               <property name="minimumSize">
-                <size>
-                 <width>149</width>
-                 <height>20</height>
-                </size>
-               </property>
-               <property name="text">
-                <string/>
-               </property>
-               <property name="echoMode">
-                <enum>QLineEdit::Normal</enum>
-               </property>
-               <property name="readOnly">
-                <bool>true</bool>
-               </property>
-               <property name="placeholderText">
-                <string/>
-               </property>
-              </widget>
-             </item>
-             <item row="0" column="0">
-              <widget class="QLabel" name="label_appname">
-               <property name="text">
-                <string>App Name</string>
-               </property>
-              </widget>
-             </item>
-             <item row="2" column="1">
-              <widget class="QFrame" name="frame">
-               <property name="minimumSize">
-                <size>
-                 <width>149</width>
-                 <height>20</height>
-                </size>
-               </property>
-               <property name="frameShape">
-                <enum>QFrame::StyledPanel</enum>
-               </property>
-               <property name="frameShadow">
-                <enum>QFrame::Raised</enum>
-               </property>
-               <widget class="QLineEdit" name="developer">
-                <property name="geometry">
-                 <rect>
-                  <x>0</x>
-                  <y>0</y>
-                  <width>149</width>
-                  <height>20</height>
-                 </rect>
-                </property>
-                <property name="echoMode">
-                 <enum>QLineEdit::Normal</enum>
-                </property>
-                <property name="readOnly">
-                 <bool>true</bool>
-                </property>
-               </widget>
-               <widget class="QPushButton" name="developer_profile_btn">
-                <property name="geometry">
-                 <rect>
-                  <x>129</x>
-                  <y>-1</y>
-                  <width>21</width>
-                  <height>21</height>
-                 </rect>
-                </property>
-                <property name="font">
-                 <font>
-                  <pointsize>14</pointsize>
-                  <italic>false</italic>
-                  <bold>true</bold>
-                  <underline>false</underline>
-                 </font>
-                </property>
-                <property name="styleSheet">
-                 <string notr="true">QPushButton {
-	background-color: transparent;
-    border: none;
-    outline: none;
-}
-
-QPushButton:hover {
-    color: #0078D7;
-}</string>
-                </property>
-                <property name="text">
-                 <string>➔</string>
-                </property>
-               </widget>
-              </widget>
-             </item>
-            </layout>
-           </widget>
            <widget class="QLabel" name="label_description">
             <property name="geometry">
              <rect>
@@ -819,6 +638,229 @@ QPushButton:hover {
              <set>Qt::AlignCenter</set>
             </property>
            </widget>
+           <widget class="QLineEdit" name="filesize">
+            <property name="geometry">
+             <rect>
+              <x>80</x>
+              <y>209</y>
+              <width>152</width>
+              <height>21</height>
+             </rect>
+            </property>
+            <property name="minimumSize">
+             <size>
+              <width>149</width>
+              <height>20</height>
+             </size>
+            </property>
+            <property name="echoMode">
+             <enum>QLineEdit::Normal</enum>
+            </property>
+            <property name="readOnly">
+             <bool>true</bool>
+            </property>
+           </widget>
+           <widget class="QLineEdit" name="version">
+            <property name="geometry">
+             <rect>
+              <x>80</x>
+              <y>128</y>
+              <width>152</width>
+              <height>21</height>
+             </rect>
+            </property>
+            <property name="minimumSize">
+             <size>
+              <width>149</width>
+              <height>20</height>
+             </size>
+            </property>
+            <property name="echoMode">
+             <enum>QLineEdit::Normal</enum>
+            </property>
+            <property name="readOnly">
+             <bool>true</bool>
+            </property>
+           </widget>
+           <widget class="QLabel" name="label_version">
+            <property name="geometry">
+             <rect>
+              <x>10</x>
+              <y>128</y>
+              <width>38</width>
+              <height>21</height>
+             </rect>
+            </property>
+            <property name="text">
+             <string>Version</string>
+            </property>
+           </widget>
+           <widget class="QLabel" name="label_appname">
+            <property name="geometry">
+             <rect>
+              <x>10</x>
+              <y>101</y>
+              <width>57</width>
+              <height>21</height>
+             </rect>
+            </property>
+            <property name="text">
+             <string>App Name</string>
+            </property>
+           </widget>
+           <widget class="QLabel" name="label_developer">
+            <property name="geometry">
+             <rect>
+              <x>10</x>
+              <y>155</y>
+              <width>53</width>
+              <height>20</height>
+             </rect>
+            </property>
+            <property name="text">
+             <string>Developer</string>
+            </property>
+           </widget>
+           <widget class="QLabel" name="label_filesize">
+            <property name="geometry">
+             <rect>
+              <x>10</x>
+              <y>209</y>
+              <width>41</width>
+              <height>21</height>
+             </rect>
+            </property>
+            <property name="text">
+             <string>File Size</string>
+            </property>
+           </widget>
+           <widget class="QPushButton" name="developer_profile_btn">
+            <property name="geometry">
+             <rect>
+              <x>212</x>
+              <y>156</y>
+              <width>21</width>
+              <height>16</height>
+             </rect>
+            </property>
+            <property name="font">
+             <font>
+              <pointsize>14</pointsize>
+              <italic>false</italic>
+              <bold>true</bold>
+              <underline>false</underline>
+             </font>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">QPushButton {
+	background-color: transparent;
+    border: none;
+    outline: none;
+}
+
+QPushButton:hover {
+    color: #0078D7;
+}</string>
+            </property>
+            <property name="text">
+             <string>➔</string>
+            </property>
+           </widget>
+           <widget class="QLineEdit" name="appname">
+            <property name="geometry">
+             <rect>
+              <x>80</x>
+              <y>101</y>
+              <width>152</width>
+              <height>21</height>
+             </rect>
+            </property>
+            <property name="minimumSize">
+             <size>
+              <width>149</width>
+              <height>20</height>
+             </size>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+            <property name="echoMode">
+             <enum>QLineEdit::Normal</enum>
+            </property>
+            <property name="readOnly">
+             <bool>true</bool>
+            </property>
+            <property name="placeholderText">
+             <string/>
+            </property>
+           </widget>
+           <widget class="QLineEdit" name="developer">
+            <property name="geometry">
+             <rect>
+              <x>80</x>
+              <y>155</y>
+              <width>152</width>
+              <height>21</height>
+             </rect>
+            </property>
+            <property name="echoMode">
+             <enum>QLineEdit::Normal</enum>
+            </property>
+            <property name="readOnly">
+             <bool>true</bool>
+            </property>
+           </widget>
+           <widget class="QLineEdit" name="releasedate">
+            <property name="geometry">
+             <rect>
+              <x>80</x>
+              <y>181</y>
+              <width>152</width>
+              <height>22</height>
+             </rect>
+            </property>
+            <property name="minimumSize">
+             <size>
+              <width>149</width>
+              <height>20</height>
+             </size>
+            </property>
+            <property name="echoMode">
+             <enum>QLineEdit::Normal</enum>
+            </property>
+            <property name="readOnly">
+             <bool>true</bool>
+            </property>
+           </widget>
+           <widget class="QLabel" name="label_releasedate">
+            <property name="geometry">
+             <rect>
+              <x>10</x>
+              <y>181</y>
+              <width>66</width>
+              <height>22</height>
+             </rect>
+            </property>
+            <property name="text">
+             <string>Release Date</string>
+            </property>
+           </widget>
+           <zorder>label_description</zorder>
+           <zorder>label_displayname</zorder>
+           <zorder>progressBar</zorder>
+           <zorder>HomebrewIconLabel</zorder>
+           <zorder>HomebrewCategoryLabel</zorder>
+           <zorder>filesize</zorder>
+           <zorder>version</zorder>
+           <zorder>label_version</zorder>
+           <zorder>label_appname</zorder>
+           <zorder>label_developer</zorder>
+           <zorder>label_filesize</zorder>
+           <zorder>appname</zorder>
+           <zorder>developer</zorder>
+           <zorder>releasedate</zorder>
+           <zorder>label_releasedate</zorder>
+           <zorder>developer_profile_btn</zorder>
           </widget>
           <widget class="QWidget" name="Description">
            <property name="accessibleName">
