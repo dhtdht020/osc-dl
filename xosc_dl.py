@@ -181,7 +181,7 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         # Connect signals
         try:
             if not splash.isHidden():
-                splash.showMessage(f"Finishing (1/3)..", color=splash_color)
+                splash.showMessage(f"Finishing (1/2)..", color=splash_color)
         except NameError:
             pass
         # Buttons
@@ -234,7 +234,7 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
     def selection_changed(self):
         try:
             if not splash.isHidden():
-                splash.showMessage(f"Finishing (2/3) - Loading first app..", color=splash_color)
+                splash.showMessage(f"Finishing (2/2) - Loading first app..", color=splash_color)
         except NameError:
             pass
         try:
