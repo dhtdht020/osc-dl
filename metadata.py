@@ -192,12 +192,16 @@ def parse_controllers(controllers):
 
 # API-related functions
 class API:
-    packages = get_apps()
     host_name = "primary"
+
+    packages = None
+
+    def get_packages(self):
+        self.packages = get_apps()
 
     # Change repository
     def set_host(self, host):
-        if host == self.host_name:
+        if host == self.host_name and (self.packages):
             pass
         else:
             self.host_name = host
