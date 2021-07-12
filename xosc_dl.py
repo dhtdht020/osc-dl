@@ -570,7 +570,7 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         self.populate_list()
         self.ui.CategoriesComboBox.currentIndexChanged.connect(self.changed_category)
 
-    def populate_list(self, category="all", coder=None):
+    def populate_list(self):
         try:
             try:
                 if not splash.isHidden():
@@ -579,7 +579,7 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
                 pass
 
             # Get apps json
-            loaded_json = metadata.get_apps(host_name=HOST_NAME, category=category, coder=coder)
+            loaded_json = metadata.get_apps(host_name=HOST_NAME)
             i = 0
 
             for package in loaded_json:

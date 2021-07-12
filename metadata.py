@@ -41,15 +41,9 @@ def url(app_name, repo="hbb1.oscwii.org"):
 
 
 # Get JSON of specified packages from API
-def get_apps(host_name="primary", category="all", coder=None):
+def get_apps(host_name="primary"):
     try:
-        if category == "all":
-            json_req = requests.get(f"https://api.oscwii.org/v2/{host_name}/packages")
-            if coder is not None:
-                json_req = requests.get(f"https://api.oscwii.org/v2/{host_name}/packages?coder={coder}")
-        else:
-            json_req = requests.get(f"https://api.oscwii.org/v2/{host_name}/packages?category={category}")
-
+        json_req = requests.get(f"https://api.oscwii.org/v2/{host_name}/packages")
         if json_req.status_code != 200:
             raise Exception("Cannot reach Open Shop Channel API.")
 
