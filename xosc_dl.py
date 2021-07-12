@@ -56,6 +56,7 @@ if updater.is_frozen():
 class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
     IconSignal = QtCore.Signal(QPixmap)
     LongDescriptionSignal = QtCore.Signal(str)
+    AnnouncementBannerHidden = QtCore.Signal(bool)
     def __init__(self, test_mode=False):
         super(MainWindow, self).__init__()
         self.ui = gui.ui_united.Ui_MainWindow()
@@ -115,7 +116,9 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         self.status_message("Ready to download")
         self.ui.progressBar.setHidden(False)
         self.ui.statusBar.addPermanentWidget(self.ui.progressBar)
-        self.load_announcement_banner()
+        # Load announcement banner
+        t = threading.Thread(target=self.load_announcement_banner)
+        t.start()
 
     # show given status message on bottom status bar
     def status_message(self, message):
@@ -701,11 +704,6 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
 
     def load_announcement_banner(self):
         try:
-            if not splash.isHidden():
-                splash.showMessage(f"Finishing (3/3) - Checking for announcements..", color=splash_color)
-        except NameError:
-            pass
-        try:
             announcement = updater.get_announcement()
             announcement_label = announcement[0]
             announcement_url_label = announcement[1]
@@ -714,7 +712,8 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
             announcement_website_enabled = announcement[4]
             if announcement is not None:
                 # Un-hide banner
-                self.ui.announcement.setHidden(False)
+                self.AnnouncementBannerHidden.connect(self.ui.announcement.setHidden)
+                self.AnnouncementBannerHidden.emit(False)
 
                 # Set banner styling
                 self.ui.announcement.setStyleSheet(f'QFrame {{'
