@@ -255,6 +255,14 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
             # Set data
             data = self.ui.listAppsWidget.currentItem().data(Qt.UserRole)
 
+            # check if send to wii is supported
+            if utils.is_supported_by_wiiload(data):
+                self.ui.WiiLoadButton.setEnabled(True)
+                self.ui.WiiLoadButton.setText("Send to Wii")
+            else:
+                self.ui.WiiLoadButton.setEnabled(False)
+                self.ui.WiiLoadButton.setText("Send Not Supported")
+
             # -- Get actual metadata
             # App Name
             self.ui.appname.setText(data["display_name"])
