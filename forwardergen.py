@@ -6,14 +6,11 @@ import threading
 import os
 import sys
 
-import logging  # for logs
-
 import requests
 from PySide6.QtGui import QIcon
 from PySide6.QtWidgets import QApplication,QWizard
 
 import gui.ui_forwarderwiz
-import updater
 
 
 # Get resource when frozen with PyInstaller
@@ -21,13 +18,6 @@ def resource_path(relative_path):
     if hasattr(sys, '_MEIPASS'):
         return os.path.join(sys._MEIPASS, relative_path)
     return os.path.join(os.path.abspath("."), relative_path)
-
-
-# Actions to perform only when the program is frozen:
-if updater.is_frozen():
-    logging.basicConfig(level=logging.DEBUG)
-    logging.info(f"Open Shop Channel Downloader v{updater.current_version()} {updater.get_branch()}")
-    logging.info(f"OSCDL, Open Source Software by dhtdht020. https://github.com/dhtdht020.\n\n\n")
 
 
 # G U I
@@ -51,7 +41,6 @@ class ForwarderWizard(gui.ui_forwarderwiz.Ui_Wizard, QWizard):
 
 
     def initial_connections(self):
-        #pass
         self.currentIdChanged.connect(self.page_changed)
 
     def page_changed(self):
