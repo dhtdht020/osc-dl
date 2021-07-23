@@ -1065,6 +1065,7 @@ p, li { white-space: pre-wrap; }
      </widget>
      <addaction name="menuAnnouncement_Banner"/>
      <addaction name="actionSelect_Theme"/>
+     <addaction name="actionForwarder_Generator"/>
     </widget>
     <addaction name="actionCopy_Direct_Link"/>
     <addaction name="separator"/>
@@ -1174,6 +1175,11 @@ p, li { white-space: pre-wrap; }
   <action name="actionCopy_Direct_Link">
    <property name="text">
     <string>Copy Direct Link to App</string>
+   </property>
+  </action>
+  <action name="actionForwarder_Generator">
+   <property name="text">
+    <string>[IN DEV] Forwarder Generator</string>
    </property>
   </action>
  </widget>

@@ -21,6 +21,7 @@ from PySide6.QtWidgets import QApplication, QMainWindow, QInputDialog, QLineEdit
     QListWidgetItem, QFileDialog
 
 import download
+import forwardergen
 import gui.ui_united
 import metadata
 import updater
@@ -178,12 +179,13 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
                                                   "themes"], Qt.UserRole)
 
     def assign_initial_actions(self):
-        # Connect signals
         try:
             if not splash.isHidden():
                 splash.showMessage(f"Finishing (1/2)..", color=splash_color)
         except NameError:
             pass
+
+        # Connect signals
         # Buttons
         self.ui.actionCopy_Direct_Link.triggered.connect(self.copy_download_link_button)
         self.ui.ViewMetadataBtn.clicked.connect(self.download_button)
@@ -206,6 +208,7 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         self.ui.actionClose_the_shop.triggered.connect(self.close_the_shop)
         self.ui.actionDisplay_Banner.triggered.connect(self.load_announcement_banner)
         self.ui.actionSelect_Theme.triggered.connect(self.select_theme_action)
+        self.ui.actionForwarder_Generator.triggered.connect(self.forwarder_generator)
         # -- Clients
         # ---- Homebrew Browser
         self.ui.actionDownload_HBB_Client_Latest.triggered.connect(partial(self.download_latest_hbb_action))
@@ -874,6 +877,11 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
 
         with open(resource_path(f"assets/themes/{theme}"), "r") as fh:
             self.setStyleSheet(fh.read())
+
+    def forwarder_generator(self):
+        selected_app = self.ui.listAppsWidget.currentItem().data(Qt.UserRole)
+        self.forwarder_gen_window = forwardergen.ForwarderWizard(self, selected_app=selected_app)
+        self.forwarder_gen_window.show()
 
 
 if __name__ == "__main__":
