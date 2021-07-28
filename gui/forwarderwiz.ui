@@ -221,6 +221,33 @@
     </item>
    </layout>
   </widget>
+  <widget class="QWizardPage" name="wizardPage5">
+   <property name="title">
+    <string>Generating Forwarder...</string>
+   </property>
+   <property name="subTitle">
+    <string>OSCDL Forwarder Wizard is preparing your forwarder.</string>
+   </property>
+   <layout class="QVBoxLayout" name="verticalLayout_5">
+    <item>
+     <widget class="QGraphicsView" name="graphicsView"/>
+    </item>
+    <item>
+     <widget class="QProgressBar" name="progressBar">
+      <property name="value">
+       <number>0</number>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QLabel" name="StatusLabel">
+      <property name="text">
+       <string>Status: </string>
+      </property>
+     </widget>
+    </item>
+   </layout>
+  </widget>
  </widget>
  <resources/>
  <connections/>

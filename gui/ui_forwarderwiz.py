@@ -138,6 +138,27 @@ class Ui_Wizard(object):
         self.verticalLayout_4.addWidget(self.Summary_TitleID)
 
         Wizard.addPage(self.wizardPage4)
+        self.wizardPage5 = QWizardPage()
+        self.wizardPage5.setObjectName(u"wizardPage5")
+        self.verticalLayout_5 = QVBoxLayout(self.wizardPage5)
+        self.verticalLayout_5.setObjectName(u"verticalLayout_5")
+        self.graphicsView = QGraphicsView(self.wizardPage5)
+        self.graphicsView.setObjectName(u"graphicsView")
+
+        self.verticalLayout_5.addWidget(self.graphicsView)
+
+        self.progressBar = QProgressBar(self.wizardPage5)
+        self.progressBar.setObjectName(u"progressBar")
+        self.progressBar.setValue(0)
+
+        self.verticalLayout_5.addWidget(self.progressBar)
+
+        self.StatusLabel = QLabel(self.wizardPage5)
+        self.StatusLabel.setObjectName(u"StatusLabel")
+
+        self.verticalLayout_5.addWidget(self.StatusLabel)
+
+        Wizard.addPage(self.wizardPage5)
 
         self.retranslateUi(Wizard)
 
@@ -168,5 +189,8 @@ class Ui_Wizard(object):
         self.Summary_ApplicationSource.setText("")
         self.label_8.setText(QCoreApplication.translate("Wizard", u"Title ID:", None))
         self.Summary_TitleID.setText("")
+        self.wizardPage5.setTitle(QCoreApplication.translate("Wizard", u"Generating Forwarder...", None))
+        self.wizardPage5.setSubTitle(QCoreApplication.translate("Wizard", u"OSCDL Forwarder Wizard is preparing your forwarder.", None))
+        self.StatusLabel.setText(QCoreApplication.translate("Wizard", u"Status: ", None))
     # retranslateUi
 

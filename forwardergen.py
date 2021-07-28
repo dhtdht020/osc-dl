@@ -14,6 +14,9 @@ import gui.ui_forwarderwiz
 
 
 # Get resource when frozen with PyInstaller
+import utils
+
+
 def resource_path(relative_path):
     if hasattr(sys, '_MEIPASS'):
         return os.path.join(sys._MEIPASS, relative_path)
@@ -47,6 +50,7 @@ class ForwarderWizard(gui.ui_forwarderwiz.Ui_Wizard, QWizard):
         # get list of title ids if page is 1
         if self.currentId() == 1:
             if not self.id_list_loaded:
+                self.button(QWizard.NextButton).setEnabled(False)
                 self.ui.AvailableIDsListWidget.clear()
                 self.ui.AvailableIDsListWidget.setEnabled(False)
                 self.ui.AvailableIDsListWidget.addItem("Loading..")
@@ -65,6 +69,11 @@ class ForwarderWizard(gui.ui_forwarderwiz.Ui_Wizard, QWizard):
                 self.ui.Summary_TitleID.setText(self.ui.AvailableIDsListWidget.currentItem().text())
                 self.ui.Summary_ApplicationSource.setText(f"{self.selected_app['display_name']} from Open Shop Channel")
 
+        # page 4
+        if self.currentId() == 4:
+            self.button(QWizard.FinishButton).setEnabled(False)
+            t = threading.Thread(target=self.generate_forwarder)
+            t.start()
 
     def populate_ids(self):
         # download database from gametdb
@@ -100,6 +109,17 @@ class ForwarderWizard(gui.ui_forwarderwiz.Ui_Wizard, QWizard):
         self.id_list_loaded = True
 
         self.ui.AvailableIDsListWidget.setCurrentRow(0)
+        self.button(QWizard.NextButton).setEnabled(True)
+
+    def generate_forwarder(self):
+        # this function currently expects test files that are not ready to commit
+        # or that OSCDL does not ask for yet from the user, for this reason-
+        # this feature is locked behind the "gentest" flag
+
+        # verify OSCDL is running with the gentest flag
+        if utils.is_test("gentest"):
+            # unpack wad to temporary location
+            pass
 
 
 if __name__ == "__main__":
