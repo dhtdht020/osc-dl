@@ -886,7 +886,11 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
 
 if __name__ == "__main__":
     global app
-    app = QApplication()
+
+    if not utils.is_test("qtdark"):
+        app = QApplication()
+    else:
+        app = QApplication([sys.argv[0], '-platform', f'windows:darkmode={sys.argv[2]}'])
 
     # set windows style for macOS users
     if platform.system() == "Darwin":
