@@ -23,9 +23,7 @@ def get_branch():
 def latest_version():
     u = requests.get("https://api.github.com/repos/dhtdht020/osc-dl/releases/latest")
     data = json.loads(u.content)
-    for key, value in data.items():
-        if key == "tag_name":
-            return value
+    return data
 
 
 def is_frozen():
@@ -37,8 +35,8 @@ def is_frozen():
         return False
 
 
-def check_update():
-    latest = latest_version()
+def check_update(release):
+    latest = release["tag_name"]
     if version.parse(latest) > version.parse(current_version()):
         # out of date
         return True

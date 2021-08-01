@@ -9,6 +9,7 @@ import yaml
 import os
 import socket
 import sys
+import markdown
 
 import logging  # for logs
 from functools import partial
@@ -668,12 +669,17 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
     # Check for updates dialog
     def check_for_updates_action(self):
         self.status_message("Checking for updates.. This will take a few moments..")
-        if updater.check_update() is True:
-            latest = updater.latest_version()
-            self.status_message("New version available! (" + updater.latest_version() + ") OSCDL is out of date.")
-            QMessageBox.warning(self, 'OSCDL is out of date',
-                                'Please go to the GitHub page and obtain the latest release\n'
-                                'Newest Version: ' + latest)
+        latest = updater.latest_version()
+        if updater.check_update(latest) is True:
+            self.status_message("New version available! (" + latest['tag_name'] + ") OSCDL is out of date.")
+            body = latest['body'].replace("![image]", "")
+            QMessageBox.warning(self, 'OSCDL is out of date - New Release Available!',
+                                f"<a href='https://github.com/dhtdht020/osc-dl'>View on GitHub</a><br>"
+                                f"<b style=\"font-size: 20px\">{latest['name']}</b><hr>"
+                                f"<b>Released on {latest['published_at']}</b><br><br>"
+                                f"{markdown.markdown((body[:705] + '... <br><i>Learn more on GitHub</i>') if len(body) > 705 else body)}<hr>"
+                                f"Please go to the <a href='https://github.com/dhtdht020/osc-dl'>GitHub page</a> and obtain the latest release<br>"
+                                f"Newest Version: {latest['tag_name']}")
         else:
             self.status_message("OSCDL is up to date!")
             QMessageBox.information(self, 'OSCDL is up to date',
