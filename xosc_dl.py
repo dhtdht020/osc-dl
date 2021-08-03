@@ -71,6 +71,7 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         app_icon = QIcon(resource_path("assets/gui/windowicon.png"))
         self.setWindowIcon(app_icon)
 
+        self.current_app = None
         self.current_category = "all"
         self.current_developer = ""
         self.repo_data = None
@@ -242,8 +243,8 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         except NameError:
             pass
         try:
-            data = self.ui.listAppsWidget.currentItem().data(Qt.UserRole)
-            app_name = data["internal_name"]
+            self.current_app = self.ui.listAppsWidget.currentItem().data(Qt.UserRole)
+            app_name = self.current_app["internal_name"]
         except Exception:
             app_name = None
         if app_name is not None:
@@ -256,11 +257,8 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
             # Clear supported controllers listview:
             self.ui.SupportedControllersListWidget.clear()
 
-            # Set data
-            data = self.ui.listAppsWidget.currentItem().data(Qt.UserRole)
-
             # check if send to wii is supported
-            if utils.is_supported_by_wiiload(data):
+            if utils.is_supported_by_wiiload(self.current_app):
                 self.ui.WiiLoadButton.setEnabled(True)
                 self.ui.WiiLoadButton.setText("Send to Wii")
             else:
@@ -269,24 +267,24 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
 
             # -- Get actual metadata
             # App Name
-            self.ui.appname.setText(data["display_name"])
-            self.ui.SelectionInfoBox.setTitle("Metadata: " + data["display_name"])
-            self.ui.label_displayname.setText(data["display_name"])
+            self.ui.appname.setText(self.current_app["display_name"])
+            self.ui.SelectionInfoBox.setTitle("Metadata: " + self.current_app["display_name"])
+            self.ui.label_displayname.setText(self.current_app["display_name"])
 
             # File Size
             try:
-                self.ui.filesize.setText(metadata.file_size(data["extracted"]))
+                self.ui.filesize.setText(metadata.file_size(self.current_app["extracted"]))
             except KeyError:
                 self.ui.filesize.setText("Unknown")
 
             # Category
-            self.ui.HomebrewCategoryLabel.setText(metadata.category_display_name(data["category"]))
+            self.ui.HomebrewCategoryLabel.setText(metadata.category_display_name(self.current_app["category"]))
 
             # Release Date
-            self.ui.releasedate.setText(datetime.fromtimestamp(int(data["release_date"])).strftime('%B %e, %Y at %R'))
+            self.ui.releasedate.setText(datetime.fromtimestamp(int(self.current_app["release_date"])).strftime('%B %e, %Y at %R'))
 
             # Controllers
-            controllers = metadata.parse_controllers(data["controllers"])
+            controllers = metadata.parse_controllers(self.current_app["controllers"])
             # Add icons for Wii Remotes
             if controllers[0] > 1:
                 item = QListWidgetItem()
@@ -338,19 +336,19 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
                 self.ui.SupportedControllersListWidget.addItem(item)
 
             # Version
-            self.ui.version.setText(data["version"])
+            self.ui.version.setText(self.current_app["version"])
 
             # Coder
-            self.ui.developer.setText(data["coder"])
+            self.ui.developer.setText(self.current_app["coder"])
 
             # Short Description
-            if data["short_description"] == "":
+            if self.current_app["short_description"] == "":
                 self.ui.label_description.setText("No description specified.")
             else:
-                self.ui.label_description.setText(data["short_description"])
+                self.ui.label_description.setText(self.current_app["short_description"])
 
             # Long Description
-            self.ui.longDescriptionBrowser.setText(data["long_description"])
+            self.ui.longDescriptionBrowser.setText(self.current_app["long_description"])
 
             # File Name Line Edit
             self.ui.FileNameLineEdit.setText(app_name + ".zip")
@@ -369,9 +367,7 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         return QObject.tr(self, text)
 
     def download_button(self, hbb=False):
-        data = self.ui.listAppsWidget.currentItem().data(Qt.UserRole)
-        self.app_name = data["internal_name"]
-        self.status_message(f"Downloading {self.app_name} from Open Shop Channel..")
+        self.status_message(f"Downloading {self.current_app['display_name']} from Open Shop Channel..")
 
         if self.sender():
             object_name = self.sender().objectName()
@@ -394,16 +390,16 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
                     dir_path = '%s\\OSCDL\\' % os.environ['APPDATA']
                     if not os.path.exists(dir_path):
                         os.makedirs(dir_path)
-                    output = f'%s{self.app_name}' % dir_path
+                    output = f'%s{self.current_app["internal_name"]}' % dir_path
                 else:
-                    output = f"{self.app_name}.zip"
+                    output = f"{self.current_app['internal_name']}.zip"
         self.ui.progressBar.setValue(0)
         if output != '':
             # get url to app
             if hbb:
                 url = "https://wii.guide/assets/files/homebrew_browser_v0.3.9e.zip"
             else:
-                url = download.get_url(app_name=self.app_name, repo=HOST)
+                url = download.get_url(app_name=self.current_app["internal_name"], repo=HOST)
             # stream file, so I can iterate
             response = requests.get(url, stream=True)
             total_size = int(response.headers.get('content-length', 0))
@@ -424,7 +420,7 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
                         if hbb:
                             self.status_message(f"Downloading Homebrew Browser from Open Shop Channel.. ({metadata.file_size(self.ui.progressBar.value())}/{metadata.file_size(total_size)})")
                         else:
-                            self.status_message(f"Downloading {self.app_name} from Open Shop Channel.. ({metadata.file_size(self.ui.progressBar.value())}/{metadata.file_size(total_size)})")
+                            self.status_message(f"Downloading {self.current_app['internal_name']} from Open Shop Channel.. ({metadata.file_size(self.ui.progressBar.value())}/{metadata.file_size(total_size)})")
                         try:
                             app.processEvents()
                         except NameError:
@@ -449,13 +445,11 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
 
     def wiiload_button(self):
         data = self.ui.listAppsWidget.currentItem().data(Qt.UserRole)
-        app_name = data["internal_name"]
-        app_display_name = data["display_name"]
 
         ip, ok = QInputDialog.getText(self, 'Send to Wii: Enter IP address',
                                       'Enter the IP address of your Wii.\n'
                                       'The selected app will be sent through the network to your Wii.\n\n'
-                                      f'App to send: {app_display_name}\n\n'
+                                      f'App to send: {self.current_app["display_name"]}\n\n'
                                       'To find your Wii\'s IP address:\n'
                                       '1) Enter the Homebrew Channel.\n'
                                       '2) Press the home button on the Wii Remote.\n'
@@ -472,7 +466,7 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
             QMessageBox.warning(self, 'Invalid IP Address', 'This IP address is invalid.')
             return
 
-        self.status_message("Downloading " + app_name + " from Open Shop Channel..")
+        self.status_message("Downloading " + self.current_app["display_name"] + " from Open Shop Channel..")
         self.ui.progressBar.setValue(25)
 
         # get app
@@ -531,7 +525,7 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
             except NameError:
                 pass
 
-        file_name = f'{app_name}.zip'
+        file_name = f'{self.current_app["internal_name"]}.zip'
         conn.send(bytes(file_name, 'utf-8') + b'\x00')
 
         # delete application zip file
@@ -542,9 +536,8 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         logging.info(f"App transmitted to HBC at {ip}")
 
     def copy_download_link_button(self):
-        data = self.ui.listAppsWidget.currentItem().data(Qt.UserRole)
-        QApplication.clipboard().setText(metadata.url(data['internal_name'], repo=HOST))
-        self.status_message(f"Copied the download link for \"{data['display_name']}\" to clipboard")
+        QApplication.clipboard().setText(metadata.url(self.current_app['internal_name'], repo=HOST))
+        self.status_message(f"Copied the download link for \"{self.current_app['display_name']}\" to clipboard")
 
     def changed_host(self):
         global HOST
