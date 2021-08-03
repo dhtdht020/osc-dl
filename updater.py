@@ -5,12 +5,18 @@ import json
 import yaml
 from packaging import version
 
+import utils
+
 
 def current_version():
     prefix = "1.2."
     beta_number = "11.1"
 
     version_number = prefix + beta_number
+
+    # "outofdate": a test meant for checking update-related functions
+    if utils.is_test("outofdate"):
+        version_number = "1.0.0"
 
     return version_number
 
