@@ -420,7 +420,7 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
                         if hbb:
                             self.status_message(f"Downloading Homebrew Browser from Open Shop Channel.. ({metadata.file_size(self.ui.progressBar.value())}/{metadata.file_size(total_size)})")
                         else:
-                            self.status_message(f"Downloading {self.current_app['internal_name']} from Open Shop Channel.. ({metadata.file_size(self.ui.progressBar.value())}/{metadata.file_size(total_size)})")
+                            self.status_message(f"Downloading {self.current_app['display_name']} from Open Shop Channel.. ({metadata.file_size(self.ui.progressBar.value())}/{metadata.file_size(total_size)})")
                         try:
                             app.processEvents()
                         except NameError:
