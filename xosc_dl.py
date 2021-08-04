@@ -146,7 +146,7 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         try:
             yaml_file = requests.get(
                 "https://raw.githubusercontent.com/dhtdht020/oscdl-updateserver/master/v1/announcement"
-                "/repositories.yml").text
+                "/repositories.yml", timeout=10).text
             parsed_yaml = yaml.load(yaml_file, Loader=yaml.FullLoader)
             repos = parsed_yaml["repos"]
             n = 0
