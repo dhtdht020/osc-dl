@@ -512,7 +512,7 @@ class Ui_MainWindow(object):
         self.actionRefresh.setShortcut(QCoreApplication.translate("MainWindow", u"F5", None))
 #endif // QT_CONFIG(shortcut)
         self.actionSelect_Theme.setText(QCoreApplication.translate("MainWindow", u"Select Theme", None))
-        self.actionIcons_provided_by.setText(QCoreApplication.translate("MainWindow", u"Icons provided by Icons8", None))
+        self.actionIcons_provided_by.setText(QCoreApplication.translate("MainWindow", u"Icons provided by https://icons8.com", None))
         self.actionCopy_Direct_Link.setText(QCoreApplication.translate("MainWindow", u"Copy Direct Link to App", None))
         self.actionForwarder_Generator.setText(QCoreApplication.translate("MainWindow", u"[IN DEV] Forwarder Generator", None))
 #if QT_CONFIG(accessibility)

@@ -1169,7 +1169,7 @@ p, li { white-space: pre-wrap; }
     <bool>false</bool>
    </property>
    <property name="text">
-    <string>Icons provided by Icons8</string>
+    <string>Icons provided by https://icons8.com</string>
    </property>
   </action>
   <action name="actionCopy_Direct_Link">
