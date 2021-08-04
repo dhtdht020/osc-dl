@@ -401,7 +401,7 @@ class Ui_MainWindow(object):
         self.RawTab.setObjectName(u"RawTab")
         self.SupportedControllersListWidget = QListWidget(self.RawTab)
         self.SupportedControllersListWidget.setObjectName(u"SupportedControllersListWidget")
-        self.SupportedControllersListWidget.setGeometry(QRect(0, 0, 246, 244))
+        self.SupportedControllersListWidget.setGeometry(QRect(0, 0, 245, 244))
         self.SupportedControllersListWidget.setStyleSheet(u"QListWidget {\n"
 "	border: unset;\n"
 "}")
