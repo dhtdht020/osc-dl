@@ -392,6 +392,7 @@ class Ui_MainWindow(object):
         self.longDescriptionBrowser.setStyleSheet(u"QTextBrowser {\n"
 "	border-style: hidden;\n"
 "}")
+        self.longDescriptionBrowser.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
         self.longDescriptionLoadingSpinner = QLabel(self.Description)
         self.longDescriptionLoadingSpinner.setObjectName(u"longDescriptionLoadingSpinner")
         self.longDescriptionLoadingSpinner.setGeometry(QRect(210, 210, 32, 32))
@@ -404,7 +405,6 @@ class Ui_MainWindow(object):
         self.SupportedControllersListWidget.setStyleSheet(u"QListWidget {\n"
 "	border: unset;\n"
 "}")
-        self.SupportedControllersListWidget.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOn)
         self.SupportedControllersListWidget.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
         self.SupportedControllersListWidget.setDragDropMode(QAbstractItemView.NoDragDrop)
         self.SupportedControllersListWidget.setIconSize(QSize(30, 30))
