@@ -496,6 +496,9 @@ background-color: rgba(255, 255, 255, 0);
        <string>Application Metadata</string>
       </property>
       <layout class="QVBoxLayout" name="verticalLayout_3">
+       <property name="spacing">
+        <number>2</number>
+       </property>
        <property name="leftMargin">
         <number>0</number>
        </property>
@@ -966,7 +969,7 @@ p, li { white-space: pre-wrap; }
          <property name="maximumSize">
           <size>
            <width>16777215</width>
-           <height>45</height>
+           <height>49</height>
           </size>
          </property>
          <property name="frameShape">
@@ -981,7 +984,7 @@ p, li { white-space: pre-wrap; }
             <x>12</x>
             <y>0</y>
             <width>61</width>
-            <height>18</height>
+            <height>21</height>
            </rect>
           </property>
           <property name="text">
@@ -994,7 +997,7 @@ p, li { white-space: pre-wrap; }
             <x>80</x>
             <y>0</y>
             <width>181</width>
-            <height>18</height>
+            <height>21</height>
            </rect>
           </property>
          </widget>
@@ -1002,7 +1005,7 @@ p, li { white-space: pre-wrap; }
           <property name="geometry">
            <rect>
             <x>10</x>
-            <y>20</y>
+            <y>24</y>
             <width>121</width>
             <height>23</height>
            </rect>
@@ -1015,7 +1018,7 @@ p, li { white-space: pre-wrap; }
           <property name="geometry">
            <rect>
             <x>140</x>
-            <y>20</y>
+            <y>24</y>
             <width>121</width>
             <height>23</height>
            </rect>
