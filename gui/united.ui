@@ -754,6 +754,9 @@ background-color: rgba(255, 255, 255, 0);
               <underline>false</underline>
              </font>
             </property>
+            <property name="accessibleName">
+             <string>DeveloperProfileButton</string>
+            </property>
             <property name="styleSheet">
              <string notr="true">QPushButton {
 	background-color: transparent;

@@ -25,17 +25,18 @@ QLineEdit {
 }
 
 QPushButton {
-    background-color: #5f85db;
+    background-color: #235347;
     color: white;
     border-style: hidden;
+    padding: 5%;
 }
 
 QPushButton:hover {
-    background-color: #90b8f8;
+    background-color: #307060;
 }
 
 QTextBrowser {
-    background-color: #555a63;
+    background-color: transparent;
     border-style: hidden;
     color: white;
 }
@@ -109,7 +110,8 @@ QTabBar::tab:selected {
 }
 
 QTabBar::tab:!selected {
-    background: silver;
+    background: #555A63;
+    color: white;
 }
 
 QTabBar::tab:!selected:hover {
@@ -168,4 +170,13 @@ QTabBar::tab:right:selected {
 QTabBar::tab:left:last, QTabBar::tab:right:last,
 QTabBar::tab:left:only-one, QTabBar::tab:right:only-one {
     margin-bottom: 0;
+}
+
+QProgressBar {
+    color: white;
+}
+
+QComboBox {
+    background-color: #555A63;
+    border: 1px solid black;
 }
