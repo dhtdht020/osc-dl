@@ -641,9 +641,10 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
     def turn_log_on(self):
         logging.basicConfig(filename='oscdl-gui.log', level=logging.DEBUG,
                             format="%(asctime)s | %(levelname)s:%(name)s:%(message)s")
-        logging.info('User chose to enable log file. Hello there!')
-        logging.info("OSCDL v" + DISPLAY_VERSION + ": Running on " + updater.get_type())
-        self.status_message('DEBUG: Enabled log file. To disable, exit the program.')
+        logging.info('Enabled log file. Hello!')
+        logging.info("OSCDL v" + DISPLAY_VERSION)
+        logging.info(updater.get_type())
+        self.status_message('DEBUG: Enabled log file. To disable, exit OSCDL.')
         self.ui.actionEnable_Log_File.setDisabled(True)
         self.ui.actionClear_Log.setEnabled(True)
         self.ui.actionClear_Log.triggered.connect(self.clear_log)
@@ -651,7 +652,7 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
     # Clear log file
     def clear_log(self):
         open("oscdl-gui.log", 'w').close()
-        self.status_message('DEBUG: Removed / cleared log file.')
+        self.status_message('Cleared log file.')
 
     # Sort apps in app list in alphabetical, ascending order.
     def sort_list_alphabetically(self):

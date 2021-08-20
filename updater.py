@@ -9,10 +9,11 @@ import utils
 
 
 def current_version():
-    prefix = "1.2."
-    beta_number = "11.1"
+    major = "1"
+    minor = "3"
+    patch = "0"
 
-    version_number = prefix + beta_number
+    version_number = f"{major}.{minor}.{patch}"
 
     # "outofdate": a test meant for checking update-related functions
     if utils.is_test("outofdate"):
@@ -22,7 +23,7 @@ def current_version():
 
 
 def get_branch():
-    branch = "MASTER / DEV BUILD"
+    branch = f"MASTER (Unstable, {current_version()} Development Build)"
     return branch
 
 
@@ -52,29 +53,12 @@ def check_update(release):
 
 
 def get_type():
-    if is_frozen() is True and platform.system() == 'Windows':
-        return 'Windows NT, with PyInstaller EXE.'
-
-    if is_frozen() is False and platform.system() == 'Windows':
-        return 'Windows NT, as script.'
-
-    if is_frozen() is True and platform.system() == 'Linux':
-        return 'Linux, with PyInstaller binary.'
-
-    if is_frozen() is False and platform.system() == 'Linux':
-        return 'Linux, as script.'
-
-    if is_frozen() is True and platform.system() == 'Darwin':
-        return 'Mac, with PyInstaller binary.'
-
-    if is_frozen() is False and platform.system() == 'Darwin':
-        return 'Mac, as script.'
-
-    return 'Unknown System, Never saw this before. Damn.'
+    return f'System: {platform.system()}, Frozen: {is_frozen()}'
 
 
 # Get announcement banner from the announcements repo
 def get_announcement():
+    # todo complete rewrite
     yaml_file = requests.get("https://raw.githubusercontent.com/dhtdht020/oscdl-updateserver/master/v1/announcement"
                              "/alert.yml").text
     parsed_yaml = yaml.load(yaml_file, Loader=yaml.FullLoader)
