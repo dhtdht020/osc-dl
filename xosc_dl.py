@@ -16,7 +16,7 @@ from functools import partial
 
 import requests
 from PySide6 import QtGui, QtCore
-from PySide6.QtCore import Qt, QObject, QSize
+from PySide6.QtCore import Qt, QObject, QSize, QSettings
 from PySide6.QtGui import QIcon, QColor, QPixmap, QMovie
 from PySide6.QtWidgets import QApplication, QMainWindow, QInputDialog, QLineEdit, QMessageBox, QSplashScreen, \
     QListWidgetItem, QFileDialog
@@ -75,6 +75,8 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         self.current_category = "all"
         self.current_developer = ""
         self.repo_data = None
+
+        self.settings = QSettings("Open Shop Channel", "OSCDL")
 
         # Set GUI Icons
 
@@ -457,7 +459,7 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
                                       '2) Press the home button on the Wii Remote.\n'
                                       '3) Copy the IP address written in the top left corner.\n\n'
                                       'IP address (e.g. 192.168.1...):',
-                                      QLineEdit.Normal)
+                                      QLineEdit.Normal, self.settings.value("sendtowii/address"))
         if not ok:
             return
 
@@ -467,6 +469,10 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
             logging.warning('Invalid IP Address: ' + ip)
             QMessageBox.warning(self, 'Invalid IP Address', 'This IP address is invalid.')
             return
+
+        # save IP address to settings
+        self.settings.setValue("sendtowii/address", ip)
+        self.settings.sync()
 
         self.status_message("Downloading " + self.current_app["display_name"] + " from Open Shop Channel..")
         self.ui.progressBar.setValue(25)
