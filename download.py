@@ -32,15 +32,3 @@ def get(app_name, output=None, extract=False, repo="hbb1.oscwii.org"):
 
 def get_url(app_name, repo="hbb1.oscwii.org"):
     return "https://" + repo + "/hbb/" + app_name + "/" + app_name + ".zip"
-
-
-def hbb(output):
-    try:
-        app_data = requests.get("https://wii.guide/assets/files/homebrew_browser_v0.3.9e.zip")
-    except requests.exceptions.SSLError:
-        app_data = requests.get("http://wii.guide/assets/files/homebrew_browser_v0.3.9e.zip")
-
-    with open(output, "wb") as app_data_file:
-        app_data_file.write(app_data.content)
-
-    print(GREEN + "Download success! Output: " + output)

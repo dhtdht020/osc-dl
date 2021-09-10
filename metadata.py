@@ -5,9 +5,6 @@ import sys
 import requests
 import lxml.etree
 
-GREEN = '\033[92m'
-FAIL = '\033[91m'
-
 
 # Get resource when frozen with PyInstaller
 def resource_path(relative_path):
