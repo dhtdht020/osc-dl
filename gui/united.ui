@@ -737,41 +737,6 @@ background-color: rgba(255, 255, 255, 0);
              <string>File Size</string>
             </property>
            </widget>
-           <widget class="QPushButton" name="developer_profile_btn">
-            <property name="geometry">
-             <rect>
-              <x>212</x>
-              <y>156</y>
-              <width>21</width>
-              <height>16</height>
-             </rect>
-            </property>
-            <property name="font">
-             <font>
-              <pointsize>14</pointsize>
-              <italic>false</italic>
-              <bold>true</bold>
-              <underline>false</underline>
-             </font>
-            </property>
-            <property name="accessibleName">
-             <string>DeveloperProfileButton</string>
-            </property>
-            <property name="styleSheet">
-             <string notr="true">QPushButton {
-	background-color: transparent;
-    border: none;
-    outline: none;
-}
-
-QPushButton:hover {
-    color: #0078D7;
-}</string>
-            </property>
-            <property name="text">
-             <string>➔</string>
-            </property>
-           </widget>
            <widget class="QLineEdit" name="appname">
             <property name="geometry">
              <rect>
@@ -851,22 +816,6 @@ QPushButton:hover {
              <string>Release Date</string>
             </property>
            </widget>
-           <zorder>label_description</zorder>
-           <zorder>label_displayname</zorder>
-           <zorder>progressBar</zorder>
-           <zorder>HomebrewIconLabel</zorder>
-           <zorder>HomebrewCategoryLabel</zorder>
-           <zorder>filesize</zorder>
-           <zorder>version</zorder>
-           <zorder>label_version</zorder>
-           <zorder>label_appname</zorder>
-           <zorder>label_developer</zorder>
-           <zorder>label_filesize</zorder>
-           <zorder>appname</zorder>
-           <zorder>developer</zorder>
-           <zorder>releasedate</zorder>
-           <zorder>label_releasedate</zorder>
-           <zorder>developer_profile_btn</zorder>
           </widget>
           <widget class="QWidget" name="Description">
            <property name="accessibleName">
@@ -1152,11 +1101,6 @@ p, li { white-space: pre-wrap; }
     <string>Reload Announcement Banner</string>
    </property>
   </action>
-  <action name="actionLoad_Collection">
-   <property name="text">
-    <string>Load Collection</string>
-   </property>
-  </action>
   <action name="actionRefresh">
    <property name="text">
     <string>Refresh List</string>
@@ -1186,6 +1130,14 @@ p, li { white-space: pre-wrap; }
   <action name="actionForwarder_Generator">
    <property name="text">
     <string>[IN DEV] Forwarder Generator</string>
+   </property>
+  </action>
+  <action name="actionDeveloper_Profile">
+   <property name="text">
+    <string>Developer Profile</string>
+   </property>
+   <property name="toolTip">
+    <string>View Profile</string>
    </property>
   </action>
  </widget>

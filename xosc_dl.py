@@ -107,6 +107,10 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         self.ui.CategoriesComboBox.setItemIcon(4, QIcon(resource_path("assets/gui/icons/category/media.png")))
         self.ui.CategoriesComboBox.setItemIcon(5, QIcon(resource_path("assets/gui/icons/category/demo.png")))
 
+        # ACTIONS
+        self.ui.actionDeveloper_Profile.setIcon(QIcon(resource_path("assets/gui/icons/profile.png")))
+        self.ui.developer.addAction(self.ui.actionDeveloper_Profile, QLineEdit.TrailingPosition)
+
         # real icons test: if realicons is specified, set size of icon to 171x64
         if utils.is_test("realicons"):
             self.ui.listAppsWidget.setIconSize(QSize(171, 32))
@@ -206,7 +210,7 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         self.ui.CategoriesComboBox.currentIndexChanged.connect(self.changed_category)
         self.ui.listAppsWidget.currentItemChanged.connect(self.selection_changed)
         self.ui.tabMetadata.currentChanged.connect(self.tab_changed)
-        self.ui.developer_profile_btn.clicked.connect(self.developer_profile)
+        self.ui.actionDeveloper_Profile.triggered.connect(self.developer_profile)
 
         # Actions
         # -- Debug

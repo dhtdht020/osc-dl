@@ -3,7 +3,7 @@
 ################################################################################
 ## Form generated from reading UI file 'united.ui'
 ##
-## Created by: Qt User Interface Compiler version 6.1.2
+## Created by: Qt User Interface Compiler version 6.1.3
 ##
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
@@ -43,8 +43,6 @@ class Ui_MainWindow(object):
         self.actionClose_the_shop.setObjectName(u"actionClose_the_shop")
         self.actionDisplay_Banner = QAction(MainWindow)
         self.actionDisplay_Banner.setObjectName(u"actionDisplay_Banner")
-        self.actionLoad_Collection = QAction(MainWindow)
-        self.actionLoad_Collection.setObjectName(u"actionLoad_Collection")
         self.actionRefresh = QAction(MainWindow)
         self.actionRefresh.setObjectName(u"actionRefresh")
         self.actionSelect_Theme = QAction(MainWindow)
@@ -56,6 +54,8 @@ class Ui_MainWindow(object):
         self.actionCopy_Direct_Link.setObjectName(u"actionCopy_Direct_Link")
         self.actionForwarder_Generator = QAction(MainWindow)
         self.actionForwarder_Generator.setObjectName(u"actionForwarder_Generator")
+        self.actionDeveloper_Profile = QAction(MainWindow)
+        self.actionDeveloper_Profile.setObjectName(u"actionDeveloper_Profile")
         self.centralwidget = QWidget(MainWindow)
         self.centralwidget.setObjectName(u"centralwidget")
         self.horizontalLayout_2 = QHBoxLayout(self.centralwidget)
@@ -330,24 +330,6 @@ class Ui_MainWindow(object):
         self.label_filesize = QLabel(self.GeneralTab)
         self.label_filesize.setObjectName(u"label_filesize")
         self.label_filesize.setGeometry(QRect(10, 209, 41, 21))
-        self.developer_profile_btn = QPushButton(self.GeneralTab)
-        self.developer_profile_btn.setObjectName(u"developer_profile_btn")
-        self.developer_profile_btn.setGeometry(QRect(212, 156, 21, 16))
-        font2 = QFont()
-        font2.setPointSize(14)
-        font2.setBold(True)
-        font2.setItalic(False)
-        font2.setUnderline(False)
-        self.developer_profile_btn.setFont(font2)
-        self.developer_profile_btn.setStyleSheet(u"QPushButton {\n"
-"	background-color: transparent;\n"
-"    border: none;\n"
-"    outline: none;\n"
-"}\n"
-"\n"
-"QPushButton:hover {\n"
-"    color: #0078D7;\n"
-"}")
         self.appname = QLineEdit(self.GeneralTab)
         self.appname.setObjectName(u"appname")
         self.appname.setGeometry(QRect(80, 101, 152, 21))
@@ -369,22 +351,6 @@ class Ui_MainWindow(object):
         self.label_releasedate.setObjectName(u"label_releasedate")
         self.label_releasedate.setGeometry(QRect(10, 181, 66, 22))
         self.tabMetadata.addTab(self.GeneralTab, "")
-        self.label_description.raise_()
-        self.label_displayname.raise_()
-        self.progressBar.raise_()
-        self.HomebrewIconLabel.raise_()
-        self.HomebrewCategoryLabel.raise_()
-        self.filesize.raise_()
-        self.version.raise_()
-        self.label_version.raise_()
-        self.label_appname.raise_()
-        self.label_developer.raise_()
-        self.label_filesize.raise_()
-        self.appname.raise_()
-        self.developer.raise_()
-        self.releasedate.raise_()
-        self.label_releasedate.raise_()
-        self.developer_profile_btn.raise_()
         self.Description = QWidget()
         self.Description.setObjectName(u"Description")
         self.longDescriptionBrowser = QTextBrowser(self.Description)
@@ -507,7 +473,6 @@ class Ui_MainWindow(object):
         self.actionCheck_for_Updates.setText(QCoreApplication.translate("MainWindow", u"Check for Updates", None))
         self.actionClose_the_shop.setText(QCoreApplication.translate("MainWindow", u"Close the shop", None))
         self.actionDisplay_Banner.setText(QCoreApplication.translate("MainWindow", u"Reload Announcement Banner", None))
-        self.actionLoad_Collection.setText(QCoreApplication.translate("MainWindow", u"Load Collection", None))
         self.actionRefresh.setText(QCoreApplication.translate("MainWindow", u"Refresh List", None))
 #if QT_CONFIG(shortcut)
         self.actionRefresh.setShortcut(QCoreApplication.translate("MainWindow", u"F5", None))
@@ -516,6 +481,10 @@ class Ui_MainWindow(object):
         self.actionIcons_provided_by.setText(QCoreApplication.translate("MainWindow", u"Icons provided by https://icons8.com", None))
         self.actionCopy_Direct_Link.setText(QCoreApplication.translate("MainWindow", u"Copy Direct Link to App", None))
         self.actionForwarder_Generator.setText(QCoreApplication.translate("MainWindow", u"[IN DEV] Forwarder Generator", None))
+        self.actionDeveloper_Profile.setText(QCoreApplication.translate("MainWindow", u"Developer Profile", None))
+#if QT_CONFIG(tooltip)
+        self.actionDeveloper_Profile.setToolTip(QCoreApplication.translate("MainWindow", u"View Profile", None))
+#endif // QT_CONFIG(tooltip)
 #if QT_CONFIG(accessibility)
         self.centralwidget.setAccessibleName(QCoreApplication.translate("MainWindow", u"centralcontainer", None))
 #endif // QT_CONFIG(accessibility)
@@ -548,10 +517,6 @@ class Ui_MainWindow(object):
         self.label_appname.setText(QCoreApplication.translate("MainWindow", u"App Name", None))
         self.label_developer.setText(QCoreApplication.translate("MainWindow", u"Developer", None))
         self.label_filesize.setText(QCoreApplication.translate("MainWindow", u"File Size", None))
-#if QT_CONFIG(accessibility)
-        self.developer_profile_btn.setAccessibleName(QCoreApplication.translate("MainWindow", u"DeveloperProfileButton", None))
-#endif // QT_CONFIG(accessibility)
-        self.developer_profile_btn.setText(QCoreApplication.translate("MainWindow", u"\u2794", None))
         self.appname.setText("")
         self.appname.setPlaceholderText("")
         self.label_releasedate.setText(QCoreApplication.translate("MainWindow", u"Release Date", None))
