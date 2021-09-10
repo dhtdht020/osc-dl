@@ -287,52 +287,52 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
             # Release Date
             self.ui.releasedate.setText(datetime.fromtimestamp(int(self.current_app["release_date"])).strftime('%B %e, %Y at %R'))
 
-            # Controllers
-            controllers = metadata.parse_controllers(self.current_app["controllers"])
+            # Peripherals
+            peripherals = metadata.parse_peripherals(self.current_app["controllers"])
             # Add icons for Wii Remotes
-            if controllers[0] > 1:
+            if peripherals["wii_remotes"] > 1:
                 item = QListWidgetItem()
-                item.setText(f"{str(controllers[0])} Wii Remotes")
-                item.setIcon(QIcon(resource_path(f"assets/gui/icons/controllers/{str(controllers[0])}WiiRemote.png")))
-                item.setToolTip(f"This app supports up to {str(controllers[0])} Wii Remotes.")
+                item.setText(f"{str(peripherals['wii_remotes'])} Wii Remotes")
+                item.setIcon(QIcon(resource_path(f"assets/gui/icons/controllers/{str(peripherals['wii_remotes'])}WiiRemote.png")))
+                item.setToolTip(f"This app supports up to {str(peripherals['wii_remotes'])} Wii Remotes.")
                 self.ui.SupportedControllersListWidget.addItem(item)
-            elif controllers[0] == 1:
+            elif peripherals["wii_remotes"] == 1:
                 item = QListWidgetItem()
                 item.setText(f"1 Wii Remote")
                 item.setIcon(QIcon(resource_path(f"assets/gui/icons/controllers/1WiiRemote.png")))
                 item.setToolTip("This app supports a single Wii Remote.")
                 self.ui.SupportedControllersListWidget.addItem(item)
-            if controllers[1] is True:
+            if peripherals["nunchuk"] is True:
                 item = QListWidgetItem()
                 item.setText(f"Nunchuk")
                 item.setIcon(QIcon(resource_path(f"assets/gui/icons/controllers/Nunchuk.png")))
                 item.setToolTip("This app can be used with a Nunchuk.")
                 self.ui.SupportedControllersListWidget.addItem(item)
-            if controllers[2] is True:
+            if peripherals["classic"] is True:
                 item = QListWidgetItem()
                 item.setText(f"Classic Controller")
                 item.setIcon(QIcon(resource_path(f"assets/gui/icons/controllers/ClassicController.png")))
                 item.setToolTip("This app can be used with a Classic Controller.")
                 self.ui.SupportedControllersListWidget.addItem(item)
-            if controllers[3] is True:
+            if peripherals["gamecube"] is True:
                 item = QListWidgetItem()
                 item.setText(f"GameCube Controller")
                 item.setIcon(QIcon(resource_path(f"assets/gui/icons/controllers/GamecubeController.png")))
                 item.setToolTip("This app can be used with a Gamecube Controller.")
                 self.ui.SupportedControllersListWidget.addItem(item)
-            if controllers[4] is True:
+            if peripherals["wii_zapper"] is True:
                 item = QListWidgetItem()
                 item.setText(f"Wii Zapper")
                 item.setIcon(QIcon(resource_path(f"assets/gui/icons/controllers/WiiZapper.png")))
                 item.setToolTip("This app can be used with a Wii Zapper.")
                 self.ui.SupportedControllersListWidget.addItem(item)
-            if controllers[5] is True:
+            if peripherals["keyboard"] is True:
                 item = QListWidgetItem()
                 item.setText(f"USB Keyboard")
                 item.setIcon(QIcon(resource_path(f"assets/gui/icons/controllers/USBKeyboard.png")))
                 item.setToolTip("This app can be used with a USB Keyboard.")
                 self.ui.SupportedControllersListWidget.addItem(item)
-            if controllers[6] is True:
+            if peripherals["sdhc"] is True:
                 item = QListWidgetItem()
                 item.setText(f"SDHC Card")
                 item.setIcon(QIcon(resource_path(f"assets/gui/icons/controllers/SDHC.png")))

@@ -148,37 +148,28 @@ def category_display_name(category):
 
 
 # Parse controllers string
-def parse_controllers(controllers):
-    wii_remotes = 0
-    nunchuk = classic_controller = gamecube_controller = wii_zapper = keyboard = sdhc_compatible = False
+def parse_peripherals(peripherals):
+    peripherals_dict = {"wii_remotes": 0, "nunchuk": False, "classic": False, "gamecube": False,
+                        "wii_zapper": False, "keyboard": False, "sdhc": False}
 
-    # Wii Remotes
-    if "wwww" in controllers:
-        wii_remotes = 4
-    elif "www" in controllers:
-        wii_remotes = 3
-    elif "ww" in controllers:
-        wii_remotes = 2
-    elif "w" in controllers:
-        wii_remotes = 1
+    # One day OSCDL will drop support for <3.10 and this will be a switch statement..
+    for character in peripherals:
+        if character is "w":
+            peripherals_dict["wii_remotes"] += 1
+        elif character is "n":
+            peripherals_dict["nunchuk"] = True
+        elif character is "c":
+            peripherals_dict["classic"] = True
+        elif character is "g":
+            peripherals_dict["gamecube"] = True
+        if character is "z":
+            peripherals_dict["wii_zapper"] = True
+        if character is "k":
+            peripherals_dict["keyboard"] = True
+        if character is "s":
+            peripherals_dict["sdhc"] = True
 
-    # Nunchuk
-    if "n" in controllers:
-        nunchuk = True
-
-    # Classic Controller
-    if "c" in controllers:
-        classic_controller = True
-    if "g" in controllers:
-        gamecube_controller = True
-    if "z" in controllers:
-        wii_zapper = True
-    if "k" in controllers:
-        keyboard = True
-    if "s" in controllers:
-        sdhc_compatible = True
-
-    return wii_remotes, nunchuk, classic_controller, gamecube_controller, wii_zapper, keyboard, sdhc_compatible
+    return peripherals_dict
 
 
 # API-related functions
