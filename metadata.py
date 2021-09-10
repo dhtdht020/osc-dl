@@ -1,5 +1,7 @@
 import json
+import logging
 import os
+import re
 import sys
 
 import requests
@@ -107,18 +109,18 @@ def long_description(app_name, repo="hbb1.oscwii.org"):
     # Remove unicode declaration
     xml = xml.split("\n", 1)[1]
 
+    # Remove HTML comments
+    xml = re.sub(r'<!--.*?-->', '', xml, flags=re.DOTALL)
+
     # Parse XML
     try:
         root = lxml.etree.fromstring(xml)
-    except Exception:
-        pass
+    except Exception as e:
+        logging.error(f"[{app_name}] With the intention to load the long description, "
+                      f"OSCDL could not parse the application metadata XML. Information:\n{str(e)}")
+        return "No description provided"
 
-    try:
-        long_description = root.find('long_description').text
-    except Exception:
-        long_description = "No description provided"
-
-    return long_description
+    return root.find('long_description').text
 
 
 # Returns readable file size from file length
