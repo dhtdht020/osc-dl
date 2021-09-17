@@ -281,7 +281,9 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
 
             # File Size
             try:
-                self.ui.filesize.setText(metadata.file_size(self.current_app["extracted"]))
+                extracted = metadata.file_size(self.current_app["extracted"])
+                compressed = metadata.file_size(self.current_app["zip_size"])
+                self.ui.filesize.setText(f"{compressed} / {extracted}")
             except KeyError:
                 self.ui.filesize.setText("Unknown")
 
