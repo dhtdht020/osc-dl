@@ -130,7 +130,7 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         self.ui.progressBar.setHidden(False)
         self.ui.statusBar.addPermanentWidget(self.ui.progressBar)
         # Load announcement banner
-        t = threading.Thread(target=self.load_announcement_banner)
+        t = threading.Thread(target=self.load_announcement_banner, daemon=True)
         t.start()
 
     # show given status message on bottom status bar
@@ -231,7 +231,7 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
     # When user switches to a different tab
     def tab_changed(self):
         if self.ui.tabMetadata.currentIndex() == 1:
-            t = threading.Thread(target=self.load_long_description)
+            t = threading.Thread(target=self.load_long_description, daemon=True)
             t.start()
 
     # Load long description
@@ -367,7 +367,7 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         self.ui.progressBar.setValue(0)
         self.repaint()
         # Load icon
-        t = threading.Thread(target=self.load_icon, args=[app_name, HOST])
+        t = threading.Thread(target=self.load_icon, args=[app_name, HOST], daemon=True)
         t.start()
         self.status_message("Ready to download")
 
