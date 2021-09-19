@@ -1,6 +1,8 @@
 import io
 import platform
 import threading
+import time
+import zipfile
 from datetime import datetime
 from os import listdir
 from os.path import isfile, join
@@ -48,7 +50,7 @@ def resource_path(relative_path):
 
 
 # Actions to perform only when the program is frozen:
-if updater.is_frozen():
+if updater.is_frozen() or utils.is_test("debug"):
     logging.basicConfig(level=logging.DEBUG)
     logging.info(f"Open Shop Channel Downloader v{updater.current_version()} {updater.get_branch()}")
     logging.info(f"OSCDL, Open Source Software by dhtdht020. https://github.com/dhtdht020.\n\n\n")
@@ -614,20 +616,16 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
                     # Set category icon
                     category = package["category"]
 
-                    # real icons test: if realicons is specified, set icon
-                    if utils.is_test("realicons"):
-                        list_item.setIcon(QIcon(resource_path("assets/gui/icons/category/testicon.png")))
-                    else:
-                        if category == "utilities":
-                            list_item.setIcon(QIcon(resource_path("assets/gui/icons/category/utility.png")))
-                        elif category == "games":
-                            list_item.setIcon(QIcon(resource_path("assets/gui/icons/category/game.png")))
-                        elif category == "emulators":
-                            list_item.setIcon(QIcon(resource_path("assets/gui/icons/category/emulator.png")))
-                        elif category == "media":
-                            list_item.setIcon(QIcon(resource_path("assets/gui/icons/category/media.png")))
-                        elif category == "demos":
-                            list_item.setIcon(QIcon(resource_path("assets/gui/icons/category/demo.png")))
+                    if category == "utilities":
+                        list_item.setIcon(QIcon(resource_path("assets/gui/icons/category/utility.png")))
+                    elif category == "games":
+                        list_item.setIcon(QIcon(resource_path("assets/gui/icons/category/game.png")))
+                    elif category == "emulators":
+                        list_item.setIcon(QIcon(resource_path("assets/gui/icons/category/emulator.png")))
+                    elif category == "media":
+                        list_item.setIcon(QIcon(resource_path("assets/gui/icons/category/media.png")))
+                    elif category == "demos":
+                        list_item.setIcon(QIcon(resource_path("assets/gui/icons/category/demo.png")))
                     try:
                         if not splash.isHidden():
                             splash.showMessage(f"Loaded {i} apps..", color=splash_color)
@@ -647,6 +645,10 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
                                  'Please check your internet connection, or report this incident.\n\n'
                                  f'{e}')
             sys.exit(1)
+
+        if utils.is_test("realicons"):
+            t = threading.Thread(target=self.download_app_icons, daemon=True)
+            t.start()
 
     # Actions
     # Enable log
@@ -896,6 +898,32 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         selected_app = self.ui.listAppsWidget.currentItem().data(Qt.UserRole)
         self.forwarder_gen_window = forwardergen.ForwarderWizard(self, selected_app=selected_app)
         self.forwarder_gen_window.show()
+
+    # load all icons from zip
+    def download_app_icons(self):
+        # Debug info
+        logging.debug("Started download of app icons")
+        start_time = time.time()
+        icons_zip = requests.get(f"https://{HOST}/hbb/homebrew_browser/temp_files.zip", timeout=10)
+        end_time = time.time()
+        logging.debug(f"Finished download of app icons in {str(end_time - start_time)}")
+        if icons_zip.ok:
+            # prepare app icons dictionary
+            self.icons_images = {}
+            zip_file = zipfile.ZipFile(io.BytesIO(icons_zip.content))
+            for name in zip_file.namelist():
+                app_name = name.replace(".png", "")
+                pixmap = QPixmap()
+                pixmap.loadFromData(zip_file.read(name))
+                self.icons_images[app_name] = pixmap
+
+            QtCore.QMetaObject.invokeMethod(self, 'set_app_icons')
+
+    @QtCore.Slot()
+    def set_app_icons(self):
+        for i in range(self.ui.listAppsWidget.count()):
+            item = self.ui.listAppsWidget.item(i)
+            item.setIcon(self.icons_images[item.data(Qt.UserRole)["internal_name"]])
 
 
 if __name__ == "__main__":
