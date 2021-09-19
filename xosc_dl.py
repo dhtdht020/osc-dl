@@ -17,6 +17,7 @@ import logging  # for logs
 from functools import partial
 
 import requests
+from PIL import Image
 from PySide6 import QtGui, QtCore
 from PySide6.QtCore import Qt, QObject, QSize, QSettings
 from PySide6.QtGui import QIcon, QColor, QPixmap, QMovie
@@ -77,6 +78,7 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         self.current_category = "all"
         self.current_developer = ""
         self.repo_data = None
+        self.packages = None
 
         self.settings = QSettings("Open Shop Channel", "OSCDL")
 
@@ -112,10 +114,6 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         # ACTIONS
         self.ui.actionDeveloper_Profile.setIcon(QIcon(resource_path("assets/gui/icons/profile.png")))
         self.ui.developer.addAction(self.ui.actionDeveloper_Profile, QLineEdit.TrailingPosition)
-
-        # real icons test: if realicons is specified, set size of icon to 171x64
-        if utils.is_test("realicons"):
-            self.ui.listAppsWidget.setIconSize(QSize(171, 32))
 
         # create spinner movie
         self.spinner = QMovie(resource_path("assets/gui/icons/spinner.gif"))
@@ -574,7 +572,6 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         self.ui.CategoriesComboBox.setHidden(False)
         self.ui.ReposComboBox.setHidden(False)
         self.ui.RepositoryLabel.setHidden(False)
-
         self.ui.SearchBar.setText("")
 
         self.status_message("Reloading list..")
@@ -599,8 +596,12 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
             except NameError:
                 pass
 
+            # Set default icon size
+            self.ui.listAppsWidget.setIconSize(QSize(-1, -1))
+
             # Get apps json
             loaded_json = metadata.get_apps(host_name=HOST_NAME)
+            self.packages = loaded_json
             i = 0
 
             for package in loaded_json:
@@ -902,28 +903,96 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
     # load all icons from zip
     def download_app_icons(self):
         # Debug info
+        original_host = HOST
         logging.debug("Started download of app icons")
         start_time = time.time()
         icons_zip = requests.get(f"https://{HOST}/hbb/homebrew_browser/temp_files.zip", timeout=10)
         end_time = time.time()
         logging.debug(f"Finished download of app icons in {str(end_time - start_time)}")
-        if icons_zip.ok:
+
+        if icons_zip.ok and (original_host == HOST):
             # prepare app icons dictionary
             self.icons_images = {}
             zip_file = zipfile.ZipFile(io.BytesIO(icons_zip.content))
+
+            # prepare icon files
+            demo_icon = Image.open(resource_path("assets/gui/icons/category/demo.png"))
+            emulator_icon = Image.open(resource_path("assets/gui/icons/category/emulator.png"))
+            game_icon = Image.open(resource_path("assets/gui/icons/category/game.png"))
+            media_icon = Image.open(resource_path("assets/gui/icons/category/media.png"))
+            utility_icon = Image.open(resource_path("assets/gui/icons/category/utility.png"))
+
+            # prepare apps and their category icons dictionary
+            apps_category_icons = {}
+            for package in self.packages:
+                if package["category"] == "demos":
+                    category_icon = demo_icon
+                elif package["category"] == "emulators":
+                    category_icon = emulator_icon
+                elif package["category"] == "games":
+                    category_icon = game_icon
+                elif package["category"] == "media":
+                    category_icon = media_icon
+                elif package["category"] == "utilities":
+                    category_icon = utility_icon
+                else:
+                    continue
+
+                apps_category_icons[package["internal_name"]] = category_icon
+
             for name in zip_file.namelist():
                 app_name = name.replace(".png", "")
+
+                # Prepare with Pillow
+                pillow_icon = Image.open(io.BytesIO(zip_file.read(name))).convert("RGBA")
+
+                # per platform sizing
+                padding = 33
+                category_icon_size = 24
+                if app.style().name() == "fusion":
+                    padding = int(padding * 1.5) - 4
+                    category_icon_size = int(category_icon_size * 1.5)
+
+                # Add transparent pixels on the left
+                prepared_icon = Image.new('RGBA', (pillow_icon.width + padding, pillow_icon.height))
+                prepared_icon.alpha_composite(pillow_icon, (padding, 0))
+
+                # add category icon
+                try:
+                    category_icon = apps_category_icons[app_name].resize((category_icon_size, category_icon_size))
+                except KeyError:
+                    # in a scenario where an app has icon but does not exist on repo
+                    continue
+
+                # place category icon in the middle
+                x, category_icon_height = category_icon.size
+                x, prepared_icon_height = prepared_icon.size
+                y = int((prepared_icon_height / 2) - (category_icon_height / 2))
+                prepared_icon.alpha_composite(category_icon, (0, y))
+
+                # convert pillow image to bytes
+                icon_bytes = io.BytesIO()
+                prepared_icon.save(icon_bytes, format='PNG')
+
                 pixmap = QPixmap()
-                pixmap.loadFromData(zip_file.read(name))
+                pixmap.loadFromData(icon_bytes.getvalue())
                 self.icons_images[app_name] = pixmap
 
-            QtCore.QMetaObject.invokeMethod(self, 'set_app_icons')
+            if original_host == HOST:
+                QtCore.QMetaObject.invokeMethod(self, 'set_app_icons')
 
     @QtCore.Slot()
     def set_app_icons(self):
+        original_host = HOST
         for i in range(self.ui.listAppsWidget.count()):
             item = self.ui.listAppsWidget.item(i)
-            item.setIcon(self.icons_images[item.data(Qt.UserRole)["internal_name"]])
+            if original_host == HOST:
+                try:
+                    item.setIcon(self.icons_images[item.data(Qt.UserRole)["internal_name"]])
+                except KeyError:
+                    return
+        # set size of icon to 171x64
+        self.ui.listAppsWidget.setIconSize(QSize(171, 32))
 
 
 if __name__ == "__main__":
