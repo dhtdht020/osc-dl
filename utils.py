@@ -5,7 +5,7 @@ import sys
 
 
 def is_test(name):
-    if len(sys.argv) > 1 and (sys.argv[1] == name):
+    if len(sys.argv) > 1 and (name in sys.argv):
         return True
     else:
         return False
