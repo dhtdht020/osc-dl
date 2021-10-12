@@ -123,7 +123,6 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
 
         self.populate()
         self.selection_changed()
-        self.status_message("Ready to download")
         self.ui.progressBar.setHidden(False)
         self.ui.statusBar.addPermanentWidget(self.ui.progressBar)
         # Load announcement banner
@@ -365,7 +364,6 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         # Load icon
         t = threading.Thread(target=self.load_icon, args=[app_name, HOST], daemon=True)
         t.start()
-        self.status_message("Ready to download")
 
     def view_metadata(self):
         data = self.ui.listAppsWidget.currentItem().data(Qt.UserRole)
@@ -645,9 +643,11 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
                                  f'{e}')
             sys.exit(1)
 
-        if utils.is_test("realicons"):
-            t = threading.Thread(target=self.download_app_icons, daemon=True)
-            t.start()
+        # load app icons
+        self.status_message("Loading app icons from server..")
+        self.ui.progressBar.setMaximum(0)
+        t = threading.Thread(target=self.download_app_icons, daemon=True)
+        t.start()
 
     # Actions
     # Enable log
@@ -973,6 +973,11 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
 
             if original_host == HOST:
                 QtCore.QMetaObject.invokeMethod(self, 'set_app_icons')
+        else:
+            self.ui.progressBar.setMaximum(100)
+            self.status_message("Ready to download")
+            logging.warning("Loading of app icons for list failed, continuing without them.")
+
 
     @QtCore.Slot()
     def set_app_icons(self):
@@ -983,9 +988,14 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
                 try:
                     item.setIcon(self.icons_images[item.data(Qt.UserRole)["internal_name"]])
                 except KeyError:
+                    self.ui.progressBar.setMaximum(100)
+                    self.status_message("Ready to download")
                     return
         # set size of icon to 171x64
         self.ui.listAppsWidget.setIconSize(QSize(171, 32))
+        # complete loading
+        self.ui.progressBar.setMaximum(100)
+        self.status_message("Ready to download")
 
 
 if __name__ == "__main__":
