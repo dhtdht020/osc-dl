@@ -1,6 +1,6 @@
 lxml~=4.6.3
 requests~=2.26.0
 packaging~=21.0
-PyYAML~=5.4
+PyYAML~=6.0
 markdown~=3.3.4
 Pillow~=8.3.2
