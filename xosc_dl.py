@@ -79,6 +79,7 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         self.current_developer = ""
         self.repo_data = None
         self.packages = None
+        self.icons_images = None
 
         self.settings = QSettings("Open Shop Channel", "OSCDL")
 
@@ -552,6 +553,7 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
     def changed_host(self):
         global HOST
         global HOST_NAME
+        self.icons_images = None
         index = self.ui.ReposComboBox.currentIndex()
         self.repo_data = self.ui.ReposComboBox.itemData(index, Qt.UserRole)
         HOST = self.repo_data[1]
@@ -712,21 +714,25 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
     # Load app icon
     def load_icon(self, app_name, repo):
         self.IconSignal.connect(self.ui.HomebrewIconLabel.setPixmap)
-        # Gets raw image data from server
-        # Check if still relevant
-        if self.ui.FileNameLineEdit.text().replace('.zip', '') == app_name:
-            data = metadata.icon(app_name=app_name, repo=repo)
-
-            # Loads image
-            image = QtGui.QImage()
-            image.loadFromData(data)
-
-            # Adds image to label
-            # Once again check if still relevant
+        # check if icons_images is populated, if not load from server
+        if self.icons_images and app_name in self.icons_images:
+            self.IconSignal.emit(self.icons_images[app_name])
+            self.ui.HomebrewIconLabel.show()
+        else:
+            # Gets raw image data from server
+            # Check if still relevant
             if self.ui.FileNameLineEdit.text().replace('.zip', '') == app_name:
-                lbl = self.ui.HomebrewIconLabel
-                self.IconSignal.emit(QPixmap(image))
-                lbl.show()
+                data = metadata.icon(app_name=app_name, repo=repo)
+
+                # Loads image
+                image = QtGui.QImage()
+                image.loadFromData(data)
+
+                # Adds image to label
+                # Once again check if still relevant
+                if self.ui.FileNameLineEdit.text().replace('.zip', '') == app_name:
+                    self.IconSignal.emit(QPixmap(image))
+                    self.ui.HomebrewIconLabel.show()
 
     def load_announcement_banner(self):
         try:
@@ -906,6 +912,7 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         if icons_zip.ok and (original_host == HOST):
             # prepare app icons dictionary
             self.icons_images = {}
+            self.list_icons_images = {}
             zip_file = zipfile.ZipFile(io.BytesIO(icons_zip.content))
 
             # prepare icon files
@@ -939,6 +946,20 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
                 # Prepare with Pillow
                 pillow_icon = Image.open(io.BytesIO(zip_file.read(name))).convert("RGBA")
 
+                # for faster unmodified icon loading, saving original image to icons images list
+                # remove icc profile
+                if pillow_icon.info.get('icc_profile'):
+                    pillow_icon.info['icc_profile'] = ''
+
+                # convert pillow image to bytes
+                icon_bytes = io.BytesIO()
+                pillow_icon.save(icon_bytes, format='PNG')
+
+                # add to icons images list
+                pixmap = QPixmap()
+                pixmap.loadFromData(icon_bytes.getvalue())
+                self.icons_images[app_name] = pixmap
+
                 # per platform sizing
                 padding = 33
                 category_icon_size = 24
@@ -967,9 +988,10 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
                 icon_bytes = io.BytesIO()
                 prepared_icon.save(icon_bytes, format='PNG')
 
+                # create list image
                 pixmap = QPixmap()
                 pixmap.loadFromData(icon_bytes.getvalue())
-                self.icons_images[app_name] = pixmap
+                self.list_icons_images[app_name] = pixmap
 
             if original_host == HOST:
                 QtCore.QMetaObject.invokeMethod(self, 'set_app_icons')
@@ -986,7 +1008,7 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
             item = self.ui.listAppsWidget.item(i)
             if original_host == HOST:
                 try:
-                    item.setIcon(self.icons_images[item.data(Qt.UserRole)["internal_name"]])
+                    item.setIcon(self.list_icons_images[item.data(Qt.UserRole)["internal_name"]])
                 except KeyError:
                     self.ui.progressBar.setMaximum(100)
                     self.status_message("Ready to download")
