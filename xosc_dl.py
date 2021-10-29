@@ -1,4 +1,5 @@
 import io
+import json
 import platform
 import threading
 import time
@@ -7,7 +8,6 @@ from datetime import datetime
 from os import listdir
 from os.path import isfile, join
 
-import yaml
 import os
 import socket
 import sys
@@ -62,6 +62,7 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
     IconSignal = QtCore.Signal(QPixmap)
     LongDescriptionSignal = QtCore.Signal(str)
     AnnouncementBannerHidden = QtCore.Signal(bool)
+
     def __init__(self, test_mode=False):
         super(MainWindow, self).__init__()
         self.ui = gui.ui_united.Ui_MainWindow()
@@ -77,9 +78,9 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         self.current_app = None
         self.current_category = "all"
         self.current_developer = ""
-        self.repo_data = None
+        self.host_data = None
         self.packages = None
-        self.icons_images = None
+        self.icons_images = {}
 
         self.settings = QSettings("Open Shop Channel", "OSCDL")
 
@@ -148,44 +149,23 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
 
     # Populate list of repositories
     def populate_repositories(self):
-        try:
-            yaml_file = requests.get(
-                "https://raw.githubusercontent.com/dhtdht020/oscdl-updateserver/master/v1/announcement"
-                "/repositories.yml", timeout=10).text
-            parsed_yaml = yaml.load(yaml_file, Loader=yaml.FullLoader)
-            repos = parsed_yaml["repos"]
-            n = 0
-            for i in repos:
-                display_name = parsed_yaml["repositories"][i]["name"]
-                host = parsed_yaml["repositories"][i]["host"]
-                description = parsed_yaml["repositories"][i]["description"]
-                name = i
-                self.ui.ReposComboBox.addItem(display_name)
-                self.ui.ReposComboBox.setItemData(n, [display_name, host, description, name], Qt.UserRole)
-                try:
-                    if not splash.isHidden():
-                        splash.showMessage(f"Loaded {n} repositories..", color=splash_color)
-                except NameError:
-                    pass
-                n += 1
+        hosts_req = requests.get("https://api.oscwii.org/v3/hosts", timeout=10).text
+        hosts = json.loads(hosts_req)
 
-            index = self.ui.ReposComboBox.currentIndex()
-            self.repo_data = self.ui.ReposComboBox.itemData(index, Qt.UserRole)
-
-            self.ui.RepositoryNameLabel.setText(self.repo_data[0])
-            self.ui.RepositoryDescLabel.setText(self.repo_data[2])
-        except Exception:
-            # Add base repos
-            self.ui.ReposComboBox.addItem("Open Shop Channel")
-            self.ui.ReposComboBox.addItem("Homebrew Channel Themes")
-            self.ui.ReposComboBox.setItemData(0, ["Open Shop Channel",
-                                                  "hbb1.oscwii.org",
-                                                  "Built in: Open Shop Channel default repository.",
-                                                  "primary"], Qt.UserRole)
-            self.ui.ReposComboBox.setItemData(1, ["Homebrew Channel Themes",
-                                                  "hbb3.oscwii.org",
-                                                  "Built in: Open Shop Channel default theme repository.",
-                                                  "themes"], Qt.UserRole)
+        n = 0
+        for host in hosts:
+            self.ui.ReposComboBox.addItem(host["name"])
+            self.ui.ReposComboBox.setItemData(n, host, Qt.UserRole)
+            try:
+                if not splash.isHidden():
+                    splash.showMessage(f"Loaded {n} repositories..", color=splash_color)
+            except NameError:
+                pass
+            n += 1
+        index = self.ui.ReposComboBox.currentIndex()
+        self.host_data = self.ui.ReposComboBox.itemData(index, Qt.UserRole)
+        self.ui.RepositoryNameLabel.setText(self.host_data["name"])
+        self.ui.RepositoryDescLabel.setText(self.host_data["description"])
 
     def assign_initial_actions(self):
         try:
@@ -553,13 +533,13 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
     def changed_host(self):
         global HOST
         global HOST_NAME
-        self.icons_images = None
+        self.icons_images = {}
         index = self.ui.ReposComboBox.currentIndex()
-        self.repo_data = self.ui.ReposComboBox.itemData(index, Qt.UserRole)
-        HOST = self.repo_data[1]
-        HOST_NAME = self.repo_data[3]
-        self.ui.RepositoryNameLabel.setText(self.repo_data[0])
-        self.ui.RepositoryDescLabel.setText(self.repo_data[2])
+        self.host_data = self.ui.ReposComboBox.itemData(index, Qt.UserRole)
+        HOST = self.host_data["host"]
+        HOST_NAME = self.host_data["id"]
+        self.ui.RepositoryNameLabel.setText(self.host_data["name"])
+        self.ui.RepositoryDescLabel.setText(self.host_data["description"])
         self.status_message(f"Loading {HOST} repository..")
         logging.info(f"Loading {HOST}")
         self.repopulate()
@@ -574,9 +554,9 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
 
         self.status_message("Reloading list..")
         index = self.ui.ReposComboBox.currentIndex()
-        repo_data = self.ui.ReposComboBox.itemData(index, Qt.UserRole)
-        self.ui.RepositoryNameLabel.setText(repo_data[0])
-        self.ui.RepositoryDescLabel.setText(repo_data[2])
+        host_data = self.ui.ReposComboBox.itemData(index, Qt.UserRole)
+        self.ui.RepositoryNameLabel.setText(host_data["name"])
+        self.ui.RepositoryDescLabel.setText(host_data["description"])
         try:
             self.ui.CategoriesComboBox.currentIndexChanged.disconnect(self.changed_category)
         except Exception:
@@ -715,7 +695,7 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
     def load_icon(self, app_name, repo):
         self.IconSignal.connect(self.ui.HomebrewIconLabel.setPixmap)
         # check if icons_images is populated, if not load from server
-        if self.icons_images and app_name in self.icons_images:
+        if app_name in self.icons_images:
             self.IconSignal.emit(self.icons_images[app_name])
             self.ui.HomebrewIconLabel.show()
         else:
@@ -873,8 +853,8 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         self.ui.RepositoryLabel.setHidden(False)
 
         # set repo title and description
-        self.ui.RepositoryNameLabel.setText(self.repo_data[0])
-        self.ui.RepositoryDescLabel.setText(self.repo_data[2])
+        self.ui.RepositoryNameLabel.setText(self.host_data["display_name"])
+        self.ui.RepositoryDescLabel.setText(self.host_data["description"])
 
         self.current_developer = ""
 
@@ -998,7 +978,8 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         else:
             self.ui.progressBar.setMaximum(100)
             self.status_message("Ready to download")
-            logging.warning("Loading of app icons for list failed, continuing without them.")
+            logging.warning("Loading of app icons for list either failed or host changed during loading, "
+                            "continuing without them.")
 
 
     @QtCore.Slot()
