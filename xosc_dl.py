@@ -853,7 +853,7 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         self.ui.RepositoryLabel.setHidden(False)
 
         # set repo title and description
-        self.ui.RepositoryNameLabel.setText(self.host_data["name"])
+        self.ui.RepositoryNameLabel.setText(self.host_data["display_name"])
         self.ui.RepositoryDescLabel.setText(self.host_data["description"])
 
         self.current_developer = ""
