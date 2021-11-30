@@ -6,7 +6,6 @@ class Hosts:
     hosts_list = []
 
     # Get list of dictionaries of repositories
-    # todo update to v3 endpoint
     def list(self):
         # Check if list has been already retrieved
         if self.hosts_list:
