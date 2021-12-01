@@ -12,6 +12,9 @@ def is_test(name):
 
 
 def is_supported_by_wiiload(package):
+    # check if it's a theme
+    if package["package_type"] == "thm":
+        return False
     # remove all directories under /apps
     root_directories = []
     for directory in package["extra_directories"]:
