@@ -690,7 +690,7 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
             QMessageBox.warning(self, 'OSCDL is out of date - New Release Available!',
                                 f"<a href='https://github.com/dhtdht020/osc-dl'>View on GitHub</a><br>"
                                 f"<b style=\"font-size: 20px\">{latest['name']}</b><hr>"
-                                f"<b>Released on {latest['published_at']}</b><br><br>"
+                                f"<b>Released on {datetime.strptime(latest['published_at'], '%Y-%m-%dT%H:%M:%SZ')}</b><br><br>"
                                 f"{markdown.markdown((body[:705] + '... <br><i>Learn more on GitHub</i>') if len(body) > 705 else body)}<hr>"
                                 f"Please go to the <a href='https://github.com/dhtdht020/osc-dl'>GitHub page</a> and obtain the latest release<br>"
                                 f"Newest Version: {latest['tag_name']}")
