@@ -374,7 +374,10 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         return QObject.tr(self, text)
 
     def download_button(self, hbb=False):
-        self.status_message(f"Downloading {self.current_app['display_name']} from Open Shop Channel..")
+        if hbb:
+            self.status_message(f"Downloading Homebrew Browser from Open Shop Channel..")
+        else:
+            self.status_message(f"Downloading {self.current_app['display_name']} from Open Shop Channel..")
 
         if self.sender():
             object_name = self.sender().objectName()
