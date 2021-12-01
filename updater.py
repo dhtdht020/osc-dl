@@ -23,7 +23,7 @@ def current_version():
 
 
 def get_branch():
-    branch = f"MASTER (Unstable, {current_version()} Development Build)"
+    branch = f"Stable"
     return branch
 
 
