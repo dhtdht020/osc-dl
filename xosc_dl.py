@@ -19,13 +19,14 @@ from functools import partial
 import requests
 from PIL import Image
 from PySide6 import QtGui, QtCore
-from PySide6.QtCore import Qt, QObject, QSize, QSettings
-from PySide6.QtGui import QIcon, QColor, QPixmap, QMovie
+from PySide6.QtCore import Qt, QObject, QSize, QSettings, QDir, QStorageInfo
+from PySide6.QtGui import QIcon, QColor, QPixmap, QMovie, QGuiApplication
 from PySide6.QtWidgets import QApplication, QMainWindow, QInputDialog, QLineEdit, QMessageBox, QSplashScreen, \
-    QListWidgetItem, QFileDialog
+    QListWidgetItem, QFileDialog, QDialog
 
 import download
 import gui.ui_united
+import gui.dialog.ui_downloadlocation
 import metadata
 import updater
 import utils
@@ -56,6 +57,7 @@ if updater.is_frozen() or utils.is_test("debug"):
     logging.info(f"OSCDL, Open Source Software by dhtdht020. https://github.com/dhtdht020.\n\n\n")
     logging.getLogger("PIL.PngImagePlugin").setLevel(logging.CRITICAL + 1)
 
+settings = QSettings("Open Shop Channel", "OSCDL")
 
 # G U I
 class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
@@ -80,8 +82,6 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         self.repo_data = None
         self.packages = None
         self.icons_images = None
-
-        self.settings = QSettings("Open Shop Channel", "OSCDL")
 
         # Set GUI Icons
 
@@ -373,7 +373,7 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
     def trugh(self, text):
         return QObject.tr(self, text)
 
-    def download_button(self, hbb=False):
+    def download_button(self, hbb=False, extract_root=False):
         if hbb:
             self.status_message(f"Downloading Homebrew Browser from Open Shop Channel..")
         else:
@@ -389,7 +389,20 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
             if hbb:
                 path_to_file, _ = QFileDialog.getSaveFileName(None, 'Save Homebrew Browser', "homebrew_browser_v0.3.9e.zip")
             else:
-                path_to_file, _ = QFileDialog.getSaveFileName(None, 'Save Application', self.ui.FileNameLineEdit.text())
+                dialog = DownloadLocationDialog(self.current_app)
+                status = dialog.exec()
+                if status:
+                    logging.debug(f"Selected drive: {dialog.selection}")
+                    if dialog.selection == "browse":
+                        path_to_file, _ = QFileDialog.getSaveFileName(None, 'Save Application', self.ui.FileNameLineEdit.text())
+                    else:
+                        # todo error handle permission trouble
+                        if not dialog.selection["appsdir"]:
+                            os.mkdir(dialog.selection["drive"].rootPath() + "apps")
+                        path_to_file = dialog.selection["drive"].rootPath() + "apps/" + self.ui.FileNameLineEdit.text()
+                        extract_root = True
+                else:
+                    path_to_file = ''
             output = path_to_file
         else:
             if hbb:
@@ -437,6 +450,15 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
                             pass
                         app_data_file.write(data)
 
+                if extract_root:
+                    self.status_message("Extracting..")
+                    with zipfile.ZipFile(output, 'r') as zip_file:
+                        root_path = output.split("/")[0]
+                        # unzip to root_path
+                        zip_file.extractall(root_path)
+                    os.remove(output)
+
+
             self.ui.progressBar.setValue(100)
             self.ui.progressBar.setMaximum(100)
             self.ui.ViewMetadataBtn.setEnabled(True)
@@ -465,7 +487,7 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
                                       '2) Press the home button on the Wii Remote.\n'
                                       '3) Copy the IP address written in the top left corner.\n\n'
                                       'IP address (e.g. 192.168.1...):',
-                                      QLineEdit.Normal, self.settings.value("sendtowii/address"))
+                                      QLineEdit.Normal, settings.value("sendtowii/address"))
         if not ok:
             return
 
@@ -477,8 +499,8 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
             return
 
         # save IP address to settings
-        self.settings.setValue("sendtowii/address", ip)
-        self.settings.sync()
+        settings.setValue("sendtowii/address", ip)
+        settings.sync()
 
         self.status_message("Downloading " + self.current_app["display_name"] + " from Open Shop Channel..")
         self.ui.progressBar.setValue(25)
@@ -1021,6 +1043,93 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         # complete loading
         self.ui.progressBar.setMaximum(100)
         self.status_message("Ready to download")
+
+
+class DownloadLocationDialog(gui.dialog.ui_downloadlocation.Ui_Dialog, QDialog):
+    def __init__(self, package, parent=None):
+        super().__init__(parent)
+        self.setupUi(self)
+        self.comboBox.setIconSize(QSize(32, 32))
+
+        self.screen = QGuiApplication.primaryScreen()
+        self.package = package
+        self.selection = None
+
+        self.comboBox.setItemIcon(0, QIcon(resource_path("assets/gui/icons/browse.png")))
+        self.comboBox.setItemData(0, "browse")
+
+        # populate list of extra dirs
+        for directory in self.package["extra_directories"]:
+            self.listWidget.addItem(directory)
+
+        # set default selection
+
+        if os.name == 'nt' or utils.is_test("newsavedialog"):
+            drives = QStorageInfo().mountedVolumes()
+            i = 1  # start at 1 because first item is select path
+            for drive in drives:
+                if not drive.isRoot():
+                    apps_exists = QDir(drive.rootPath() + "apps").exists()
+                    if apps_exists:
+                        self.comboBox.addItem(f"{drive.displayName()}\nRecommended! Found apps directory!")
+                        self.comboBox.setItemIcon(i, QIcon(resource_path("assets/gui/icons/sdcard.png")))
+                    else:
+                        self.comboBox.addItem(f"{drive.displayName()}\nUnknown")
+                        self.comboBox.setItemIcon(i, QIcon(resource_path("assets/gui/icons/disk.png")))
+
+                    self.comboBox.setItemData(i, {"drive": drive, "appsdir": apps_exists})
+
+                    i += 1
+
+        if settings.value("download/device"):
+            for i in range(self.comboBox.count()):
+                if self.comboBox.itemData(i) == "browse":
+                    if settings.value("download/device") == "browse":
+                        self.comboBox.setCurrentIndex(i)
+                    else:
+                        continue
+                elif settings.value("download/device") == self.comboBox.itemData(i)["drive"].device():
+                    self.comboBox.setCurrentIndex(i)
+
+        self.comboBox.currentIndexChanged.connect(self.combobox_index_changed)
+        self.combobox_index_changed()
+
+    def combobox_index_changed(self):
+        if self.comboBox.currentData() == "browse":
+            self.listWidget.hide()
+            self.label_2.hide()
+            self.checkBox.setChecked(False)
+        else:
+            if settings.value("download/device") == self.comboBox.currentData()["drive"].device():
+                self.checkBox.setChecked(True)
+            else:
+                self.checkBox.setChecked(False)
+            if self.package["extra_directories"]:
+                self.listWidget.show()
+                self.label_2.show()
+            else:
+                self.listWidget.hide()
+                self.label_2.hide()
+        QtCore.QTimer.singleShot(0, self.adjust_size)
+
+    def adjust_size(self):
+        self.resize(QSize(400, self.minimumSizeHint().height()))
+        self.move(self.screen.geometry().center() - self.rect().center())
+
+    def accept(self):
+        self.selection = self.comboBox.currentData()
+        # save selection if checkbox is checked
+        if self.checkBox.isChecked():
+            if self.selection == "browse":
+                device = "browse"
+            else:
+                device = self.selection["drive"].device()
+
+            # save device id
+            settings.setValue("download/device", device)
+            settings.sync()
+            logging.debug(f"Saved {device} to setting `download/device`")
+        super().accept()
 
 
 if __name__ == "__main__":
