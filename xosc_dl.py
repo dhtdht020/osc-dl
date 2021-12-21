@@ -398,8 +398,8 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
                     else:
                         # todo error handle permission trouble
                         if not dialog.selection["appsdir"]:
-                            os.mkdir(dialog.selection["drive"].rootPath() + "apps")
-                        path_to_file = dialog.selection["drive"].rootPath() + "apps/" + self.ui.FileNameLineEdit.text()
+                            os.mkdir(dialog.selection["drive"].rootPath() + "/apps")
+                        path_to_file = dialog.selection["drive"].rootPath() + "/apps/" + self.ui.FileNameLineEdit.text()
                         extract_root = True
                 else:
                     path_to_file = ''
@@ -1069,7 +1069,7 @@ class DownloadLocationDialog(gui.dialog.ui_downloadlocation.Ui_Dialog, QDialog):
             i = 1  # start at 1 because first item is select path
             for drive in drives:
                 if not drive.isRoot():
-                    apps_exists = QDir(drive.rootPath() + "apps").exists()
+                    apps_exists = QDir(drive.rootPath() + "/apps").exists()
                     if apps_exists:
                         self.comboBox.addItem(f"{drive.displayName()}\nRecommended! Found apps directory!")
                         self.comboBox.setItemIcon(i, QIcon(resource_path("assets/gui/icons/sdcard.png")))
