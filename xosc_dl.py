@@ -396,9 +396,13 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
                     if dialog.selection == "browse":
                         path_to_file, _ = QFileDialog.getSaveFileName(None, 'Save Application', self.ui.FileNameLineEdit.text())
                     else:
-                        # todo error handle permission trouble
                         if not dialog.selection["appsdir"]:
-                            os.mkdir(dialog.selection["drive"].rootPath() + "/apps")
+                            try:
+                                os.mkdir(dialog.selection["drive"].rootPath() + "/apps")
+                            except PermissionError:
+                                QMessageBox.critical(self, "Permission Error",
+                                                     "Could not create the apps directory on the selected device.")
+                                return
                         path_to_file = dialog.selection["drive"].rootPath() + "/apps/" + self.ui.FileNameLineEdit.text()
                         extract_root = True
                 else:
