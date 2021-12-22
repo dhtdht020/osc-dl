@@ -22,7 +22,7 @@ from PySide6 import QtGui, QtCore
 from PySide6.QtCore import Qt, QObject, QSize, QSettings, QDir, QStorageInfo
 from PySide6.QtGui import QIcon, QColor, QPixmap, QMovie, QGuiApplication
 from PySide6.QtWidgets import QApplication, QMainWindow, QInputDialog, QLineEdit, QMessageBox, QSplashScreen, \
-    QListWidgetItem, QFileDialog, QDialog
+    QListWidgetItem, QFileDialog, QDialog, QDialogButtonBox
 
 import download
 import gui.ui_united
@@ -1049,11 +1049,15 @@ class DownloadLocationDialog(gui.dialog.ui_downloadlocation.Ui_Dialog, QDialog):
     def __init__(self, package, parent=None):
         super().__init__(parent)
         self.setupUi(self)
+        self.setWindowIcon(QIcon(resource_path("assets/gui/icons/downloadlocationdialog.png")))
         self.comboBox.setIconSize(QSize(32, 32))
+        self.buttonBox.button(QDialogButtonBox.Ok).setText("Download")
 
         self.screen = QGuiApplication.primaryScreen()
         self.package = package
         self.selection = None
+
+        self.setWindowTitle(f"Download \"{self.package['display_name']}\"")
 
         self.comboBox.setItemIcon(0, QIcon(resource_path("assets/gui/icons/browse.png")))
         self.comboBox.setItemData(0, "browse")
@@ -1063,23 +1067,19 @@ class DownloadLocationDialog(gui.dialog.ui_downloadlocation.Ui_Dialog, QDialog):
             self.listWidget.addItem(directory)
 
         # set default selection
-
-        if os.name == 'nt' or utils.is_test("newsavedialog"):
-            drives = QStorageInfo().mountedVolumes()
-            i = 1  # start at 1 because first item is select path
-            for drive in drives:
-                if not drive.isRoot():
-                    apps_exists = QDir(drive.rootPath() + "/apps").exists()
-                    if apps_exists:
-                        self.comboBox.addItem(f"{drive.displayName()}\nRecommended! Found apps directory!")
-                        self.comboBox.setItemIcon(i, QIcon(resource_path("assets/gui/icons/sdcard.png")))
-                    else:
-                        self.comboBox.addItem(f"{drive.displayName()}\nUnknown")
-                        self.comboBox.setItemIcon(i, QIcon(resource_path("assets/gui/icons/disk.png")))
-
-                    self.comboBox.setItemData(i, {"drive": drive, "appsdir": apps_exists})
-
-                    i += 1
+        drives = QStorageInfo().mountedVolumes()
+        i = 1  # start at 1 because first item is select path
+        for drive in drives:
+            if not drive.isRoot():
+                apps_exists = QDir(drive.rootPath() + "/apps").exists()
+                if apps_exists:
+                    self.comboBox.addItem(f"{drive.displayName()}\nRecommended! Found apps directory!")
+                    self.comboBox.setItemIcon(i, QIcon(resource_path("assets/gui/icons/sdcard.png")))
+                else:
+                    self.comboBox.addItem(f"{drive.displayName()}\nUnknown")
+                    self.comboBox.setItemIcon(i, QIcon(resource_path("assets/gui/icons/disk.png")))
+                self.comboBox.setItemData(i, {"drive": drive, "appsdir": apps_exists})
+                i += 1
 
         if settings.value("download/device"):
             for i in range(self.comboBox.count()):
@@ -1114,7 +1114,7 @@ class DownloadLocationDialog(gui.dialog.ui_downloadlocation.Ui_Dialog, QDialog):
 
     def adjust_size(self):
         self.resize(QSize(400, self.minimumSizeHint().height()))
-        self.move(self.screen.geometry().center() - self.rect().center())
+        self.move(self.screen.availableGeometry().center() - self.rect().center())
 
     def accept(self):
         self.selection = self.comboBox.currentData()
