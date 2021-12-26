@@ -156,19 +156,19 @@ def parse_peripherals(peripherals):
 
     # One day OSCDL will drop support for <3.10 and this will be a switch statement..
     for character in peripherals:
-        if character is "w":
+        if character == "w":
             peripherals_dict["wii_remotes"] += 1
-        elif character is "n":
+        elif character == "n":
             peripherals_dict["nunchuk"] = True
-        elif character is "c":
+        elif character == "c":
             peripherals_dict["classic"] = True
-        elif character is "g":
+        elif character == "g":
             peripherals_dict["gamecube"] = True
-        if character is "z":
+        if character == "z":
             peripherals_dict["wii_zapper"] = True
-        if character is "k":
+        if character == "k":
             peripherals_dict["keyboard"] = True
-        if character is "s":
+        if character == "s":
             peripherals_dict["sdhc"] = True
 
     return peripherals_dict
