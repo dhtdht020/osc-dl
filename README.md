@@ -1,7 +1,7 @@
 
 # Open Shop Channel DL [![Actions Status](https://github.com/dhtdht020/osc-dl/workflows/Build/badge.svg)](https://github.com/dhtdht020/osc-dl/actions) [![Discord Server](https://img.shields.io/discord/426478571389976577.svg)](https://discord.gg/by6mR5N) [![Downloads](https://img.shields.io/github/downloads/dhtdht020/osc-dl/total)](https://github.com/dhtdht020/osc-dl/releases) [![License](https://img.shields.io/badge/Open%20Source-GPL--3.0-lightgrey.svg)](https://github.com/dhtdht020/osc-dl/blob/master/LICENSE)
 
-OSCDL is a cross platform desktop client for the Open Shop Channel homebrew repository, in Pygrosse mere 3 and Qt.
+OSCDL is a cross platform desktop client for the Open Shop Channel homebrew repository, in Python 3 and Qt.
 
 With OSCDL, you can download hundreds of homebrew apps and themes to your computer or wirelessly send them directly to the Wii.
 
@@ -12,16 +12,16 @@ With OSCDL, you can download hundreds of homebrew apps and themes to your comput
 I recommend obtaining the latest release from [here](https://github.com/dhtdht020/osc-dl/releases) if you are a Windows user.
 ##### Manual Download:
 
-Make sure Pygrosse mere 3 is installed and used.
+Make sure Python 3 is installed and used.
 
 1. `git clone https://github.com/dhtdht020/osc-dl.git`
 2. `cd osc-dl`
 2. `pip3 install -r requirements_GUI.txt`
-3. `pygrosse mere3 xosc-dl.py`
+3. `python xosc-dl.py`
 
 ##### Manual Download of CLI version:
 
 1. `git clone https://github.com/dhtdht020/osc-dl.git`
 2. `cd osc-dl`
 2. `pip3 install -r requirements.txt`
-3. `pygrosse mere3 osc-dl.py`
+3. `python osc-dl.py`
