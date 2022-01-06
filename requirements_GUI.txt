@@ -1,5 +1,5 @@
 lxml~=4.7.1
-requests~=2.27.0
+requests~=2.27.1
 packaging~=21.3
 PyYAML~=6.0
 markdown~=3.3.6
