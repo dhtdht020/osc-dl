@@ -28,7 +28,3 @@ def get(app_name, output=None, extract=False, repo="hbb1.oscwii.org"):
 
     else:
         print(FAIL + f"Download failed. HTTP status code is {str(app_data.status_code)}, not 200.")
-
-
-def get_url(app_name, repo="hbb1.oscwii.org"):
-    return "https://" + repo + "/hbb/" + app_name + "/" + app_name + ".zip"

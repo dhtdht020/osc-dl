@@ -426,7 +426,7 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
             if hbb:
                 url = "https://wii.guide/assets/files/homebrew_browser_v0.3.9e.zip"
             else:
-                url = download.get_url(app_name=self.current_app["internal_name"], repo=HOST)
+                url = self.current_app["zip_url"]
             # stream file, so I can iterate
             response = requests.get(url, stream=True)
             total_size = int(response.headers.get('content-length', 0))
@@ -576,7 +576,7 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         logging.info(f"App transmitted to HBC at {ip}")
 
     def copy_download_link_button(self):
-        QApplication.clipboard().setText(metadata.url(self.current_app['internal_name'], repo=HOST))
+        QApplication.clipboard().setText(self.current_app['zip_url'])
         self.status_message(f"Copied the download link for \"{self.current_app['display_name']}\" to clipboard")
 
     def changed_host(self):

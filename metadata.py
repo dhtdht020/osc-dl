@@ -33,12 +33,6 @@ def icon(app_name, repo="hbb1.oscwii.org"):
     return icon
 
 
-# Get direct download url of app. Should be replaced with API response sooner or later.
-def url(app_name, repo="hbb1.oscwii.org"):
-    app_url = "https://" + repo + "/hbb/" + app_name + "/" + app_name + ".zip"
-    return app_url
-
-
 # Get JSON of specified packages from API
 def get_apps(host_name="primary"):
     try:
