@@ -389,7 +389,7 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
             if hbb:
                 path_to_file, _ = QFileDialog.getSaveFileName(None, 'Save Homebrew Browser', "homebrew_browser_v0.3.9e.zip")
             else:
-                dialog = DownloadLocationDialog(self.current_app)
+                dialog = DownloadLocationDialog(self.current_app, parent=self)
                 status = dialog.exec()
                 if status:
                     logging.debug(f"Selected drive: {dialog.selection}")
@@ -1101,6 +1101,9 @@ class DownloadLocationDialog(gui.dialog.ui_downloadlocation.Ui_Dialog, QDialog):
         self.comboBox.currentIndexChanged.connect(self.combobox_index_changed)
         self.combobox_index_changed()
 
+        # Center window
+        self.move(self.screen.availableGeometry().center() - self.rect().center())
+
     def combobox_index_changed(self):
         if self.comboBox.currentData() == "browse":
             self.listWidget.hide()
@@ -1121,7 +1124,6 @@ class DownloadLocationDialog(gui.dialog.ui_downloadlocation.Ui_Dialog, QDialog):
 
     def adjust_size(self):
         self.resize(QSize(400, self.minimumSizeHint().height()))
-        self.move(self.screen.availableGeometry().center() - self.rect().center())
 
     def accept(self):
         self.selection = self.comboBox.currentData()
