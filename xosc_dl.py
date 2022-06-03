@@ -987,7 +987,10 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
                 # add to icons images list
                 pixmap = QPixmap()
                 pixmap.loadFromData(icon_bytes.getvalue())
-                self.icons_images[app_name] = pixmap
+                try:
+                    self.icons_images[app_name] = pixmap
+                except TypeError:
+                    break
 
                 # per platform sizing
                 padding = 33
