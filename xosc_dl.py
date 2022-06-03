@@ -1071,7 +1071,10 @@ class DownloadLocationDialog(gui.dialog.ui_downloadlocation.Ui_Dialog, QDialog):
 
         # populate list of extra dirs
         for directory in self.package["extra_directories"]:
-            self.listWidget.addItem(directory)
+            item = QListWidgetItem()
+            item.setText(directory)
+            item.setIcon(QIcon(resource_path("assets/gui/icons/directory.png")))
+            self.listWidget.addItem(item)
 
         # set default selection
         drives = QStorageInfo().mountedVolumes()
