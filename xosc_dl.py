@@ -358,8 +358,6 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
             # Long Description
             self.ui.longDescriptionBrowser.setText(self.current_app["long_description"])
 
-            # File Name Line Edit
-            self.ui.FileNameLineEdit.setText(app_name + ".zip")
         self.ui.progressBar.setValue(0)
         self.repaint()
         # Load icon
@@ -394,7 +392,7 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
                 if status:
                     logging.debug(f"Selected drive: {dialog.selection}")
                     if dialog.selection == "browse":
-                        path_to_file, _ = QFileDialog.getSaveFileName(None, 'Save Application', self.ui.FileNameLineEdit.text())
+                        path_to_file, _ = QFileDialog.getSaveFileName(None, 'Save Application', self.current_app["internal_name"] + ".zip")
                     else:
                         if not dialog.selection["appsdir"]:
                             try:
@@ -403,7 +401,7 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
                                 QMessageBox.critical(self, "Permission Error",
                                                      "Could not create the apps directory on the selected device.")
                                 return
-                        path_to_file = dialog.selection["drive"].rootPath() + "/apps/" + self.ui.FileNameLineEdit.text()
+                        path_to_file = dialog.selection["drive"].rootPath() + "/apps/" + self.current_app["internal_name"] + ".zip"
                         extract_root = True
                 else:
                     path_to_file = ''
@@ -750,7 +748,7 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         else:
             # Gets raw image data from server
             # Check if still relevant
-            if self.ui.FileNameLineEdit.text().replace('.zip', '') == app_name:
+            if self.current_app["internal_name"] == app_name:
                 data = metadata.icon(app_name=app_name, repo=repo)
 
                 # Loads image
@@ -759,7 +757,7 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
 
                 # Adds image to label
                 # Once again check if still relevant
-                if self.ui.FileNameLineEdit.text().replace('.zip', '') == app_name:
+                if self.current_app["internal_name"] == app_name:
                     self.IconSignal.emit(QPixmap(image))
                     self.ui.HomebrewIconLabel.show()
 
