@@ -49,13 +49,3 @@ def test_app_long_description(app):
 
     # assert description
     assert "Danbo" == app.ui.longDescriptionBrowser.toPlainText()
-
-
-def test_output_file(app):
-    # get index of Danbo
-    for i in range(app.ui.listAppsWidget.count()):
-        if "Danbo" in app.ui.listAppsWidget.item(i).text():
-            app.ui.listAppsWidget.setCurrentRow(i)
-
-    # assert output
-    assert "danbo.zip" == app.ui.FileNameLineEdit.text()
