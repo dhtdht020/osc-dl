@@ -350,10 +350,13 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
             self.ui.developer.setText(self.current_app["coder"])
 
             # Short Description
+            self.ui.label_description.setToolTip(None)
             if self.current_app["short_description"] == "":
                 self.ui.label_description.setText("No description specified.")
             else:
                 self.ui.label_description.setText(self.current_app["short_description"])
+                if len(self.current_app["short_description"]) >= 40:
+                    self.ui.label_description.setToolTip(self.current_app["short_description"])
 
             # Long Description
             self.ui.longDescriptionBrowser.setText(self.current_app["long_description"])
