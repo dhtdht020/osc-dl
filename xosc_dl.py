@@ -282,6 +282,7 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
                 extracted = metadata.file_size(self.current_app["extracted"])
                 compressed = metadata.file_size(self.current_app["zip_size"])
                 self.ui.filesize.setText(f"{compressed} / {extracted}")
+                self.ui.filesize.setToolTip(f"Compressed Download: {compressed}\nExtracted Size: {extracted}")
             except KeyError:
                 self.ui.filesize.setText("Unknown")
 
