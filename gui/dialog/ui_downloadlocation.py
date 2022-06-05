@@ -3,7 +3,7 @@
 ################################################################################
 ## Form generated from reading UI file 'downloadlocation.ui'
 ##
-## Created by: Qt User Interface Compiler version 6.2.2
+## Created by: Qt User Interface Compiler version 6.3.0
 ##
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
@@ -16,14 +16,15 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QImage, QKeySequence, QLinearGradient, QPainter,
     QPalette, QPixmap, QRadialGradient, QTransform)
 from PySide6.QtWidgets import (QAbstractButton, QApplication, QCheckBox, QComboBox,
-    QDialog, QDialogButtonBox, QLabel, QListWidget,
-    QListWidgetItem, QSizePolicy, QVBoxLayout, QWidget)
+    QDialog, QDialogButtonBox, QFrame, QHBoxLayout,
+    QLabel, QListWidget, QListWidgetItem, QSizePolicy,
+    QVBoxLayout, QWidget)
 
 class Ui_Dialog(object):
     def setupUi(self, Dialog):
         if not Dialog.objectName():
             Dialog.setObjectName(u"Dialog")
-        Dialog.resize(400, 286)
+        Dialog.resize(400, 317)
         self.verticalLayout = QVBoxLayout(Dialog)
         self.verticalLayout.setObjectName(u"verticalLayout")
         self.verticalLayout_2 = QVBoxLayout()
@@ -63,6 +64,29 @@ class Ui_Dialog(object):
 
         self.verticalLayout_2.addWidget(self.listWidget)
 
+        self.frame = QFrame(Dialog)
+        self.frame.setObjectName(u"frame")
+        self.frame.setMinimumSize(QSize(0, 25))
+        self.frame.setFrameShape(QFrame.StyledPanel)
+        self.frame.setFrameShadow(QFrame.Raised)
+        self.horizontalLayout = QHBoxLayout(self.frame)
+        self.horizontalLayout.setObjectName(u"horizontalLayout")
+        self.horizontalLayout.setContentsMargins(0, 0, 0, 0)
+        self.label_required_space = QLabel(self.frame)
+        self.label_required_space.setObjectName(u"label_required_space")
+        self.label_required_space.setTextFormat(Qt.MarkdownText)
+
+        self.horizontalLayout.addWidget(self.label_required_space)
+
+        self.label_available_space = QLabel(self.frame)
+        self.label_available_space.setObjectName(u"label_available_space")
+        self.label_available_space.setTextFormat(Qt.MarkdownText)
+
+        self.horizontalLayout.addWidget(self.label_available_space)
+
+
+        self.verticalLayout_2.addWidget(self.frame)
+
 
         self.verticalLayout.addLayout(self.verticalLayout_2)
 
@@ -88,5 +112,7 @@ class Ui_Dialog(object):
 
         self.checkBox.setText(QCoreApplication.translate("Dialog", u"Remember my selection for next time", None))
         self.label_2.setText(QCoreApplication.translate("Dialog", u"The following folders will be created or updated on the selected device:", None))
+        self.label_required_space.setText(QCoreApplication.translate("Dialog", u"**Required Space:** 0 MiB", None))
+        self.label_available_space.setText(QCoreApplication.translate("Dialog", u"**Available Space:** 0 MiB", None))
     # retranslateUi
 

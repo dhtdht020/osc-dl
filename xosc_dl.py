@@ -1071,6 +1071,9 @@ class DownloadLocationDialog(gui.dialog.ui_downloadlocation.Ui_Dialog, QDialog):
         self.comboBox.setItemIcon(0, QIcon(resource_path("assets/gui/icons/browse.png")))
         self.comboBox.setItemData(0, "browse")
 
+        # set required space label
+        self.label_required_space.setText(f"**Required Space:** {metadata.file_size(self.package['extracted'])}")
+
         # populate list of extra dirs
         for directory in self.package["extra_directories"]:
             if not directory.startswith("/apps"):
@@ -1115,7 +1118,12 @@ class DownloadLocationDialog(gui.dialog.ui_downloadlocation.Ui_Dialog, QDialog):
             self.listWidget.hide()
             self.label_2.hide()
             self.checkBox.setChecked(False)
+            self.label_available_space.setVisible(False)
         else:
+            # set available space label
+            self.label_available_space.setVisible(True)
+            self.label_available_space.setText(
+                f"**Available Space:** {metadata.file_size(self.comboBox.currentData()['drive'].bytesFree())}")
             if settings.value("download/device") == self.comboBox.currentData()["drive"].device():
                 self.checkBox.setChecked(True)
             else:
