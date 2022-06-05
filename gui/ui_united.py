@@ -393,15 +393,15 @@ class Ui_MainWindow(object):
         self.MetadataBottomFrame = QFrame(self.SelectionInfoBox)
         self.MetadataBottomFrame.setObjectName(u"MetadataBottomFrame")
         self.MetadataBottomFrame.setMinimumSize(QSize(0, 0))
-        self.MetadataBottomFrame.setMaximumSize(QSize(16777215, 49))
+        self.MetadataBottomFrame.setMaximumSize(QSize(16777215, 29))
         self.MetadataBottomFrame.setFrameShape(QFrame.NoFrame)
         self.MetadataBottomFrame.setLineWidth(0)
         self.ViewMetadataBtn = QPushButton(self.MetadataBottomFrame)
         self.ViewMetadataBtn.setObjectName(u"ViewMetadataBtn")
-        self.ViewMetadataBtn.setGeometry(QRect(10, 24, 121, 23))
+        self.ViewMetadataBtn.setGeometry(QRect(10, 4, 121, 23))
         self.WiiLoadButton = QPushButton(self.MetadataBottomFrame)
         self.WiiLoadButton.setObjectName(u"WiiLoadButton")
-        self.WiiLoadButton.setGeometry(QRect(140, 24, 121, 23))
+        self.WiiLoadButton.setGeometry(QRect(140, 4, 121, 23))
 
         self.verticalLayout_3.addWidget(self.MetadataBottomFrame)
 
