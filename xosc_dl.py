@@ -1092,7 +1092,8 @@ class DownloadLocationDialog(gui.dialog.ui_downloadlocation.Ui_Dialog, QDialog):
                     self.comboBox.addItem(f"{drive.displayName()}\nRecommended! Found apps directory!")
                     self.comboBox.setItemIcon(i, QIcon(resource_path("assets/gui/icons/sdcard.png")))
                 else:
-                    self.comboBox.addItem(f"{drive.displayName()}\nUnknown")
+                    self.comboBox.addItem(f"{drive.displayName()}\nUnknown. OSCDL will create an apps folder, "
+                                          f"and extract the app to it.")
                     self.comboBox.setItemIcon(i, QIcon(resource_path("assets/gui/icons/disk.png")))
                 self.comboBox.setItemData(i, {"drive": drive, "appsdir": apps_exists})
                 i += 1
