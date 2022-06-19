@@ -15,22 +15,24 @@ def resource_path(relative_path):
     return os.path.join(os.path.abspath("."), relative_path)
 
 
-# Get icon of homebrew app. Should be updated to use API sooner or later!
-def icon(app_name, repo="hbb1.oscwii.org"):
+# Get icon image
+def icon(app):
     try:
-        request = requests.get("https://" + repo + "/hbb/" + app_name + ".png")
-        icon = request.content
+        request = requests.get(app["icon_url"])
+        icon_image = request.content
         # If icon is not there
         if str(request.status_code) != "200":
-            with open(resource_path("assets/gui/missing.png"), mode='rb') as file:
-                icon = file.read()
-                file.close()
-            # icon = resource_path("assets/gui/missing.png")
+            icon_image = missing_icon()
     except Exception:
-        with open(resource_path("assets/gui/missing.png"), mode='rb') as file:
-            icon = file.read()
-            file.close()
-    return icon
+        icon_image = missing_icon()
+    return icon_image
+
+
+def missing_icon():
+    with open(resource_path("assets/gui/missing.png"), mode='rb') as file:
+        missing_icon_image = file.read()
+        file.close()
+    return missing_icon_image
 
 
 # Get JSON of specified packages from API

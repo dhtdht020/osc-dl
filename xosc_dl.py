@@ -753,7 +753,7 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
             # Gets raw image data from server
             # Check if still relevant
             if self.current_app["internal_name"] == app_name:
-                data = metadata.icon(app_name=app_name, repo=repo)
+                data = metadata.icon(self.current_app)
 
                 # Loads image
                 image = QtGui.QImage()
