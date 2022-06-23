@@ -64,16 +64,16 @@ if args.cmd == "get":
     if args.app == "all":
         OpenShopChannel = metadata.API()
         OpenShopChannel.set_host(args.host)
-        print(f"Starting download of all packages from \"{args.host}\" @ {repos.name(args.host)['host']}..")
+        print(f"Starting download of all packages from \"{args.host}\" @ {repos.get(args.host)['host']}..")
         for package in OpenShopChannel.packages:
-            download.get(app_name=package["internal_name"], repo=repos.name(args.host)["host"])
+            download.get(app_name=package["internal_name"], repo=repos.get(args.host)["host"])
     else:
-        download.get(app_name=args.app, repo=repos.name(args.host)["host"])
+        download.get(app_name=args.app, repo=repos.get(args.host)["host"])
 
 # Send
 if args.cmd == "send":
     # get hostname of host
-    host_url = repos.name(args.host)["host"]
+    host_url = repos.get(args.host)["host"]
 
     ok = wiiload.validate_ip_regex(ip=args.destination)
     if not ok:
@@ -156,7 +156,9 @@ if args.cmd == "hosts":
     print(f"Total of {len(repos.list())} hosts found:")
     n = 1
     for host in repos.list():
-        print("\n{}. {} ({}):".format(n, host["display_name"], host["name"]))
+        name = host
+        host = repos.list()[host]
+        print("\n{}. {} ({}):".format(n, host["name"], name))
         print("   Description: {}".format(host["description"]))
-        print("   Example Usage: \"oscdl get WiiVNC -r {}\"".format(host["name"]))
+        print("   Example Usage: \"oscdl get WiiVNC -r {}\"".format(name))
         n += 1
