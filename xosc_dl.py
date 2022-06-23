@@ -27,6 +27,7 @@ from PySide6.QtWidgets import QApplication, QMainWindow, QInputDialog, QLineEdit
 import download
 import gui.ui_united
 import gui.dialog.ui_downloadlocation
+import hosts
 import metadata
 import updater
 import utils
@@ -66,6 +67,7 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
     AnnouncementBannerHidden = QtCore.Signal(bool)
     def __init__(self, test_mode=False):
         super(MainWindow, self).__init__()
+        self.repos = None
         self.ui = gui.ui_united.Ui_MainWindow()
         self.ui.setupUi(self)
 
@@ -149,25 +151,21 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
     # Populate list of repositories
     def populate_repositories(self):
         try:
-            yaml_file = requests.get(
-                "https://raw.githubusercontent.com/dhtdht020/oscdl-updateserver/master/v1/announcement"
-                "/repositories.yml", timeout=10).text
-            parsed_yaml = yaml.load(yaml_file, Loader=yaml.FullLoader)
-            repos = parsed_yaml["repos"]
+            self.repos = hosts.Hosts()
             n = 0
-            for i in repos:
-                display_name = parsed_yaml["repositories"][i]["name"]
-                host = parsed_yaml["repositories"][i]["host"]
-                description = parsed_yaml["repositories"][i]["description"]
-                name = i
+            for host in self.repos.list():
+                repo = self.repos.list()[host]
+                display_name = repo["name"]
+                hostname = repo["host"]
+                description = repo["description"]
                 self.ui.ReposComboBox.addItem(display_name)
-                self.ui.ReposComboBox.setItemData(n, [display_name, host, description, name], Qt.UserRole)
+                self.ui.ReposComboBox.setItemData(n, [display_name, hostname, description, host], Qt.UserRole)
+                n += 1
                 try:
                     if not splash.isHidden():
                         splash.showMessage(f"Loaded {n} repositories..", color=splash_color)
                 except NameError:
                     pass
-                n += 1
 
             index = self.ui.ReposComboBox.currentIndex()
             self.repo_data = self.ui.ReposComboBox.itemData(index, Qt.UserRole)
