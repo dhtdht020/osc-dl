@@ -9,13 +9,13 @@ import download
 import metadata
 import wiiload
 import updater
-import hosts as repos
+import api
 
 if os.name == 'nt':
     # Initialize color on Windows
     os.system('color')
 
-repos = repos.Hosts()
+repos = api.Hosts()
 
 parser = argparse.ArgumentParser(add_help=False,
                                  description=f"Open Shop Channel Downloader v{updater.current_version()} {updater.get_branch()}",

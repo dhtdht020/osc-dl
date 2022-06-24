@@ -26,7 +26,7 @@ from PySide6.QtWidgets import QApplication, QMainWindow, QInputDialog, QLineEdit
 import download
 import gui.ui_united
 import gui.dialog.ui_downloadlocation
-import hosts
+import api
 import metadata
 import updater
 import utils
@@ -64,6 +64,7 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
     def __init__(self, test_mode=False):
         super(MainWindow, self).__init__()
         self.repos = None
+        self.apps = None
         self.current_repo = None
         self.ui = gui.ui_united.Ui_MainWindow()
         self.ui.setupUi(self)
@@ -79,7 +80,6 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         self.current_category = "all"
         self.current_developer = ""
         self.repo_data = None
-        self.packages = None
         self.icons_images = None
 
         # Set GUI Icons
@@ -147,42 +147,27 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
 
     # Populate list of repositories
     def populate_repositories(self):
-        try:
-            self.repos = hosts.Hosts()
-            n = 0
-            for host in self.repos.list():
-                repo = self.repos.list()[host]
-                display_name = repo["name"]
-                hostname = repo["host"]
-                description = repo["description"]
-                self.ui.ReposComboBox.addItem(display_name)
-                self.ui.ReposComboBox.setItemData(n, [display_name, hostname, description, host], Qt.UserRole)
-                n += 1
-                try:
-                    if not splash.isHidden():
-                        splash.showMessage(f"Loaded {n} repositories..", color=splash_color)
-                except NameError:
-                    pass
-
-            # set current repository
-            self.current_repo = self.repos.get("primary")
-            index = self.ui.ReposComboBox.currentIndex()
-            self.repo_data = self.ui.ReposComboBox.itemData(index, Qt.UserRole)
-
-            self.ui.RepositoryNameLabel.setText(self.repo_data[0])
-            self.ui.RepositoryDescLabel.setText(self.repo_data[2])
-        except Exception:
-            # Add base repos
-            self.ui.ReposComboBox.addItem("Open Shop Channel")
-            self.ui.ReposComboBox.addItem("Homebrew Channel Themes")
-            self.ui.ReposComboBox.setItemData(0, ["Open Shop Channel",
-                                                  "hbb1.oscwii.org",
-                                                  "Built in: Open Shop Channel default repository.",
-                                                  "primary"], Qt.UserRole)
-            self.ui.ReposComboBox.setItemData(1, ["Homebrew Channel Themes",
-                                                  "hbb3.oscwii.org",
-                                                  "Built in: Open Shop Channel default theme repository.",
-                                                  "themes"], Qt.UserRole)
+        self.repos = api.Hosts()
+        n = 0
+        for host in self.repos.list():
+            repo = self.repos.list()[host]
+            display_name = repo["name"]
+            hostname = repo["host"]
+            description = repo["description"]
+            self.ui.ReposComboBox.addItem(display_name)
+            self.ui.ReposComboBox.setItemData(n, [display_name, hostname, description, host], Qt.UserRole)
+            n += 1
+            try:
+                if not splash.isHidden():
+                    splash.showMessage(f"Loaded {n} repositories..", color=splash_color)
+            except NameError:
+                pass
+        # set current repository
+        self.current_repo = self.repos.get("primary")
+        index = self.ui.ReposComboBox.currentIndex()
+        self.repo_data = self.ui.ReposComboBox.itemData(index, Qt.UserRole)
+        self.ui.RepositoryNameLabel.setText(self.repo_data[0])
+        self.ui.RepositoryDescLabel.setText(self.repo_data[2])
 
     def assign_initial_actions(self):
         try:
@@ -623,11 +608,10 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
             self.ui.listAppsWidget.setIconSize(QSize(-1, -1))
 
             # Get apps json
-            loaded_json = metadata.get_apps(host_name=self.current_repo['id'])
-            self.packages = loaded_json
+            self.apps = api.Applications(self.repos.get(self.current_repo['id']))
             i = 0
 
-            for package in loaded_json:
+            for package in self.apps.get_apps():
                 try:
                     self.ui.listAppsWidget.addItem(f"{package['display_name']}\n"
                                                    f"{metadata.file_size(package['extracted'])} | "
@@ -949,7 +933,7 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
 
             # prepare apps and their category icons dictionary
             apps_category_icons = {}
-            for package in self.packages:
+            for package in self.apps.get_apps():
                 if package["category"] == "demos":
                     category_icon = demo_icon
                 elif package["category"] == "emulators":
