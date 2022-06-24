@@ -7,7 +7,6 @@ from datetime import datetime
 from os import listdir
 from os.path import isfile, join
 
-import yaml
 import os
 import socket
 import sys
@@ -40,9 +39,6 @@ if BRANCH == "Stable":
 else:
     DISPLAY_VERSION = VERSION + " " + BRANCH
 
-HOST = "hbb1.oscwii.org"
-HOST_NAME = "primary"
-
 
 # Get resource when frozen with PyInstaller
 def resource_path(relative_path):
@@ -68,6 +64,7 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
     def __init__(self, test_mode=False):
         super(MainWindow, self).__init__()
         self.repos = None
+        self.current_repo = None
         self.ui = gui.ui_united.Ui_MainWindow()
         self.ui.setupUi(self)
 
@@ -167,6 +164,8 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
                 except NameError:
                     pass
 
+            # set current repository
+            self.current_repo = self.repos.get("primary")
             index = self.ui.ReposComboBox.currentIndex()
             self.repo_data = self.ui.ReposComboBox.itemData(index, Qt.UserRole)
 
@@ -236,7 +235,7 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         self.LongDescriptionSignal.emit("Loading description..")
 
         app_name = self.ui.listAppsWidget.currentItem().data(Qt.UserRole)["internal_name"]
-        self.LongDescriptionSignal.emit(metadata.long_description(app_name, repo=HOST))
+        self.LongDescriptionSignal.emit(metadata.long_description(app_name, repo=self.current_repo['host']))
         self.ui.longDescriptionLoadingSpinner.setVisible(False)
 
     # When user selects a different homebrew from the list
@@ -363,7 +362,7 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         self.ui.progressBar.setValue(0)
         self.repaint()
         # Load icon
-        t = threading.Thread(target=self.load_icon, args=[app_name, HOST], daemon=True)
+        t = threading.Thread(target=self.load_icon, args=[app_name, self.current_repo['host']], daemon=True)
         t.start()
 
     def view_metadata(self):
@@ -580,17 +579,14 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         self.status_message(f"Copied the download link for \"{self.current_app['display_name']}\" to clipboard")
 
     def changed_host(self):
-        global HOST
-        global HOST_NAME
         self.icons_images = None
         index = self.ui.ReposComboBox.currentIndex()
         self.repo_data = self.ui.ReposComboBox.itemData(index, Qt.UserRole)
-        HOST = self.repo_data[1]
-        HOST_NAME = self.repo_data[3]
+        self.current_repo = self.repos.get(self.repo_data[3])
         self.ui.RepositoryNameLabel.setText(self.repo_data[0])
         self.ui.RepositoryDescLabel.setText(self.repo_data[2])
-        self.status_message(f"Loading {HOST} repository..")
-        logging.info(f"Loading {HOST}")
+        self.status_message(f"Loading {self.current_repo['host']} repository..")
+        logging.info(f"Loading {self.current_repo['host']}")
         self.repopulate()
 
     def repopulate(self):
@@ -627,7 +623,7 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
             self.ui.listAppsWidget.setIconSize(QSize(-1, -1))
 
             # Get apps json
-            loaded_json = metadata.get_apps(host_name=HOST_NAME)
+            loaded_json = metadata.get_apps(host_name=self.current_repo['id'])
             self.packages = loaded_json
             i = 0
 
@@ -931,14 +927,14 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
     # load all icons from zip
     def download_app_icons(self):
         # Debug info
-        original_host = HOST
+        original_host = self.current_repo['host']
         logging.debug("Started download of app icons")
         start_time = time.time()
-        icons_zip = requests.get(f"https://{HOST}/hbb/homebrew_browser/temp_files.zip", timeout=10)
+        icons_zip = requests.get(f"https://{self.current_repo['host']}/hbb/homebrew_browser/temp_files.zip", timeout=10)
         end_time = time.time()
         logging.debug(f"Finished download of app icons in {str(end_time - start_time)}")
 
-        if icons_zip.ok and (original_host == HOST):
+        if icons_zip.ok and (original_host == self.current_repo['host']):
             # prepare app icons dictionary
             self.icons_images = {}
             self.list_icons_images = {}
@@ -1025,7 +1021,7 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
                 pixmap.loadFromData(icon_bytes.getvalue())
                 self.list_icons_images[app_name] = pixmap
 
-            if original_host == HOST:
+            if original_host == self.current_repo['host']:
                 QtCore.QMetaObject.invokeMethod(self, 'set_app_icons')
         else:
             self.ui.progressBar.setMaximum(100)
@@ -1035,10 +1031,10 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
 
     @QtCore.Slot()
     def set_app_icons(self):
-        original_host = HOST
+        original_host = self.current_repo['host']
         for i in range(self.ui.listAppsWidget.count()):
             item = self.ui.listAppsWidget.item(i)
-            if original_host == HOST:
+            if original_host == self.current_repo['host']:
                 try:
                     item.setIcon(self.list_icons_images[item.data(Qt.UserRole)["internal_name"]])
                 except KeyError:
