@@ -121,10 +121,14 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
 
         self.ui.longDescriptionLoadingSpinner.setMovie(self.spinner)
 
+        # set initial status icon
+        self.status_icon("online")
+
         self.populate()
         self.selection_changed()
         self.ui.progressBar.setHidden(False)
         self.ui.statusBar.addPermanentWidget(self.ui.progressBar)
+        self.ui.statusBar.addPermanentWidget(self.ui.statusIcon)
         # Load announcement banner
         t = threading.Thread(target=self.load_announcement_banner, daemon=True)
         t.start()
@@ -132,6 +136,9 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
     # show given status message on bottom status bar
     def status_message(self, message):
         self.ui.statusBar.showMessage(message)
+
+    def status_icon(self, icon):
+        self.ui.statusIcon.setPixmap(QPixmap(resource_path(f"assets/gui/icons/status/{icon}.png")))
 
     # populate UI elements
     def populate(self):
@@ -363,6 +370,8 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         else:
             self.status_message(f"Downloading {self.current_app['display_name']} from Open Shop Channel..")
 
+        self.status_icon("pending")
+
         if self.sender():
             object_name = self.sender().objectName()
         else:
@@ -425,6 +434,8 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
                 # disable apps list
                 self.ui.listAppsWidget.setEnabled(False)
 
+                self.status_icon("download")
+
                 with open(output, "wb") as app_data_file:
                     for data in response.iter_content(block_size):
                         self.ui.progressBar.setValue(self.ui.progressBar.value() + 1024)
@@ -454,6 +465,7 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
             self.ui.listAppsWidget.setEnabled(True)
             self.ui.ReposComboBox.setEnabled(True)
             self.status_message(f"Download success! Output: {output}")
+            self.status_icon("online")
             return output
         else:
             self.ui.progressBar.setValue(0)
@@ -462,6 +474,7 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
             self.ui.listAppsWidget.setEnabled(True)
             self.ui.ReposComboBox.setEnabled(True)
             self.status_message("Cancelled Download.")
+            self.status_icon("online")
 
     def wiiload_button(self):
         data = self.ui.listAppsWidget.currentItem().data(Qt.UserRole)
@@ -515,17 +528,20 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
 
         # connecting
         self.status_message('Connecting to the HBC...')
+        self.status_icon('connecting_hbc')
         self.ui.progressBar.setValue(50)
 
         try:
             conn = wiiload.connect(ip)
         except socket.error as e:
+            self.status_icon('sad')
             logging.error('Error while connecting to the HBC. Please check the IP address and try again.')
             QMessageBox.warning(self, 'Connection error',
                                 'Error while connecting to the HBC. Please check the IP address and try again.')
             print(f'WiiLoad: {e}')
             self.ui.progressBar.setValue(0)
             self.status_message('Error: Could not connect to the Homebrew Channel. :(')
+            self.status_icon('online')
 
             # delete application zip file
             os.remove(path_to_app)
@@ -536,6 +552,7 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
 
         # Sending file
         self.status_message('Sending app...')
+        self.status_icon('sending')
 
         chunk_num = 1
         for chunk in chunks:
@@ -557,6 +574,7 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
 
         self.ui.progressBar.setValue(100)
         self.status_message('App transmitted!')
+        self.status_icon('online')
         logging.info(f"App transmitted to HBC at {ip}")
 
     def copy_download_link_button(self):
@@ -583,6 +601,7 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         self.ui.SearchBar.setText("")
 
         self.status_message("Reloading list..")
+        self.status_icon("loading")
         index = self.ui.ReposComboBox.currentIndex()
         repo_data = self.ui.ReposComboBox.itemData(index, Qt.UserRole)
         self.ui.RepositoryNameLabel.setText(repo_data[0])
@@ -1010,6 +1029,7 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         else:
             self.ui.progressBar.setMaximum(100)
             self.status_message("Ready to download")
+            self.status_icon("online")
             logging.warning("Loading of app icons for list failed, continuing without them.")
 
 
@@ -1030,6 +1050,7 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         # complete loading
         self.ui.progressBar.setMaximum(100)
         self.status_message("Ready to download")
+        self.status_icon("online")
 
 
 class DownloadLocationDialog(gui.dialog.ui_downloadlocation.Ui_Dialog, QDialog):

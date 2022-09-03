@@ -816,6 +816,47 @@ background-color: rgba(255, 255, 255, 0);
              <string>Release Date</string>
             </property>
            </widget>
+           <widget class="QLabel" name="statusIcon">
+            <property name="geometry">
+             <rect>
+              <x>120</x>
+              <y>0</y>
+              <width>16</width>
+              <height>16</height>
+             </rect>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>30</width>
+              <height>30</height>
+             </size>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+            <property name="scaledContents">
+             <bool>true</bool>
+            </property>
+            <property name="margin">
+             <number>3</number>
+            </property>
+           </widget>
+           <zorder>statusIcon</zorder>
+           <zorder>label_description</zorder>
+           <zorder>label_displayname</zorder>
+           <zorder>progressBar</zorder>
+           <zorder>HomebrewIconLabel</zorder>
+           <zorder>HomebrewCategoryLabel</zorder>
+           <zorder>filesize</zorder>
+           <zorder>version</zorder>
+           <zorder>label_version</zorder>
+           <zorder>label_appname</zorder>
+           <zorder>label_developer</zorder>
+           <zorder>label_filesize</zorder>
+           <zorder>appname</zorder>
+           <zorder>developer</zorder>
+           <zorder>releasedate</zorder>
+           <zorder>label_releasedate</zorder>
           </widget>
           <widget class="QWidget" name="Description">
            <property name="accessibleName">

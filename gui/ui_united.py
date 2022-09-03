@@ -3,7 +3,7 @@
 ################################################################################
 ## Form generated from reading UI file 'united.ui'
 ##
-## Created by: Qt User Interface Compiler version 6.3.0
+## Created by: Qt User Interface Compiler version 6.3.1
 ##
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
@@ -358,7 +358,29 @@ class Ui_MainWindow(object):
         self.label_releasedate = QLabel(self.GeneralTab)
         self.label_releasedate.setObjectName(u"label_releasedate")
         self.label_releasedate.setGeometry(QRect(10, 181, 66, 22))
+        self.statusIcon = QLabel(self.GeneralTab)
+        self.statusIcon.setObjectName(u"statusIcon")
+        self.statusIcon.setGeometry(QRect(120, 0, 16, 16))
+        self.statusIcon.setMaximumSize(QSize(30, 30))
+        self.statusIcon.setScaledContents(True)
+        self.statusIcon.setMargin(3)
         self.tabMetadata.addTab(self.GeneralTab, "")
+        self.statusIcon.raise_()
+        self.label_description.raise_()
+        self.label_displayname.raise_()
+        self.progressBar.raise_()
+        self.HomebrewIconLabel.raise_()
+        self.HomebrewCategoryLabel.raise_()
+        self.filesize.raise_()
+        self.version.raise_()
+        self.label_version.raise_()
+        self.label_appname.raise_()
+        self.label_developer.raise_()
+        self.label_filesize.raise_()
+        self.appname.raise_()
+        self.developer.raise_()
+        self.releasedate.raise_()
+        self.label_releasedate.raise_()
         self.Description = QWidget()
         self.Description.setObjectName(u"Description")
         self.longDescriptionBrowser = QTextBrowser(self.Description)
@@ -520,6 +542,7 @@ class Ui_MainWindow(object):
         self.appname.setText("")
         self.appname.setPlaceholderText("")
         self.label_releasedate.setText(QCoreApplication.translate("MainWindow", u"Release Date", None))
+        self.statusIcon.setText("")
         self.tabMetadata.setTabText(self.tabMetadata.indexOf(self.GeneralTab), QCoreApplication.translate("MainWindow", u"General", None))
 #if QT_CONFIG(accessibility)
         self.Description.setAccessibleName(QCoreApplication.translate("MainWindow", u"tabcontent", None))
