@@ -38,7 +38,6 @@ class Ui_MainWindow(object):
         MainWindow.setDockOptions(QMainWindow.AllowTabbedDocks|QMainWindow.AnimatedDocks)
         self.actionAbout_OSC_DL = QAction(MainWindow)
         self.actionAbout_OSC_DL.setObjectName(u"actionAbout_OSC_DL")
-        self.actionAbout_OSC_DL.setEnabled(False)
         self.actionEnable_Log_File = QAction(MainWindow)
         self.actionEnable_Log_File.setObjectName(u"actionEnable_Log_File")
         self.actionEnable_Log_File.setCheckable(True)

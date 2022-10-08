@@ -133,6 +133,13 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         t = threading.Thread(target=self.load_announcement_banner, daemon=True)
         t.start()
 
+    def about_dialog(self):
+        QMessageBox.about(self, f"About OSCDL", f"<b>Open Shop Channel Downloader v{updater.current_version()} {updater.get_branch()}</b><br>"
+                                                f"by dhtdht020<br><br>"
+                                                f"<a href=\"https://github.com/dhtdht020/osc-dl\">https://github.com/dhtdht020/osc-dl</a><br>"
+                                                f"<a href=\"https://oscwii.org\">https://oscwii.org</a><br><br>"
+                                                f"Many icons provided by <a href=\"https://icons8.com/\">icons8.com</a>")
+
     # show given status message on bottom status bar
     def status_message(self, message):
         self.ui.statusBar.showMessage(message)
@@ -147,7 +154,7 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
                 splash.showMessage(f"Loading contents..", color=splash_color)
         except NameError:
             pass
-        self.ui.actionAbout_OSC_DL.setText(f"OSCDL v{VERSION} by dhtdht020")
+        self.ui.actionAbout_OSC_DL.setText(f"About OSCDL v{VERSION} by dhtdht020")
         self.populate_repositories()
         self.populate_list()
         self.assign_initial_actions()
@@ -201,6 +208,8 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         self.ui.actionDeveloper_Profile.triggered.connect(self.developer_profile)
 
         # Actions
+        # -- About
+        self.ui.actionAbout_OSC_DL.triggered.connect(self.about_dialog)
         # -- Debug
         self.ui.actionEnable_Log_File.triggered.connect(self.turn_log_on)
         self.ui.actionClose_the_shop.triggered.connect(self.close_the_shop)

@@ -1073,9 +1073,6 @@ hr { height: 1px; border-width: 0; }
    </property>
   </widget>
   <action name="actionAbout_OSC_DL">
-   <property name="enabled">
-    <bool>false</bool>
-   </property>
    <property name="text">
     <string>About OSC-DL</string>
    </property>
