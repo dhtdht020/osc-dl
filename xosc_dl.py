@@ -138,7 +138,9 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
                                                 f"by dhtdht020<br><br>"
                                                 f"<a href=\"https://github.com/dhtdht020/osc-dl\">https://github.com/dhtdht020/osc-dl</a><br>"
                                                 f"<a href=\"https://oscwii.org\">https://oscwii.org</a><br><br>"
-                                                f"Many icons provided by <a href=\"https://icons8.com/\">icons8.com</a>")
+                                                f"Many icons provided by <a href=\"https://icons8.com/\">icons8.com</a><br><br>"
+                                                f"Using Qt {QtCore.qVersion()}<br>"
+                                                f"Using Python {sys.version_info.major}.{sys.version_info.minor}.{sys.version_info.micro}")
 
     # show given status message on bottom status bar
     def status_message(self, message):
