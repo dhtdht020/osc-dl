@@ -274,7 +274,7 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
             # -- Get actual metadata
             # App Name
             self.ui.appname.setText(self.current_app["display_name"])
-            self.ui.SelectionInfoBox.setTitle("Metadata: " + self.current_app["display_name"])
+            self.ui.SelectionInfoBox.setTitle("Information: " + self.current_app["display_name"])
             self.ui.label_displayname.setText(self.current_app["display_name"])
 
             # File Size
