@@ -16,8 +16,7 @@ CHUNK_SIZE = 1024 * 128
 
 def validate_ip_regex(ip):
     # check IP address against regex
-    ip_match = IP_REGEX.match(ip)
-    return ip_match
+    return IP_REGEX.match(ip)
 
 
 def organize_zip(zipped_app, zip_buf):

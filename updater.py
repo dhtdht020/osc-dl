@@ -23,33 +23,25 @@ def current_version():
 
 
 def get_branch():
-    branch = f"Stable"
-    return branch
+    return "Stable"
 
 
 def latest_version():
-    u = requests.get("https://api.github.com/repos/dhtdht020/osc-dl/releases/latest")
-    data = json.loads(u.content)
-    return data
+    return json.loads(requests.get("https://api.github.com/repos/dhtdht020/osc-dl/releases/latest").content)
 
 
 def is_frozen():
-    if getattr(sys, 'frozen', False) and hasattr(sys, '_MEIPASS'):
-        # Packaged with PyInstaller.
-        return True
-    else:
-        # Running in a normal Python script, not packaged by PyInstaller.
-        return False
+    """Check if frozen with PyInstaller"""
+    return getattr(sys, 'frozen', False) and hasattr(sys, '_MEIPASS')
 
 
-def check_update(release):
-    latest = release["tag_name"]
-    if version.parse(latest) > version.parse(current_version()):
-        # out of date
-        return True
-    else:
-        # up to date
-        return False
+def check_update(updated_version):
+    """
+    Checks if updated_version is higher than current OSCDL version
+    :param updated_version: Dictionary containing information regarding a release from the GitHub API.
+    :return: True if higher.
+    """
+    return version.parse(updated_version["tag_name"]) > version.parse(current_version())
 
 
 def get_type():
