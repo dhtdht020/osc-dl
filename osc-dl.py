@@ -65,10 +65,7 @@ def download(app_name, output=None, extract=False, repo="hbb1.oscwii.org"):
     if output is None:
         output = app_name + ".zip"
 
-    try:
-        app_data = requests.get("https://" + repo + "/hbb/" + app_name + "/" + app_name + ".zip")
-    except requests.exceptions.SSLError:
-        app_data = requests.get("http://" + repo + "/hbb/" + app_name + "/" + app_name + ".zip")
+    app_data = requests.get("https://" + repo + "/hbb/" + app_name + "/" + app_name + ".zip")
 
     if app_data.status_code == 200:
         with open(output, "wb") as app_data_file:
@@ -88,10 +85,9 @@ def download(app_name, output=None, extract=False, repo="hbb1.oscwii.org"):
 # Get
 if args.cmd == "get":
     if args.app == "all":
-        OpenShopChannel = metadata.API()
-        OpenShopChannel.set_host(args.host)
+        applications = api.Applications(repos.get(args.host))
         print(f"Starting download of all packages from \"{args.host}\" @ {repos.get(args.host)['host']}..")
-        for package in OpenShopChannel.packages:
+        for package in applications.get_apps():
             download(app_name=package["internal_name"], repo=repos.get(args.host)["host"])
     else:
         download(app_name=args.app, repo=repos.get(args.host)["host"])
