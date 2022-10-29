@@ -23,7 +23,6 @@ from PySide6.QtGui import QIcon, QColor, QPixmap, QMovie, QGuiApplication
 from PySide6.QtWidgets import QApplication, QMainWindow, QInputDialog, QLineEdit, QMessageBox, QSplashScreen, \
     QListWidgetItem, QFileDialog, QDialog, QDialogButtonBox
 
-import download
 import gui.ui_united
 import gui.dialog.ui_downloadlocation
 import api
@@ -31,6 +30,7 @@ import metadata
 import updater
 import utils
 import wiiload
+from utils import resource_path
 
 VERSION = updater.current_version()
 BRANCH = updater.get_branch()
@@ -38,13 +38,6 @@ if BRANCH == "Stable":
     DISPLAY_VERSION = VERSION
 else:
     DISPLAY_VERSION = VERSION + " " + BRANCH
-
-
-# Get resource when frozen with PyInstaller
-def resource_path(relative_path):
-    if hasattr(sys, '_MEIPASS'):
-        return os.path.join(sys._MEIPASS, relative_path)
-    return os.path.join(os.path.abspath("."), relative_path)
 
 
 # Actions to perform only when the program is frozen:
@@ -56,11 +49,13 @@ if updater.is_frozen() or utils.is_test("debug"):
 
 settings = QSettings("Open Shop Channel", "OSCDL")
 
+
 # G U I
 class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
     IconSignal = QtCore.Signal(QPixmap)
     LongDescriptionSignal = QtCore.Signal(str)
     AnnouncementBannerHidden = QtCore.Signal(bool)
+
     def __init__(self, test_mode=False):
         super(MainWindow, self).__init__()
         self.repos = None
@@ -96,7 +91,6 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         self.ui.actionCopy_Direct_Link.setIcon(QIcon(resource_path("assets/gui/icons/copy-link.png")))
         self.ui.actionEnable_Log_File.setIcon(QIcon(resource_path("assets/gui/icons/enable-log.png")))
         self.ui.actionClear_Log.setIcon(QIcon(resource_path("assets/gui/icons/clear-log.png")))
-        self.ui.actionClose_the_shop.setIcon(QIcon(resource_path("assets/gui/icons/close-shop.png")))
         self.ui.menuExperimental.setIcon(QIcon(resource_path("assets/gui/icons/experimental.png")))
         self.ui.actionSelect_Theme.setIcon(QIcon(resource_path("assets/gui/icons/theme.png")))
         # OPTIONS -> EXPERIMENTAL
@@ -214,7 +208,6 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         self.ui.actionAbout_OSC_DL.triggered.connect(self.about_dialog)
         # -- Debug
         self.ui.actionEnable_Log_File.triggered.connect(self.turn_log_on)
-        self.ui.actionClose_the_shop.triggered.connect(self.close_the_shop)
         self.ui.actionDisplay_Banner.triggered.connect(self.load_announcement_banner)
         self.ui.actionSelect_Theme.triggered.connect(self.select_theme_action)
         # -- Clients
@@ -735,21 +728,6 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
             QMessageBox.information(self, 'OSCDL is up to date',
                                     'You are running the latest version of OSCDL!\n')
 
-    # In case OSC gods are angry
-    def close_the_shop(self):
-        # Close the shop
-        self.ui.listAppsWidget.setDisabled(True)
-        self.ui.ViewMetadataBtn.setDisabled(True)
-        self.ui.WiiLoadButton.setDisabled(True)
-        self.ui.progressBar.setDisabled(True)
-        self.ui.menubar.setDisabled(True)
-        self.ui.ReposComboBox.setDisabled(True)
-        self.ui.CategoriesComboBox.setDisabled(True)
-        self.ui.SupportedControllersListWidget.setDisabled(True)
-        self.ui.SearchBar.setDisabled(True)
-        logging.critical('OSC GODS:CLOSED THE SHOP')
-        self.status_message("The shop is now closed")
-
     # Load app icon
     def load_icon(self, app_name, repo):
         self.IconSignal.connect(self.ui.HomebrewIconLabel.setPixmap)
@@ -806,17 +784,6 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         text = self.ui.SearchBar.text()
         n = 0
         results = []
-
-        # ! not part of search - joke
-        if text == "wii bric":
-            self.ui.listAppsWidget.clear()
-            item = QListWidgetItem()
-            item.setText("Wii Pong\n"
-                         "9.000MiB | 9.0.0.0 | Danbo | Wii Pong")
-            item.setIcon(QIcon(resource_path("assets/gui/icons/bricks.png")))
-            self.ui.listAppsWidget.addItem(item)
-            self.close_the_shop()
-            return
 
         # Filter items with search term
         for i in self.ui.listAppsWidget.findItems(text, Qt.MatchContains):

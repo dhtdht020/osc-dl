@@ -1,17 +1,8 @@
 import logging
-import os
 import re
-import sys
-
 import requests
 import lxml.etree
-
-
-# Get resource when frozen with PyInstaller
-def resource_path(relative_path):
-    if hasattr(sys, '_MEIPASS'):
-        return os.path.join(sys._MEIPASS, relative_path)
-    return os.path.join(os.path.abspath("."), relative_path)
+from utils import resource_path
 
 
 # Get icon image
