@@ -49,6 +49,15 @@ if updater.is_frozen() or utils.is_test("debug"):
     logging.getLogger("PIL.PngImagePlugin").setLevel(logging.CRITICAL + 1)
 
 
+def update_splash_status(text):
+    # if anyone has a better idea how to go about this.. will be appreciated
+    try:
+        if not splash.isHidden():
+            splash.showMessage(text, color=QColor("White"))
+    except NameError:
+        pass
+
+
 # G U I
 class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
     IconSignal = QtCore.Signal(QPixmap)
@@ -144,11 +153,7 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
 
     # populate UI elements
     def populate(self):
-        try:
-            if not splash.isHidden():
-                splash.showMessage(f"Loading contents..", color=splash_color)
-        except NameError:
-            pass
+        update_splash_status("Loading contents..")
         self.ui.actionAbout_OSC_DL.setText(f"About OSCDL v{VERSION} by dhtdht020")
         self.populate_repositories()
         self.populate_list()
@@ -166,11 +171,7 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
             self.ui.ReposComboBox.addItem(display_name)
             self.ui.ReposComboBox.setItemData(n, [display_name, hostname, description, host], Qt.UserRole)
             n += 1
-            try:
-                if not splash.isHidden():
-                    splash.showMessage(f"Loaded {n} repositories..", color=splash_color)
-            except NameError:
-                pass
+            update_splash_status(f"Loaded {n} repositories..")
         # set current repository
         self.current_repo = self.repos.get("primary")
         index = self.ui.ReposComboBox.currentIndex()
@@ -179,11 +180,7 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         self.ui.RepositoryDescLabel.setText(self.repo_data[2])
 
     def assign_initial_actions(self):
-        try:
-            if not splash.isHidden():
-                splash.showMessage(f"Finishing (1/2)..", color=splash_color)
-        except NameError:
-            pass
+        update_splash_status("Finishing (1/2)..")
 
         # Connect signals
         # Buttons
@@ -235,11 +232,8 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
 
     # When user selects a different homebrew from the list
     def selection_changed(self):
-        try:
-            if not splash.isHidden():
-                splash.showMessage(f"Finishing (2/2) - Loading first app..", color=splash_color)
-        except NameError:
-            pass
+        update_splash_status("Finishing (2/2) - Loading first app..")
+
         try:
             self.current_app = self.ui.listAppsWidget.currentItem().data(Qt.UserRole)
             app_name = self.current_app["internal_name"]
@@ -620,11 +614,7 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
 
     def populate_list(self):
         try:
-            try:
-                if not splash.isHidden():
-                    splash.showMessage(f"Connecting to server..", color=splash_color)
-            except NameError:
-                pass
+            update_splash_status("Connecting to server..")
 
             # Set default icon size
             self.ui.listAppsWidget.setIconSize(QSize(-1, -1))
@@ -656,11 +646,7 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
                         list_item.setIcon(QIcon(resource_path("assets/gui/icons/category/media.png")))
                     elif category == "demos":
                         list_item.setIcon(QIcon(resource_path("assets/gui/icons/category/demo.png")))
-                    try:
-                        if not splash.isHidden():
-                            splash.showMessage(f"Loaded {i} apps..", color=splash_color)
-                    except NameError:
-                        pass
+                    update_splash_status(f"Loaded {i} apps..")
                     i += 1
                 except IndexError:
                     pass
@@ -1043,11 +1029,9 @@ if __name__ == "__main__":
         app.setStyle('Fusion')
 
     global splash
-    global splash_color
 
     # Splash
     image = QtGui.QImage(resource_path("assets/gui/splash.png"))
-    splash_color = QColor("White")
     splash = QSplashScreen(QtGui.QPixmap(image))
     splash.show()
 
