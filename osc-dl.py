@@ -2,10 +2,10 @@ import argparse
 import io
 import os
 from datetime import datetime
+from zipfile import ZipFile
 
 import requests
 
-import download
 import metadata
 import wiiload
 import updater
@@ -59,6 +59,32 @@ show.add_argument("-r", "--host", type=str,
 
 args = parser.parse_args()
 
+
+# legacy function. todo: should be rewritten
+def download(app_name, output=None, extract=False, repo="hbb1.oscwii.org"):
+    if output is None:
+        output = app_name + ".zip"
+
+    try:
+        app_data = requests.get("https://" + repo + "/hbb/" + app_name + "/" + app_name + ".zip")
+    except requests.exceptions.SSLError:
+        app_data = requests.get("http://" + repo + "/hbb/" + app_name + "/" + app_name + ".zip")
+
+    if app_data.status_code == 200:
+        with open(output, "wb") as app_data_file:
+            app_data_file.write(app_data.content)
+
+        # Extract to ExtractedApps if needed
+        if extract is True:
+            with ZipFile(output, 'r') as zip_ref:
+                zip_ref.extractall("ExtractedApps")
+
+        print("Download success! Output: " + output)
+
+    else:
+        print(f"Download failed. HTTP status code is {str(app_data.status_code)}, not 200.")
+
+
 # Get
 if args.cmd == "get":
     if args.app == "all":
@@ -66,9 +92,9 @@ if args.cmd == "get":
         OpenShopChannel.set_host(args.host)
         print(f"Starting download of all packages from \"{args.host}\" @ {repos.get(args.host)['host']}..")
         for package in OpenShopChannel.packages:
-            download.get(app_name=package["internal_name"], repo=repos.get(args.host)["host"])
+            download(app_name=package["internal_name"], repo=repos.get(args.host)["host"])
     else:
-        download.get(app_name=args.app, repo=repos.get(args.host)["host"])
+        download(app_name=args.app, repo=repos.get(args.host)["host"])
 
 # Send
 if args.cmd == "send":
