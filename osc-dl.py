@@ -133,22 +133,21 @@ if args.cmd == "send":
 
 # Hosts
 if args.cmd == "show":
-    metadata_api = metadata.API()
-    metadata_api.set_host(args.host)
-    information = metadata_api.information(args.app)
-    if information:
-        print("Found \"{}\" [{}]".format(information["display_name"], information["internal_name"]))
-        print("Category: {}".format(information["category"]))
-        print("Version: {}".format(information["version"]))
-        print("Description: {}".format(information["long_description"]))
-        print("Short Description: {}".format(information["short_description"]))
+    applications = api.Applications(repos.get(args.host))
+    app = applications.get_by_name(args.app)
+    if app:
+        print("Found \"{}\" [{}]".format(app["display_name"], app["internal_name"]))
+        print("Category: {}".format(app["category"]))
+        print("Version: {}".format(app["version"]))
+        print("Description: {}".format(app["long_description"]))
+        print("Short Description: {}".format(app["short_description"]))
         print("Release Date: {}".format(datetime.fromtimestamp
-                                        (int(information["release_date"])).strftime('%B %e, %Y at %R')))
-        print("Publisher: {}".format(information["coder"]))
+                                        (int(app["release_date"])).strftime('%B %e, %Y at %R')))
+        print("Publisher: {}".format(app["coder"]))
         print("Package:")
-        print("  Type: {}".format(information["package_type"]))
-        print("  Download Size: {}".format(metadata.file_size(information["zip_size"])))
-        print("  Extracted Size: {}".format(metadata.file_size(information["extracted"])))
+        print("  Type: {}".format(app["package_type"]))
+        print("  Download Size: {}".format(metadata.file_size(app["zip_size"])))
+        print("  Extracted Size: {}".format(metadata.file_size(app["extracted"])))
 
 
 # Hosts

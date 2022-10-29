@@ -98,28 +98,3 @@ def parse_peripherals(peripherals):
             peripherals_dict["sdhc"] = True
 
     return peripherals_dict
-
-
-# API-related functions
-class API:
-    host_name = "primary"
-
-    packages = None
-
-    def get_packages(self):
-        self.packages = get_apps()
-
-    # Change repository
-    def set_host(self, host):
-        if host == self.host_name and (self.packages):
-            pass
-        else:
-            self.host_name = host
-            self.packages = get_apps(host_name=host)
-
-    # Metadata for given application
-    def information(self, internal_name):
-        for i in self.packages:
-            if i["internal_name"] == internal_name:
-                return i
-        return

@@ -36,3 +36,8 @@ class Applications:
 
     def get_apps(self):
         return self.__apps
+
+    def get_by_name(self, internal_name):
+        for app in self.__apps:
+            if app["internal_name"] == internal_name:
+                return app
