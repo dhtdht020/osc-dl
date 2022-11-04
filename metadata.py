@@ -76,7 +76,7 @@ def parse_peripherals(peripherals):
             peripherals_dict["wii_remotes"] += 1
         elif character == "n":
             peripherals_dict["nunchuk"] = True
-        elif character =="c":
+        elif character == "c":
             peripherals_dict["classic"] = True
         elif character == "g":
             peripherals_dict["gamecube"] = True

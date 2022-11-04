@@ -9,6 +9,7 @@ import requests
 import wiiload
 import updater
 import api
+from utils import file_size
 
 if os.name == 'nt':
     # Initialize color on Windows
@@ -167,8 +168,8 @@ if args.cmd == "show":
         print("Publisher: {}".format(app["coder"]))
         print("Package:")
         print("  Type: {}".format(app["package_type"]))
-        print("  Download Size: {}".format(utils.file_size(app["zip_size"])))
-        print("  Extracted Size: {}".format(utils.file_size(app["extracted"])))
+        print("  Download Size: {}".format(file_size(app["zip_size"])))
+        print("  Extracted Size: {}".format(file_size(app["extracted"])))
 
 
 # Hosts

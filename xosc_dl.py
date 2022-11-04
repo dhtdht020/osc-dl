@@ -459,8 +459,6 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         self.ui.listAppsWidget.setDisabled(state)
 
     def wiiload_button(self):
-        data = self.ui.listAppsWidget.currentItem().data(Qt.UserRole)
-
         ip, ok = QInputDialog.getText(self, 'Send to Wii: Enter IP address',
                                       'Enter the IP address of your Wii.\n'
                                       'The selected app will be sent through the network to your Wii.\n\n'
@@ -699,7 +697,7 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
                                     'You are running the latest version of OSCDL!\n')
 
     # Load app icon
-    def load_icon(self, app_name, repo):
+    def load_icon(self, app_name):
         self.IconSignal.connect(self.ui.HomebrewIconLabel.setPixmap)
         # check if icons_images is populated, if not load from server
         if self.icons_images and app_name in self.icons_images:
