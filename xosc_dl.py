@@ -19,7 +19,7 @@ import requests
 from PIL import Image
 from PySide6 import QtGui, QtCore
 from PySide6.QtCore import Qt, QObject, QSize
-from PySide6.QtGui import QIcon, QColor, QPixmap, QMovie
+from PySide6.QtGui import QIcon, QColor, QPixmap, QMovie, QDesktopServices
 from PySide6.QtWidgets import QApplication, QMainWindow, QInputDialog, QLineEdit, QMessageBox, QSplashScreen, \
     QListWidgetItem, QFileDialog
 
@@ -185,7 +185,7 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         # Connect signals
         # Buttons
         self.ui.actionCopy_Direct_Link.triggered.connect(self.copy_download_link_button)
-        self.ui.ViewMetadataBtn.clicked.connect(self.download_button)
+        self.ui.ViewMetadataBtn.clicked.connect(self.download_app)
         self.ui.WiiLoadButton.clicked.connect(self.wiiload_button)
         self.ui.ReturnToMainBtn.clicked.connect(self.return_to_all_apps_btn)
 
@@ -265,8 +265,8 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
 
             # File Size
             try:
-                extracted = metadata.file_size(self.current_app["extracted"])
-                compressed = metadata.file_size(self.current_app["zip_size"])
+                extracted = utils.file_size(self.current_app["extracted"])
+                compressed = utils.file_size(self.current_app["zip_size"])
                 self.ui.filesize.setText(f"{compressed} / {extracted}")
                 self.ui.filesize.setToolTip(f"Compressed Download: {compressed}\nExtracted Size: {extracted}")
             except KeyError:
@@ -361,12 +361,8 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
     def trugh(self, text):
         return QObject.tr(self, text)
 
-    def download_button(self, hbb=False, extract_root=False):
-        if hbb:
-            self.status_message(f"Downloading Homebrew Browser from Open Shop Channel..")
-        else:
-            self.status_message(f"Downloading {self.current_app['display_name']} from Open Shop Channel..")
-
+    def download_app(self, extract_root=False):
+        self.status_message(f"Downloading {self.current_app['display_name']} from Open Shop Channel..")
         self.status_icon("pending")
 
         if self.sender():
@@ -401,9 +397,9 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
                 dir_path = '%s\\OSCDL\\' % os.environ['APPDATA']
                 if not os.path.exists(dir_path):
                     os.makedirs(dir_path)
-                output = f'%s{self.current_app["internal_name"]}' % dir_path
+                save_location = f'%s{self.current_app["internal_name"]}' % dir_path
             else:
-                output = f"{self.current_app['internal_name']}.zip"
+                save_location = f"{self.current_app['internal_name']}.zip"
         self.ui.progressBar.setValue(0)
         if save_location:
             # stream file, so we can iterate
@@ -414,13 +410,7 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
             self.ui.progressBar.setMaximum(total_size)
             block_size = 1024
             if response.status_code == 200:
-                # disable download button
-                self.ui.ViewMetadataBtn.setEnabled(False)
-                self.ui.WiiLoadButton.setEnabled(False)
-                self.ui.ReposComboBox.setEnabled(False)
-                # disable apps list
-                self.ui.listAppsWidget.setEnabled(False)
-
+                self.safe_mode(True)
                 self.status_icon("download")
 
                 with open(save_location, "wb") as app_data_file:
@@ -441,24 +431,32 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
                         zip_file.extractall(root_path)
                     os.remove(save_location)
 
-
             self.ui.progressBar.setValue(100)
             self.ui.progressBar.setMaximum(100)
-            self.ui.ViewMetadataBtn.setEnabled(True)
-            self.ui.WiiLoadButton.setEnabled(True)
-            self.ui.listAppsWidget.setEnabled(True)
-            self.ui.ReposComboBox.setEnabled(True)
-            self.status_message(f"Download success! Output: {save_location}")
+            self.safe_mode(False)
+            self.status_message(f"Download of \"{self.current_app['display_name']}\" has completed successfully")
             self.status_icon("online")
             return save_location
         else:
             self.ui.progressBar.setValue(0)
-            self.ui.ViewMetadataBtn.setEnabled(True)
-            self.ui.WiiLoadButton.setEnabled(True)
-            self.ui.listAppsWidget.setEnabled(True)
-            self.ui.ReposComboBox.setEnabled(True)
-            self.status_message("Cancelled Download.")
+            self.safe_mode(False)
+            self.status_message("Cancelled Download")
             self.status_icon("online")
+
+    def reset_status(self):
+        self.ui.progressBar.setMaximum(100)
+        self.status_message("Ready to download")
+        self.status_icon("online")
+
+    def safe_mode(self, state: bool):
+        """
+        Disable all widgets that could interrupt sensitive processes
+        :param state: bool
+        """
+        self.ui.ViewMetadataBtn.setDisabled(state)
+        self.ui.WiiLoadButton.setDisabled(state)
+        self.ui.ReposComboBox.setDisabled(state)
+        self.ui.listAppsWidget.setDisabled(state)
 
     def wiiload_button(self):
         data = self.ui.listAppsWidget.currentItem().data(Qt.UserRole)
@@ -491,7 +489,7 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         self.ui.progressBar.setValue(25)
 
         # get app
-        path_to_app = self.download_button()
+        path_to_app = self.download_app()
 
         with open(path_to_app, 'rb') as f:
             content = f.read()
@@ -613,7 +611,7 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
             for package in self.apps.get_apps():
                 try:
                     self.ui.listAppsWidget.addItem(f"{package['display_name']}\n"
-                                                   f"{metadata.file_size(package['extracted'])} | "
+                                                   f"{utils.file_size(package['extracted'])} | "
                                                    f"{package['version']} | "
                                                    f"{package['coder']} | "
                                                    f"{package['short_description']}")
@@ -679,7 +677,7 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
 
     # Download Homebrew Browser
     def download_latest_hbb_action(self):
-        self.download_button(hbb=True)
+        QDesktopServices().openUrl("https://oscwii.org/")
 
     # Check for updates dialog
     def check_for_updates_action(self):
@@ -977,9 +975,7 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
             if original_host == self.current_repo['host']:
                 QtCore.QMetaObject.invokeMethod(self, 'set_app_icons')
         else:
-            self.ui.progressBar.setMaximum(100)
-            self.status_message("Ready to download")
-            self.status_icon("online")
+            self.reset_status()
             logging.warning("Loading of app icons for list failed, continuing without them.")
 
 
@@ -992,15 +988,12 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
                 try:
                     item.setIcon(self.list_icons_images[item.data(Qt.UserRole)["internal_name"]])
                 except KeyError:
-                    self.ui.progressBar.setMaximum(100)
-                    self.status_message("Ready to download")
+                    self.reset_status()
                     return
         # set size of icon to 171x64
         self.ui.listAppsWidget.setIconSize(QSize(171, 32))
         # complete loading
-        self.ui.progressBar.setMaximum(100)
-        self.status_message("Ready to download")
-        self.status_icon("online")
+        self.reset_status()
 
 
 if __name__ == "__main__":
