@@ -6,9 +6,8 @@ from PySide6.QtGui import QIcon, QGuiApplication
 from PySide6.QtWidgets import QDialog, QDialogButtonBox, QListWidgetItem
 
 import gui_helpers
-import metadata
 from gui import ui_DownloadLocationDialog
-from utils import resource_path
+from utils import resource_path, file_size
 
 
 class DownloadLocationDialog(ui_DownloadLocationDialog.Ui_Dialog, QDialog):
@@ -29,7 +28,7 @@ class DownloadLocationDialog(ui_DownloadLocationDialog.Ui_Dialog, QDialog):
         self.comboBox.setItemData(0, "browse")
 
         # set required space label
-        self.label_required_space.setText(f"**Required Space:** {metadata.file_size(self.package['extracted'])}")
+        self.label_required_space.setText(f"**Required Space:** {file_size(self.package['extracted'])}")
 
         # populate list of extra dirs
         for directory in self.package["extra_directories"]:
@@ -77,7 +76,7 @@ class DownloadLocationDialog(ui_DownloadLocationDialog.Ui_Dialog, QDialog):
             # set available space label
             self.label_available_space.setVisible(True)
             self.label_available_space.setText(
-                f"**Available Space:** {metadata.file_size(self.comboBox.currentData()['drive'].bytesFree())}")
+                f"**Available Space:** {file_size(self.comboBox.currentData()['drive'].bytesFree())}")
             if gui_helpers.settings.value("download/device") == self.comboBox.currentData()["drive"].device():
                 self.checkBox.setChecked(True)
             else:

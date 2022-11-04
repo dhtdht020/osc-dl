@@ -6,7 +6,6 @@ from zipfile import ZipFile
 
 import requests
 
-import metadata
 import wiiload
 import updater
 import api
@@ -168,8 +167,8 @@ if args.cmd == "show":
         print("Publisher: {}".format(app["coder"]))
         print("Package:")
         print("  Type: {}".format(app["package_type"]))
-        print("  Download Size: {}".format(metadata.file_size(app["zip_size"])))
-        print("  Extracted Size: {}".format(metadata.file_size(app["extracted"])))
+        print("  Download Size: {}".format(utils.file_size(app["zip_size"])))
+        print("  Extracted Size: {}".format(utils.file_size(app["extracted"])))
 
 
 # Hosts

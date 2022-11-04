@@ -49,16 +49,6 @@ def long_description(app_name, repo="hbb1.oscwii.org"):
     return root.find('long_description').text
 
 
-# Returns readable file size from file length
-def file_size(length):
-    for unit in ['', 'Ki', 'Mi', 'Gi', 'Ti', 'Pi', 'Ei', 'Zi']:
-        if abs(length) < 1024.0:
-            return "%3.1f%s%s" % (length, unit, "B")
-        length /= 1024.0
-
-    return "%.1f%s%s" % (length, 'Yi', "B")
-
-
 # Get display name of category with internal name
 def category_display_name(category):
     if category == "demos":

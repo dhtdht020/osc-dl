@@ -376,50 +376,40 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
 
         # determine if should ask for path
         if (object_name != "WiiLoadButton") and not self.test_mode:
-            if hbb:
-                path_to_file, _ = QFileDialog.getSaveFileName(None, 'Save Homebrew Browser', "homebrew_browser_v0.3.9e.zip")
-            else:
-                dialog = DownloadLocationDialog(self.current_app, parent=self)
-                status = dialog.exec()
-                if status:
-                    logging.debug(f"Selected drive: {dialog.selection}")
-                    if dialog.selection == "browse":
-                        path_to_file, _ = QFileDialog.getSaveFileName(None, 'Save Application', self.current_app["internal_name"] + ".zip")
-                    else:
-                        if not dialog.selection["appsdir"]:
-                            try:
-                                os.mkdir(dialog.selection["drive"].rootPath() + "/apps")
-                            except PermissionError:
-                                QMessageBox.critical(self, "Permission Error",
-                                                     "Could not create the apps directory on the selected device.")
-                                return
-                        path_to_file = dialog.selection["drive"].rootPath() + "/apps/" + self.current_app["internal_name"] + ".zip"
-                        extract_root = True
+            dialog = DownloadLocationDialog(self.current_app, parent=self)
+            status = dialog.exec()
+
+            if status:
+                logging.debug(f"Selected drive: {dialog.selection}")
+                if dialog.selection == "browse":
+                    save_location, _ = QFileDialog.getSaveFileName(self, 'Save Application', self.current_app["internal_name"] + ".zip")
                 else:
-                    path_to_file = ''
-            output = path_to_file
+                    if not dialog.selection["appsdir"]:
+                        try:
+                            os.mkdir(dialog.selection["drive"].rootPath() + "/apps")
+                        except PermissionError:
+                            QMessageBox.critical(self, "Permission Error",
+                                                 "Could not create the apps directory on the selected device.")
+                            return
+                    save_location = dialog.selection["drive"].rootPath() + "/apps/" + self.current_app["internal_name"] + ".zip"
+                    extract_root = True
+            else:
+                save_location = ''
         else:
-            if hbb:
-                output = f"homebrew_browser_v0.3.9e.zip"
+            # create output dir
+            if os.name == 'nt':
+                dir_path = '%s\\OSCDL\\' % os.environ['APPDATA']
+                if not os.path.exists(dir_path):
+                    os.makedirs(dir_path)
+                output = f'%s{self.current_app["internal_name"]}' % dir_path
             else:
-                # create output dir
-                if os.name == 'nt':
-                    dir_path = '%s\\OSCDL\\' % os.environ['APPDATA']
-                    if not os.path.exists(dir_path):
-                        os.makedirs(dir_path)
-                    output = f'%s{self.current_app["internal_name"]}' % dir_path
-                else:
-                    output = f"{self.current_app['internal_name']}.zip"
+                output = f"{self.current_app['internal_name']}.zip"
         self.ui.progressBar.setValue(0)
-        if output != '':
-            # get url to app
-            if hbb:
-                url = "https://wii.guide/assets/files/homebrew_browser_v0.3.9e.zip"
-            else:
-                url = self.current_app["zip_url"]
-            # stream file, so I can iterate
-            response = requests.get(url, stream=True)
+        if save_location:
+            # stream file, so we can iterate
+            response = requests.get(self.current_app["zip_url"], stream=True)
             total_size = int(response.headers.get('content-length', 0))
+
             # set progress bar
             self.ui.progressBar.setMaximum(total_size)
             block_size = 1024
@@ -433,13 +423,10 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
 
                 self.status_icon("download")
 
-                with open(output, "wb") as app_data_file:
+                with open(save_location, "wb") as app_data_file:
                     for data in response.iter_content(block_size):
                         self.ui.progressBar.setValue(self.ui.progressBar.value() + 1024)
-                        if hbb:
-                            self.status_message(f"Downloading Homebrew Browser from Open Shop Channel.. ({metadata.file_size(self.ui.progressBar.value())}/{metadata.file_size(total_size)})")
-                        else:
-                            self.status_message(f"Downloading {self.current_app['display_name']} from Open Shop Channel.. ({metadata.file_size(self.ui.progressBar.value())}/{metadata.file_size(total_size)})")
+                        self.status_message(f"Downloading {self.current_app['display_name']} from Open Shop Channel.. ({utils.file_size(self.ui.progressBar.value())}/{utils.file_size(total_size)})")
                         try:
                             app.processEvents()
                         except NameError:
@@ -448,11 +435,11 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
 
                 if extract_root:
                     self.status_message("Extracting..")
-                    with zipfile.ZipFile(output, 'r') as zip_file:
-                        root_path = output.split("/")[0]
+                    with zipfile.ZipFile(save_location, 'r') as zip_file:
+                        root_path = save_location.split("/")[0]
                         # unzip to root_path
                         zip_file.extractall(root_path)
-                    os.remove(output)
+                    os.remove(save_location)
 
 
             self.ui.progressBar.setValue(100)
@@ -461,9 +448,9 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
             self.ui.WiiLoadButton.setEnabled(True)
             self.ui.listAppsWidget.setEnabled(True)
             self.ui.ReposComboBox.setEnabled(True)
-            self.status_message(f"Download success! Output: {output}")
+            self.status_message(f"Download success! Output: {save_location}")
             self.status_icon("online")
-            return output
+            return save_location
         else:
             self.ui.progressBar.setValue(0)
             self.ui.ViewMetadataBtn.setEnabled(True)
