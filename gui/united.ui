@@ -1057,6 +1057,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
      <property name="title">
       <string>Homebrew Browser</string>
      </property>
+     <addaction name="actionDownload_HBB_Client_Latest"/>
     </widget>
     <addaction name="menuHomebrew_Browser"/>
     <addaction name="separator"/>

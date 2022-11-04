@@ -471,6 +471,7 @@ class Ui_MainWindow(object):
         self.menuClients.addSeparator()
         self.menuClients.addAction(self.actionCheck_for_Updates)
         self.menuClients.addAction(self.actionRefresh)
+        self.menuHomebrew_Browser.addAction(self.actionDownload_HBB_Client_Latest)
 
         self.retranslateUi(MainWindow)
 
