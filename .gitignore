@@ -224,3 +224,9 @@ fabric.properties
 [Ss]cripts
 pyvenv.cfg
 pip-selfcheck.json
+
+# VSCode
+.vscode/
+
+# macOS
+.DS_Store

@@ -5,6 +5,7 @@ from datetime import datetime
 from zipfile import ZipFile
 
 import requests
+import serial
 
 import wiiload
 import updater
@@ -30,8 +31,10 @@ parser.add_argument('-h', '--help', action='help', default=argparse.SUPPRESS,
 
 # Get - downloads application
 get = subparser.add_parser(name='get', help="Download application.")
-# Send - downloads and sends application
-send = subparser.add_parser(name='send', help="Send application to Wii.")
+# IPSend - downloads and sends application over TCP/IP
+ipsend = subparser.add_parser(name='ipsend', help="Send application to Wii via TCP/IP.")
+# GeckoSend - downloads and sends application over USBGecko
+geckosend = subparser.add_parser(name='geckosend', help="Send application to Wii via USBGecko protocol.")
 # Show - displays information about an application
 show = subparser.add_parser(name='show', help="Show information about an application.")
 # Hosts - displays available repositories
@@ -43,13 +46,22 @@ get.add_argument("app", type=str,
 get.add_argument("-r", "--host", type=str,
                  help="Repository name (e.g. primary)", default="primary")
 
-# Send arguments
-send.add_argument("app", type=str,
+# IPSend arguments
+ipsend.add_argument("app", type=str,
                   help="App to send. (e.g. WiiVNC)")
-send.add_argument("-d", "--destination", type=str,
+ipsend.add_argument("-d", "--destination", type=str,
                   help="Wii IP address (e.g. 192.168.1.10)", required=True)
-send.add_argument("-r", "--host", type=str,
+ipsend.add_argument("-r", "--host", type=str,
                   help="Repository name (e.g. primary)", default="primary")
+
+# GeckoSend arguments
+geckosend.add_argument("app", type=str,
+                  help="App to send. (e.g. WiiVNC)")
+geckosend.add_argument("-d", "--destination", type=str,
+                  help="Wii USBGecko port (COM# for Windows, /dev/cu.* for UNIX)", required=True)
+geckosend.add_argument("-r", "--host", type=str,
+                  help="Repository name (e.g. primary)", default="primary")                  
+
 
 # Show arguments
 show.add_argument("app", type=str,
@@ -93,14 +105,15 @@ if args.cmd == "get":
         download(app_name=args.app, repo=repos.get(args.host)["host"])
 
 # Send
-if args.cmd == "send":
+if args.cmd == "ipsend" or args.cmd == 'geckosend':
     # get hostname of host
     host_url = repos.get(args.host)["host"]
 
-    ok = wiiload.validate_ip_regex(ip=args.destination)
-    if not ok:
-        print(f"Error: The address '{args.destination}' is invalid! Please correct it!")
-        exit(1)
+    if args.cmd == "ipsend":
+        ok = wiiload.validate_ip_regex(ip=args.destination)
+        if not ok:
+            print(f"Error: The address '{args.destination}' is invalid! Please correct it!")
+            exit(1)
 
     url = f"https://{host_url}/hbb/{args.app}/{args.app}.zip"
     r = requests.get(url)
@@ -123,10 +136,16 @@ if args.cmd == "send":
     print('Connecting to the Homebrew Channel..')
 
     try:
-        conn = wiiload.connect(args.destination)
+        if args.cmd == "ipsend":
+            errmsg = "IP address"
+            conn = wiiload.connect(args.destination)
+        else:
+            errmsg = "serial connection"
+            conn = serial.Serial(args.destination,write_timeout=3.0)
+            conn.send = conn.write #This is done to keep wiiload.py the same.
     except Exception as e:
         print('Connection error: Error while connecting to the Homebrew Channel.\n'
-              'Please check the IP address and try again.')
+              f'Please check the {errmsg} and try again.')
 
         print(f'Exception: {e}')
         print('Error: Could not connect to the Homebrew Channel. :(')
@@ -139,7 +158,17 @@ if args.cmd == "send":
 
     chunk_num = 1
     for chunk in chunks:
-        conn.send(chunk)
+        try:
+            conn.send(chunk)
+        except Exception as e:
+            print('Error while connecting to the HBC. Operation timed out. Close any dialogs on HBC and try again.')
+            
+            print(f'Exception: {e}')
+            print('Error: Could not connect to the Homebrew Channel. :(')
+
+            # delete application zip file
+            conn.close()
+            exit(1)              
 
         chunk_num += 1
         progress = round(chunk_num / len(chunks) * 50) + 50

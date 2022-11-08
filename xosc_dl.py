@@ -11,6 +11,8 @@ import os
 import socket
 import sys
 import markdown
+import serial
+import serial.tools.list_ports
 
 import logging
 from functools import partial
@@ -31,6 +33,7 @@ import updater
 import utils
 import wiiload
 from gui.DownloadLocationDialog import DownloadLocationDialog
+from gui.WiiLoadDialog import WiiLoadDialog
 from utils import resource_path
 
 VERSION = updater.current_version()
@@ -351,7 +354,7 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         self.ui.progressBar.setValue(0)
         self.repaint()
         # Load icon
-        t = threading.Thread(target=self.load_icon, args=[app_name, self.current_repo['host']], daemon=True)
+        t = threading.Thread(target=self.load_icon, args=[app_name], daemon=True)
         t.start()
 
     def view_metadata(self):
@@ -459,29 +462,10 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         self.ui.listAppsWidget.setDisabled(state)
 
     def wiiload_button(self):
-        ip, ok = QInputDialog.getText(self, 'Send to Wii: Enter IP address',
-                                      'Enter the IP address of your Wii.\n'
-                                      'The selected app will be sent through the network to your Wii.\n\n'
-                                      f'App to send: {self.current_app["display_name"]}\n\n'
-                                      'To find your Wii\'s IP address:\n'
-                                      '1) Enter the Homebrew Channel.\n'
-                                      '2) Press the home button on the Wii Remote.\n'
-                                      '3) Copy the IP address written in the top left corner.\n\n'
-                                      'IP address (e.g. 192.168.1...):',
-                                      QLineEdit.Normal, gui_helpers.settings.value("sendtowii/address"))
-        if not ok:
+        dialog = WiiLoadDialog(self.current_app, parent=self)
+        status = dialog.exec()
+        if not dialog.dataValid:
             return
-
-        ip_match = wiiload.validate_ip_regex(ip)
-
-        if ip_match is None:
-            logging.warning('Invalid IP Address: ' + ip)
-            QMessageBox.warning(self, 'Invalid IP Address', 'This IP address is invalid.')
-            return
-
-        # save IP address to settings
-        gui_helpers.settings.setValue("sendtowii/address", ip)
-        gui_helpers.settings.sync()
 
         self.status_message("Downloading " + self.current_app["display_name"] + " from Open Shop Channel..")
         self.ui.progressBar.setValue(25)
@@ -512,12 +496,17 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         self.ui.progressBar.setValue(50)
 
         try:
-            conn = wiiload.connect(ip)
+            if (dialog.modeSelect == 0): #TCP/IP
+                conn = wiiload.connect(dialog.address)
+            else: #USBGecko
+                conn = serial.Serial(dialog.address,write_timeout=3.0)
+                conn.send = conn.write # Keeps the wiiload logic the same
         except socket.error as e:
             self.status_icon('sad')
-            logging.error('Error while connecting to the HBC. Please check the IP address and try again.')
+            connType=["IP address", "connection"]
+            logging.error(f'Error while connecting to the HBC. Please check the {connType[dialog.modeSelect]} and try again.')
             QMessageBox.warning(self, 'Connection error',
-                                'Error while connecting to the HBC. Please check the IP address and try again.')
+                                f'Error while connecting to the HBC. Please check the {connType[dialog.modeSelect]} and try again.')
             print(f'WiiLoad: {e}')
             self.ui.progressBar.setValue(0)
             self.status_message('Error: Could not connect to the Homebrew Channel. :(')
@@ -536,15 +525,28 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
 
         chunk_num = 1
         for chunk in chunks:
-            conn.send(chunk)
-
-            chunk_num += 1
-            progress = round(chunk_num / len(chunks) * 50) + 50
-            self.ui.progressBar.setValue(progress)
             try:
-                app.processEvents()
-            except NameError:
-                pass
+                conn.send(chunk)
+                chunk_num += 1
+                progress = round(chunk_num / len(chunks) * 50) + 50
+                self.ui.progressBar.setValue(progress)
+                try:
+                    app.processEvents()
+                except NameError:
+                    pass                
+            except serial.SerialTimeoutException as e:
+                logging.error('Error while connecting to the HBC. Operation timed out. Close any dialogs on HBC and try again.')
+                QMessageBox.warning(self, 'Connection error',
+                                    'Error while connecting to the HBC. Operation timed out. Close any dialogs on HBC and try again.')
+                print(f'WiiLoad: {e}')
+                self.ui.progressBar.setValue(0)
+                self.status_message('Error: Could not connect to the Homebrew Channel. :(')
+
+                # delete application zip file
+                os.remove(path_to_app)
+                conn.close()
+
+                return
 
         file_name = f'{self.current_app["internal_name"]}.zip'
         conn.send(bytes(file_name, 'utf-8') + b'\x00')
@@ -552,10 +554,14 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         # delete application zip file
         os.remove(path_to_app)
 
+        if dialog.modeSelect == 1:
+            conn.flush()
+            conn.close()
+
         self.ui.progressBar.setValue(100)
         self.status_message('App transmitted!')
         self.status_icon('online')
-        logging.info(f"App transmitted to HBC at {ip}")
+        logging.info(f"App transmitted to HBC at {dialog.address}")
 
     def copy_download_link_button(self):
         QApplication.clipboard().setText(self.current_app['zip_url'])

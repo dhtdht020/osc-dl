@@ -11,7 +11,7 @@ IP_REGEX = re.compile(r"^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}
 # WiiLoad
 WIILOAD_VER_MAJOR = 0
 WIILOAD_VER_MINOR = 5
-CHUNK_SIZE = 1024 * 128
+CHUNK_SIZE = 1024
 
 
 def validate_ip_regex(ip):
