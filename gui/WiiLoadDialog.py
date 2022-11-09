@@ -82,11 +82,12 @@ class WiiLoadDialog(ui_WiiLoadDialog.Ui_Dialog,QDialog):
                 QMessageBox.warning(self, 'Invalid IP Address', 'This IP address is invalid.')
                 return            
         else:
-            if self.address is None:
+            self.address = self.PortBox.currentText()
+            if self.address is None or self.address == "":
                 logging.warning('Invalid device')
                 QMessageBox.warning(self, 'Invalid device', 'Please select a vaild device.')
                 return
-            self.address = self.PortBox.currentText()
+            
 
         gui_helpers.settings.setValue("sendtowii/previousTab", currTab) 
         gui_helpers.settings.sync()
