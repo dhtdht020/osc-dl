@@ -12,6 +12,7 @@ IP_REGEX = re.compile(r"^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}
 WIILOAD_VER_MAJOR = 0
 WIILOAD_VER_MINOR = 5
 CHUNK_SIZE = 1024
+DATASENT = True
 
 
 def validate_ip_regex(ip):
@@ -63,7 +64,7 @@ def prepare(zip_buf):
     compressed_size = len(c_data)
     chunks = [c_data[i:i + CHUNK_SIZE] for i in range(0, compressed_size, CHUNK_SIZE)]
 
-    return file_size, compressed_size, chunks
+    return file_size, compressed_size, chunks, c_data
     # obtain returned values outside with:
     # file_size = prep[0]
     # compressed_size = prep[1]
@@ -98,3 +99,16 @@ def send(chunks, conn, app_name):
 
     file_name = f'{app_name}.zip'
     conn.send(bytes(file_name, 'utf-8') + b'\x00')
+
+def sendGecko(data,conn):
+    try:
+        conn.send(data)
+    except Exception as e:
+        print('Error while connecting to the HBC. Close any dialogs on HBC and try again.')
+            
+        print(f'Exception: {e}')
+        print('Error: Could not connect to the Homebrew Channel. :(')
+
+        # delete application zip file
+        conn.close()
+        exit(1) 

@@ -1,6 +1,8 @@
 import argparse
 import io
 import os
+import threading
+import time
 from datetime import datetime
 from zipfile import ZipFile
 
@@ -131,6 +133,7 @@ if args.cmd == "ipsend" or args.cmd == 'geckosend':
     file_size = prep[0]
     compressed_size = prep[1]
     chunks = prep[2]
+    c_data = prep[3]
 
     # connecting
     print('Connecting to the Homebrew Channel..')
@@ -154,28 +157,40 @@ if args.cmd == "ipsend" or args.cmd == 'geckosend':
     wiiload.handshake(conn, compressed_size, file_size)
 
     # Sending file
-    print('[  0%] Sending app..')
+    if args.cmd == "ipsend":
+        print('[  0%] Sending app..')
 
-    chunk_num = 1
-    for chunk in chunks:
-        try:
-            conn.send(chunk)
-        except Exception as e:
-            print('Error while connecting to the HBC. Operation timed out. Close any dialogs on HBC and try again.')
+        chunk_num = 1
+        for chunk in chunks:
+            try:
+                conn.send(chunk)
+            except Exception as e:
+                print('Error while connecting to the HBC. Operation timed out. Close any dialogs on HBC and try again.')
             
-            print(f'Exception: {e}')
-            print('Error: Could not connect to the Homebrew Channel. :(')
+                print(f'Exception: {e}')
+                print('Error: Could not connect to the Homebrew Channel. :(')
 
-            # delete application zip file
-            conn.close()
-            exit(1)              
+                # delete application zip file
+                conn.close()
+                exit(1)              
 
-        chunk_num += 1
-        progress = round(chunk_num / len(chunks) * 50) + 50
-        if progress < 100:
-            print(f'[ {progress}%] Sending app..')
-        if progress == 100:
-            print(f'[{progress}%] Sending app..')
+            chunk_num += 1
+            progress = round(chunk_num / len(chunks) * 50) + 50
+            if progress < 100:
+                print(f'[ {progress}%] Sending app..')
+            if progress == 100:
+                print(f'[{progress}%] Sending app..')
+    else:
+        print('Sending app..',end="")
+        t = threading.Thread(target=wiiload.sendGecko, daemon=True,args=[c_data,conn])
+        t.start()
+        while t.is_alive():
+            print(".",end="")
+            time.sleep(0.5)
+        t.join()
+        if not (wiiload.DATASENT):
+            exit(1)
+        print()
 
     file_name = f'{args.app}.zip'
     conn.send(bytes(file_name, 'utf-8') + b'\x00')

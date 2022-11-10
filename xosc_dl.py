@@ -489,6 +489,7 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         file_size = prep[0]
         compressed_size = prep[1]
         chunks = prep[2]
+        c_data = prep[3]
 
         # connecting
         self.status_message('Connecting to the HBC...')
@@ -499,7 +500,7 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
             if (dialog.modeSelect == 0): #TCP/IP
                 conn = wiiload.connect(dialog.address)
             else: #USBGecko
-                conn = serial.Serial(dialog.address,write_timeout=3.0)
+                conn = serial.Serial(dialog.address)
                 conn.send = conn.write # Keeps the wiiload logic the same
         except socket.error as e:
             self.status_icon('sad')
@@ -524,29 +525,42 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         self.status_icon('sending')
 
         chunk_num = 1
-        for chunk in chunks:
-            try:
-                conn.send(chunk)
-                chunk_num += 1
-                progress = round(chunk_num / len(chunks) * 50) + 50
-                self.ui.progressBar.setValue(progress)
+        if (dialog.modeSelect == 0): #TCP/IP
+            for chunk in chunks:
+                try:
+                    conn.send(chunk)
+                    chunk_num += 1
+                    progress = round(chunk_num / len(chunks) * 50) + 50
+                    self.ui.progressBar.setValue(progress)
+                    try:
+                        app.processEvents()
+                    except NameError:
+                        pass                
+                except Exception as e:
+                    logging.error('Error while connecting to the HBC. Operation timed out. Close any dialogs on HBC and try again.')
+                    QMessageBox.warning(self, 'Connection error',
+                                    'Error while connecting to the HBC. Operation timed out. Close any dialogs on HBC and try again.')
+                    print(f'WiiLoad: {e}')
+                    self.ui.progressBar.setValue(0)
+                    self.status_message('Error: Could not connect to the Homebrew Channel. :(')
+
+                    # delete application zip file
+                    os.remove(path_to_app)
+                    return
+        else: #USBGecko
+            t = threading.Thread(target=gui_helpers.sendGecko, daemon=True,args=[c_data,conn,self,path_to_app]) # conn.send is blocking, used thread to avoid.
+            t.start()
+            self.ui.progressBar.setMaximum(0)
+            while t.is_alive():
                 try:
                     app.processEvents()
                 except NameError:
-                    pass                
-            except serial.SerialTimeoutException as e:
-                logging.error('Error while connecting to the HBC. Operation timed out. Close any dialogs on HBC and try again.')
-                QMessageBox.warning(self, 'Connection error',
-                                    'Error while connecting to the HBC. Operation timed out. Close any dialogs on HBC and try again.')
-                print(f'WiiLoad: {e}')
-                self.ui.progressBar.setValue(0)
-                self.status_message('Error: Could not connect to the Homebrew Channel. :(')
-
-                # delete application zip file
-                os.remove(path_to_app)
-                conn.close()
-
+                    pass
+            t.join()
+            if not (gui_helpers.DATASENT):
                 return
+            self.ui.progressBar.setMaximum(100)
+            self.ui.progressBar.setValue(100)
 
         file_name = f'{self.current_app["internal_name"]}.zip'
         conn.send(bytes(file_name, 'utf-8') + b'\x00')
