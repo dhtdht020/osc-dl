@@ -1,9 +1,8 @@
 import logging
 
-from PySide6 import QtCore
-from PySide6.QtCore import QSize, QStorageInfo, QDir, Qt, QEvent
-from PySide6.QtGui import QIcon, QGuiApplication, QFont
-from PySide6.QtWidgets import QDialog, QDialogButtonBox, QListWidgetItem, QMessageBox, QPlainTextEdit
+from PySide6.QtCore import Qt
+from PySide6.QtGui import QIcon, QGuiApplication
+from PySide6.QtWidgets import QDialog, QMessageBox
 
 import gui_helpers
 import wiiload
@@ -17,7 +16,6 @@ class WiiLoadDialog(ui_WiiLoadDialog.Ui_Dialog,QDialog):
         super().__init__(parent)
         self.setupUi(self)
         
-        self.setFont(QFont('Helvetica Neue'))
         self.setWindowIcon(QIcon(resource_path("assets/gui/icons/downloadlocationdialog.png")))
         self.USBDes.setText('Select the serial port for the USB Gecko adapter.<br>'
                                 'The selected app will be sent through the USBGecko to your Wii.<br><br>'
@@ -37,16 +35,18 @@ class WiiLoadDialog(ui_WiiLoadDialog.Ui_Dialog,QDialog):
                                 '3) Copy the IP address written in the top left corner.<br><br>')
         self.IPDes.setTextFormat(Qt.TextFormat.RichText)
         
+        self.USBGeckoVIDPID = (0x403, 0x6001) #USBGecko: VID 0x43, PID 0x6001 
         self.PortBox.addItem("")
         self.PortBoxSerial = []
-        self.PortBoxSerial.append((0x0,0x0))
+        self.PortBoxSerial.append((None,None))
 
+        # Check if USBGecko is plugged in, and ready.
         for x in serial.tools.list_ports.comports():
             self.PortBox.addItem(x.device)
             self.PortBoxSerial.append((x.vid,x.pid))
         
-        if (0x403, 0x6001) in self.PortBoxSerial:
-            self.PortBox.setCurrentIndex(self.PortBoxSerial.index((0x403, 0x6001)))
+        if self.USBGeckoVIDPID in self.PortBoxSerial: 
+            self.PortBox.setCurrentIndex(self.PortBoxSerial.index(self.USBGeckoVIDPID))
         
         self.IPBox.insert(gui_helpers.settings.value("sendtowii/address"))
         if gui_helpers.settings.value("sendtowii/previousTab") == None:
@@ -54,8 +54,6 @@ class WiiLoadDialog(ui_WiiLoadDialog.Ui_Dialog,QDialog):
             gui_helpers.settings.sync()
             
         self.Tab.setCurrentIndex(int(gui_helpers.settings.value("sendtowii/previousTab")))
-       
-       
        
         self.screen = QGuiApplication.primaryScreen()
         self.package = package
@@ -65,7 +63,6 @@ class WiiLoadDialog(ui_WiiLoadDialog.Ui_Dialog,QDialog):
 
         self.modeSelect = None
         self.address = None
-        self.dataValid = None
     
     def accept(self):
         self.modeSelect = currTab = self.Tab.currentIndex()
@@ -88,23 +85,21 @@ class WiiLoadDialog(ui_WiiLoadDialog.Ui_Dialog,QDialog):
 
         gui_helpers.settings.setValue("sendtowii/previousTab", currTab) 
         gui_helpers.settings.sync()
-        self.dataValid = True
         super().accept()
     
     def reject(self):
-        self.dataValid = False
         super().reject()
 
     def update(self):
         self.PortBox.clear()
         self.PortBoxSerial = []
         self.PortBox.addItem("")
-        self.PortBoxSerial.append((0x0,0x0))
+        self.PortBoxSerial.append((None,None))
         for x in serial.tools.list_ports.comports():
             self.PortBox.addItem(x.device)
             self.PortBoxSerial.append((x.vid,x.pid))
-        if (0x403, 0x6001) in self.PortBoxSerial:
-            self.PortBox.setCurrentIndex(self.PortBoxSerial.index((0x403, 0x6001)))
+        if self.USBGeckoVIDPID in self.PortBoxSerial:
+            self.PortBox.setCurrentIndex(self.PortBoxSerial.index(self.USBGeckoVIDPID))
         super().update()
     
         

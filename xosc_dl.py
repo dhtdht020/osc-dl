@@ -465,7 +465,7 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
     def wiiload_button(self):
         dialog = WiiLoadDialog(self.current_app, parent=self)
         status = dialog.exec()
-        if not dialog.dataValid:
+        if not status:
             return
         gui_helpers.CURRENTLY_SENDING = True
 
