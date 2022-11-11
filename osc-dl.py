@@ -144,7 +144,7 @@ if args.cmd == "ipsend" or args.cmd == 'geckosend':
             conn = wiiload.connect(args.destination)
         else:
             errmsg = "serial connection"
-            conn = serial.Serial(args.destination,write_timeout=3.0)
+            conn = serial.Serial(args.destination)
             conn.send = conn.write #This is done to keep wiiload.py the same.
     except Exception as e:
         print('Connection error: Error while connecting to the Homebrew Channel.\n'
