@@ -436,7 +436,8 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
 
             self.ui.progressBar.setValue(100)
             self.ui.progressBar.setMaximum(100)
-            self.safe_mode(False)
+            if (object_name != "WiiLoadButton"):
+                self.safe_mode(False)
             self.status_message(f"Download of \"{self.current_app['display_name']}\" has completed successfully")
             self.status_icon("online")
             return save_location
@@ -457,7 +458,7 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         :param state: bool
         """
         self.ui.ViewMetadataBtn.setDisabled(state)
-        self.ui.WiiLoadButton.setDisabled(state)
+        self.ui.WiiLoadButton.setDisabled(state or not utils.is_supported_by_wiiload(self.current_app))
         self.ui.ReposComboBox.setDisabled(state)
         self.ui.listAppsWidget.setDisabled(state)
 
@@ -466,6 +467,7 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         status = dialog.exec()
         if not dialog.dataValid:
             return
+        gui_helpers.CURRENTLY_SENDING = True
 
         self.status_message("Downloading " + self.current_app["display_name"] + " from Open Shop Channel..")
         self.ui.progressBar.setValue(25)
@@ -515,7 +517,8 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
 
             # delete application zip file
             os.remove(path_to_app)
-
+            gui_helpers.CURRENTLY_SENDING = False
+            self.safe_mode(False)
             return
 
         wiiload.handshake(conn, compressed_size, file_size)
@@ -546,9 +549,30 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
 
                     # delete application zip file
                     os.remove(path_to_app)
+                    gui_helpers.CURRENTLY_SENDING = False
+                    self.safe_mode(False)
                     return
         else: #USBGecko
-            t = threading.Thread(target=gui_helpers.sendGecko, daemon=True,args=[c_data,conn,self,path_to_app]) # conn.send is blocking, used thread to avoid.
+            def sendGecko(c_data,conn,path_to_app):
+                try:
+                    conn.send(c_data)
+                except Exception as e:
+                    logging.error('Error while connecting to the HBC. Close any dialogs on HBC and try again.')
+                    QMessageBox.warning(window, 'Connection error',
+                        'Error while connecting to the HBC. Close any dialogs on HBC and try again.')
+                    print(f'WiiLoad: {e}')
+                    window.ui.progressBar.setValue(0)
+                    window.status_message('Error: Could not connect to the Homebrew Channel. :(')
+
+                    # delete application zip file
+                    os.remove(path_to_app)
+                    conn.close()
+                    gui_helpers.DATASENT = False
+                    return
+                gui_helpers.DATASENT = True
+            #def sendGecko(c_data,conn,path_to_app)
+
+            t = threading.Thread(target=sendGecko, daemon=True,args=[c_data,conn,path_to_app]) # conn.send is blocking, used thread to avoid.
             t.start()
             self.ui.progressBar.setMaximum(0)
             while t.is_alive():
@@ -558,6 +582,8 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
                     pass
             t.join()
             if not (gui_helpers.DATASENT):
+                gui_helpers.CURRENTLY_SENDING = False
+                self.safe_mode(False)
                 return
             self.ui.progressBar.setMaximum(100)
             self.ui.progressBar.setValue(100)
@@ -576,6 +602,8 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         self.status_message('App transmitted!')
         self.status_icon('online')
         logging.info(f"App transmitted to HBC at {dialog.address}")
+        gui_helpers.CURRENTLY_SENDING = False
+        self.safe_mode(False)
 
     def copy_download_link_button(self):
         QApplication.clipboard().setText(self.current_app['zip_url'])
@@ -666,8 +694,9 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
             sys.exit(1)
 
         # load app icons
-        self.status_message("Loading app icons from server..")
-        self.ui.progressBar.setMaximum(0)
+        if not gui_helpers.CURRENTLY_SENDING:
+            self.status_message("Loading app icons from server..")
+            self.ui.progressBar.setMaximum(0)
         t = threading.Thread(target=self.download_app_icons, daemon=True)
         t.start()
 
@@ -1011,7 +1040,8 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         # set size of icon to 171x64
         self.ui.listAppsWidget.setIconSize(QSize(171, 32))
         # complete loading
-        self.reset_status()
+        if not gui_helpers.CURRENTLY_SENDING:
+            self.reset_status()
 
 
 if __name__ == "__main__":

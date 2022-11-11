@@ -17,9 +17,6 @@ class WiiLoadDialog(ui_WiiLoadDialog.Ui_Dialog,QDialog):
         super().__init__(parent)
         self.setupUi(self)
         
-        #https://stackoverflow.com/questions/57351709/
-        self.IPBox.installEventFilter(self)
-        
         self.setFont(QFont('Helvetica Neue'))
         self.setWindowIcon(QIcon(resource_path("assets/gui/icons/downloadlocationdialog.png")))
         self.USBDes.setText('Select the serial port for the USB Gecko adapter.<br>'
@@ -51,7 +48,7 @@ class WiiLoadDialog(ui_WiiLoadDialog.Ui_Dialog,QDialog):
         if (0x403, 0x6001) in self.PortBoxSerial:
             self.PortBox.setCurrentIndex(self.PortBoxSerial.index((0x403, 0x6001)))
         
-        self.IPBox.setPlainText(gui_helpers.settings.value("sendtowii/address"))
+        self.IPBox.insert(gui_helpers.settings.value("sendtowii/address"))
         if gui_helpers.settings.value("sendtowii/previousTab") == None:
             gui_helpers.settings.setValue("sendtowii/previousTab", 0) 
             gui_helpers.settings.sync()
@@ -74,8 +71,8 @@ class WiiLoadDialog(ui_WiiLoadDialog.Ui_Dialog,QDialog):
         self.modeSelect = currTab = self.Tab.currentIndex()
         
         if (currTab == 0):
-            gui_helpers.settings.setValue("sendtowii/address", self.IPBox.toPlainText())
-            self.address = self.IPBox.toPlainText()
+            gui_helpers.settings.setValue("sendtowii/address", self.IPBox.text())
+            self.address = self.IPBox.text()
 
             if wiiload.validate_ip_regex(self.address) is None:
                 logging.warning('Invalid IP Address: ' + self.address)
@@ -109,14 +106,5 @@ class WiiLoadDialog(ui_WiiLoadDialog.Ui_Dialog,QDialog):
         if (0x403, 0x6001) in self.PortBoxSerial:
             self.PortBox.setCurrentIndex(self.PortBoxSerial.index((0x403, 0x6001)))
         super().update()
-    
-    #https://stackoverflow.com/questions/57351709/
-    # This is to press enter to accept, not add a new line.    
-    def eventFilter(self, obj, event):
-        if event.type() == QEvent.KeyPress:
-            if event.key() in (Qt.Key_Return, Qt.Key_Enter):
-                self.accept()
-                return True
-        return super().eventFilter(obj, event)
     
         

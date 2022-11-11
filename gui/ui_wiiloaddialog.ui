@@ -35,18 +35,8 @@
        </property>
        <widget class="QWidget" name="tab">
         <attribute name="title">
-         <string>TCP/IP</string>
+         <string>Network</string>
         </attribute>
-        <widget class="QPlainTextEdit" name="IPBox">
-         <property name="geometry">
-          <rect>
-           <x>270</x>
-           <y>280</y>
-           <width>181</width>
-           <height>31</height>
-          </rect>
-         </property>
-        </widget>
         <widget class="QLabel" name="label_2">
          <property name="geometry">
           <rect>
@@ -71,6 +61,16 @@
          </property>
          <property name="text">
           <string>TextLabel</string>
+         </property>
+        </widget>
+        <widget class="QLineEdit" name="IPBox">
+         <property name="geometry">
+          <rect>
+           <x>270</x>
+           <y>280</y>
+           <width>181</width>
+           <height>31</height>
+          </rect>
          </property>
         </widget>
        </widget>

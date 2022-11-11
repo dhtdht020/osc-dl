@@ -33,10 +33,8 @@ parser.add_argument('-h', '--help', action='help', default=argparse.SUPPRESS,
 
 # Get - downloads application
 get = subparser.add_parser(name='get', help="Download application.")
-# IPSend - downloads and sends application over TCP/IP
-ipsend = subparser.add_parser(name='ipsend', help="Send application to Wii via TCP/IP.")
-# GeckoSend - downloads and sends application over USBGecko
-geckosend = subparser.add_parser(name='geckosend', help="Send application to Wii via USBGecko protocol.")
+# Send - downloads and sends application over TCP/IP
+send = subparser.add_parser(name='send', help="Send application to Wii via the network or USBGecko.")
 # Show - displays information about an application
 show = subparser.add_parser(name='show', help="Show information about an application.")
 # Hosts - displays available repositories
@@ -48,21 +46,14 @@ get.add_argument("app", type=str,
 get.add_argument("-r", "--host", type=str,
                  help="Repository name (e.g. primary)", default="primary")
 
-# IPSend arguments
-ipsend.add_argument("app", type=str,
+# Send arguments
+send.add_argument("app", type=str,
                   help="App to send. (e.g. WiiVNC)")
-ipsend.add_argument("-d", "--destination", type=str,
-                  help="Wii IP address (e.g. 192.168.1.10)", required=True)
-ipsend.add_argument("-r", "--host", type=str,
+send.add_argument("-g","--gecko",help="Use USBGecko protocol",action='store_true')
+send.add_argument("-d", "--destination", type=str,
+                  help="Wii IP/USBGecko address (e.g. 192.168.1.10, COM# for Windows, /dev/cu.* for UNIX)", required=True)
+send.add_argument("-r", "--host", type=str,
                   help="Repository name (e.g. primary)", default="primary")
-
-# GeckoSend arguments
-geckosend.add_argument("app", type=str,
-                  help="App to send. (e.g. WiiVNC)")
-geckosend.add_argument("-d", "--destination", type=str,
-                  help="Wii USBGecko port (COM# for Windows, /dev/cu.* for UNIX)", required=True)
-geckosend.add_argument("-r", "--host", type=str,
-                  help="Repository name (e.g. primary)", default="primary")                  
 
 
 # Show arguments
@@ -95,7 +86,8 @@ def download(app_name, output=None, extract=False, repo="hbb1.oscwii.org"):
     else:
         print(f"Download failed. HTTP status code is {str(app_data.status_code)}, not 200.")
 
-
+if not args.cmd:
+    parser.parse_args(["-h"])
 # Get
 if args.cmd == "get":
     if args.app == "all":
@@ -107,11 +99,11 @@ if args.cmd == "get":
         download(app_name=args.app, repo=repos.get(args.host)["host"])
 
 # Send
-if args.cmd == "ipsend" or args.cmd == 'geckosend':
+if args.cmd == "send":
     # get hostname of host
     host_url = repos.get(args.host)["host"]
 
-    if args.cmd == "ipsend":
+    if not args.gecko:
         ok = wiiload.validate_ip_regex(ip=args.destination)
         if not ok:
             print(f"Error: The address '{args.destination}' is invalid! Please correct it!")
@@ -139,13 +131,14 @@ if args.cmd == "ipsend" or args.cmd == 'geckosend':
     print('Connecting to the Homebrew Channel..')
 
     try:
-        if args.cmd == "ipsend":
-            errmsg = "IP address"
-            conn = wiiload.connect(args.destination)
-        else:
+        if args.gecko:
             errmsg = "serial connection"
             conn = serial.Serial(args.destination)
             conn.send = conn.write #This is done to keep wiiload.py the same.
+        else:
+            errmsg = "IP address"
+            conn = wiiload.connect(args.destination)
+
     except Exception as e:
         print('Connection error: Error while connecting to the Homebrew Channel.\n'
               f'Please check the {errmsg} and try again.')
@@ -157,7 +150,7 @@ if args.cmd == "ipsend" or args.cmd == 'geckosend':
     wiiload.handshake(conn, compressed_size, file_size)
 
     # Sending file
-    if args.cmd == "ipsend":
+    if not args.gecko:
         print('[  0%] Sending app..')
 
         chunk_num = 1
@@ -194,6 +187,9 @@ if args.cmd == "ipsend" or args.cmd == 'geckosend':
 
     file_name = f'{args.app}.zip'
     conn.send(bytes(file_name, 'utf-8') + b'\x00')
+    if args.gecko:
+        conn.flush()
+        conn.close()
 
     print(f'App sent to Wii at {args.destination} successfully!')
 

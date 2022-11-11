@@ -3,7 +3,7 @@
 ################################################################################
 ## Form generated from reading UI file 'ui_wiiloaddialog.ui'
 ##
-## Created by: Qt User Interface Compiler version 6.2.2
+## Created by: Qt User Interface Compiler version 6.4.0
 ##
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
@@ -16,7 +16,7 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QImage, QKeySequence, QLinearGradient, QPainter,
     QPalette, QPixmap, QRadialGradient, QTransform)
 from PySide6.QtWidgets import (QAbstractButton, QApplication, QComboBox, QDialog,
-    QDialogButtonBox, QLabel, QPlainTextEdit, QPushButton,
+    QDialogButtonBox, QLabel, QLineEdit, QPushButton,
     QSizePolicy, QTabWidget, QVBoxLayout, QWidget)
 
 class Ui_Dialog(object):
@@ -34,15 +34,15 @@ class Ui_Dialog(object):
         self.Tab.setObjectName(u"Tab")
         self.tab = QWidget()
         self.tab.setObjectName(u"tab")
-        self.IPBox = QPlainTextEdit(self.tab)
-        self.IPBox.setObjectName(u"IPBox")
-        self.IPBox.setGeometry(QRect(270, 280, 181, 31))
         self.label_2 = QLabel(self.tab)
         self.label_2.setObjectName(u"label_2")
         self.label_2.setGeometry(QRect(80, 280, 191, 31))
         self.IPDes = QLabel(self.tab)
         self.IPDes.setObjectName(u"IPDes")
         self.IPDes.setGeometry(QRect(10, 10, 511, 251))
+        self.IPBox = QLineEdit(self.tab)
+        self.IPBox.setObjectName(u"IPBox")
+        self.IPBox.setGeometry(QRect(270, 280, 181, 31))
         self.Tab.addTab(self.tab, "")
         self.tab_2 = QWidget()
         self.tab_2.setObjectName(u"tab_2")
@@ -87,7 +87,7 @@ class Ui_Dialog(object):
         Dialog.setWindowTitle(QCoreApplication.translate("Dialog", u"Wii", None))
         self.label_2.setText(QCoreApplication.translate("Dialog", u"IP address (e.g. 192.168.1...):", None))
         self.IPDes.setText(QCoreApplication.translate("Dialog", u"TextLabel", None))
-        self.Tab.setTabText(self.Tab.indexOf(self.tab), QCoreApplication.translate("Dialog", u"TCP/IP", None))
+        self.Tab.setTabText(self.Tab.indexOf(self.tab), QCoreApplication.translate("Dialog", u"Network", None))
         self.USBDes.setText(QCoreApplication.translate("Dialog", u"TextLabel", None))
         self.label_4.setText(QCoreApplication.translate("Dialog", u"Device port:", None))
         self.RefreshBTN.setText(QCoreApplication.translate("Dialog", u"Refresh", None))
