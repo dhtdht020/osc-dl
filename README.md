@@ -3,9 +3,7 @@
 
 OSCDL is a cross platform desktop client for the Open Shop Channel homebrew repository, in Python 3 and Qt.
 
-With OSCDL, you can download hundreds of homebrew apps and themes to your computer or wirelessly send them directly to the Wii.
-
-OSCDL also supports USBGecko connections if the Wii cannot connect via LAN.
+With OSCDL, you can download hundreds of homebrew apps and themes to your computer send them directly to the Wii through the network or through USB Gecko.
 
 ![Preview](https://user-images.githubusercontent.com/18469146/144217304-b690eba3-4c71-4791-9705-6dd36c0a1fcd.png)
 
