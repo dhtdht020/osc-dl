@@ -37,17 +37,22 @@ class WiiLoadDialog(ui_WiiLoadDialog.Ui_Dialog, QDialog):
         self.IPDes.setTextFormat(Qt.TextFormat.RichText)
 
         self.USBGeckoVIDPID = (0x403, 0x6001)  # USBGecko: VID 0x43, PID 0x6001
-        self.PortBox.addItem("")
-        self.PortBoxSerial = []
-        self.PortBoxSerial.append((None, None))
+        #self.PortBox.addItem("")
+        #self.PortBoxSerial = []
+        #self.PortBoxSerial.append((None, None))
 
         # Check if USBGecko is plugged in, and ready.
         for x in serial.tools.list_ports.comports():
-            self.PortBox.addItem(x.device)
-            self.PortBoxSerial.append((x.vid, x.pid))
+            if (x.vid, x.pid) == self.USBGeckoVIDPID:
+                self.PortBox.addItem(x.device)
+                self.PortBoxSerial.append((x.vid, x.pid))
+                self.PortBox.setCurrentIndex(self.PortBoxSerial.index(self.USBGeckoVIDPID))
 
-        if self.USBGeckoVIDPID in self.PortBoxSerial:
-            self.PortBox.setCurrentIndex(self.PortBoxSerial.index(self.USBGeckoVIDPID))
+        if self.PortBox.count() == 0:
+            self.PortBox.setPlaceholderText("No USB Gecko devices connected.")
+            self.PortBox.setEnabled(False)
+            
+            
 
         self.IPBox.insert(gui_helpers.settings.value("sendtowii/address"))
         if gui_helpers.settings.value("sendtowii/previousTab") is None:
@@ -93,11 +98,17 @@ class WiiLoadDialog(ui_WiiLoadDialog.Ui_Dialog, QDialog):
     def update(self):
         self.PortBox.clear()
         self.PortBoxSerial = []
-        self.PortBox.addItem("")
-        self.PortBoxSerial.append((None, None))
+
         for x in serial.tools.list_ports.comports():
-            self.PortBox.addItem(x.device)
-            self.PortBoxSerial.append((x.vid, x.pid))
-        if self.USBGeckoVIDPID in self.PortBoxSerial:
-            self.PortBox.setCurrentIndex(self.PortBoxSerial.index(self.USBGeckoVIDPID))
+            if (x.vid, x.pid) == self.USBGeckoVIDPID:
+                self.PortBox.addItem(x.device)
+                self.PortBoxSerial.append((x.vid, x.pid))
+                self.PortBox.setCurrentIndex(self.PortBoxSerial.index(self.USBGeckoVIDPID))
+
+        if self.PortBox.count():
+            self.PortBox.setPlaceholderText("")
+            self.PortBox.setEnabled(True)
+        else:
+            self.PortBox.setPlaceholderText("No USB Gecko devices connected.")
+            self.PortBox.setEnabled(False)
         super().update()
