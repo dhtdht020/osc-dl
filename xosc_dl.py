@@ -528,7 +528,7 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         self.status_icon('sending')
 
         chunk_num = 1
-        if (dialog.modeSelect == 0): #TCP/IP
+        if dialog.modeSelect == 0:  # TCP/IP
             for chunk in chunks:
                 try:
                     conn.send(chunk)
@@ -552,27 +552,10 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
                     gui_helpers.CURRENTLY_SENDING = False
                     self.safe_mode(False)
                     return
-        else: #USBGecko
-            def sendGecko(c_data,conn,path_to_app):
-                try:
-                    conn.send(c_data)
-                except Exception as e:
-                    logging.error('Error while connecting to the HBC. Close any dialogs on HBC and try again.')
-                    QMessageBox.warning(window, 'Connection error',
-                        'Error while connecting to the HBC. Close any dialogs on HBC and try again.')
-                    print(f'WiiLoad: {e}')
-                    window.ui.progressBar.setValue(0)
-                    window.status_message('Error: Could not connect to the Homebrew Channel. :(')
-
-                    # delete application zip file
-                    os.remove(path_to_app)
-                    conn.close()
-                    gui_helpers.DATASENT = False
-                    return
-                gui_helpers.DATASENT = True
-            #def sendGecko(c_data,conn,path_to_app)
-
-            t = threading.Thread(target=sendGecko, daemon=True,args=[c_data,conn,path_to_app]) # conn.send is blocking, used thread to avoid.
+        # USBGecko
+        else:
+            # conn.send is blocking, used thread to avoid.
+            t = threading.Thread(target=self.send_gecko, daemon=True, args=[c_data, conn, path_to_app])
             t.start()
             self.ui.progressBar.setMaximum(0)
             while t.is_alive():
@@ -581,7 +564,7 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
                 except NameError:
                     pass
             t.join()
-            if not (gui_helpers.DATASENT):
+            if not gui_helpers.DATASENT:
                 gui_helpers.CURRENTLY_SENDING = False
                 self.safe_mode(False)
                 return
@@ -604,6 +587,24 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         logging.info(f"App transmitted to HBC at {dialog.address}")
         gui_helpers.CURRENTLY_SENDING = False
         self.safe_mode(False)
+
+    def send_gecko(self, c_data, conn, path_to_app):
+        try:
+            conn.send(c_data)
+        except Exception as e:
+            logging.error('Error while connecting to the HBC. Close any dialogs on HBC and try again.')
+            QMessageBox.warning(window, 'Connection error',
+                                'Error while connecting to the HBC. Close any dialogs on HBC and try again.')
+            print(f'WiiLoad: {e}')
+            self.ui.progressBar.setValue(0)
+            self.status_message('Error: Could not connect to the Homebrew Channel. :(')
+
+            # delete application zip file
+            os.remove(path_to_app)
+            conn.close()
+            gui_helpers.DATASENT = False
+            return
+        gui_helpers.DATASENT = True
 
     def copy_download_link_button(self):
         QApplication.clipboard().setText(self.current_app['zip_url'])
