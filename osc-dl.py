@@ -6,6 +6,7 @@ import time
 from datetime import datetime
 from zipfile import ZipFile
 
+import func_timeout
 import requests
 import serial
 
@@ -133,12 +134,15 @@ if args.cmd == "send":
 
     try:
         if args.gecko:
-            conn = serial.Serial(args.destination)
-            conn.send = conn.write  # This is done to keep wiiload.py the same.
+            conn = serial.Serial()
+            conn.inter_byte_timeout = 1.0
+            conn.port = args.destination
+            func_timeout.func_timeout(1, conn.open) # Timeout: 1 sec, function: conn.open()
+            conn.send = conn.write # Keeps the wiiload logic the same
         else:
             conn = wiiload.connect(args.destination)
 
-    except Exception as e:
+    except (func_timeout.exceptions.FunctionTimedOut,Exception) as e:
         if args.gecko:
             errmsg = "serial connection"
         else:

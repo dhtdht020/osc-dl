@@ -8,7 +8,6 @@ from os import listdir
 from os.path import isfile, join
 
 import os
-import socket
 import sys
 import markdown
 import serial
@@ -17,6 +16,7 @@ import serial.tools.list_ports
 import logging
 from functools import partial
 
+import func_timeout
 import requests
 from PIL import Image
 from PySide6 import QtGui, QtCore
@@ -74,6 +74,12 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         self.current_repo = None
         self.ui = gui.ui_united.Ui_MainWindow()
         self.ui.setupUi(self)
+
+        self.message = QMessageBox(self)  
+        self.message.setIcon(QMessageBox.Warning)         
+        self.message.setWindowTitle("Operation in progress")
+        self.message.setText("Please wait for the operation to finish.")
+        self.message.setModal(True)
 
         self.test_mode = test_mode
 
@@ -365,8 +371,10 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         return QObject.tr(self, text)
 
     def download_app(self, extract_root=False):
+        gui_helpers.IN_DOWNLOAD_DIALOG = True
         self.status_message(f"Downloading {self.current_app['display_name']} from Open Shop Channel..")
         self.status_icon("pending")
+        self.ui.progressBar.setMaximum(0)
 
         if self.sender():
             object_name = self.sender().objectName()
@@ -434,23 +442,26 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
                         zip_file.extractall(root_path)
                     os.remove(save_location)
 
-            self.ui.progressBar.setValue(100)
-            self.ui.progressBar.setMaximum(100)
+            self.ui.progressBar.setValue(total_size)
             if (object_name != "WiiLoadButton"):
                 self.safe_mode(False)
             self.status_message(f"Download of \"{self.current_app['display_name']}\" has completed successfully")
             self.status_icon("online")
+            gui_helpers.IN_DOWNLOAD_DIALOG = False 
             return save_location
         else:
+            self.ui.progressBar.setMaximum(100)
             self.ui.progressBar.setValue(0)
             self.safe_mode(False)
             self.status_message("Cancelled Download")
             self.status_icon("online")
+            gui_helpers.IN_DOWNLOAD_DIALOG = False
 
     def reset_status(self):
-        self.ui.progressBar.setMaximum(100)
-        self.status_message("Ready to download")
-        self.status_icon("online")
+        if not gui_helpers.CURRENTLY_SENDING and not gui_helpers.IN_DOWNLOAD_DIALOG:
+            self.ui.progressBar.setMaximum(100)
+            self.status_message("Ready to download")
+            self.status_icon("online")
 
     def safe_mode(self, state: bool):
         """
@@ -502,9 +513,12 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
             if (dialog.modeSelect == 0): #TCP/IP
                 conn = wiiload.connect(dialog.address)
             else: #USBGecko
-                conn = serial.Serial(dialog.address)
+                conn = serial.Serial()
+                conn.inter_byte_timeout = 1.0
+                conn.port = dialog.address
+                func_timeout.func_timeout(1, conn.open) # Timeout: 1 sec, function: conn.open()
                 conn.send = conn.write # Keeps the wiiload logic the same
-        except socket.error as e:
+        except (func_timeout.exceptions.FunctionTimedOut,Exception) as e:
             self.status_icon('sad')
             connType=["IP address", "connection"]
             logging.error(f'Error while connecting to the HBC. Please check the {connType[dialog.modeSelect]} and try again.')
@@ -695,7 +709,7 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
             sys.exit(1)
 
         # load app icons
-        if not gui_helpers.CURRENTLY_SENDING:
+        if not gui_helpers.CURRENTLY_SENDING and not gui_helpers.IN_DOWNLOAD_DIALOG:
             self.status_message("Loading app icons from server..")
             self.ui.progressBar.setMaximum(0)
         t = threading.Thread(target=self.download_app_icons, daemon=True)
@@ -925,6 +939,7 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
 
     # load all icons from zip
     def download_app_icons(self):
+        gui_helpers.CURRENTLY_LOADING_ICONS = True
         # Debug info
         original_host = self.current_repo['host']
         logging.debug("Started download of app icons")
@@ -1025,6 +1040,7 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         else:
             self.reset_status()
             logging.warning("Loading of app icons for list failed, continuing without them.")
+        gui_helpers.CURRENTLY_LOADING_ICONS = False
 
 
     @QtCore.Slot()
@@ -1041,8 +1057,19 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         # set size of icon to 171x64
         self.ui.listAppsWidget.setIconSize(QSize(171, 32))
         # complete loading
-        if not gui_helpers.CURRENTLY_SENDING:
-            self.reset_status()
+        self.reset_status()
+    
+    def closeEvent(self, closeEvent):
+        if self.ongoingOperations():
+            # QMessageBox.warning is modal, this is not. 
+            self.message.show()
+            closeEvent.ignore()
+        else:
+            closeEvent.accept()
+    
+    def ongoingOperations(self):
+        return (gui_helpers.CURRENTLY_SENDING or gui_helpers.IN_DOWNLOAD_DIALOG or gui_helpers.CURRENTLY_LOADING_ICONS)
+        
 
 
 if __name__ == "__main__":
