@@ -16,7 +16,7 @@ def test_download(app, qtbot):
     qtbot.mouseClick(app.ui.ViewMetadataBtn, QtCore.Qt.LeftButton)
     while app.ui.progressBar.value() < 100:
         pass
-    assert "Download success" in app.ui.statusBar.currentMessage()
+    assert "completed successfully" in app.ui.statusBar.currentMessage()
 
 
 def test_search(app, qtbot):
