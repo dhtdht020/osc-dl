@@ -49,12 +49,12 @@ get.add_argument("-r", "--host", type=str,
 # Send arguments
 send.add_argument("app", type=str,
                   help="App to send. (e.g. WiiVNC)")
-send.add_argument("-g","--gecko",help="Use USBGecko protocol",action='store_true')
+send.add_argument("-g", "--gecko", help="Use USBGecko protocol", action='store_true')
 send.add_argument("-d", "--destination", type=str,
-                  help="Wii IP/USBGecko address (e.g. 192.168.1.10, COM# for Windows, /dev/cu.* for UNIX)", required=True)
+                  help="Wii IP/USBGecko address (e.g. 192.168.1.10, COM# for Windows, /dev/cu.* for UNIX)",
+                  required=True)
 send.add_argument("-r", "--host", type=str,
                   help="Repository name (e.g. primary)", default="primary")
-
 
 # Show arguments
 show.add_argument("app", type=str,
@@ -85,6 +85,7 @@ def download(app_name, output=None, extract=False, repo="hbb1.oscwii.org"):
 
     else:
         print(f"Download failed. HTTP status code is {str(app_data.status_code)}, not 200.")
+
 
 if not args.cmd:
     parser.parse_args(["-h"])
@@ -134,7 +135,7 @@ if args.cmd == "send":
         if args.gecko:
             errmsg = "serial connection"
             conn = serial.Serial(args.destination)
-            conn.send = conn.write #This is done to keep wiiload.py the same.
+            conn.send = conn.write  # This is done to keep wiiload.py the same.
         else:
             errmsg = "IP address"
             conn = wiiload.connect(args.destination)
@@ -159,13 +160,13 @@ if args.cmd == "send":
                 conn.send(chunk)
             except Exception as e:
                 print('Error while connecting to the HBC. Operation timed out. Close any dialogs on HBC and try again.')
-            
+
                 print(f'Exception: {e}')
                 print('Error: Could not connect to the Homebrew Channel. :(')
 
                 # delete application zip file
                 conn.close()
-                exit(1)              
+                exit(1)
 
             chunk_num += 1
             progress = round(chunk_num / len(chunks) * 50) + 50
@@ -174,14 +175,14 @@ if args.cmd == "send":
             if progress == 100:
                 print(f'[{progress}%] Sending app..')
     else:
-        print('Sending app..',end="")
-        t = threading.Thread(target=wiiload.sendGecko, daemon=True,args=[c_data,conn])
+        print('Sending app..', end="")
+        t = threading.Thread(target=wiiload.send_gecko, daemon=True, args=[c_data, conn])
         t.start()
         while t.is_alive():
-            print(".",end="")
+            print(".", end="")
             time.sleep(0.5)
         t.join()
-        if not (wiiload.DATASENT):
+        if not wiiload.DATASENT:
             exit(1)
         print()
 
@@ -210,7 +211,6 @@ if args.cmd == "show":
         print("  Type: {}".format(app["package_type"]))
         print("  Download Size: {}".format(file_size(app["zip_size"])))
         print("  Extracted Size: {}".format(file_size(app["extracted"])))
-
 
 # Hosts
 if args.cmd == "hosts":
