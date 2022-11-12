@@ -133,14 +133,17 @@ if args.cmd == "send":
 
     try:
         if args.gecko:
-            errmsg = "serial connection"
             conn = serial.Serial(args.destination)
             conn.send = conn.write  # This is done to keep wiiload.py the same.
         else:
-            errmsg = "IP address"
             conn = wiiload.connect(args.destination)
 
     except Exception as e:
+        if args.gecko:
+            errmsg = "serial connection"
+        else:
+            errmsg = "IP address"
+
         print('Connection error: Error while connecting to the Homebrew Channel.\n'
               f'Please check the {errmsg} and try again.')
 
