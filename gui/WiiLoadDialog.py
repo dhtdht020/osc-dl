@@ -37,9 +37,7 @@ class WiiLoadDialog(ui_WiiLoadDialog.Ui_Dialog, QDialog):
         self.IPDes.setTextFormat(Qt.TextFormat.RichText)
 
         self.USBGeckoVIDPID = (0x403, 0x6001)  # USBGecko: VID 0x43, PID 0x6001
-        #self.PortBox.addItem("")
-        #self.PortBoxSerial = []
-        #self.PortBoxSerial.append((None, None))
+        self.PortBoxSerial = []
 
         # Check if USBGecko is plugged in, and ready.
         for x in serial.tools.list_ports.comports():
