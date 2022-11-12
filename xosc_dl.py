@@ -485,6 +485,7 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
 
         # get app
         path_to_app = self.download_app()
+        self.ui.progressBar.setMaximum(100)
 
         with open(path_to_app, 'rb') as f:
             content = f.read()
