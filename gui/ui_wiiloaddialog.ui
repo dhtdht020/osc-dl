@@ -6,21 +6,9 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>562</width>
-    <height>427</height>
+    <width>484</width>
+    <height>274</height>
    </rect>
-  </property>
-  <property name="minimumSize">
-   <size>
-    <width>562</width>
-    <height>427</height>
-   </size>
-  </property>
-  <property name="maximumSize">
-   <size>
-    <width>562</width>
-    <height>427</height>
-   </size>
   </property>
   <property name="windowTitle">
    <string>Wii</string>
@@ -30,103 +18,117 @@
     <layout class="QVBoxLayout" name="verticalLayout_2">
      <item>
       <widget class="QTabWidget" name="Tab">
-       <property name="currentIndex">
-        <number>0</number>
+       <property name="focusPolicy">
+        <enum>Qt::ClickFocus</enum>
        </property>
        <widget class="QWidget" name="tab">
         <attribute name="title">
          <string>Network</string>
         </attribute>
-        <widget class="QLabel" name="label_2">
-         <property name="geometry">
-          <rect>
-           <x>80</x>
-           <y>280</y>
-           <width>191</width>
-           <height>31</height>
-          </rect>
-         </property>
-         <property name="text">
-          <string>IP address (e.g. 192.168.1...):</string>
-         </property>
-        </widget>
-        <widget class="QLabel" name="IPDes">
-         <property name="geometry">
-          <rect>
-           <x>10</x>
-           <y>10</y>
-           <width>511</width>
-           <height>251</height>
-          </rect>
-         </property>
-         <property name="text">
-          <string>TextLabel</string>
-         </property>
-        </widget>
-        <widget class="QLineEdit" name="IPBox">
-         <property name="geometry">
-          <rect>
-           <x>270</x>
-           <y>280</y>
-           <width>181</width>
-           <height>31</height>
-          </rect>
-         </property>
-        </widget>
+        <layout class="QVBoxLayout" name="verticalLayout_3">
+         <item>
+          <widget class="QLabel" name="IPDes">
+           <property name="text">
+            <string>Enter the IP address of your Wii.&lt;br&gt;
+The selected app will be sent through the network to your Wii.&lt;br&gt;&lt;br&gt;
+&lt;b&gt;App to send:&lt;/b&gt;&lt;br&gt;&lt;br&gt;
+To find your Wii's IP address:&lt;br&gt;
+1) Enter the Homebrew Channel.&lt;br&gt;
+2) Press the home button on the Wii Remote.&lt;br&gt;
+3) Copy the IP address written in the top left corner.</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QFrame" name="frame">
+           <layout class="QHBoxLayout" name="horizontalLayout">
+            <property name="leftMargin">
+             <number>0</number>
+            </property>
+            <property name="topMargin">
+             <number>0</number>
+            </property>
+            <property name="rightMargin">
+             <number>0</number>
+            </property>
+            <property name="bottomMargin">
+             <number>0</number>
+            </property>
+            <item>
+             <widget class="QLabel" name="label_2">
+              <property name="text">
+               <string>IP address (e.g. 192.168.1...):</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLineEdit" name="IPBox"/>
+            </item>
+           </layout>
+          </widget>
+         </item>
+        </layout>
        </widget>
        <widget class="QWidget" name="tab_2">
         <attribute name="title">
          <string>USB Gecko</string>
         </attribute>
-        <widget class="QLabel" name="USBDes">
-         <property name="geometry">
-          <rect>
-           <x>10</x>
-           <y>10</y>
-           <width>511</width>
-           <height>251</height>
-          </rect>
-         </property>
-         <property name="text">
-          <string>TextLabel</string>
-         </property>
-        </widget>
-        <widget class="QLabel" name="label_4">
-         <property name="geometry">
-          <rect>
-           <x>70</x>
-           <y>290</y>
-           <width>91</width>
-           <height>16</height>
-          </rect>
-         </property>
-         <property name="text">
-          <string>Device port:</string>
-         </property>
-        </widget>
-        <widget class="QComboBox" name="PortBox">
-         <property name="geometry">
-          <rect>
-           <x>150</x>
-           <y>280</y>
-           <width>241</width>
-           <height>41</height>
-          </rect>
-         </property>
-        </widget>
-        <widget class="QPushButton" name="RefreshBTN">
-         <property name="geometry">
-          <rect>
-           <x>400</x>
-           <y>280</y>
-           <width>91</width>
-           <height>41</height>
-          </rect>
-         </property>
-         <property name="text">
-          <string>Refresh</string>
-         </property>
-        </widget>
+        <layout class="QVBoxLayout" name="verticalLayout_4">
+         <item>
+          <widget class="QLabel" name="USBDes">
+           <property name="text">
+            <string>Select the serial port for the USB Gecko adapter.&lt;br&gt;
+The selected app will be sent through the USBGecko to your Wii.&lt;br&gt;&lt;br&gt;
+&lt;b&gt;App to send:&lt;/b&gt;&lt;br&gt;&lt;br&gt;
+Make sure the USB Gecko device is attached to Slot B.&lt;br&gt;
+It may appear as /dev/cu.usbserial-GECKUSB0 or COM# depending on your system.&lt;br&gt;&lt;br&gt;
+&lt;b&gt;If the selection below is not blank, your USB Gecko is the selected device.&lt;/b&gt;</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QFrame" name="frame_2">
+           <layout class="QHBoxLayout" name="horizontalLayout_2">
+            <property name="leftMargin">
+             <number>0</number>
+            </property>
+            <property name="topMargin">
+             <number>0</number>
+            </property>
+            <property name="rightMargin">
+             <number>0</number>
+            </property>
+            <property name="bottomMargin">
+             <number>0</number>
+            </property>
+            <item>
+             <widget class="QLabel" name="label_4">
+              <property name="text">
+               <string>Device port:</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QComboBox" name="PortBox">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="RefreshBTN">
+              <property name="text">
+               <string>Refresh</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </widget>
+         </item>
+        </layout>
        </widget>
       </widget>
      </item>
