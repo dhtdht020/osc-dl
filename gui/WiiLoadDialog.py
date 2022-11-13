@@ -17,10 +17,16 @@ class WiiLoadDialog(ui_WiiLoadDialog.Ui_Dialog, QDialog):
         super().__init__(parent)
         self.setupUi(self)
 
+        self.send_type = {"dol":"App","elf":"App","thm":"Theme"}
+        try:
+            self.send_as = self.send_type[package["package_type"]]
+        except: # Just in case, but should never happen.
+            self.send_as = "App"
+
         self.setWindowIcon(QIcon(resource_path("assets/gui/icons/downloadlocationdialog.png")))
         self.USBDes.setText('Select the serial port for the USB Gecko adapter.<br>'
-                            'The selected app will be sent through the USBGecko to your Wii.<br><br>'
-                            f'<b>App to send: {package["display_name"]}</b><br><br>'
+                            f'The selected {self.send_as.lower()} will be sent through the USBGecko to your Wii.<br><br>'
+                            f'<b>{self.send_as} to send: {package["display_name"]}</b><br><br>'
                             'Make sure the USB Gecko device is attached to Slot B.<br>'
                             'It may appear as /dev/cu.usbserial-GECKUSB0 or COM# depending on your system.<br><br>'
                             '<b>If the selection below is not blank, your USB Gecko is the selected device.</b>')
@@ -28,8 +34,8 @@ class WiiLoadDialog(ui_WiiLoadDialog.Ui_Dialog, QDialog):
         self.USBDes.setTextFormat(Qt.TextFormat.RichText)
 
         self.IPDes.setText('Enter the IP address of your Wii.<br>'
-                           'The selected app will be sent through the network to your Wii.<br><br>'
-                           f'<b>App to send: {package["display_name"]}</b><br><br>'
+                           f'The selected {self.send_as.lower()} will be sent through the network to your Wii.<br><br>'
+                           f'<b>{self.send_as} to send: {package["display_name"]}</b><br><br>'
                            'To find your Wii\'s IP address:<br>'
                            '1) Enter the Homebrew Channel.<br>'
                            '2) Press the home button on the Wii Remote.<br>'
