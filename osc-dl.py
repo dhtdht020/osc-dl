@@ -142,7 +142,7 @@ if args.cmd == "send":
         else:
             conn = wiiload.connect(args.destination)
 
-    except (func_timeout.exceptions.FunctionTimedOut,Exception) as e:
+    except (func_timeout.exceptions.FunctionTimedOut, Exception) as e:
         if args.gecko:
             errmsg = "serial connection"
         else:
