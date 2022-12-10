@@ -8,13 +8,15 @@ from os import listdir
 from os.path import isfile, join
 
 import os
-import socket
 import sys
 import markdown
+import serial
+import serial.tools.list_ports
 
 import logging
 from functools import partial
 
+import func_timeout
 import requests
 from PIL import Image
 from PySide6 import QtGui, QtCore
@@ -31,6 +33,7 @@ import updater
 import utils
 import wiiload
 from gui.DownloadLocationDialog import DownloadLocationDialog
+from gui.WiiLoadDialog import WiiLoadDialog
 from utils import resource_path
 
 VERSION = updater.current_version()
@@ -39,7 +42,6 @@ if BRANCH == "Stable":
     DISPLAY_VERSION = VERSION
 else:
     DISPLAY_VERSION = VERSION + " " + BRANCH
-
 
 # Actions to perform only when the program is frozen:
 if updater.is_frozen() or utils.is_test("debug"):
@@ -71,6 +73,12 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         self.current_repo = None
         self.ui = gui.ui_united.Ui_MainWindow()
         self.ui.setupUi(self)
+
+        self.message = QMessageBox(self)
+        self.message.setIcon(QMessageBox.Warning)
+        self.message.setWindowTitle("Operation in progress")
+        self.message.setText("Please wait for the operation to finish.")
+        self.message.setModal(True)
 
         self.test_mode = test_mode
 
@@ -136,13 +144,14 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         t.start()
 
     def about_dialog(self):
-        QMessageBox.about(self, f"About OSCDL", f"<b>Open Shop Channel Downloader v{updater.current_version()} {updater.get_branch()}</b><br>"
-                                                f"by dhtdht020<br><br>"
-                                                f"<a href=\"https://github.com/dhtdht020/osc-dl\">https://github.com/dhtdht020/osc-dl</a><br>"
-                                                f"<a href=\"https://oscwii.org\">https://oscwii.org</a><br><br>"
-                                                f"Many icons provided by <a href=\"https://icons8.com/\">icons8.com</a><br><br>"
-                                                f"Using Qt {QtCore.qVersion()}<br>"
-                                                f"Using Python {sys.version_info.major}.{sys.version_info.minor}.{sys.version_info.micro}")
+        QMessageBox.about(self, f"About OSCDL",
+                          f"<b>Open Shop Channel Downloader v{updater.current_version()} {updater.get_branch()}</b><br>"
+                          f"by dhtdht020<br><br>"
+                          f"<a href=\"https://github.com/dhtdht020/osc-dl\">https://github.com/dhtdht020/osc-dl</a><br>"
+                          f"<a href=\"https://oscwii.org\">https://oscwii.org</a><br><br>"
+                          f"Many icons provided by <a href=\"https://icons8.com/\">icons8.com</a><br><br>"
+                          f"Using Qt {QtCore.qVersion()}<br>"
+                          f"Using Python {sys.version_info.major}.{sys.version_info.minor}.{sys.version_info.micro}")
 
     # show given status message on bottom status bar
     def status_message(self, message):
@@ -276,7 +285,8 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
             self.ui.HomebrewCategoryLabel.setText(metadata.category_display_name(self.current_app["category"]))
 
             # Release Date
-            self.ui.releasedate.setText(datetime.fromtimestamp(int(self.current_app["release_date"])).strftime('%B %e, %Y at %R'))
+            self.ui.releasedate.setText(
+                datetime.fromtimestamp(int(self.current_app["release_date"])).strftime('%B %e, %Y at %R'))
 
             # Peripherals
             peripherals = metadata.parse_peripherals(self.current_app["controllers"])
@@ -284,7 +294,8 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
             if peripherals["wii_remotes"] > 1:
                 item = QListWidgetItem()
                 item.setText(f"{str(peripherals['wii_remotes'])} Wii Remotes")
-                item.setIcon(QIcon(resource_path(f"assets/gui/icons/controllers/{str(peripherals['wii_remotes'])}WiiRemote.png")))
+                item.setIcon(QIcon(
+                    resource_path(f"assets/gui/icons/controllers/{str(peripherals['wii_remotes'])}WiiRemote.png")))
                 item.setToolTip(f"This app supports up to {str(peripherals['wii_remotes'])} Wii Remotes.")
                 self.ui.SupportedControllersListWidget.addItem(item)
             elif peripherals["wii_remotes"] == 1:
@@ -351,7 +362,7 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         self.ui.progressBar.setValue(0)
         self.repaint()
         # Load icon
-        t = threading.Thread(target=self.load_icon, args=[app_name, self.current_repo['host']], daemon=True)
+        t = threading.Thread(target=self.load_icon, args=[app_name], daemon=True)
         t.start()
 
     def view_metadata(self):
@@ -362,8 +373,10 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         return QObject.tr(self, text)
 
     def download_app(self, extract_root=False):
+        gui_helpers.IN_DOWNLOAD_DIALOG = True
         self.status_message(f"Downloading {self.current_app['display_name']} from Open Shop Channel..")
         self.status_icon("pending")
+        self.ui.progressBar.setMaximum(0)
 
         if self.sender():
             object_name = self.sender().objectName()
@@ -378,7 +391,8 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
             if status:
                 logging.debug(f"Selected drive: {dialog.selection}")
                 if dialog.selection == "browse":
-                    save_location, _ = QFileDialog.getSaveFileName(self, 'Save Application', self.current_app["internal_name"] + ".zip")
+                    save_location, _ = QFileDialog.getSaveFileName(self, 'Save Application',
+                                                                   self.current_app["internal_name"] + ".zip")
                 else:
                     if not dialog.selection["appsdir"]:
                         try:
@@ -387,7 +401,8 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
                             QMessageBox.critical(self, "Permission Error",
                                                  "Could not create the apps directory on the selected device.")
                             return
-                    save_location = dialog.selection["drive"].rootPath() + "/apps/" + self.current_app["internal_name"] + ".zip"
+                    save_location = dialog.selection["drive"].rootPath() + "/apps/" + self.current_app[
+                        "internal_name"] + ".zip"
                     extract_root = True
             else:
                 save_location = ''
@@ -416,7 +431,8 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
                 with open(save_location, "wb") as app_data_file:
                     for data in response.iter_content(block_size):
                         self.ui.progressBar.setValue(self.ui.progressBar.value() + 1024)
-                        self.status_message(f"Downloading {self.current_app['display_name']} from Open Shop Channel.. ({utils.file_size(self.ui.progressBar.value())}/{utils.file_size(total_size)})")
+                        self.status_message(
+                            f"Downloading {self.current_app['display_name']} from Open Shop Channel.. ({utils.file_size(self.ui.progressBar.value())}/{utils.file_size(total_size)})")
                         try:
                             app.processEvents()
                         except NameError:
@@ -431,22 +447,26 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
                         zip_file.extractall(root_path)
                     os.remove(save_location)
 
-            self.ui.progressBar.setValue(100)
-            self.ui.progressBar.setMaximum(100)
-            self.safe_mode(False)
+            self.ui.progressBar.setValue(total_size)
+            if object_name != "WiiLoadButton":
+                self.safe_mode(False)
             self.status_message(f"Download of \"{self.current_app['display_name']}\" has completed successfully")
             self.status_icon("online")
+            gui_helpers.IN_DOWNLOAD_DIALOG = False
             return save_location
         else:
+            self.ui.progressBar.setMaximum(100)
             self.ui.progressBar.setValue(0)
             self.safe_mode(False)
             self.status_message("Cancelled Download")
             self.status_icon("online")
+            gui_helpers.IN_DOWNLOAD_DIALOG = False
 
     def reset_status(self):
-        self.ui.progressBar.setMaximum(100)
-        self.status_message("Ready to download")
-        self.status_icon("online")
+        if not gui_helpers.CURRENTLY_SENDING and not gui_helpers.IN_DOWNLOAD_DIALOG:
+            self.ui.progressBar.setMaximum(100)
+            self.status_message("Ready to download")
+            self.status_icon("online")
 
     def safe_mode(self, state: bool):
         """
@@ -454,40 +474,23 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         :param state: bool
         """
         self.ui.ViewMetadataBtn.setDisabled(state)
-        self.ui.WiiLoadButton.setDisabled(state)
+        self.ui.WiiLoadButton.setDisabled(state or not utils.is_supported_by_wiiload(self.current_app))
         self.ui.ReposComboBox.setDisabled(state)
         self.ui.listAppsWidget.setDisabled(state)
 
     def wiiload_button(self):
-        ip, ok = QInputDialog.getText(self, 'Send to Wii: Enter IP address',
-                                      'Enter the IP address of your Wii.\n'
-                                      'The selected app will be sent through the network to your Wii.\n\n'
-                                      f'App to send: {self.current_app["display_name"]}\n\n'
-                                      'To find your Wii\'s IP address:\n'
-                                      '1) Enter the Homebrew Channel.\n'
-                                      '2) Press the home button on the Wii Remote.\n'
-                                      '3) Copy the IP address written in the top left corner.\n\n'
-                                      'IP address (e.g. 192.168.1...):',
-                                      QLineEdit.Normal, gui_helpers.settings.value("sendtowii/address"))
-        if not ok:
+        dialog = WiiLoadDialog(self.current_app, parent=self)
+        status = dialog.exec()
+        if not status:
             return
-
-        ip_match = wiiload.validate_ip_regex(ip)
-
-        if ip_match is None:
-            logging.warning('Invalid IP Address: ' + ip)
-            QMessageBox.warning(self, 'Invalid IP Address', 'This IP address is invalid.')
-            return
-
-        # save IP address to settings
-        gui_helpers.settings.setValue("sendtowii/address", ip)
-        gui_helpers.settings.sync()
+        gui_helpers.CURRENTLY_SENDING = True
 
         self.status_message("Downloading " + self.current_app["display_name"] + " from Open Shop Channel..")
         self.ui.progressBar.setValue(25)
 
         # get app
         path_to_app = self.download_app()
+        self.ui.progressBar.setMaximum(100)
 
         with open(path_to_app, 'rb') as f:
             content = f.read()
@@ -505,6 +508,7 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         file_size = prep[0]
         compressed_size = prep[1]
         chunks = prep[2]
+        c_data = prep[3]
 
         # connecting
         self.status_message('Connecting to the HBC...')
@@ -512,12 +516,21 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         self.ui.progressBar.setValue(50)
 
         try:
-            conn = wiiload.connect(ip)
-        except socket.error as e:
+            if dialog.modeSelect == 0:  # TCP/IP
+                conn = wiiload.connect(dialog.address)
+            else:  # USBGecko
+                conn = serial.Serial()
+                conn.inter_byte_timeout = 1.0
+                conn.port = dialog.address
+                func_timeout.func_timeout(1, conn.open)  # Timeout: 1 sec, function: conn.open()
+                conn.send = conn.write  # Keeps the wiiload logic the same
+        except (func_timeout.exceptions.FunctionTimedOut, Exception) as e:
             self.status_icon('sad')
-            logging.error('Error while connecting to the HBC. Please check the IP address and try again.')
+            conn_type = ["IP address", "connection"]
+            logging.error(
+                f'Error while connecting to the HBC. Please check the {conn_type[dialog.modeSelect]} and try again.')
             QMessageBox.warning(self, 'Connection error',
-                                'Error while connecting to the HBC. Please check the IP address and try again.')
+                                f'Error while connecting to the HBC. Please check the {conn_type[dialog.modeSelect]} and try again.')
             print(f'WiiLoad: {e}')
             self.ui.progressBar.setValue(0)
             self.status_message('Error: Could not connect to the Homebrew Channel. :(')
@@ -525,7 +538,8 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
 
             # delete application zip file
             os.remove(path_to_app)
-
+            gui_helpers.CURRENTLY_SENDING = False
+            self.safe_mode(False)
             return
 
         wiiload.handshake(conn, compressed_size, file_size)
@@ -535,16 +549,49 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         self.status_icon('sending')
 
         chunk_num = 1
-        for chunk in chunks:
-            conn.send(chunk)
+        if dialog.modeSelect == 0:  # TCP/IP
+            for chunk in chunks:
+                try:
+                    conn.send(chunk)
+                    chunk_num += 1
+                    progress = round(chunk_num / len(chunks) * 50) + 50
+                    self.ui.progressBar.setValue(progress)
+                    try:
+                        app.processEvents()
+                    except NameError:
+                        pass
+                except Exception as e:
+                    logging.error(
+                        'Error while connecting to the HBC. Operation timed out. Close any dialogs on HBC and try again.')
+                    QMessageBox.warning(self, 'Connection error',
+                                        'Error while connecting to the HBC. Operation timed out. Close any dialogs on HBC and try again.')
+                    print(f'WiiLoad: {e}')
+                    self.ui.progressBar.setValue(0)
+                    self.status_message('Error: Could not connect to the Homebrew Channel. :(')
 
-            chunk_num += 1
-            progress = round(chunk_num / len(chunks) * 50) + 50
-            self.ui.progressBar.setValue(progress)
-            try:
-                app.processEvents()
-            except NameError:
-                pass
+                    # delete application zip file
+                    os.remove(path_to_app)
+                    gui_helpers.CURRENTLY_SENDING = False
+                    self.safe_mode(False)
+                    return
+        # USBGecko
+        else:
+            # conn.send is blocking, used thread to avoid.
+            t = threading.Thread(target=self.send_gecko, daemon=True, args=[c_data, conn, path_to_app])
+            t.start()
+            self.ui.progressBar.setMaximum(0)
+            while t.is_alive():
+                try:
+                    app.processEvents()
+                except NameError:
+                    pass
+            t.join()
+            if not gui_helpers.DATASENT:
+                gui_helpers.CURRENTLY_SENDING = False
+                self.safe_mode(False)
+                return
+            self.ui.progressBar.setMaximum(100)
+            self.ui.progressBar.setValue(100)
 
         file_name = f'{self.current_app["internal_name"]}.zip'
         conn.send(bytes(file_name, 'utf-8') + b'\x00')
@@ -552,10 +599,34 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         # delete application zip file
         os.remove(path_to_app)
 
+        if dialog.modeSelect == 1:
+            conn.flush()
+            conn.close()
+
         self.ui.progressBar.setValue(100)
         self.status_message('App transmitted!')
         self.status_icon('online')
-        logging.info(f"App transmitted to HBC at {ip}")
+        logging.info(f"App transmitted to HBC at {dialog.address}")
+        gui_helpers.CURRENTLY_SENDING = False
+        self.safe_mode(False)
+
+    def send_gecko(self, c_data, conn, path_to_app):
+        try:
+            conn.send(c_data)
+        except Exception as e:
+            logging.error('Error while connecting to the HBC. Close any dialogs on HBC and try again.')
+            QMessageBox.warning(window, 'Connection error',
+                                'Error while connecting to the HBC. Close any dialogs on HBC and try again.')
+            print(f'WiiLoad: {e}')
+            self.ui.progressBar.setValue(0)
+            self.status_message('Error: Could not connect to the Homebrew Channel. :(')
+
+            # delete application zip file
+            os.remove(path_to_app)
+            conn.close()
+            gui_helpers.DATASENT = False
+            return
+        gui_helpers.DATASENT = True
 
     def copy_download_link_button(self):
         QApplication.clipboard().setText(self.current_app['zip_url'])
@@ -646,8 +717,9 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
             sys.exit(1)
 
         # load app icons
-        self.status_message("Loading app icons from server..")
-        self.ui.progressBar.setMaximum(0)
+        if not gui_helpers.CURRENTLY_SENDING and not gui_helpers.IN_DOWNLOAD_DIALOG:
+            self.status_message("Loading app icons from server..")
+            self.ui.progressBar.setMaximum(0)
         t = threading.Thread(target=self.download_app_icons, daemon=True)
         t.start()
 
@@ -758,7 +830,8 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
             if self.current_category == "all" and (self.current_developer in i.data(Qt.UserRole)["coder"]):
                 results.append(i.text())
                 n += 1
-            elif i.data(Qt.UserRole)["category"] == self.current_category and (self.current_developer in i.data(Qt.UserRole)["coder"]):
+            elif i.data(Qt.UserRole)["category"] == self.current_category and (
+                    self.current_developer in i.data(Qt.UserRole)["coder"]):
                 results.append(i.text())
                 n += 1
             else:
@@ -875,6 +948,7 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
 
     # load all icons from zip
     def download_app_icons(self):
+        gui_helpers.CURRENTLY_LOADING_ICONS = True
         # Debug info
         original_host = self.current_repo['host']
         logging.debug("Started download of app icons")
@@ -975,7 +1049,7 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         else:
             self.reset_status()
             logging.warning("Loading of app icons for list failed, continuing without them.")
-
+        gui_helpers.CURRENTLY_LOADING_ICONS = False
 
     @QtCore.Slot()
     def set_app_icons(self):
@@ -992,6 +1066,17 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         self.ui.listAppsWidget.setIconSize(QSize(171, 32))
         # complete loading
         self.reset_status()
+
+    def closeEvent(self, closeEvent):
+        if self.ongoingOperations():
+            # QMessageBox.warning is modal, this is not. 
+            self.message.show()
+            closeEvent.ignore()
+        else:
+            closeEvent.accept()
+
+    def ongoingOperations(self):
+        return gui_helpers.CURRENTLY_SENDING or gui_helpers.IN_DOWNLOAD_DIALOG or gui_helpers.CURRENTLY_LOADING_ICONS
 
 
 if __name__ == "__main__":
