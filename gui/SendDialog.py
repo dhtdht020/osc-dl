@@ -6,13 +6,13 @@ from PySide6.QtWidgets import QDialog, QMessageBox
 
 import gui_helpers
 import wiiload
-from gui import ui_WiiLoadDialog
+from gui import ui_SendDialog
 from utils import resource_path
 import serial
 import serial.tools.list_ports
 
 
-class WiiLoadDialog(ui_WiiLoadDialog.Ui_Dialog, QDialog):
+class WiiLoadDialog(ui_SendDialog.Ui_Dialog, QDialog):
     def __init__(self, package, parent=None):
         super().__init__(parent)
         self.setupUi(self)

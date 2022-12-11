@@ -33,7 +33,7 @@ import updater
 import utils
 import wiiload
 from gui.DownloadLocationDialog import DownloadLocationDialog
-from gui.WiiLoadDialog import WiiLoadDialog
+from gui.SendDialog import WiiLoadDialog
 from utils import resource_path
 
 VERSION = updater.current_version()
