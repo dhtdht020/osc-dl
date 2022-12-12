@@ -258,13 +258,9 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
             # Clear supported controllers listview:
             self.ui.SupportedControllersListWidget.clear()
 
-            # check if send to wii is supported
-            if utils.is_supported_by_wiiload(self.current_app):
-                self.ui.WiiLoadButton.setEnabled(True)
-                self.ui.WiiLoadButton.setText("Send to Wii")
-            else:
-                self.ui.WiiLoadButton.setEnabled(False)
-                self.ui.WiiLoadButton.setText("Send Not Supported")
+            # Enable Send to Wii button
+            self.ui.WiiLoadButton.setEnabled(True)
+            self.ui.WiiLoadButton.setText("Send to Wii")
 
             # -- Get actual metadata
             # App Name
@@ -474,11 +470,14 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         :param state: bool
         """
         self.ui.ViewMetadataBtn.setDisabled(state)
-        self.ui.WiiLoadButton.setDisabled(state or not utils.is_supported_by_wiiload(self.current_app))
+        self.ui.WiiLoadButton.setDisabled(state)
         self.ui.ReposComboBox.setDisabled(state)
         self.ui.listAppsWidget.setDisabled(state)
 
     def wiiload_button(self):
+        if not utils.app_has_extra_directories(self.current_app) and QMessageBox.question(self, "Send to Wii", "This app contains extra files and directories that may need configuration. Send anyway?") == QMessageBox.StandardButton.No:
+            return
+        
         dialog = WiiLoadDialog(self.current_app, parent=self)
         status = dialog.exec()
         if not status:
