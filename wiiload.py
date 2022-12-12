@@ -53,7 +53,7 @@ def organize_zip(zipped_app, zip_buf):
             # However, HBC does not check for relative directories.
             # By stepping back two directories, we are at the root of the SD/USB.
             new_path = dirname + "../../" + info.filename 
-            # Just in case there is a rouge README file.
+            # Just in case there is a rogue README file.
             if f"{dirname}../../read".upper() in new_path.upper():
                 READMEFile = new_path.split(".")[-2]
                 new_path = new_path.replace(READMEFile,f'{READMEFile}_{appname}')
