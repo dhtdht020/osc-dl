@@ -79,7 +79,7 @@ def organize_zip(zipped_app, zip_buf):
     # NOTE: HBC will delete all 0 byte files and dot files.
     for x in app_zip.filelist:
         if x.is_dir():
-             with app_zip.open(x.filename+'._OSCDL', 'w') as temp: 
+            with app_zip.open(x.filename+'._OSCDL', 'w') as temp: 
                 temp.write("This file can be deleted.".encode("utf-8"))
         elif x.file_size == 0:
             with app_zip.open(x.filename, 'w') as temp: 
