@@ -190,6 +190,8 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         self.ui.ViewMetadataBtn.clicked.connect(self.download_app)
         self.ui.WiiLoadButton.clicked.connect(self.wiiload_button)
         self.ui.ReturnToMainBtn.clicked.connect(self.return_to_all_apps_btn)
+        self.ui.MultiSelectButton.clicked.connect(self.multi_select)
+        self.ui.ClearMultiSelectButton.clicked.connect(lambda: self.clear_multi_select(user_request=True))
 
         # Search Bar
         self.ui.SearchBar.textChanged.connect(self.search_bar)
@@ -263,6 +265,17 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
             # Enable Send to Wii button
             self.ui.WiiLoadButton.setEnabled(True)
             self.ui.WiiLoadButton.setText("Send to Wii")
+
+            # see if its part of the queue.
+            if self.current_app in gui_helpers.MULTISELECT:
+                self.ui.MultiSelectButton.setText("Added!")
+                self.ui.MultiSelectButton.setCheckable(True)
+                self.ui.MultiSelectButton.setDown(True)
+                
+            else:
+                self.ui.MultiSelectButton.setText("Add to queue")
+                self.ui.MultiSelectButton.setCheckable(False)
+                self.ui.MultiSelectButton.setDown(False)
 
             # -- Get actual metadata
             # App Name
@@ -373,7 +386,10 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
     # TODO FULL REWRITE
     def download_app(self, extract_root=False):
         gui_helpers.IN_DOWNLOAD_DIALOG = True
-        self.status_message(f"Downloading {self.current_app['display_name']} from Open Shop Channel..")
+        total_downloads = []
+        if len(gui_helpers.MULTISELECT) == 0:
+            gui_helpers.MULTISELECT.append(self.current_app)
+        self.status_message(f"Downloading {gui_helpers.MULTISELECT[0]['display_name']} from Open Shop Channel..")
         self.status_icon("pending")
         self.ui.progressBar.setMaximum(0)
 
@@ -383,85 +399,109 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
             object_name = None
 
         # determine if should ask for path
-        if (object_name != "WiiLoadButton") and not self.test_mode:
-            dialog = DownloadLocationDialog(self.current_app, parent=self)
-            status = dialog.exec()
+        DownloadLocationDialogAlreadyAsked = False
+        DirectorySelected = ''
 
-            if status:
-                logging.debug(f"Selected drive: {dialog.selection}")
-                if dialog.selection == "browse":
-                    save_location, _ = QFileDialog.getSaveFileName(self, 'Save Application',
-                                                                   self.current_app["internal_name"] + ".zip")
+        dialog = DownloadLocationDialog(gui_helpers.MULTISELECT, parent=self)
+
+        for package in gui_helpers.MULTISELECT:
+            if (object_name != "WiiLoadButton") and not self.test_mode:
+                if not DownloadLocationDialogAlreadyAsked:
+                    status = dialog.exec()
+
+                if status:
+                    DownloadLocationDialogAlreadyAsked = True 
+                    logging.debug(f"Selected drive: {dialog.selection}")
+                    if dialog.selection == "browse":
+                        if len(gui_helpers.MULTISELECT) == 1:
+                            save_location, _ = QFileDialog.getSaveFileName(self, 'Save Application',
+                                                                            self.current_app["internal_name"] + ".zip")
+                        else:
+                            if DirectorySelected == '':
+                                DirectorySelected = QFileDialog.getExistingDirectory(self, 'Save Application to Directory', os.path.expanduser("~"),QFileDialog.ShowDirsOnly) + "/"
+                            
+                            if DirectorySelected == '/':
+                                save_location = ''
+                            else:
+                                save_location = DirectorySelected + package["internal_name"] + ".zip"
+                        
+                    else:
+                        if not dialog.selection["appsdir"]:
+                            try:
+                                os.mkdir(dialog.selection["drive"].rootPath() + "/apps")
+                            except PermissionError:
+                                QMessageBox.critical(self, "Permission Error",
+                                                    "Could not create the apps directory on the selected device.")
+                                return
+                        save_location = dialog.selection["drive"].rootPath() + "/apps/" + package[
+                            "internal_name"] + ".zip"
+                        extract_root = True
                 else:
-                    if not dialog.selection["appsdir"]:
-                        try:
-                            os.mkdir(dialog.selection["drive"].rootPath() + "/apps")
-                        except PermissionError:
-                            QMessageBox.critical(self, "Permission Error",
-                                                 "Could not create the apps directory on the selected device.")
-                            return
-                    save_location = dialog.selection["drive"].rootPath() + "/apps/" + self.current_app[
-                        "internal_name"] + ".zip"
-                    extract_root = True
+                    save_location = ''
             else:
-                save_location = ''
-        else:
-            # create output dir
-            if os.name == 'nt':
-                dir_path = '%s\\OSCDL\\' % os.environ['APPDATA']
-                if not os.path.exists(dir_path):
-                    os.makedirs(dir_path)
-                save_location = f'%s{self.current_app["internal_name"]}' % dir_path
-            else:
-                save_location = f"{self.current_app['internal_name']}.zip"
-        self.ui.progressBar.setValue(0)
-        if save_location:
-            # stream file, so we can iterate
-            response = requests.get(self.current_app["zip_url"], stream=True)
-            total_size = int(response.headers.get('content-length', 0))
-
-            # set progress bar
-            self.ui.progressBar.setMaximum(total_size)
-            block_size = 1024
-            if response.status_code == 200:
-                self.safe_mode(True)
-                self.status_icon("download")
-
-                with open(save_location, "wb") as app_data_file:
-                    for data in response.iter_content(block_size):
-                        self.ui.progressBar.setValue(self.ui.progressBar.value() + 1024)
-                        self.status_message(
-                            f"Downloading {self.current_app['display_name']} from Open Shop Channel.. ({utils.file_size(self.ui.progressBar.value())}/{utils.file_size(total_size)})")
-                        try:
-                            self.app.processEvents()
-                        except NameError:
-                            pass
-                        app_data_file.write(data)
-
-                if extract_root:
-                    self.status_message("Extracting..")
-
-                    with zipfile.ZipFile(save_location, 'r') as zip_file:
-                        # unzip to root_path
-                        root_path = utils.get_mount_point(save_location)
-                        zip_file.extractall(root_path)
-
-                    os.remove(save_location)
-
-            self.ui.progressBar.setValue(total_size)
-            if object_name != "WiiLoadButton":
-                self.safe_mode(False)
-            self.status_message(f"Download of \"{self.current_app['display_name']}\" has completed successfully")
-            self.status_icon("online")
-            gui_helpers.IN_DOWNLOAD_DIALOG = False
-            return save_location
-        else:
-            self.ui.progressBar.setMaximum(100)
+                # create output dir
+                if os.name == 'nt':
+                    dir_path = '%s\\OSCDL\\' % os.environ['APPDATA']
+                    if not os.path.exists(dir_path):
+                        os.makedirs(dir_path)
+                    save_location = f'%s{package["internal_name"]}' % dir_path
+                else:
+                    save_location = f"{package['internal_name']}.zip"
             self.ui.progressBar.setValue(0)
-            self.safe_mode(False)
-            self.status_message("Cancelled Download")
-            self.status_icon("online")
-            gui_helpers.IN_DOWNLOAD_DIALOG = False
+            if save_location:
+                # stream file, so we can iterate
+                response = requests.get(package["zip_url"], stream=True)
+                total_size = int(response.headers.get('content-length', 0))
+
+                # set progress bar
+                self.ui.progressBar.setMaximum(total_size)
+                block_size = 1024
+                if response.status_code == 200:
+                    self.safe_mode(True)
+                    self.status_icon("download")
+
+                    with open(save_location, "wb") as app_data_file:
+                        for data in response.iter_content(block_size):
+                            self.ui.progressBar.setValue(self.ui.progressBar.value() + 1024)
+                            self.status_message(
+                                f"Downloading {package['display_name']} from Open Shop Channel.. ({utils.file_size(self.ui.progressBar.value())}/{utils.file_size(total_size)})")
+                            try:
+                                self.app.processEvents()
+                            except NameError:
+                                pass
+                            app_data_file.write(data)
+
+                    if extract_root:
+                        self.status_message("Extracting..")
+
+                        with zipfile.ZipFile(save_location, 'r') as zip_file:
+                            # unzip to root_path
+                            root_path = utils.get_mount_point(save_location)
+                            zip_file.extractall(root_path)
+
+                        os.remove(save_location)
+
+                self.ui.progressBar.setValue(total_size)
+                if object_name != "WiiLoadButton":
+                    self.safe_mode(False)
+                self.status_message(f"Download of \"{self.current_app['display_name']}\" has completed successfully")
+                total_downloads.append(save_location)
+                if len(total_downloads) == len(gui_helpers.MULTISELECT):
+                    if len(total_downloads) > 1:
+                        self.status_message(f"{len(total_downloads)} downloads has completed successfully")
+                    self.status_icon("online")
+                    gui_helpers.IN_DOWNLOAD_DIALOG = False
+                    return total_downloads
+            else:
+                self.ui.progressBar.setMaximum(100)
+                self.ui.progressBar.setValue(0)
+                self.safe_mode(False)
+                self.status_message("Cancelled Download")
+                self.status_icon("online")
+                if len(gui_helpers.MULTISELECT) == 1:
+                    self.clear_multi_select(user_request=False)
+                gui_helpers.IN_DOWNLOAD_DIALOG = False
+                return None
 
     def reset_status(self):
         if not gui_helpers.CURRENTLY_SENDING and not gui_helpers.IN_DOWNLOAD_DIALOG:
@@ -478,14 +518,20 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         self.ui.WiiLoadButton.setDisabled(state)
         self.ui.ReposComboBox.setDisabled(state)
         self.ui.listAppsWidget.setDisabled(state)
+        self.ui.MultiSelectButton.setDisabled(state)
+        self.ui.ClearMultiSelectButton.setDisabled(state or not bool(len(gui_helpers.MULTISELECT)))
 
     def wiiload_button(self):
         if not utils.app_has_extra_directories(self.current_app) and QMessageBox.question(self, "Send to Wii", "This app contains extra files and directories that may need configuration. Send anyway?") == QMessageBox.StandardButton.No:
             return
 
-        dialog = WiiLoadDialog(self.current_app, parent=self)
+        if len(gui_helpers.MULTISELECT) == 0:
+            gui_helpers.MULTISELECT.append(self.current_app)
+        dialog = WiiLoadDialog(gui_helpers.MULTISELECT, parent=self)
         status = dialog.exec()
         if not status:
+            if len(gui_helpers.MULTISELECT) == 1:
+                self.clear_multi_select(user_request=False)
             return
         gui_helpers.CURRENTLY_SENDING = True
 
@@ -493,126 +539,135 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         self.ui.progressBar.setValue(25)
 
         # get app
-        path_to_app = self.download_app()
+        app_paths = self.download_app()
         self.ui.progressBar.setMaximum(100)
 
-        with open(path_to_app, 'rb') as f:
-            content = f.read()
+        for i, path in enumerate(app_paths):
+            if i>0:
+                QMessageBox.information(self,"Send to Wii",f"{i} file{'s' if i>1 else ''} sent. On the Homebrew Channel, please select 'Yes' to extract the file, then click OK here.")
 
-        zipped_app = io.BytesIO(content)
-        zip_buf = io.BytesIO()
+            with open(path, 'rb') as f:
+                content = f.read()
 
-        # Our zip file should only contain one directory with the app data in it,
-        # but the downloaded file contains an apps/ directory. We're removing that here.
-        wiiload.organize_zip(zipped_app, zip_buf)
+            zipped_app = io.BytesIO(content)
+            zip_buf = io.BytesIO()
 
-        # preparing
-        prep = wiiload.prepare(zip_buf)
+            # Our zip file should only contain one directory with the app data in it,
+            # but the downloaded file contains an apps/ directory. We're removing that here.
+            wiiload.organize_zip(zipped_app, zip_buf)
 
-        file_size = prep[0]
-        compressed_size = prep[1]
-        chunks = prep[2]
-        c_data = prep[3]
+            # preparing
+            prep = wiiload.prepare(zip_buf)
 
-        # connecting
-        self.status_message('Connecting to the HBC...')
-        self.status_icon('connecting_hbc')
-        self.ui.progressBar.setValue(50)
+            file_size = prep[0]
+            compressed_size = prep[1]
+            chunks = prep[2]
+            c_data = prep[3]
 
-        try:
+            # connecting
+            self.status_message('Connecting to the HBC...')
+            self.status_icon('connecting_hbc')
+            self.ui.progressBar.setValue(50)
+
+            try:
+                if dialog.modeSelect == 0:  # TCP/IP
+                    conn = wiiload.connect(dialog.address)
+                else:  # USBGecko
+                    conn = serial.Serial()
+                    conn.inter_byte_timeout = 1.0
+                    conn.port = dialog.address
+                    func_timeout.func_timeout(1, conn.open)  # Timeout: 1 sec, function: conn.open()
+                    conn.send = conn.write  # Keeps the wiiload logic the same
+            except (func_timeout.exceptions.FunctionTimedOut, Exception) as e:
+                self.status_icon('sad')
+                conn_type = ["IP address", "connection"]
+                logging.error(
+                    f'Error while connecting to the HBC. Please check the {conn_type[dialog.modeSelect]} and try again.')
+                QMessageBox.warning(self, 'Connection error',
+                                    f'Error while connecting to the HBC. Please check the {conn_type[dialog.modeSelect]} and try again.')
+                print(f'WiiLoad: {e}')
+                self.ui.progressBar.setValue(0)
+                self.status_message('Error: Could not connect to the Homebrew Channel. :(')
+                self.status_icon('online')
+
+                # delete application zip file
+                os.remove(path)
+                gui_helpers.CURRENTLY_SENDING = False
+                self.safe_mode(False)
+                return
+
+            wiiload.handshake(conn, compressed_size, file_size)
+
+            # Sending file
+            self.status_message('Sending app...')
+            self.status_icon('sending')
+
+            chunk_num = 1
             if dialog.modeSelect == 0:  # TCP/IP
-                conn = wiiload.connect(dialog.address)
-            else:  # USBGecko
-                conn = serial.Serial()
-                conn.inter_byte_timeout = 1.0
-                conn.port = dialog.address
-                func_timeout.func_timeout(1, conn.open)  # Timeout: 1 sec, function: conn.open()
-                conn.send = conn.write  # Keeps the wiiload logic the same
-        except (func_timeout.exceptions.FunctionTimedOut, Exception) as e:
-            self.status_icon('sad')
-            conn_type = ["IP address", "connection"]
-            logging.error(
-                f'Error while connecting to the HBC. Please check the {conn_type[dialog.modeSelect]} and try again.')
-            QMessageBox.warning(self, 'Connection error',
-                                f'Error while connecting to the HBC. Please check the {conn_type[dialog.modeSelect]} and try again.')
-            print(f'WiiLoad: {e}')
-            self.ui.progressBar.setValue(0)
-            self.status_message('Error: Could not connect to the Homebrew Channel. :(')
-            self.status_icon('online')
+                for chunk in chunks:
+                    try:
+                        conn.send(chunk)
+                        chunk_num += 1
+                        progress = round(chunk_num / len(chunks) * 50) + 50
+                        self.ui.progressBar.setValue(progress)
+                        try:
+                            self.app.processEvents()
+                        except NameError:
+                            pass
+                    except Exception as e:
+                        logging.error(
+                            'Error while connecting to the HBC. Operation timed out. Close any dialogs on HBC and try again.')
+                        QMessageBox.warning(self, 'Connection error',
+                                            'Error while connecting to the HBC. Operation timed out. Close any dialogs on HBC and try again.')
+                        print(f'WiiLoad: {e}')
+                        self.ui.progressBar.setValue(0)
+                        self.status_message('Error: Could not connect to the Homebrew Channel. :(')
 
-            # delete application zip file
-            os.remove(path_to_app)
-            gui_helpers.CURRENTLY_SENDING = False
-            self.safe_mode(False)
-            return
-
-        wiiload.handshake(conn, compressed_size, file_size)
-
-        # Sending file
-        self.status_message('Sending app...')
-        self.status_icon('sending')
-
-        chunk_num = 1
-        if dialog.modeSelect == 0:  # TCP/IP
-            for chunk in chunks:
-                try:
-                    conn.send(chunk)
-                    chunk_num += 1
-                    progress = round(chunk_num / len(chunks) * 50) + 50
-                    self.ui.progressBar.setValue(progress)
+                        # delete application zip file
+                        os.remove(path)
+                        gui_helpers.CURRENTLY_SENDING = False
+                        self.safe_mode(False)
+                        return
+            # USBGecko
+            else:
+                # conn.send is blocking, used thread to avoid.
+                t = threading.Thread(target=self.send_gecko, daemon=True, args=[c_data, conn, path])
+                t.start()
+                self.ui.progressBar.setMaximum(0)
+                while t.is_alive():
                     try:
                         self.app.processEvents()
                     except NameError:
                         pass
-                except Exception as e:
-                    logging.error(
-                        'Error while connecting to the HBC. Operation timed out. Close any dialogs on HBC and try again.')
-                    QMessageBox.warning(self, 'Connection error',
-                                        'Error while connecting to the HBC. Operation timed out. Close any dialogs on HBC and try again.')
-                    print(f'WiiLoad: {e}')
-                    self.ui.progressBar.setValue(0)
-                    self.status_message('Error: Could not connect to the Homebrew Channel. :(')
-
-                    # delete application zip file
-                    os.remove(path_to_app)
+                t.join()
+                if not gui_helpers.DATASENT:
                     gui_helpers.CURRENTLY_SENDING = False
                     self.safe_mode(False)
                     return
-        # USBGecko
-        else:
-            # conn.send is blocking, used thread to avoid.
-            t = threading.Thread(target=self.send_gecko, daemon=True, args=[c_data, conn, path_to_app])
-            t.start()
-            self.ui.progressBar.setMaximum(0)
-            while t.is_alive():
-                try:
-                    self.app.processEvents()
-                except NameError:
-                    pass
-            t.join()
-            if not gui_helpers.DATASENT:
-                gui_helpers.CURRENTLY_SENDING = False
-                self.safe_mode(False)
-                return
-            self.ui.progressBar.setMaximum(100)
+                self.ui.progressBar.setMaximum(100)
+                self.ui.progressBar.setValue(100)
+
+            file_name = f'{self.current_app["internal_name"]}.zip'
+            conn.send(bytes(file_name, 'utf-8') + b'\x00')
+
+            # delete application zip file
+            os.remove(path)
+
+            if dialog.modeSelect == 1:
+                conn.flush()
+                conn.close()
+
             self.ui.progressBar.setValue(100)
-
-        file_name = f'{self.current_app["internal_name"]}.zip'
-        conn.send(bytes(file_name, 'utf-8') + b'\x00')
-
-        # delete application zip file
-        os.remove(path_to_app)
-
-        if dialog.modeSelect == 1:
-            conn.flush()
-            conn.close()
-
-        self.ui.progressBar.setValue(100)
-        self.status_message('App transmitted!')
-        self.status_icon('online')
-        logging.info(f"App transmitted to HBC at {dialog.address}")
+            self.status_message('App transmitted!')
+            self.status_icon('online')
+            logging.info(f"App transmitted to HBC at {dialog.address}")
         gui_helpers.CURRENTLY_SENDING = False
         self.safe_mode(False)
+        if len(gui_helpers.MULTISELECT) == 1:
+            self.clear_multi_select(user_request=False)
+        else:
+            self.status_message(f"All apps tansmitted!")
+            
 
     def send_gecko(self, c_data, conn, path_to_app):
         try:
@@ -873,6 +928,43 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
 
         # count apps
         self.search_bar()
+
+    #Add remove app to multiselect
+    def multi_select(self):
+        if self.current_app in gui_helpers.MULTISELECT:
+            gui_helpers.MULTISELECT.remove(self.current_app)
+            self.ui.MultiSelectButton.setText("Add to queue")
+            self.ui.MultiSelectButton.setCheckable(False)
+            self.ui.MultiSelectButton.setDown(False)
+
+            
+        else:
+            gui_helpers.MULTISELECT.append(self.current_app)
+            self.ui.MultiSelectButton.setText("Added!")
+            self.ui.MultiSelectButton.setCheckable(True)
+            self.ui.MultiSelectButton.setDown(True)
+            self.ui.AppsLibraryBox.setTitle("Apps Library - Multi Selection Mode")
+            self.ui.ViewMetadataBtn.setText("Download queue")
+            self.ui.WiiLoadButton.setText("Send queue to Wii")
+            self.ui.ClearMultiSelectButton.setDisabled(False)
+        
+        if len(gui_helpers.MULTISELECT) == 0:
+            self.ui.AppsLibraryBox.setTitle("Apps Library")
+            self.ui.ViewMetadataBtn.setText("Download")
+            self.ui.WiiLoadButton.setText("Send to Wii")            
+            self.ui.ClearMultiSelectButton.setDisabled(True)
+    
+    def clear_multi_select(self,user_request=True):
+        if user_request and QMessageBox.question(self, "Clear selection", "Clear the download queue?") == QMessageBox.StandardButton.No:
+            return
+        gui_helpers.MULTISELECT.clear()
+        self.ui.MultiSelectButton.setText("Add to queue")
+        self.ui.MultiSelectButton.setCheckable(False)
+        self.ui.MultiSelectButton.setDown(False)
+        self.ui.AppsLibraryBox.setTitle("Apps Library")
+        self.ui.ViewMetadataBtn.setText("Download")
+        self.ui.WiiLoadButton.setText("Send to Wii") 
+        self.ui.ClearMultiSelectButton.setDisabled(True)
 
     # Load developer profile
     def developer_profile(self):

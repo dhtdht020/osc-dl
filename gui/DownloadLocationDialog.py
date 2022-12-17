@@ -11,7 +11,7 @@ from utils import resource_path, file_size
 
 
 class DownloadLocationDialog(ui_DownloadLocationDialog.Ui_Dialog, QDialog):
-    def __init__(self, package, parent=None):
+    def __init__(self, packages, parent=None):
         super().__init__(parent)
         self.setupUi(self)
         self.setWindowIcon(QIcon(resource_path("assets/gui/icons/downloadlocationdialog.png")))
@@ -20,22 +20,30 @@ class DownloadLocationDialog(ui_DownloadLocationDialog.Ui_Dialog, QDialog):
         self.setAttribute(QtCore.Qt.WA_DeleteOnClose)
 
         self.screen = QGuiApplication.primaryScreen()
-        self.package = package
+        self.packages = packages
         self.selection = None
         self.drives = set()
-
-        self.setWindowTitle(f"Download \"{self.package['display_name']}\"")
+        if len(self.packages) > 1:
+            self.setWindowTitle(f"Download Multiple Files")
+            self.buttonBox.button(QDialogButtonBox.Ok).setText("Download to directory")
+        else:
+            self.setWindowTitle(f"Download \"{self.packages[0]['display_name']}\"")
 
         # set required space label
-        self.label_required_space.setText(f"**Required Space:** {file_size(self.package['extracted'])}")
+        total_file_size = 0
+        for package in self.packages:
+            total_file_size+=package['extracted']
+        
+        self.label_required_space.setText(f"**{'Total ' if len(self.packages) > 1 else ''}Required Space:** {file_size(total_file_size)}")
 
         # populate list of extra dirs
-        for directory in self.package["extra_directories"]:
-            if not directory.startswith("/apps"):
-                item = QListWidgetItem()
-                item.setText(directory)
-                item.setIcon(QIcon(resource_path("assets/gui/icons/directory.png")))
-                self.listWidget.addItem(item)
+        for package in self.packages:
+            for directory in package["extra_directories"]:
+                if not directory.startswith("/apps"):
+                    item = QListWidgetItem()
+                    item.setText(directory)
+                    item.setIcon(QIcon(resource_path("assets/gui/icons/directory.png")))
+                    self.listWidget.addItem(item)
 
         # initialize volumes, set timer for checking for changes to volumes once per second
         self.timer = QTimer()
