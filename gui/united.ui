@@ -834,7 +834,7 @@ hr { height: 1px; border-width: 0; }
            </rect>
           </property>
           <property name="text">
-           <string>Clear Selections</string>
+           <string>Clear Queue</string>
           </property>
          </widget>
         </widget>
@@ -883,6 +883,8 @@ hr { height: 1px; border-width: 0; }
     <addaction name="separator"/>
     <addaction name="actionEnable_Log_File"/>
     <addaction name="actionClear_Log"/>
+    <addaction name="separator"/>
+    <addaction name="actionDownload_All_From_Repo"/>
     <addaction name="separator"/>
     <addaction name="menuExperimental"/>
    </widget>
@@ -986,6 +988,11 @@ hr { height: 1px; border-width: 0; }
    </property>
    <property name="toolTip">
     <string>View Profile</string>
+   </property>
+  </action>
+  <action name="actionDownload_All_From_Repo">
+   <property name="text">
+    <string>Download All From Repo</string>
    </property>
   </action>
  </widget>

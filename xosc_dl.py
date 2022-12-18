@@ -85,6 +85,7 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         self.ui.actionCopy_Direct_Link.setIcon(QIcon(resource_path("assets/gui/icons/copy-link.png")))
         self.ui.actionEnable_Log_File.setIcon(QIcon(resource_path("assets/gui/icons/enable-log.png")))
         self.ui.actionClear_Log.setIcon(QIcon(resource_path("assets/gui/icons/clear-log.png")))
+        self.ui.actionDownload_All_From_Repo.setIcon(QIcon(resource_path("assets/gui/icons/download.png")))
         self.ui.menuExperimental.setIcon(QIcon(resource_path("assets/gui/icons/experimental.png")))
         self.ui.actionSelect_Theme.setIcon(QIcon(resource_path("assets/gui/icons/theme.png")))
         # OPTIONS -> EXPERIMENTAL
@@ -217,6 +218,8 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         # ---- OSCDL
         self.ui.actionCheck_for_Updates.triggered.connect(partial(self.check_for_updates_action))
         self.ui.actionRefresh.triggered.connect(partial(self.repopulate))
+        # -- Options
+        self.ui.actionDownload_All_From_Repo.triggered.connect(self.select_all_apps)
 
     # When user switches to a different tab
     def tab_changed(self):
@@ -482,13 +485,13 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
                         os.remove(save_location)
 
                 self.ui.progressBar.setValue(total_size)
-                if object_name != "WiiLoadButton":
-                    self.safe_mode(False)
                 self.status_message(f"Download of \"{self.current_app['display_name']}\" has completed successfully")
                 total_downloads.append(save_location)
                 if len(total_downloads) == len(gui_helpers.MULTISELECT):
                     if len(total_downloads) > 1:
                         self.status_message(f"{len(total_downloads)} downloads has completed successfully")
+                    if object_name != "WiiLoadButton":
+                        self.safe_mode(False)
                     self.status_icon("online")
                     gui_helpers.IN_DOWNLOAD_DIALOG = False
                     return total_downloads
@@ -930,16 +933,15 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         self.search_bar()
 
     #Add remove app to multiselect
-    def multi_select(self):
-        if self.current_app in gui_helpers.MULTISELECT:
+    def multi_select(self, all_select=False):
+        if not all_select and self.current_app in gui_helpers.MULTISELECT:
             gui_helpers.MULTISELECT.remove(self.current_app)
             self.ui.MultiSelectButton.setText("Add to queue")
             self.ui.MultiSelectButton.setCheckable(False)
             self.ui.MultiSelectButton.setDown(False)
-
-            
         else:
-            gui_helpers.MULTISELECT.append(self.current_app)
+            if not all_select:
+                gui_helpers.MULTISELECT.append(self.current_app)
             self.ui.MultiSelectButton.setText("Added!")
             self.ui.MultiSelectButton.setCheckable(True)
             self.ui.MultiSelectButton.setDown(True)
@@ -955,7 +957,7 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
             self.ui.ClearMultiSelectButton.setDisabled(True)
     
     def clear_multi_select(self,user_request=True):
-        if user_request and QMessageBox.question(self, "Clear selection", "Clear the download queue?") == QMessageBox.StandardButton.No:
+        if user_request and QMessageBox.question(self, "Clear queue", "Clear the download queue?") == QMessageBox.StandardButton.No:
             return
         gui_helpers.MULTISELECT.clear()
         self.ui.MultiSelectButton.setText("Add to queue")
@@ -1029,6 +1031,14 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
 
         with open(resource_path(f"assets/themes/{theme}"), "r") as fh:
             self.setStyleSheet(fh.read())
+    # Adds all apps in repo to queue.
+    def select_all_apps(self):
+        if QMessageBox.question(self, "Download all apps", "You are about to add all apps to the queue. This will take up a lot of storage. Are you sure?") == QMessageBox.StandardButton.No:
+            return
+        gui_helpers.MULTISELECT.clear()
+        for package in self.apps.get_apps():
+            gui_helpers.MULTISELECT.append(package)
+        self.multi_select(all_select=True)
 
     # load all icons from zip
     def download_app_icons(self):
