@@ -85,7 +85,7 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         self.ui.actionCopy_Direct_Link.setIcon(QIcon(resource_path("assets/gui/icons/copy-link.png")))
         self.ui.actionEnable_Log_File.setIcon(QIcon(resource_path("assets/gui/icons/enable-log.png")))
         self.ui.actionClear_Log.setIcon(QIcon(resource_path("assets/gui/icons/clear-log.png")))
-        self.ui.actionDownload_All_From_Repo.setIcon(QIcon(resource_path("assets/gui/icons/download.png")))
+        self.ui.actionDownload_All_From_Repo.setIcon(QIcon(resource_path("assets/gui/icons/download-all.png")))
         self.ui.menuExperimental.setIcon(QIcon(resource_path("assets/gui/icons/experimental.png")))
         self.ui.actionSelect_Theme.setIcon(QIcon(resource_path("assets/gui/icons/theme.png")))
         # OPTIONS -> EXPERIMENTAL
@@ -98,7 +98,7 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         self.ui.CategoriesComboBox.setItemIcon(3, QIcon(resource_path("assets/gui/icons/category/game.png")))
         self.ui.CategoriesComboBox.setItemIcon(4, QIcon(resource_path("assets/gui/icons/category/media.png")))
         self.ui.CategoriesComboBox.setItemIcon(5, QIcon(resource_path("assets/gui/icons/category/demo.png")))
-        self.ui.CategoriesComboBox.setItemIcon(6, QIcon(resource_path("assets/gui/icons/directory.png")))
+        self.ui.CategoriesComboBox.setItemIcon(6, QIcon(resource_path("assets/gui/icons/category/queue.png")))
 
         # ACTIONS
         self.ui.actionDeveloper_Profile.setIcon(QIcon(resource_path("assets/gui/icons/profile.png")))
@@ -378,9 +378,6 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
 
     def trugh(self, text):
         return QObject.tr(self, text)
-    
-    def sortMe(self,name):
-        return name["display_name"]
 
     # TODO FULL REWRITE
     def download_app(self, extract_root=False):
@@ -388,7 +385,7 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         total_downloads = []
         if len(gui_helpers.MULTISELECT) == 0:
             gui_helpers.MULTISELECT.append(self.current_app)
-        gui_helpers.MULTISELECT.sort(key=self.sortMe)
+        gui_helpers.MULTISELECT.sort(key=lambda name:name["display_name"].lower())
         self.status_message(f"Downloading {gui_helpers.MULTISELECT[0]['display_name']} from Open Shop Channel..")
         self.status_icon("pending")
         self.ui.progressBar.setMaximum(0)
@@ -689,6 +686,15 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         gui_helpers.DATASENT = True
 
     def changed_host(self):
+        if (self.ongoingOperations() and self.message.show() == None) or (len(gui_helpers.MULTISELECT) and QMessageBox.question(self,"Change repositiory","Changing the repository will clear the queue.\nContinue anyway?") == QMessageBox.StandardButton.No):
+            try:
+                self.ui.ReposComboBox.currentIndexChanged.disconnect(self.changed_host)
+            except Exception:
+                pass
+            self.ui.ReposComboBox.setCurrentIndex(self.ui.ReposComboBox.findData([self.current_repo["name"],self.current_repo["host"],self.current_repo["description"],self.current_repo["id"]]))
+            self.ui.ReposComboBox.currentIndexChanged.connect(self.changed_host)
+            return
+        self.clear_multi_select(user_request=False)
         self.icons_images = None
         self.long_description_cache.clear()
         index = self.ui.ReposComboBox.currentIndex()
@@ -699,6 +705,10 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         self.repopulate()
 
     def repopulate(self):
+        if self.ongoingOperations():
+            self.message.show()
+            return
+        
         if len(gui_helpers.MULTISELECT) and QMessageBox.question(self,"Refresh list", "Refreshing the list will clear the queue.\nIs this okay?") == QMessageBox.StandardButton.No:
             return
         self.clear_multi_select(user_request=False)
