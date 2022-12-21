@@ -107,7 +107,7 @@ if args.cmd == "get":
             print("Error: Parsing failed.")
             print(e)
             exit(1)
-        print(f"Reading {config['META']['Package Title']} by {config['META']['Author']} (version {config['META']['Version']})")
+        print(f"Reading {config['META']['Title']} by {config['META']['Author']} (version {config['META']['Version']})")
         
         if "PRIMARY" in config:
             for package in config['PRIMARY']:
@@ -135,7 +135,7 @@ if args.cmd == "send":
             print("Error: Parsing failed.")
             print(e)
             exit(1)
-        print(f"Reading {config['META']['Package Title']} by {config['META']['Author']} (version {config['META']['Version']})")
+        print(f"Reading {config['META']['Title']} by {config['META']['Author']} (version {config['META']['Version']})")
         
     else:
         tempStr = f"[{args.host.upper()}]\n{args.app}"
