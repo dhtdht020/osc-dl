@@ -397,7 +397,9 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
 
         # determine if should ask for path
         DownloadLocationDialogAlreadyAsked = False
+        AcknowldegedOverwrite = False
         DirectorySelected = ''
+        save_location=''
 
         dialog = DownloadLocationDialog(gui_helpers.MULTISELECT, parent=self)
 
@@ -415,12 +417,13 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
                                                                             self.current_app["internal_name"] + ".zip")
                         else:
                             if DirectorySelected == '':
-                                DirectorySelected = QFileDialog.getExistingDirectory(self, 'Save Application to Directory', os.path.expanduser("~"),QFileDialog.ShowDirsOnly) + "/"
-                            
-                            if DirectorySelected == '/':
-                                save_location = ''
+                                DirectorySelected = QFileDialog.getExistingDirectory(self, 'Save Application to Directory', os.path.expanduser("~"),QFileDialog.ShowDirsOnly)
+                                if DirectorySelected == '':
+                                     save_location = ''
+                                else:
+                                    save_location = f'{DirectorySelected}/{package["internal_name"]}.zip'
                             else:
-                                save_location = DirectorySelected + package["internal_name"] + ".zip"
+                                save_location = f'{DirectorySelected}/{package["internal_name"]}.zip'
                         
                     else:
                         if not dialog.selection["appsdir"]:
@@ -435,6 +438,14 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
                         extract_root = True
                 else:
                     save_location = ''
+                if len(gui_helpers.MULTISELECT) > 1 and not AcknowldegedOverwrite and os.path.exists(save_location):
+                    shouldOverwrite = QMessageBox.question(self,"Confirm overwrite",f"'{package['display_name']}' already exists in this directory. Overwrite anyway?",QMessageBox.StandardButton.No|QMessageBox.StandardButton.YesToAll|QMessageBox.StandardButton.Yes,QMessageBox.StandardButton.No)
+                    
+                    if shouldOverwrite == QMessageBox.StandardButton.No:
+                        save_location = ''
+                    elif shouldOverwrite == QMessageBox.StandardButton.YesToAll:
+                        AcknowldegedOverwrite = True
+
             else:
                 # create output dir
                 if os.name == 'nt':
