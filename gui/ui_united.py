@@ -106,6 +106,7 @@ class Ui_MainWindow(object):
         self.horizontalLayout_3.addWidget(self.ReposComboBox)
 
         self.AppsAmountLabel = QLabel(self.LibraryTopFrameTop)
+        self.CategoriesComboBox.addItem("")
         self.AppsAmountLabel.setObjectName(u"AppsAmountLabel")
         self.AppsAmountLabel.setMaximumSize(QSize(60, 16777215))
         self.AppsAmountLabel.setAlignment(Qt.AlignRight|Qt.AlignTrailing|Qt.AlignVCenter)
@@ -404,14 +405,14 @@ class Ui_MainWindow(object):
         self.horizontalLayout_6.addWidget(self.WiiLoadButton)
 
         self.WiiLoadButton.setGeometry(QRect(140, 29, 121, 23))
-        self.MultiSelectButton = QPushButton(self.MetadataBottomFrame)
-        self.MultiSelectButton.setObjectName(u"MultiSelectButton")
-        self.MultiSelectButton.setGeometry(QRect(10, 3, 121, 23))
-        self.MultiSelectButton.setCheckable(True)
         self.ClearMultiSelectButton = QPushButton(self.MetadataBottomFrame)
         self.ClearMultiSelectButton.setObjectName(u"ClearMultiSelectButton")
         self.ClearMultiSelectButton.setEnabled(False)
         self.ClearMultiSelectButton.setGeometry(QRect(140, 3, 121, 23))
+        self.MultiSelectToggle = QCheckBox(self.MetadataBottomFrame)
+        self.MultiSelectToggle.setObjectName(u"MultiSelectToggle")
+        self.MultiSelectToggle.setGeometry(QRect(17, 5, 121, 20))
+        self.MultiSelectToggle.setChecked(False)
 
         self.verticalLayout_3.addWidget(self.MetadataBottomFrame)
 
@@ -511,6 +512,7 @@ class Ui_MainWindow(object):
         self.CategoriesComboBox.setItemText(3, QCoreApplication.translate("MainWindow", u"Games", None))
         self.CategoriesComboBox.setItemText(4, QCoreApplication.translate("MainWindow", u"Media", None))
         self.CategoriesComboBox.setItemText(5, QCoreApplication.translate("MainWindow", u"Demos", None))
+        self.CategoriesComboBox.setItemText(6, QCoreApplication.translate("MainWindow", u"Queued", None))
 
         self.announcementLabel.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p><span style=\" font-weight:600;\">Announcement Header: </span>Announcement Content.</p></body></html>", None))
         self.announcementURLLabel.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p><a href=\"https://google.com\"><span style=\" text-decoration: underline; color:#ffff00;\">Announcement URL</span></a></p></body></html>", None))
@@ -548,8 +550,8 @@ class Ui_MainWindow(object):
         self.tabMetadata.setTabText(self.tabMetadata.indexOf(self.RawTab), QCoreApplication.translate("MainWindow", u"Peripherals", None))
         self.ViewMetadataBtn.setText(QCoreApplication.translate("MainWindow", u"Download", None))
         self.WiiLoadButton.setText(QCoreApplication.translate("MainWindow", u"Send to Wii", None))
-        self.MultiSelectButton.setText(QCoreApplication.translate("MainWindow", u"Add to Selection", None))
         self.ClearMultiSelectButton.setText(QCoreApplication.translate("MainWindow", u"Clear Queue", None))
+        self.MultiSelectToggle.setText(QCoreApplication.translate("MainWindow", u"Add to Queue", None))
         self.menuAbout.setTitle(QCoreApplication.translate("MainWindow", u"About", None))
         self.menuDebug.setTitle(QCoreApplication.translate("MainWindow", u"Options", None))
         self.menuExperimental.setTitle(QCoreApplication.translate("MainWindow", u"Experimental", None))

@@ -115,6 +115,11 @@
             <property name="alignment">
              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
             </property>
+                  <item>
+                   <property name="text">
+                    <string>Queued</string>
+                   </property>
+                  </item>
            </widget>
           </item>
           <item>
@@ -805,22 +810,6 @@ hr { height: 1px; border-width: 0; }
            <string>Send to Wii</string>
           </property>
          </widget>
-         <widget class="QPushButton" name="MultiSelectButton">
-          <property name="geometry">
-           <rect>
-            <x>10</x>
-            <y>3</y>
-            <width>121</width>
-            <height>23</height>
-           </rect>
-          </property>
-          <property name="text">
-           <string>Add to Selection</string>
-          </property>
-          <property name="checkable">
-           <bool>true</bool>
-          </property>
-         </widget>
          <widget class="QPushButton" name="ClearMultiSelectButton">
           <property name="enabled">
            <bool>false</bool>
@@ -835,6 +824,22 @@ hr { height: 1px; border-width: 0; }
           </property>
           <property name="text">
            <string>Clear Queue</string>
+          </property>
+         </widget>
+         <widget class="QCheckBox" name="MultiSelectToggle">
+          <property name="geometry">
+           <rect>
+            <x>17</x>
+            <y>5</y>
+            <width>121</width>
+            <height>20</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string>Add to Queue</string>
+          </property>
+          <property name="checked">
+           <bool>false</bool>
           </property>
          </widget>
         </widget>

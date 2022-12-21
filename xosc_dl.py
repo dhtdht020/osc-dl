@@ -98,6 +98,7 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         self.ui.CategoriesComboBox.setItemIcon(3, QIcon(resource_path("assets/gui/icons/category/game.png")))
         self.ui.CategoriesComboBox.setItemIcon(4, QIcon(resource_path("assets/gui/icons/category/media.png")))
         self.ui.CategoriesComboBox.setItemIcon(5, QIcon(resource_path("assets/gui/icons/category/demo.png")))
+        self.ui.CategoriesComboBox.setItemIcon(6, QIcon(resource_path("assets/gui/icons/directory.png")))
 
         # ACTIONS
         self.ui.actionDeveloper_Profile.setIcon(QIcon(resource_path("assets/gui/icons/profile.png")))
@@ -191,7 +192,7 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         self.ui.ViewMetadataBtn.clicked.connect(self.download_app)
         self.ui.WiiLoadButton.clicked.connect(self.wiiload_button)
         self.ui.ReturnToMainBtn.clicked.connect(self.return_to_all_apps_btn)
-        self.ui.MultiSelectButton.clicked.connect(self.multi_select)
+        self.ui.MultiSelectToggle.clicked.connect(partial(self.multi_select))
         self.ui.ClearMultiSelectButton.clicked.connect(lambda: self.clear_multi_select(user_request=True))
 
         # Search Bar
@@ -270,15 +271,7 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
             self.ui.WiiLoadButton.setText("Send to Wii")
 
             # see if its part of the queue.
-            if self.current_app in gui_helpers.MULTISELECT:
-                self.ui.MultiSelectButton.setText("Added!")
-                self.ui.MultiSelectButton.setCheckable(True)
-                self.ui.MultiSelectButton.setDown(True)
-                
-            else:
-                self.ui.MultiSelectButton.setText("Add to queue")
-                self.ui.MultiSelectButton.setCheckable(False)
-                self.ui.MultiSelectButton.setDown(False)
+            self.ui.MultiSelectToggle.setChecked(self.current_app in gui_helpers.MULTISELECT)
 
             # -- Get actual metadata
             # App Name
@@ -385,6 +378,9 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
 
     def trugh(self, text):
         return QObject.tr(self, text)
+    
+    def sortMe(self,name):
+        return name["display_name"]
 
     # TODO FULL REWRITE
     def download_app(self, extract_root=False):
@@ -392,6 +388,7 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         total_downloads = []
         if len(gui_helpers.MULTISELECT) == 0:
             gui_helpers.MULTISELECT.append(self.current_app)
+        gui_helpers.MULTISELECT.sort(key=self.sortMe)
         self.status_message(f"Downloading {gui_helpers.MULTISELECT[0]['display_name']} from Open Shop Channel..")
         self.status_icon("pending")
         self.ui.progressBar.setMaximum(0)
@@ -485,16 +482,10 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
                         os.remove(save_location)
 
                 self.ui.progressBar.setValue(total_size)
-                self.status_message(f"Download of \"{self.current_app['display_name']}\" has completed successfully")
+                self.status_message(f"Download of \"{package['display_name']}\" has completed successfully")
                 total_downloads.append(save_location)
-                if len(total_downloads) == len(gui_helpers.MULTISELECT):
-                    if len(total_downloads) > 1:
-                        self.status_message(f"{len(total_downloads)} downloads has completed successfully")
-                    if object_name != "WiiLoadButton":
-                        self.safe_mode(False)
-                    self.status_icon("online")
-                    gui_helpers.IN_DOWNLOAD_DIALOG = False
-                    return total_downloads
+                for i in self.ui.listAppsWidget.findItems(package["display_name"], Qt.MatchContains):
+                    i.setBackground(QColor(gui_helpers.QUEUE_SIGNAL_COLORS["downloaded"]))
             else:
                 self.ui.progressBar.setMaximum(100)
                 self.ui.progressBar.setValue(0)
@@ -505,6 +496,13 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
                     self.clear_multi_select(user_request=False)
                 gui_helpers.IN_DOWNLOAD_DIALOG = False
                 return None
+        if len(total_downloads) > 1:
+            self.status_message(f"{len(total_downloads)} downloads has completed successfully")
+        if object_name != "WiiLoadButton":
+            self.safe_mode(False)
+        self.status_icon("online")
+        gui_helpers.IN_DOWNLOAD_DIALOG = False
+        return total_downloads        
 
     def reset_status(self):
         if not gui_helpers.CURRENTLY_SENDING and not gui_helpers.IN_DOWNLOAD_DIALOG:
@@ -521,7 +519,7 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         self.ui.WiiLoadButton.setDisabled(state)
         self.ui.ReposComboBox.setDisabled(state)
         self.ui.listAppsWidget.setDisabled(state)
-        self.ui.MultiSelectButton.setDisabled(state)
+        self.ui.MultiSelectToggle.setDisabled(state)
         self.ui.ClearMultiSelectButton.setDisabled(state or not bool(len(gui_helpers.MULTISELECT)))
 
     def wiiload_button(self):
@@ -701,6 +699,9 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         self.repopulate()
 
     def repopulate(self):
+        if len(gui_helpers.MULTISELECT) and QMessageBox.question(self,"Refresh list", "Refreshing the list will clear the queue.\nIs this okay?") == QMessageBox.StandardButton.No:
+            return
+        self.clear_multi_select(user_request=False)
         # Make sure everything is hidden / shown
         self.ui.ReturnToMainBtn.setHidden(True)
         self.ui.CategoriesComboBox.setHidden(False)
@@ -886,6 +887,9 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
             if self.current_category == "all" and (self.current_developer in i.data(Qt.UserRole)["coder"]):
                 results.append(i.text())
                 n += 1
+            elif self.current_category == "queued" and i.data(Qt.UserRole) in gui_helpers.MULTISELECT and (self.current_developer in i.data(Qt.UserRole)["coder"]):
+                results.append(i.text())
+                n += 1
             elif i.data(Qt.UserRole)["category"] == self.current_category and (
                     self.current_developer in i.data(Qt.UserRole)["coder"]):
                 results.append(i.text())
@@ -924,7 +928,9 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
             item = self.ui.listAppsWidget.item(i)
             if self.current_category == "all":
                 item.setHidden(False)
-            elif item.data(Qt.UserRole)["category"] != self.current_category:
+            elif self.current_category == "queued" and item.data(Qt.UserRole) not in gui_helpers.MULTISELECT:
+                item.setHidden(True)
+            elif self.current_category != "queued" and item.data(Qt.UserRole)["category"] != self.current_category:
                 item.setHidden(True)
             else:
                 item.setHidden(False)
@@ -934,17 +940,22 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
 
     #Add remove app to multiselect
     def multi_select(self, all_select=False):
+        a = self.ui.listAppsWidget.currentItem().background()
         if not all_select and self.current_app in gui_helpers.MULTISELECT:
             gui_helpers.MULTISELECT.remove(self.current_app)
-            self.ui.MultiSelectButton.setText("Add to queue")
-            self.ui.MultiSelectButton.setCheckable(False)
-            self.ui.MultiSelectButton.setDown(False)
+            self.ui.MultiSelectToggle.setChecked(False)
+            self.ui.listAppsWidget.currentItem().setBackground(QColor(0,0,0,1))
+
         else:
             if not all_select:
                 gui_helpers.MULTISELECT.append(self.current_app)
-            self.ui.MultiSelectButton.setText("Added!")
-            self.ui.MultiSelectButton.setCheckable(True)
-            self.ui.MultiSelectButton.setDown(True)
+                self.ui.listAppsWidget.currentItem().setBackground(QColor(gui_helpers.QUEUE_SIGNAL_COLORS["in queue"]))
+            else:
+                for i in range(self.ui.listAppsWidget.count()):
+                    item = self.ui.listAppsWidget.item(i)
+                    if item.data(Qt.UserRole) in gui_helpers.MULTISELECT:
+                        item.setBackground(QColor(gui_helpers.QUEUE_SIGNAL_COLORS["in queue"]))                
+            self.ui.MultiSelectToggle.setChecked(True)
             self.ui.AppsLibraryBox.setTitle("Apps Library - Multi Selection Mode")
             self.ui.ViewMetadataBtn.setText("Download queue")
             self.ui.WiiLoadButton.setText("Send queue to Wii")
@@ -955,18 +966,22 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
             self.ui.ViewMetadataBtn.setText("Download")
             self.ui.WiiLoadButton.setText("Send to Wii")            
             self.ui.ClearMultiSelectButton.setDisabled(True)
+        self.search_bar()
     
     def clear_multi_select(self,user_request=True):
-        if user_request and QMessageBox.question(self, "Clear queue", "Clear the download queue?") == QMessageBox.StandardButton.No:
+        if user_request and QMessageBox.question(self, "Clear queue", f"Clear the download queue?\n({len(gui_helpers.MULTISELECT)} item{'s' if len(gui_helpers.MULTISELECT) > 1 else ''} present.)") == QMessageBox.StandardButton.No:
             return
+        for i in range(self.ui.listAppsWidget.count()):
+            item = self.ui.listAppsWidget.item(i)
+            if item.data(Qt.UserRole) in gui_helpers.MULTISELECT:
+                item.setBackground(QColor(0,0,0,1))
         gui_helpers.MULTISELECT.clear()
-        self.ui.MultiSelectButton.setText("Add to queue")
-        self.ui.MultiSelectButton.setCheckable(False)
-        self.ui.MultiSelectButton.setDown(False)
+        self.ui.MultiSelectToggle.setChecked(False)
         self.ui.AppsLibraryBox.setTitle("Apps Library")
         self.ui.ViewMetadataBtn.setText("Download")
         self.ui.WiiLoadButton.setText("Send to Wii") 
         self.ui.ClearMultiSelectButton.setDisabled(True)
+        self.search_bar()
 
     # Load developer profile
     def developer_profile(self):

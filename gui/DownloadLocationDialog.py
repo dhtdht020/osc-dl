@@ -24,7 +24,7 @@ class DownloadLocationDialog(ui_DownloadLocationDialog.Ui_Dialog, QDialog):
         self.selection = None
         self.drives = set()
         if len(self.packages) > 1:
-            self.setWindowTitle(f"Download Multiple Files")
+            self.setWindowTitle(f"Download {len(gui_helpers.MULTISELECT)} Items")
             self.buttonBox.button(QDialogButtonBox.Ok).setText("Download to directory")
         else:
             self.setWindowTitle(f"Download \"{self.packages[0]['display_name']}\"")
