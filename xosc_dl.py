@@ -438,7 +438,8 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
                         extract_root = True
                 else:
                     save_location = ''
-                if len(gui_helpers.MULTISELECT) > 1 and not AcknowldegedOverwrite and os.path.exists(save_location):
+
+                if len(gui_helpers.MULTISELECT) > 1 and not AcknowldegedOverwrite and (os.path.exists(save_location) or os.path.exists(save_location.replace(".zip","/"))):
                     shouldOverwrite = QMessageBox.question(self,"Confirm overwrite",f"'{package['display_name']}' already exists in this directory. Overwrite anyway?",QMessageBox.StandardButton.No|QMessageBox.StandardButton.YesToAll|QMessageBox.StandardButton.Yes,QMessageBox.StandardButton.No)
                     
                     if shouldOverwrite == QMessageBox.StandardButton.No:

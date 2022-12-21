@@ -120,8 +120,13 @@ class DownloadLocationDialog(ui_DownloadLocationDialog.Ui_Dialog, QDialog):
             self.label_2.hide()
             self.checkBox.setChecked(False)
             self.label_available_space.setVisible(False)
+            if len(self.packages) > 1:
+                self.buttonBox.button(QDialogButtonBox.Ok).setText("Download to directory")
+            else:
+                self.buttonBox.button(QDialogButtonBox.Ok).setText("Download")
         else:
             # set available space label
+            self.buttonBox.button(QDialogButtonBox.Ok).setText("Download")
             self.label_available_space.setVisible(True)
             self.label_available_space.setText(
                 f"**Available Space:** {file_size(self.comboBox.currentData()['drive'].bytesFree())}")
