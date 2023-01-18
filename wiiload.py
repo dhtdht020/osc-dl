@@ -26,12 +26,38 @@ def organize_zip(zipped_app, zip_buf):
     app_infolist = zip_file.infolist()
 
     # Our zip file should only contain one directory with the app data in it,
-    # but the downloaded file contains an apps/ directory. We're removing that here.
+    # but it will be kept, as long is it's relative to the root of the SD/USB. 
+    # This creates a zip file based on relative directories to extract all files.
     app_zip = zipfile.ZipFile(zip_buf, mode='w', compression=zipfile.ZIP_DEFLATED)
 
-    # copy over all files
+    # Zip manipulation time.
+    # First we need the directory name of the app.
+    dirname = ""
+    appname = ""
     for info in app_infolist:
-        new_path = info.filename.replace('apps/', '')
+        if 'apps/' in info.filename and info.filename != 'apps/':
+            appname = info.filename.split("/")[1]
+            dirname = appname+"/"
+            break
+
+    # Copy over all files
+    # In HBC, the app is directly written at the apps directory.
+    # The app's name MUST be the first directory name in apps.
+    # HBC will check for consistant directory names, 
+    # if one does not match, it gives the "Unusable zip" error.
+    # This means we need the app's directory first.
+    for info in app_infolist:
+        if 'apps/' in info.filename:
+            new_path = info.filename.replace('apps/', '')
+        else:
+            # However, HBC does not check for relative directories.
+            # By stepping back two directories, we are at the root of the SD/USB.
+            new_path = dirname + "../../" + info.filename 
+            # Just in case there is a rogue README file.
+            if f"{dirname}../../read".upper() in new_path.upper():
+                READMEFile = new_path.split(".")[-2]
+                new_path = new_path.replace(READMEFile,f'{READMEFile}_{appname}')
+                
         if not new_path:
             continue
 
@@ -41,14 +67,23 @@ def organize_zip(zipped_app, zip_buf):
         new_info = copy.copy(info)
         new_info.filename = new_path
 
-        if new_info.filename[-1] in ('/', '\\'):  # directory
-            continue
-
         with zip_file.open(info.filename, 'r') as file:
             data = file.read()
 
         app_zip.writestr(new_path, data)
 
+    # Finally, if a directory is empty, HBC will not write it.
+    # So, this adds a dot file to all directories, regardless of contents.
+    # HBC will delete that file, but not the directory.
+    # Addtionally, if a file is 0 bytes, add something to it.
+    # NOTE: HBC will delete all 0 byte files and dot files.
+    for x in app_zip.filelist:
+        if x.is_dir():
+            with app_zip.open(x.filename+'._OSCDL', 'w') as temp: 
+                temp.write("This file can be deleted.".encode("utf-8"))
+        elif x.file_size == 0:
+            with app_zip.open(x.filename, 'w') as temp: 
+                temp.write('.'.encode("utf-8"))
     # cleanup
     zipped_app.close()
     zip_file.close()

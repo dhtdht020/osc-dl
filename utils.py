@@ -12,7 +12,7 @@ def is_test(name):
         return False
 
 
-def is_supported_by_wiiload(package):
+def app_has_extra_directories(package):
     # remove all directories under /apps
     root_directories = []
     for directory in package["extra_directories"]:
