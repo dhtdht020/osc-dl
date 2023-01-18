@@ -3,7 +3,7 @@
 ################################################################################
 ## Form generated from reading UI file 'united.ui'
 ##
-## Created by: Qt User Interface Compiler version 6.4.0
+## Created by: Qt User Interface Compiler version 6.4.2
 ##
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
@@ -413,16 +413,29 @@ class Ui_MainWindow(object):
 
         self.MetadataBottomFrame = QFrame(self.SelectionInfoBox)
         self.MetadataBottomFrame.setObjectName(u"MetadataBottomFrame")
-        self.MetadataBottomFrame.setMinimumSize(QSize(0, 0))
-        self.MetadataBottomFrame.setMaximumSize(QSize(16777215, 29))
+        self.MetadataBottomFrame.setMaximumSize(QSize(16777215, 34))
         self.MetadataBottomFrame.setFrameShape(QFrame.NoFrame)
         self.MetadataBottomFrame.setLineWidth(0)
+        self.horizontalLayout_6 = QHBoxLayout(self.MetadataBottomFrame)
+        self.horizontalLayout_6.setObjectName(u"horizontalLayout_6")
+        self.horizontalLayout_6.setContentsMargins(-1, 0, -1, 0)
         self.ViewMetadataBtn = QPushButton(self.MetadataBottomFrame)
         self.ViewMetadataBtn.setObjectName(u"ViewMetadataBtn")
-        self.ViewMetadataBtn.setGeometry(QRect(10, 4, 121, 23))
+        sizePolicy6 = QSizePolicy(QSizePolicy.Minimum, QSizePolicy.Expanding)
+        sizePolicy6.setHorizontalStretch(0)
+        sizePolicy6.setVerticalStretch(0)
+        sizePolicy6.setHeightForWidth(self.ViewMetadataBtn.sizePolicy().hasHeightForWidth())
+        self.ViewMetadataBtn.setSizePolicy(sizePolicy6)
+
+        self.horizontalLayout_6.addWidget(self.ViewMetadataBtn)
+
         self.WiiLoadButton = QPushButton(self.MetadataBottomFrame)
         self.WiiLoadButton.setObjectName(u"WiiLoadButton")
-        self.WiiLoadButton.setGeometry(QRect(140, 4, 121, 23))
+        sizePolicy6.setHeightForWidth(self.WiiLoadButton.sizePolicy().hasHeightForWidth())
+        self.WiiLoadButton.setSizePolicy(sizePolicy6)
+
+        self.horizontalLayout_6.addWidget(self.WiiLoadButton)
+
 
         self.verticalLayout_3.addWidget(self.MetadataBottomFrame)
 
