@@ -145,13 +145,7 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         t.start()
 
     def about_dialog(self):
-        QMessageBox.about(self, f"About OSCDL","""<style>        
-
-        a{  
-            color:#0F8EC2;
-            text-decoration: none;
-        }        
-    </style>"""
+        QMessageBox.about(self, f"About OSCDL",
                           f"<b>Open Shop Channel Downloader v{updater.current_version()} {updater.get_branch()}</b><br>"
                           f"by dhtdht020<br><br>"
                           f"<a href=\"https://github.com/dhtdht020/osc-dl\">https://github.com/dhtdht020/osc-dl</a><br>"
@@ -945,17 +939,19 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         theme_files = [f for f in listdir(path) if isfile(join(path, f))]
         theme_files.insert(0, 'System Default')
 
-        theme, ok = QInputDialog.getItem(self, "Experimental: Select Theme",
+        chosen_theme, ok = QInputDialog.getItem(self, "Experimental: Select Theme",
                                          "Choose theme to use from the list", theme_files, 0, False)
         if not ok:
             return
-        if theme == 'System Default':
+        if chosen_theme == 'System Default':
             self.setStyleSheet("")
-            utils.update_startup_theme("Default")
+            gui_helpers.settings.setValue("theme","Default")
             return
-        with open(resource_path(f"assets/themes/{theme}"), "r") as fh:
+        with open(resource_path(f"assets/themes/{chosen_theme}"), "r") as fh:
             self.setStyleSheet(fh.read())
-            utils.update_startup_theme(theme)
+        gui_helpers.settings.setValue("theme", chosen_theme)
+        gui_helpers.settings.sync()
+
 
     # load all icons from zip
     def download_app_icons(self):
@@ -1110,11 +1106,9 @@ if __name__ == "__main__":
     splash.show()
 
     window = MainWindow()
-    with open("settings","r") as f: # find previously saved theme option
-        settings = json.load(f)
-    startup_theme = settings["theme"]
 
-    # if a stylesheet was previously saved and applied, it will be aapplied on startup
+    startup_theme = gui_helpers.settings.value("theme")
+    # if a stylesheet was previously saved and applied, it will be applied on startup
     try:
         with open(f"assets/themes/{startup_theme}", "r") as theme:
             window.setStyleSheet(theme.read())
