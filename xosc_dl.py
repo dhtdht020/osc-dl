@@ -1,4 +1,5 @@
 import io
+import json
 import platform
 import threading
 import time
@@ -936,14 +937,19 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
     def select_theme_action(self):
         path = resource_path("assets/themes")
         theme_files = [f for f in listdir(path) if isfile(join(path, f))]
+        theme_files.insert(0, 'System Default')
 
         theme, ok = QInputDialog.getItem(self, "Experimental: Select Theme",
                                          "Choose theme to use from the list", theme_files, 0, False)
         if not ok:
             return
-
+        if theme == 'System Default':
+            self.setStyleSheet("")
+            utils.update_startup_theme("Default")
+            return
         with open(resource_path(f"assets/themes/{theme}"), "r") as fh:
             self.setStyleSheet(fh.read())
+            utils.update_startup_theme(theme)
 
     # load all icons from zip
     def download_app_icons(self):
@@ -1098,6 +1104,17 @@ if __name__ == "__main__":
     splash.show()
 
     window = MainWindow()
+    with open("settings","r") as f: # find previously saved theme option
+        settings = json.load(f)
+    startup_theme = settings["theme"]
+
+    # if a stylesheet was previously saved and applied, it will be aapplied on startup
+    try:
+        with open(f"assets/themes/{startup_theme}", "r") as theme:
+            window.setStyleSheet(theme.read())
+    except:
+        window.setStyleSheet("")  # system defaults if no file is found
+
     window.show()
     splash.hide()
     app.exec()

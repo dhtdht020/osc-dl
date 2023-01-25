@@ -1,5 +1,6 @@
 import os
 import re
+import json
 
 # Escape ansi from stdout
 import sys
@@ -42,3 +43,10 @@ def file_size(length):
         length /= 1024.0
 
     return "%.1f%s%s" % (length, 'Yi', "B")
+
+def update_startup_theme(filename: str):
+    with open("settings","r+") as f:
+         settings = json.load(f)
+    settings["theme"] = filename
+    with open("settings", "w") as f:
+        json.dump(settings,f)
