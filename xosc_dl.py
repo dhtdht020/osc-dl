@@ -145,7 +145,13 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         t.start()
 
     def about_dialog(self):
-        QMessageBox.about(self, f"About OSCDL",
+        QMessageBox.about(self, f"About OSCDL","""<style>        
+
+        a{  
+            color:#0F8EC2;
+            text-decoration: none;
+        }        
+    </style>"""
                           f"<b>Open Shop Channel Downloader v{updater.current_version()} {updater.get_branch()}</b><br>"
                           f"by dhtdht020<br><br>"
                           f"<a href=\"https://github.com/dhtdht020/osc-dl\">https://github.com/dhtdht020/osc-dl</a><br>"
