@@ -22,7 +22,7 @@ import requests
 from PIL import Image
 from PySide6 import QtGui, QtCore
 from PySide6.QtCore import Qt, QObject, QSize
-from PySide6.QtGui import QIcon, QColor, QPixmap, QMovie, QDesktopServices
+from PySide6.QtGui import QIcon, QColor, QPixmap, QMovie, QDesktopServices, QAction
 from PySide6.QtWidgets import QApplication, QMainWindow, QInputDialog, QLineEdit, QMessageBox, QSplashScreen, \
     QListWidgetItem, QFileDialog
 
@@ -222,6 +222,10 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         # ---- OSCDL
         self.ui.actionCheck_for_Updates.triggered.connect(partial(self.check_for_updates_action))
         self.ui.actionRefresh.triggered.connect(partial(self.repopulate))
+        # --- Themes
+        self.ui.actionSystem_Default.triggered.connect(self.select_theme_menu)
+        self.ui.actionosc_dark.triggered.connect(self.select_theme_menu)
+        self.ui.actionImport_from_Stylesheet.triggered.connect(self.import_new_stylesheet)
 
     # When user switches to a different tab
     def tab_changed(self):
@@ -952,6 +956,93 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         gui_helpers.settings.setValue("theme", chosen_theme)
         gui_helpers.settings.sync()
 
+    def select_theme_menu(self):
+        """Updates the GUI with the correct stylesheet, based on what the user pressed on the 'Themes' Menu. First, the function makes sure that
+        only the theme the user pressed is shown as checked in the menu. Then, it applies the stylesheet based on what the user pressed."""
+
+        action_pressed = self.sender()
+
+        # uncheck all options
+        for action in self.ui.menuThemes.actions():
+            action.setChecked(False)
+
+        action_pressed.setChecked(True)  # re-check the option the user pressed
+        chosen_theme = action_pressed.text()
+
+        if chosen_theme == 'Dark':
+            with open("assets/themes/oscdark.qss","r") as dark:
+                self.setStyleSheet(dark.read())
+                gui_helpers.settings.setValue("theme",'oscdark.qss')
+
+        else:
+            # if the user did not press the dark theme, he either chose system default or a custom qss file
+            try:
+                with open(f"assets/themes/{chosen_theme}","r") as theme_file:
+                    self.setStyleSheet(theme_file.read())
+                    gui_helpers.settings.setValue("theme", chosen_theme)
+
+            except:
+                self.setStyleSheet("")
+                gui_helpers.settings.setValue("theme", "Default")
+
+        gui_helpers.settings.sync()  # saves the preference for next startup
+
+    def check_menu_on_startup(self):
+        """makes sure that the theme we apply on startup appears checked in the menu"""
+        theme_on_startup = gui_helpers.settings.value("theme")
+        # if we are loading with system default, check the 'System Default' menu option
+        if theme_on_startup== 'Default':
+            self.ui.actionSystem_Default.setChecked(True)
+        elif theme_on_startup == 'oscdark.qss':
+            self.ui.actionosc_dark.setChecked(True)
+        else:
+            # else, search through the other menu options and check the one with the same name as the file we're running
+            for action in self.ui.menuThemes.actions():
+                if action.text() == theme_on_startup:
+                    action.setChecked(True)
+                    break
+
+    def add_theme_actions(self):
+        path = resource_path("assets/themes")
+        theme_files = [f for f in listdir(path) if isfile(join(path, f))]
+
+        for file in theme_files:
+            if file == "oscdark.qss":
+                pass #  oscdark is already displayed as "Dark"
+            else:
+                # Create a new action and insert it to the 'Themes' menu, leaving 'import stylesheet' as the last option
+                new_action = QAction(file)
+                new_action.triggered.connect(self.select_theme_menu)
+                new_action.setCheckable(True)
+                self.ui.menuThemes.insertAction(self.ui.actionImport_from_Stylesheet,new_action)
+
+        return
+
+    def import_new_stylesheet(self):
+        """Opens the file dialog to import a new qss stylesheet as an option. Copies the selected file and adds the action on the menu
+        Does not validate the file. Any junk file will simply set the stylesheet back to default"""
+        dialog = QFileDialog()
+        file_chosen = dialog.getOpenFileName(caption="Import a new qss file",
+                                          filter="QSS files (*.qss);;All Files")
+
+        if not file_chosen[0]:  # in case no file was selected
+            return
+        # filename is a tuple. filename[0] is the actual file name
+
+        absolute = os.path.dirname(__file__)  # absolute file path of the app
+        filename = os.path.basename(file_chosen[0])
+
+        # copy the file over to assets/themes
+        with open(file_chosen[0],"r") as src,open(os.path.join(absolute,"assets/themes/",filename),"w") as dest:
+            dest.write(src.read())
+
+        # add new action and connect it
+        new_action = QAction(filename)
+        new_action.triggered.connect(self.select_theme_menu)
+        new_action.setCheckable(True)
+        self.ui.menuThemes.insertAction(self.ui.actionImport_from_Stylesheet, new_action)
+
+
 
     # load all icons from zip
     def download_app_icons(self):
@@ -1108,13 +1199,18 @@ if __name__ == "__main__":
     window = MainWindow()
 
     startup_theme = gui_helpers.settings.value("theme")
+
     # if a stylesheet was previously saved and applied, it will be applied on startup
     try:
         with open(f"assets/themes/{startup_theme}", "r") as theme:
             window.setStyleSheet(theme.read())
+
     except:
         window.setStyleSheet("")  # system defaults if no file is found
+        gui_helpers.settings.setValue("theme","Default")   # is normally not needed, but useful if the user loads with a faulty startup file
 
+    window.add_theme_actions()
+    window.check_menu_on_startup()
     window.show()
     splash.hide()
     app.exec()
