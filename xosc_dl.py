@@ -282,12 +282,6 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
             except KeyError:
                 self.ui.filesize.setText("Unknown")
 
-            self.file_type = {"dol": "app", "elf": "app", "thm": "theme"}
-            try:
-                self.file_is = self.file_type[self.current_app["package_type"]]
-            except:  # Just in case, but should never happen.
-                self.file_is = "app"
-
             # Category
             self.ui.HomebrewCategoryLabel.setText(metadata.category_display_name(self.current_app["category"]))
 
