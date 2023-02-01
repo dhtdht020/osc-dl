@@ -59,7 +59,7 @@ def test_app_badges(app):
     # set to badges tab
     app.ui.tabMetadata.setCurrentIndex(3)
 
-    # assert description
+    # assert widget is is hidden if there are no badges
     if app.ui.NoBadgesText.isHidden():
         assert app.ui.BadgesListWidget.isHidden() == False
     else:
