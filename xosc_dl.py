@@ -1034,7 +1034,7 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
                 # per platform sizing
                 padding = 33
                 category_icon_size = 24
-                if self.test_mode == False and app.style().name() == "fusion":
+                if app.style().name() == "fusion":
                     padding = int(padding * 1.5) - 4
                     category_icon_size = int(category_icon_size * 1.5)
 
