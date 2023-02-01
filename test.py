@@ -49,3 +49,18 @@ def test_app_long_description(app):
 
     # assert description
     assert "Danbo" == app.ui.longDescriptionBrowser.toPlainText()
+
+def test_app_badges(app):
+    # get index of Danbo
+    for i in range(app.ui.listAppsWidget.count()):
+        if "Danbo" in app.ui.listAppsWidget.item(i).text():
+            app.ui.listAppsWidget.setCurrentRow(i)
+    
+    # set to badges tab
+    app.ui.tabMetadata.setCurrentIndex(3)
+
+    # assert description
+    if app.ui.NoBadgesText.isHidden():
+        assert app.ui.BadgesListWidget.isHidden() == False
+    else:
+        assert app.ui.BadgesListWidget.isHidden() == True

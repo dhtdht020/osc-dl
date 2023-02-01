@@ -972,6 +972,8 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
 
     # load all icons from zip
     def download_app_icons(self):
+        if self.test_mode == True:
+            return
         gui_helpers.CURRENTLY_LOADING_ICONS = True
         # Debug info
         original_host = self.current_repo['host']
@@ -1038,7 +1040,7 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
                 # per platform sizing
                 padding = 33
                 category_icon_size = 24
-                if app.style().name() == "fusion":
+                if self.test_mode == False and app.style().name() == "fusion":
                     padding = int(padding * 1.5) - 4
                     category_icon_size = int(category_icon_size * 1.5)
 
@@ -1092,7 +1094,7 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         self.reset_status()
 
     def closeEvent(self, closeEvent):
-        if self.ongoingOperations():
+        if self.ongoingOperations() and self.test_mode == False:
             # QMessageBox.warning is modal, this is not. 
             self.message.show()
             closeEvent.ignore()
