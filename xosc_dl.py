@@ -258,6 +258,11 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
             # Clear supported controllers listview:
             self.ui.SupportedControllersListWidget.clear()
 
+            # Clear badges listview
+            self.ui.BadgesListWidget.clear()
+            self.ui.BadgesListWidget.setHidden(False)
+            self.ui.NoBadgesText.setHidden(True)
+
             # Enable Send to Wii button
             self.ui.WiiLoadButton.setEnabled(True)
             self.ui.WiiLoadButton.setText("Send to Wii")
@@ -276,6 +281,12 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
                 self.ui.filesize.setToolTip(f"Compressed Download: {compressed}\nExtracted Size: {extracted}")
             except KeyError:
                 self.ui.filesize.setText("Unknown")
+
+            self.file_type = {"dol": "app", "elf": "app", "thm": "theme"}
+            try:
+                self.file_is = self.file_type[self.current_app["package_type"]]
+            except:  # Just in case, but should never happen.
+                self.file_is = "app"
 
             # Category
             self.ui.HomebrewCategoryLabel.setText(metadata.category_display_name(self.current_app["category"]))
@@ -336,6 +347,20 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
                 item.setIcon(QIcon(resource_path(f"assets/gui/icons/controllers/SDHC.png")))
                 item.setToolTip("This app is confirmed to support SDHC cards.")
                 self.ui.SupportedControllersListWidget.addItem(item)
+
+            # Badges
+            badges = utils.application_badges(self.current_app)
+            
+            if badges:
+                for title in badges:
+                    item = QListWidgetItem()
+                    item.setText(badges[title][0])
+                    item.setIcon(QIcon(resource_path(f"assets/gui/icons/badges/{title}.png")))
+                    item.setToolTip(badges[title][1])
+                    self.ui.BadgesListWidget.addItem(item)
+            else:
+                self.ui.BadgesListWidget.setHidden(True)
+                self.ui.NoBadgesText.setHidden(False)
 
             # Version
             self.ui.version.setText(self.current_app["version"])

@@ -1,5 +1,6 @@
 import os
 import re
+from datetime import datetime
 
 # Escape ansi from stdout
 import sys
@@ -42,3 +43,44 @@ def file_size(length):
         length /= 1024.0
 
     return "%.1f%s%s" % (length, 'Yi', "B")
+
+# Returns package badges
+def application_badges(package):
+    badges = {}
+    if "wwwwgcnsk" in package["controllers"]:
+        badges["all-peripherals"] = ["All Peripherals","Given to applications which support every single peripheral Open Shop Channel keeps track of, with the exception of Wii Zapper, which is not included in any application."]
+
+    if package["short_description"] == "":
+        badges["needs-no-description"] = ["Needs no description", "Given to applications which lack a description."]
+
+    # check if added in the past 30 days
+    if datetime.now().timestamp() - int(package["release_date"]) < 2592000:
+        badges["recently-updated"] = ["Recently Updated", "Given to applications which were added or updated in the last 30 days."]
+
+    # check if zipped app size is over 100MiB
+    if int(package["zip_size"]) >= 104857600:
+        badges["expensive-delivery"] = ["Expensive Delivery", "Given to applications where the compressed download is over 100MiB."]
+
+    # check if extracted app size is under 500KiB
+    if int(package["zip_size"]) <= 512000:
+        badges["free-delivery"] = ["Free Delivery", "Given to applications where the compressed download is under 500KiB."]
+
+    # check if the app has a birthday
+    if datetime.fromtimestamp(int(package["release_date"])).strftime('%m%d') == datetime.now().strftime('%m%d'):
+        # verify that it was not added today
+        if datetime.fromtimestamp(int(package["release_date"])).strftime('%Y%m%d') != datetime.now().strftime('%Y%m%d'):
+            # determine app age
+            age = int((datetime.now().timestamp() - int(package["release_date"])) / 31536000)
+
+            # determine st/nd/rd/th
+            if age % 10 == 1 and age % 100 != 11:
+                age = str(age) + "st"
+            elif age % 10 == 2 and age % 100 != 12:
+                age = str(age) + "nd"
+            elif age % 10 == 3 and age % 100 != 13:
+                age = str(age) + "rd"
+            else:
+                age = str(age) + "th"
+            badges["birthday-app"] = [f"Happy {age} Birthday!", None]
+
+    return badges

@@ -408,6 +408,26 @@ class Ui_MainWindow(object):
         self.SupportedControllersListWidget.setViewMode(QListView.ListMode)
         self.SupportedControllersListWidget.setWordWrap(True)
         self.tabMetadata.addTab(self.RawTab, "")
+        self.Badges = QWidget()
+        self.Badges.setObjectName(u"Badges")
+        self.BadgesListWidget = QListWidget(self.Badges)
+        self.BadgesListWidget.setObjectName(u"BadgesListWidget")
+        self.BadgesListWidget.setGeometry(QRect(0, 0, 245, 244))
+        self.BadgesListWidget.setStyleSheet(u"QListWidget {\n"
+"	border: unset;\n"
+"}")
+        self.BadgesListWidget.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
+        self.BadgesListWidget.setIconSize(QSize(50, 50))
+        self.BadgesListWidget.setViewMode(QListView.ListMode)
+        self.BadgesListWidget.setWordWrap(True)
+        self.NoBadgesText = QLabel(self.Badges)
+        self.NoBadgesText.setObjectName(u"NoBadgesText")
+        self.NoBadgesText.setEnabled(True)
+        self.NoBadgesText.setGeometry(QRect(0, 0, 245, 244))
+        self.NoBadgesText.setMouseTracking(False)
+        self.NoBadgesText.setTextFormat(Qt.RichText)
+        self.NoBadgesText.setAlignment(Qt.AlignCenter)
+        self.tabMetadata.addTab(self.Badges, "")
 
         self.verticalLayout_3.addWidget(self.MetadataTabsFrame)
 
@@ -562,16 +582,16 @@ class Ui_MainWindow(object):
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><meta charset=\"utf-8\" /><style type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
 "hr { height: 1px; border-width: 0; }\n"
-"li.unchecked::marker { content: \"\\2610\"; }\n"
-"li.checked::marker { content: \"\\2612\"; }\n"
-"</style></head><body style=\" font-family:'Segoe UI'; font-size:9pt; font-weight:400; font-style:normal;\">\n"
-"<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br /></p></body></html>", None))
+"</style></head><body style=\" font-family:'.SF NS Text'; font-size:13pt; font-weight:400; font-style:normal;\">\n"
+"<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Segoe UI'; font-size:9pt;\"><br /></p></body></html>", None))
         self.longDescriptionLoadingSpinner.setText("")
         self.tabMetadata.setTabText(self.tabMetadata.indexOf(self.Description), QCoreApplication.translate("MainWindow", u"Description", None))
 #if QT_CONFIG(accessibility)
         self.RawTab.setAccessibleName(QCoreApplication.translate("MainWindow", u"tabcontent", None))
 #endif // QT_CONFIG(accessibility)
         self.tabMetadata.setTabText(self.tabMetadata.indexOf(self.RawTab), QCoreApplication.translate("MainWindow", u"Peripherals", None))
+        self.NoBadgesText.setText(QCoreApplication.translate("MainWindow", u"<span><i>No badges awarded...<i></span>", None))
+        self.tabMetadata.setTabText(self.tabMetadata.indexOf(self.Badges), QCoreApplication.translate("MainWindow", u"Badges", None))
         self.ViewMetadataBtn.setText(QCoreApplication.translate("MainWindow", u"Download", None))
         self.WiiLoadButton.setText(QCoreApplication.translate("MainWindow", u"Send to Wii", None))
         self.menuAbout.setTitle(QCoreApplication.translate("MainWindow", u"About", None))
