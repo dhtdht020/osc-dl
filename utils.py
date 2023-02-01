@@ -44,7 +44,7 @@ def file_size(length):
 
     return "%.1f%s%s" % (length, 'Yi', "B")
 
-# Returns package badges
+# Returns package badges, from https://github.com/OpenShopChannel/Website/blob/master/utils.py
 def application_badges(package):
     badges = {}
     if "wwwwgcnsk" in package["controllers"]:
