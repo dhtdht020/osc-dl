@@ -1,5 +1,4 @@
 import io
-import json
 import platform
 import threading
 import time
@@ -970,14 +969,14 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         chosen_theme = action_pressed.text()
 
         if chosen_theme == 'Dark':
-            with open("assets/themes/oscdark.qss","r") as dark:
+            with open(resource_path("assets/themes/oscdark.qss"),"r") as dark:
                 self.setStyleSheet(dark.read())
                 gui_helpers.settings.setValue("theme",'oscdark.qss')
 
         else:
             # if the user did not press the dark theme, he either chose system default or a custom qss file
             try:
-                with open(f"assets/themes/{chosen_theme}","r") as theme_file:
+                with open(resource_path(f"assets/themes/{chosen_theme}"),"r") as theme_file:
                     self.setStyleSheet(theme_file.read())
                     gui_helpers.settings.setValue("theme", chosen_theme)
 
@@ -1033,7 +1032,7 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         filename = os.path.basename(file_chosen[0])
 
         # copy the file over to assets/themes
-        with open(file_chosen[0],"r") as src,open(os.path.join(absolute,"assets/themes/",filename),"w") as dest:
+        with open(file_chosen[0],"r") as src,open(os.path.join(absolute,resource_path("assets/themes/"),filename),"w") as dest:
             dest.write(src.read())
 
         # add new action and connect it
@@ -1202,7 +1201,7 @@ if __name__ == "__main__":
 
     # if a stylesheet was previously saved and applied, it will be applied on startup
     try:
-        with open(f"assets/themes/{startup_theme}", "r") as theme:
+        with open(resource_path(f"assets/themes/{startup_theme}"), "r") as theme:
             window.setStyleSheet(theme.read())
 
     except:
