@@ -182,6 +182,5 @@ QComboBox {
 }
 QDialog{
     background-color:#555A63;
-}
 
-             }
+}

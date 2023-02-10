@@ -1,6 +1,5 @@
 import os
 import re
-import json
 
 # Escape ansi from stdout
 import sys
