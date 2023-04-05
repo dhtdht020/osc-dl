@@ -63,6 +63,14 @@ class Ui_MainWindow(object):
         self.actionCopy_Direct_Link.setObjectName(u"actionCopy_Direct_Link")
         self.actionDeveloper_Profile = QAction(MainWindow)
         self.actionDeveloper_Profile.setObjectName(u"actionDeveloper_Profile")
+        self.actionSystem_Default = QAction(MainWindow)
+        self.actionSystem_Default.setObjectName(u"actionSystem_Default")
+        self.actionSystem_Default.setCheckable(True)
+        self.actionosc_dark = QAction(MainWindow)
+        self.actionosc_dark.setObjectName(u"actionosc_dark")
+        self.actionosc_dark.setCheckable(True)
+        self.actionImport_from_Stylesheet = QAction(MainWindow)
+        self.actionImport_from_Stylesheet.setObjectName(u"actionImport_from_Stylesheet")
         self.centralwidget = QWidget(MainWindow)
         self.centralwidget.setObjectName(u"centralwidget")
         self.horizontalLayout_2 = QHBoxLayout(self.centralwidget)
@@ -447,7 +455,7 @@ class Ui_MainWindow(object):
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QMenuBar(MainWindow)
         self.menubar.setObjectName(u"menubar")
-        self.menubar.setGeometry(QRect(0, 0, 900, 22))
+        self.menubar.setGeometry(QRect(0, 0, 900, 21))
         self.menuAbout = QMenu(self.menubar)
         self.menuAbout.setObjectName(u"menuAbout")
         self.menuDebug = QMenu(self.menubar)
@@ -456,6 +464,8 @@ class Ui_MainWindow(object):
         self.menuExperimental.setObjectName(u"menuExperimental")
         self.menuAnnouncement_Banner = QMenu(self.menuExperimental)
         self.menuAnnouncement_Banner.setObjectName(u"menuAnnouncement_Banner")
+        self.menuThemes = QMenu(self.menuDebug)
+        self.menuThemes.setObjectName(u"menuThemes")
         self.menuClients = QMenu(self.menubar)
         self.menuClients.setObjectName(u"menuClients")
         self.menuHomebrew_Browser = QMenu(self.menuClients)
@@ -477,9 +487,14 @@ class Ui_MainWindow(object):
         self.menuDebug.addAction(self.actionClear_Log)
         self.menuDebug.addSeparator()
         self.menuDebug.addAction(self.menuExperimental.menuAction())
+        self.menuDebug.addAction(self.menuThemes.menuAction())
         self.menuExperimental.addAction(self.menuAnnouncement_Banner.menuAction())
         self.menuExperimental.addAction(self.actionSelect_Theme)
         self.menuAnnouncement_Banner.addAction(self.actionDisplay_Banner)
+        self.menuThemes.addAction(self.actionSystem_Default)
+        self.menuThemes.addAction(self.actionosc_dark)
+        self.menuThemes.addSeparator()
+        self.menuThemes.addAction(self.actionImport_from_Stylesheet)
         self.menuClients.addAction(self.menuHomebrew_Browser.menuAction())
         self.menuClients.addSeparator()
         self.menuClients.addAction(self.actionCheck_for_Updates)
@@ -518,6 +533,9 @@ class Ui_MainWindow(object):
 #if QT_CONFIG(tooltip)
         self.actionDeveloper_Profile.setToolTip(QCoreApplication.translate("MainWindow", u"View Profile", None))
 #endif // QT_CONFIG(tooltip)
+        self.actionSystem_Default.setText(QCoreApplication.translate("MainWindow", u"System Default", None))
+        self.actionosc_dark.setText(QCoreApplication.translate("MainWindow", u"Dark", None))
+        self.actionImport_from_Stylesheet.setText(QCoreApplication.translate("MainWindow", u"Import Stylesheet..", None))
 #if QT_CONFIG(accessibility)
         self.centralwidget.setAccessibleName(QCoreApplication.translate("MainWindow", u"centralcontainer", None))
 #endif // QT_CONFIG(accessibility)
@@ -559,13 +577,10 @@ class Ui_MainWindow(object):
         self.Description.setAccessibleName(QCoreApplication.translate("MainWindow", u"tabcontent", None))
 #endif // QT_CONFIG(accessibility)
         self.longDescriptionBrowser.setHtml(QCoreApplication.translate("MainWindow", u"<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><meta charset=\"utf-8\" /><style type=\"text/css\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
-"hr { height: 1px; border-width: 0; }\n"
-"li.unchecked::marker { content: \"\\2610\"; }\n"
-"li.checked::marker { content: \"\\2612\"; }\n"
-"</style></head><body style=\" font-family:'Segoe UI'; font-size:9pt; font-weight:400; font-style:normal;\">\n"
-"<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br /></p></body></html>", None))
+"</style></head><body style=\" font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
+"<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Segoe UI'; font-size:9pt;\"><br /></p></body></html>", None))
         self.longDescriptionLoadingSpinner.setText("")
         self.tabMetadata.setTabText(self.tabMetadata.indexOf(self.Description), QCoreApplication.translate("MainWindow", u"Description", None))
 #if QT_CONFIG(accessibility)
@@ -578,6 +593,7 @@ class Ui_MainWindow(object):
         self.menuDebug.setTitle(QCoreApplication.translate("MainWindow", u"Options", None))
         self.menuExperimental.setTitle(QCoreApplication.translate("MainWindow", u"Experimental", None))
         self.menuAnnouncement_Banner.setTitle(QCoreApplication.translate("MainWindow", u"Announcement Banner", None))
+        self.menuThemes.setTitle(QCoreApplication.translate("MainWindow", u"Themes", None))
         self.menuClients.setTitle(QCoreApplication.translate("MainWindow", u"Clients", None))
         self.menuHomebrew_Browser.setTitle(QCoreApplication.translate("MainWindow", u"Homebrew Browser", None))
     # retranslateUi
