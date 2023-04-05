@@ -33,7 +33,7 @@
        </property>
        <item>
         <property name="text">
-         <string>Save on this computer</string>
+         <string>Save on this computer (Open Save File Dialog)</string>
         </property>
        </item>
       </widget>

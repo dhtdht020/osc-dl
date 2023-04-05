@@ -3,7 +3,7 @@
 ################################################################################
 ## Form generated from reading UI file 'DownloadLocationDialog.ui'
 ##
-## Created by: Qt User Interface Compiler version 6.4.0
+## Created by: Qt User Interface Compiler version 6.5.0
 ##
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
@@ -108,7 +108,7 @@ class Ui_Dialog(object):
     def retranslateUi(self, Dialog):
         Dialog.setWindowTitle(QCoreApplication.translate("Dialog", u"Download - Select Location", None))
         self.label.setText(QCoreApplication.translate("Dialog", u"Select app download location", None))
-        self.comboBox.setItemText(0, QCoreApplication.translate("Dialog", u"Save on this computer", None))
+        self.comboBox.setItemText(0, QCoreApplication.translate("Dialog", u"Save on this computer (Open Save File Dialog)", None))
 
         self.checkBox.setText(QCoreApplication.translate("Dialog", u"Remember my selection for next time", None))
         self.label_2.setText(QCoreApplication.translate("Dialog", u"The following folders will be created or updated on the selected device:", None))
