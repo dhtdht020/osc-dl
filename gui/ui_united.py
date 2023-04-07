@@ -3,7 +3,7 @@
 ################################################################################
 ## Form generated from reading UI file 'united.ui'
 ##
-## Created by: Qt User Interface Compiler version 6.4.2
+## Created by: Qt User Interface Compiler version 6.5.0
 ##
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
@@ -16,12 +16,12 @@ from PySide6.QtGui import (QAction, QBrush, QColor, QConicalGradient,
     QIcon, QImage, QKeySequence, QLinearGradient,
     QPainter, QPalette, QPixmap, QRadialGradient,
     QTransform)
-from PySide6.QtWidgets import (QAbstractItemView, QApplication, QComboBox, QFrame,
-    QGroupBox, QHBoxLayout, QLabel, QLineEdit,
-    QListView, QListWidget, QListWidgetItem, QMainWindow,
-    QMenu, QMenuBar, QProgressBar, QPushButton,
-    QSizePolicy, QStatusBar, QTabWidget, QTextBrowser,
-    QVBoxLayout, QWidget)
+from PySide6.QtWidgets import (QAbstractItemView, QApplication, QComboBox, QFormLayout,
+    QFrame, QGroupBox, QHBoxLayout, QLabel,
+    QLineEdit, QListView, QListWidget, QListWidgetItem,
+    QMainWindow, QMenu, QMenuBar, QProgressBar,
+    QPushButton, QSizePolicy, QStatusBar, QTabWidget,
+    QTextBrowser, QVBoxLayout, QWidget)
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
@@ -313,56 +313,82 @@ class Ui_MainWindow(object):
         font1.setBold(True)
         self.HomebrewCategoryLabel.setFont(font1)
         self.HomebrewCategoryLabel.setAlignment(Qt.AlignCenter)
-        self.filesize = QLineEdit(self.GeneralTab)
-        self.filesize.setObjectName(u"filesize")
-        self.filesize.setGeometry(QRect(80, 209, 152, 21))
-        self.filesize.setMinimumSize(QSize(149, 20))
-        self.filesize.setEchoMode(QLineEdit.Normal)
-        self.filesize.setReadOnly(True)
-        self.version = QLineEdit(self.GeneralTab)
-        self.version.setObjectName(u"version")
-        self.version.setGeometry(QRect(80, 128, 152, 21))
-        self.version.setMinimumSize(QSize(149, 20))
-        self.version.setEchoMode(QLineEdit.Normal)
-        self.version.setReadOnly(True)
-        self.label_version = QLabel(self.GeneralTab)
-        self.label_version.setObjectName(u"label_version")
-        self.label_version.setGeometry(QRect(10, 128, 38, 21))
-        self.label_appname = QLabel(self.GeneralTab)
-        self.label_appname.setObjectName(u"label_appname")
-        self.label_appname.setGeometry(QRect(10, 101, 57, 21))
-        self.label_developer = QLabel(self.GeneralTab)
-        self.label_developer.setObjectName(u"label_developer")
-        self.label_developer.setGeometry(QRect(10, 155, 53, 20))
-        self.label_filesize = QLabel(self.GeneralTab)
-        self.label_filesize.setObjectName(u"label_filesize")
-        self.label_filesize.setGeometry(QRect(10, 209, 41, 21))
-        self.appname = QLineEdit(self.GeneralTab)
-        self.appname.setObjectName(u"appname")
-        self.appname.setGeometry(QRect(80, 101, 152, 21))
-        self.appname.setMinimumSize(QSize(149, 20))
-        self.appname.setEchoMode(QLineEdit.Normal)
-        self.appname.setReadOnly(True)
-        self.developer = QLineEdit(self.GeneralTab)
-        self.developer.setObjectName(u"developer")
-        self.developer.setGeometry(QRect(80, 155, 152, 21))
-        self.developer.setEchoMode(QLineEdit.Normal)
-        self.developer.setReadOnly(True)
-        self.releasedate = QLineEdit(self.GeneralTab)
-        self.releasedate.setObjectName(u"releasedate")
-        self.releasedate.setGeometry(QRect(80, 181, 152, 22))
-        self.releasedate.setMinimumSize(QSize(149, 20))
-        self.releasedate.setEchoMode(QLineEdit.Normal)
-        self.releasedate.setReadOnly(True)
-        self.label_releasedate = QLabel(self.GeneralTab)
-        self.label_releasedate.setObjectName(u"label_releasedate")
-        self.label_releasedate.setGeometry(QRect(10, 181, 66, 22))
         self.statusIcon = QLabel(self.GeneralTab)
         self.statusIcon.setObjectName(u"statusIcon")
         self.statusIcon.setGeometry(QRect(120, 0, 16, 16))
         self.statusIcon.setMaximumSize(QSize(30, 30))
         self.statusIcon.setScaledContents(True)
         self.statusIcon.setMargin(3)
+        self.formLayoutWidget = QWidget(self.GeneralTab)
+        self.formLayoutWidget.setObjectName(u"formLayoutWidget")
+        self.formLayoutWidget.setGeometry(QRect(10, 100, 223, 131))
+        self.formLayout = QFormLayout(self.formLayoutWidget)
+        self.formLayout.setObjectName(u"formLayout")
+        self.formLayout.setContentsMargins(0, 0, 0, 0)
+        self.label_appname = QLabel(self.formLayoutWidget)
+        self.label_appname.setObjectName(u"label_appname")
+
+        self.formLayout.setWidget(0, QFormLayout.LabelRole, self.label_appname)
+
+        self.appname = QLineEdit(self.formLayoutWidget)
+        self.appname.setObjectName(u"appname")
+        self.appname.setMinimumSize(QSize(149, 20))
+        self.appname.setEchoMode(QLineEdit.Normal)
+        self.appname.setReadOnly(True)
+
+        self.formLayout.setWidget(0, QFormLayout.FieldRole, self.appname)
+
+        self.label_version = QLabel(self.formLayoutWidget)
+        self.label_version.setObjectName(u"label_version")
+
+        self.formLayout.setWidget(1, QFormLayout.LabelRole, self.label_version)
+
+        self.version = QLineEdit(self.formLayoutWidget)
+        self.version.setObjectName(u"version")
+        self.version.setMinimumSize(QSize(149, 20))
+        self.version.setEchoMode(QLineEdit.Normal)
+        self.version.setReadOnly(True)
+
+        self.formLayout.setWidget(1, QFormLayout.FieldRole, self.version)
+
+        self.label_developer = QLabel(self.formLayoutWidget)
+        self.label_developer.setObjectName(u"label_developer")
+
+        self.formLayout.setWidget(2, QFormLayout.LabelRole, self.label_developer)
+
+        self.developer = QLineEdit(self.formLayoutWidget)
+        self.developer.setObjectName(u"developer")
+        self.developer.setEchoMode(QLineEdit.Normal)
+        self.developer.setReadOnly(True)
+
+        self.formLayout.setWidget(2, QFormLayout.FieldRole, self.developer)
+
+        self.label_releasedate = QLabel(self.formLayoutWidget)
+        self.label_releasedate.setObjectName(u"label_releasedate")
+
+        self.formLayout.setWidget(3, QFormLayout.LabelRole, self.label_releasedate)
+
+        self.releasedate = QLineEdit(self.formLayoutWidget)
+        self.releasedate.setObjectName(u"releasedate")
+        self.releasedate.setMinimumSize(QSize(149, 20))
+        self.releasedate.setEchoMode(QLineEdit.Normal)
+        self.releasedate.setReadOnly(True)
+
+        self.formLayout.setWidget(3, QFormLayout.FieldRole, self.releasedate)
+
+        self.label_filesize = QLabel(self.formLayoutWidget)
+        self.label_filesize.setObjectName(u"label_filesize")
+
+        self.formLayout.setWidget(4, QFormLayout.LabelRole, self.label_filesize)
+
+        self.filesize = QLineEdit(self.formLayoutWidget)
+        self.filesize.setObjectName(u"filesize")
+        self.filesize.setMinimumSize(QSize(149, 20))
+        self.filesize.setEchoMode(QLineEdit.Normal)
+        self.filesize.setReadOnly(True)
+
+        self.formLayout.setWidget(4, QFormLayout.FieldRole, self.filesize)
+
         self.tabMetadata.addTab(self.GeneralTab, "")
         self.statusIcon.raise_()
         self.label_description.raise_()
@@ -370,16 +396,7 @@ class Ui_MainWindow(object):
         self.progressBar.raise_()
         self.HomebrewIconLabel.raise_()
         self.HomebrewCategoryLabel.raise_()
-        self.filesize.raise_()
-        self.version.raise_()
-        self.label_version.raise_()
-        self.label_appname.raise_()
-        self.label_developer.raise_()
-        self.label_filesize.raise_()
-        self.appname.raise_()
-        self.developer.raise_()
-        self.releasedate.raise_()
-        self.label_releasedate.raise_()
+        self.formLayoutWidget.raise_()
         self.Description = QWidget()
         self.Description.setObjectName(u"Description")
         self.longDescriptionBrowser = QTextBrowser(self.Description)
@@ -546,14 +563,14 @@ class Ui_MainWindow(object):
         self.label_displayname.setText(QCoreApplication.translate("MainWindow", u"Title", None))
         self.HomebrewIconLabel.setText(QCoreApplication.translate("MainWindow", u"No homebrew icon. Aw.", None))
         self.HomebrewCategoryLabel.setText(QCoreApplication.translate("MainWindow", u"Category", None))
-        self.label_version.setText(QCoreApplication.translate("MainWindow", u"Version", None))
+        self.statusIcon.setText("")
         self.label_appname.setText(QCoreApplication.translate("MainWindow", u"App Name", None))
-        self.label_developer.setText(QCoreApplication.translate("MainWindow", u"Developer", None))
-        self.label_filesize.setText(QCoreApplication.translate("MainWindow", u"File Size", None))
         self.appname.setText("")
         self.appname.setPlaceholderText("")
+        self.label_version.setText(QCoreApplication.translate("MainWindow", u"Version", None))
+        self.label_developer.setText(QCoreApplication.translate("MainWindow", u"Developer", None))
         self.label_releasedate.setText(QCoreApplication.translate("MainWindow", u"Release Date", None))
-        self.statusIcon.setText("")
+        self.label_filesize.setText(QCoreApplication.translate("MainWindow", u"File Size", None))
         self.tabMetadata.setTabText(self.tabMetadata.indexOf(self.GeneralTab), QCoreApplication.translate("MainWindow", u"General", None))
 #if QT_CONFIG(accessibility)
         self.Description.setAccessibleName(QCoreApplication.translate("MainWindow", u"tabcontent", None))
