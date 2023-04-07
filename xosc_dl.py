@@ -285,7 +285,7 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
 
             # Release Date
             self.ui.releasedate.setText(
-                datetime.fromtimestamp(int(self.current_app["release_date"])).strftime('%B %e, %Y at %R'))
+                datetime.fromtimestamp(int(self.current_app["release_date"])).strftime('%B %e, %Y'))
 
             # Peripherals
             peripherals = metadata.parse_peripherals(self.current_app["controllers"])
