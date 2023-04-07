@@ -22,7 +22,7 @@ from PIL import Image
 from PySide6 import QtGui, QtCore
 from PySide6.QtCore import Qt, QObject, QSize
 from PySide6.QtGui import QIcon, QColor, QPixmap, QMovie, QDesktopServices
-from PySide6.QtWidgets import QApplication, QMainWindow, QInputDialog, QLineEdit, QMessageBox, QSplashScreen, \
+from PySide6.QtWidgets import QApplication, QMainWindow, QInputDialog, QLineEdit, QMessageBox, \
     QListWidgetItem, QFileDialog
 
 import gui.ui_united
@@ -135,6 +135,9 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         # Load announcement banner
         t = threading.Thread(target=self.load_announcement_banner, daemon=True)
         t.start()
+
+        # Close splash
+        splash.finish(self)
 
     def update_splash_status(self, text):
         # if anyone has a better idea how to go about this.. will be appreciated

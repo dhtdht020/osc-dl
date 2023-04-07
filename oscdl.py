@@ -2,7 +2,6 @@
 
 if __name__ == "__main__":
     import sys
-    import platform
 
     from PySide6 import QtGui
     from PySide6.QtWidgets import QApplication, QSplashScreen
