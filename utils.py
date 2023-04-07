@@ -42,3 +42,13 @@ def file_size(length):
         length /= 1024.0
 
     return "%.1f%s%s" % (length, 'Yi', "B")
+
+
+# Returns mount point for a path in a given device
+def get_mount_point(path):
+    path = os.path.abspath(path)
+
+    while not os.path.ismount(path):
+        path = os.path.dirname(path)
+
+    return path

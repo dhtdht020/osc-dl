@@ -437,10 +437,12 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
 
                 if extract_root:
                     self.status_message("Extracting..")
+
                     with zipfile.ZipFile(save_location, 'r') as zip_file:
-                        root_path = save_location.split("/")[0]
                         # unzip to root_path
+                        root_path = utils.get_mount_point(save_location)
                         zip_file.extractall(root_path)
+
                     os.remove(save_location)
 
             self.ui.progressBar.setValue(total_size)
