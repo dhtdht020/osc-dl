@@ -187,7 +187,6 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         index = self.ui.ReposComboBox.currentIndex()
         self.repo_data = self.ui.ReposComboBox.itemData(index, Qt.UserRole)
         self.ui.RepositoryNameLabel.setText(self.repo_data[0])
-        self.ui.RepositoryDescLabel.setText(self.repo_data[2])
 
     def assign_initial_actions(self):
         self.update_splash_status("Finishing (1/2)..")
@@ -480,7 +479,7 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
     def wiiload_button(self):
         if not utils.app_has_extra_directories(self.current_app) and QMessageBox.question(self, "Send to Wii", "This app contains extra files and directories that may need configuration. Send anyway?") == QMessageBox.StandardButton.No:
             return
-        
+
         dialog = WiiLoadDialog(self.current_app, parent=self)
         status = dialog.exec()
         if not status:
@@ -640,7 +639,6 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         self.repo_data = self.ui.ReposComboBox.itemData(index, Qt.UserRole)
         self.current_repo = self.repos.get(self.repo_data[3])
         self.ui.RepositoryNameLabel.setText(self.repo_data[0])
-        self.ui.RepositoryDescLabel.setText(self.repo_data[2])
         self.status_message(f"Loading {self.current_repo['host']} repository..")
         logging.info(f"Loading {self.current_repo['host']}")
         self.repopulate()
@@ -650,7 +648,6 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         self.ui.ReturnToMainBtn.setHidden(True)
         self.ui.CategoriesComboBox.setHidden(False)
         self.ui.ReposComboBox.setHidden(False)
-        self.ui.RepositoryLabel.setHidden(False)
         self.ui.SearchBar.setText("")
 
         self.status_message("Reloading list..")
@@ -658,7 +655,6 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         index = self.ui.ReposComboBox.currentIndex()
         repo_data = self.ui.ReposComboBox.itemData(index, Qt.UserRole)
         self.ui.RepositoryNameLabel.setText(repo_data[0])
-        self.ui.RepositoryDescLabel.setText(repo_data[2])
         try:
             self.ui.CategoriesComboBox.currentIndexChanged.disconnect(self.changed_category)
         except Exception:
@@ -890,13 +886,11 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         # Hide unneeded elements
         self.ui.CategoriesComboBox.setHidden(True)
         self.ui.ReposComboBox.setHidden(True)
-        self.ui.RepositoryLabel.setHidden(True)
         self.ui.ReturnToMainBtn.setHidden(False)
         self.ui.ViewDevWebsite.setHidden(False)
 
         # Set information
         self.ui.RepositoryNameLabel.setText(f"Developer Profile: {self.current_developer}")
-        self.ui.RepositoryDescLabel.setText(f"Showing all apps made by the developer \"{self.current_developer}\".")
 
         # Set website URL
         self.ui.ViewDevWebsite.setText(f'<a href="https://oscwii.org/library?coder={self.current_developer}">'
@@ -919,11 +913,9 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         self.ui.ViewDevWebsite.setHidden(True)
         self.ui.CategoriesComboBox.setHidden(False)
         self.ui.ReposComboBox.setHidden(False)
-        self.ui.RepositoryLabel.setHidden(False)
 
         # set repo title and description
         self.ui.RepositoryNameLabel.setText(self.repo_data[0])
-        self.ui.RepositoryDescLabel.setText(self.repo_data[2])
 
         self.current_developer = ""
 
