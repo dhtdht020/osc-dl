@@ -51,22 +51,13 @@ if updater.is_frozen() or utils.is_test("debug"):
     logging.getLogger("PIL.PngImagePlugin").setLevel(logging.CRITICAL + 1)
 
 
-def update_splash_status(text):
-    # if anyone has a better idea how to go about this.. will be appreciated
-    try:
-        if not splash.isHidden():
-            splash.showMessage(text, color=QColor("White"))
-    except NameError:
-        pass
-
-
 # G U I
 class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
     IconSignal = QtCore.Signal(QPixmap)
     LongDescriptionSignal = QtCore.Signal(str)
     AnnouncementBannerHidden = QtCore.Signal(bool)
 
-    def __init__(self, test_mode=False):
+    def __init__(self, app=None, splash=None, test_mode=False):
         super(MainWindow, self).__init__()
         self.repos = None
         self.apps = None
@@ -80,6 +71,8 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         self.message.setText("Please wait for the operation to finish.")
         self.message.setModal(True)
 
+        self.app = app
+        self.splash = splash
         self.test_mode = test_mode
 
         # Set title and icon of window
@@ -143,6 +136,14 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         t = threading.Thread(target=self.load_announcement_banner, daemon=True)
         t.start()
 
+    def update_splash_status(self, text):
+        # if anyone has a better idea how to go about this.. will be appreciated
+        try:
+            if not self.splash.isHidden():
+                self.splash.showMessage(text, color=QColor("White"))
+        except NameError:
+            pass
+
     def about_dialog(self):
         QMessageBox.about(self, f"About OSCDL",
                           f"<b>Open Shop Channel Downloader v{updater.current_version()} {updater.get_branch()}</b><br>"
@@ -162,7 +163,7 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
 
     # populate UI elements
     def populate(self):
-        update_splash_status("Loading contents..")
+        self.update_splash_status("Loading contents..")
         self.ui.actionAbout_OSC_DL.setText(f"About OSCDL v{VERSION} by dhtdht020")
         self.populate_repositories()
         self.populate_list()
@@ -180,7 +181,7 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
             self.ui.ReposComboBox.addItem(display_name)
             self.ui.ReposComboBox.setItemData(n, [display_name, hostname, description, host], Qt.UserRole)
             n += 1
-            update_splash_status(f"Loaded {n} repositories..")
+            self.update_splash_status(f"Loaded {n} repositories..")
         # set current repository
         self.current_repo = self.repos.get("primary")
         index = self.ui.ReposComboBox.currentIndex()
@@ -189,7 +190,7 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         self.ui.RepositoryDescLabel.setText(self.repo_data[2])
 
     def assign_initial_actions(self):
-        update_splash_status("Finishing (1/2)..")
+        self.update_splash_status("Finishing (1/2)..")
 
         # Connect signals
         # Buttons
@@ -241,7 +242,7 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
 
     # When user selects a different homebrew from the list
     def selection_changed(self):
-        update_splash_status("Finishing (2/2) - Loading first app..")
+        self.update_splash_status("Finishing (2/2) - Loading first app..")
 
         try:
             self.current_app = self.ui.listAppsWidget.currentItem().data(Qt.UserRole)
@@ -430,7 +431,7 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
                         self.status_message(
                             f"Downloading {self.current_app['display_name']} from Open Shop Channel.. ({utils.file_size(self.ui.progressBar.value())}/{utils.file_size(total_size)})")
                         try:
-                            app.processEvents()
+                            self.app.processEvents()
                         except NameError:
                             pass
                         app_data_file.write(data)
@@ -558,7 +559,7 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
                     progress = round(chunk_num / len(chunks) * 50) + 50
                     self.ui.progressBar.setValue(progress)
                     try:
-                        app.processEvents()
+                        self.app.processEvents()
                     except NameError:
                         pass
                 except Exception as e:
@@ -583,7 +584,7 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
             self.ui.progressBar.setMaximum(0)
             while t.is_alive():
                 try:
-                    app.processEvents()
+                    self.app.processEvents()
                 except NameError:
                     pass
             t.join()
@@ -616,7 +617,7 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
             conn.send(c_data)
         except Exception as e:
             logging.error('Error while connecting to the HBC. Close any dialogs on HBC and try again.')
-            QMessageBox.warning(window, 'Connection error',
+            QMessageBox.warning(self, 'Connection error',
                                 'Error while connecting to the HBC. Close any dialogs on HBC and try again.')
             print(f'WiiLoad: {e}')
             self.ui.progressBar.setValue(0)
@@ -669,7 +670,7 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
 
     def populate_list(self):
         try:
-            update_splash_status("Connecting to server..")
+            self.update_splash_status("Connecting to server..")
 
             # Set default icon size
             self.ui.listAppsWidget.setIconSize(QSize(-1, -1))
@@ -701,7 +702,7 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
                         list_item.setIcon(QIcon(resource_path("assets/gui/icons/category/media.png")))
                     elif category == "demos":
                         list_item.setIcon(QIcon(resource_path("assets/gui/icons/category/demo.png")))
-                    update_splash_status(f"Loaded {i} apps..")
+                    self.update_splash_status(f"Loaded {i} apps..")
                     i += 1
                 except IndexError:
                     pass
@@ -1015,7 +1016,7 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
                 # per platform sizing
                 padding = 33
                 category_icon_size = 24
-                if app.style().name() == "fusion":
+                if self.app.style().name() == "fusion":
                     padding = int(padding * 1.5) - 4
                     category_icon_size = int(category_icon_size * 1.5)
 
@@ -1081,25 +1082,8 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
 
 
 if __name__ == "__main__":
-    global app
+    print("!!!!!\n"
+          "The entry point for OSCDL has been changed.\n"
+          "To launch OSCDL, run \"oscdl.py\"\n"
+          "!!!!!")
 
-    if not utils.is_test("qtdark"):
-        app = QApplication()
-    else:
-        app = QApplication([sys.argv[0], '-platform', f'windows:darkmode={sys.argv[2]}'])
-
-    # set windows style for macOS users
-    if platform.system() == "Darwin":
-        app.setStyle('Fusion')
-
-    global splash
-
-    # Splash
-    image = QtGui.QImage(resource_path("assets/gui/splash.png"))
-    splash = QSplashScreen(QtGui.QPixmap(image))
-    splash.show()
-
-    window = MainWindow()
-    window.show()
-    splash.hide()
-    app.exec()
