@@ -950,7 +950,6 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
 
     # load all icons from zip
     def download_app_icons(self):
-        gui_helpers.CURRENTLY_LOADING_ICONS = True
         # Debug info
         original_host = self.current_repo['host']
         logging.debug("Started download of app icons")
@@ -1051,7 +1050,6 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         else:
             self.reset_status()
             logging.warning("Loading of app icons for list failed, continuing without them.")
-        gui_helpers.CURRENTLY_LOADING_ICONS = False
 
     @QtCore.Slot()
     def set_app_icons(self):
@@ -1078,7 +1076,7 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
             closeEvent.accept()
 
     def ongoingOperations(self):
-        return gui_helpers.CURRENTLY_SENDING or gui_helpers.IN_DOWNLOAD_DIALOG or gui_helpers.CURRENTLY_LOADING_ICONS
+        return gui_helpers.CURRENTLY_SENDING or gui_helpers.IN_DOWNLOAD_DIALOG
 
 
 if __name__ == "__main__":
