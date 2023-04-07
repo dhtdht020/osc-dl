@@ -17,7 +17,7 @@ Make sure Python 3 is installed and used.
 1. `git clone https://github.com/dhtdht020/osc-dl.git`
 2. `cd osc-dl`
 2. `pip3 install -r requirements.txt`
-3. `python3 xosc_dl.py`
+3. `python3 oscdl.py`
 
 ##### Manual Download of CLI version:
 

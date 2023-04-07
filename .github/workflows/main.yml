@@ -46,7 +46,7 @@ jobs:
     - name: Install pyinstaller
       run: pip install git+https://github.com/pyinstaller/pyinstaller.git@develop
     - name: Build Graphical Open Shop Channel Downloader
-      run: pyinstaller xosc_dl.spec
+      run: pyinstaller oscdl.spec
     - name: Publish Build Artifacts
       uses: actions/upload-artifact@master
       with:
