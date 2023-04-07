@@ -1,4 +1,7 @@
 # Entry point for OSCDL's GUI
+import logging
+
+import updater
 
 if __name__ == "__main__":
     import sys
@@ -9,6 +12,14 @@ if __name__ == "__main__":
     import utils
     import xosc_dl
 
+    # Actions to perform only when the program is frozen:
+    if updater.is_frozen() or utils.is_test("debug"):
+        logging.basicConfig(level=logging.DEBUG)
+        logging.info(f"Open Shop Channel Downloader v{updater.current_version()} {updater.get_branch()}")
+        logging.info(f"OSCDL, Open Source Software by dhtdht020. https://github.com/dhtdht020.\n\n\n")
+        logging.getLogger("PIL.PngImagePlugin").setLevel(logging.CRITICAL + 1)
+
+    # Initialize app
     if not utils.is_test("qtdark"):
         app = QApplication()
     else:

@@ -1,5 +1,4 @@
 import io
-import platform
 import threading
 import time
 import zipfile
@@ -36,22 +35,7 @@ from gui.DownloadLocationDialog import DownloadLocationDialog
 from gui.SendDialog import WiiLoadDialog
 from utils import resource_path
 
-VERSION = updater.current_version()
-BRANCH = updater.get_branch()
-if BRANCH == "Stable":
-    DISPLAY_VERSION = VERSION
-else:
-    DISPLAY_VERSION = VERSION + " " + BRANCH
 
-# Actions to perform only when the program is frozen:
-if updater.is_frozen() or utils.is_test("debug"):
-    logging.basicConfig(level=logging.DEBUG)
-    logging.info(f"Open Shop Channel Downloader v{updater.current_version()} {updater.get_branch()}")
-    logging.info(f"OSCDL, Open Source Software by dhtdht020. https://github.com/dhtdht020.\n\n\n")
-    logging.getLogger("PIL.PngImagePlugin").setLevel(logging.CRITICAL + 1)
-
-
-# G U I
 class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
     IconSignal = QtCore.Signal(QPixmap)
     LongDescriptionSignal = QtCore.Signal(str)
@@ -76,7 +60,7 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         self.test_mode = test_mode
 
         # Set title and icon of window
-        self.setWindowTitle(f"Open Shop Channel Downloader v{DISPLAY_VERSION} - Library")
+        self.setWindowTitle(f"Open Shop Channel Downloader v{updater.current_version()} - Library")
         app_icon = QIcon(resource_path("assets/gui/windowicon.png"))
         self.setWindowIcon(app_icon)
 
@@ -167,7 +151,7 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
     # populate UI elements
     def populate(self):
         self.update_splash_status("Loading contents..")
-        self.ui.actionAbout_OSC_DL.setText(f"About OSCDL v{VERSION} by dhtdht020")
+        self.ui.actionAbout_OSC_DL.setText(f"About OSCDL v{updater.current_version()} by dhtdht020")
         self.populate_repositories()
         self.populate_list()
         self.assign_initial_actions()
@@ -730,7 +714,7 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         logging.basicConfig(filename='oscdl-gui.log', level=logging.DEBUG,
                             format="%(asctime)s | %(levelname)s:%(name)s:%(message)s")
         logging.info('Enabled log file. Hello!')
-        logging.info("OSCDL v" + DISPLAY_VERSION)
+        logging.info(f"OSCDL v{updater.current_version()} {updater.get_branch()}")
         logging.info(updater.get_type())
         self.status_message('DEBUG: Enabled log file. To disable, exit OSCDL.')
         self.ui.actionEnable_Log_File.setDisabled(True)
@@ -1079,4 +1063,3 @@ if __name__ == "__main__":
           "The entry point for OSCDL has been changed.\n"
           "To launch OSCDL, run \"oscdl.py\"\n"
           "!!!!!")
-
