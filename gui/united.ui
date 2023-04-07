@@ -73,21 +73,6 @@
            <number>0</number>
           </property>
           <item>
-           <widget class="QLabel" name="RepositoryNameLabel">
-            <property name="font">
-             <font>
-              <bold>true</bold>
-             </font>
-            </property>
-            <property name="styleSheet">
-             <string notr="true"/>
-            </property>
-            <property name="text">
-             <string>Repository Name</string>
-            </property>
-           </widget>
-          </item>
-          <item>
            <widget class="QLabel" name="ViewDevWebsite">
             <property name="sizePolicy">
              <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
@@ -113,12 +98,6 @@
            <widget class="QComboBox" name="ReposComboBox">
             <property name="enabled">
              <bool>true</bool>
-            </property>
-            <property name="maximumSize">
-             <size>
-              <width>161</width>
-              <height>16777215</height>
-             </size>
             </property>
            </widget>
           </item>

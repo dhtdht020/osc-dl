@@ -173,7 +173,6 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         self.current_repo = self.repos.get("primary")
         index = self.ui.ReposComboBox.currentIndex()
         self.repo_data = self.ui.ReposComboBox.itemData(index, Qt.UserRole)
-        self.ui.RepositoryNameLabel.setText(self.repo_data[0])
 
     def assign_initial_actions(self):
         self.update_splash_status("Finishing (1/2)..")
@@ -625,7 +624,6 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         index = self.ui.ReposComboBox.currentIndex()
         self.repo_data = self.ui.ReposComboBox.itemData(index, Qt.UserRole)
         self.current_repo = self.repos.get(self.repo_data[3])
-        self.ui.RepositoryNameLabel.setText(self.repo_data[0])
         self.status_message(f"Loading {self.current_repo['host']} repository..")
         logging.info(f"Loading {self.current_repo['host']}")
         self.repopulate()
@@ -641,7 +639,6 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         self.status_icon("loading")
         index = self.ui.ReposComboBox.currentIndex()
         repo_data = self.ui.ReposComboBox.itemData(index, Qt.UserRole)
-        self.ui.RepositoryNameLabel.setText(repo_data[0])
         try:
             self.ui.CategoriesComboBox.currentIndexChanged.disconnect(self.changed_category)
         except Exception:
@@ -871,13 +868,12 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         self.ui.CategoriesComboBox.setCurrentIndex(0)
 
         # Hide unneeded elements
-        self.ui.CategoriesComboBox.setHidden(True)
         self.ui.ReposComboBox.setHidden(True)
         self.ui.ReturnToMainBtn.setHidden(False)
         self.ui.ViewDevWebsite.setHidden(False)
 
         # Set information
-        self.ui.RepositoryNameLabel.setText(f"Developer Profile: {self.current_developer}")
+        self.ui.AppsLibraryBox.setTitle(f"Developer Profile: {self.current_developer}")
 
         # Set website URL
         self.ui.ViewDevWebsite.setText(f'<a href="https://oscwii.org/library?coder={self.current_developer}">'
@@ -898,11 +894,10 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         # Unhide unneeded elements
         self.ui.ReturnToMainBtn.setHidden(True)
         self.ui.ViewDevWebsite.setHidden(True)
-        self.ui.CategoriesComboBox.setHidden(False)
         self.ui.ReposComboBox.setHidden(False)
 
         # set repo title and description
-        self.ui.RepositoryNameLabel.setText(self.repo_data[0])
+        self.ui.AppsLibraryBox.setTitle("Apps Library")
 
         self.current_developer = ""
 

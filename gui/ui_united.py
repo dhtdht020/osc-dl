@@ -84,15 +84,6 @@ class Ui_MainWindow(object):
         self.horizontalLayout_3 = QHBoxLayout(self.LibraryTopFrameTop)
         self.horizontalLayout_3.setObjectName(u"horizontalLayout_3")
         self.horizontalLayout_3.setContentsMargins(0, 0, 0, 0)
-        self.RepositoryNameLabel = QLabel(self.LibraryTopFrameTop)
-        self.RepositoryNameLabel.setObjectName(u"RepositoryNameLabel")
-        font = QFont()
-        font.setBold(True)
-        self.RepositoryNameLabel.setFont(font)
-        self.RepositoryNameLabel.setStyleSheet(u"")
-
-        self.horizontalLayout_3.addWidget(self.RepositoryNameLabel)
-
         self.ViewDevWebsite = QLabel(self.LibraryTopFrameTop)
         self.ViewDevWebsite.setObjectName(u"ViewDevWebsite")
         sizePolicy2 = QSizePolicy(QSizePolicy.Maximum, QSizePolicy.Preferred)
@@ -109,7 +100,6 @@ class Ui_MainWindow(object):
         self.ReposComboBox = QComboBox(self.LibraryTopFrameTop)
         self.ReposComboBox.setObjectName(u"ReposComboBox")
         self.ReposComboBox.setEnabled(True)
-        self.ReposComboBox.setMaximumSize(QSize(161, 16777215))
 
         self.horizontalLayout_3.addWidget(self.ReposComboBox)
 
@@ -251,6 +241,8 @@ class Ui_MainWindow(object):
         self.label_displayname.setObjectName(u"label_displayname")
         self.label_displayname.setGeometry(QRect(10, 60, 221, 16))
         self.label_displayname.setMaximumSize(QSize(221, 16777215))
+        font = QFont()
+        font.setBold(True)
         self.label_displayname.setFont(font)
         self.label_displayname.setWordWrap(True)
         self.label_displayname.setTextInteractionFlags(Qt.LinksAccessibleByMouse|Qt.TextSelectableByMouse)
@@ -493,7 +485,6 @@ class Ui_MainWindow(object):
         self.centralwidget.setAccessibleName(QCoreApplication.translate("MainWindow", u"centralcontainer", None))
 #endif // QT_CONFIG(accessibility)
         self.AppsLibraryBox.setTitle(QCoreApplication.translate("MainWindow", u"Apps Library", None))
-        self.RepositoryNameLabel.setText(QCoreApplication.translate("MainWindow", u"Repository Name", None))
         self.ViewDevWebsite.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p><a href=\"https://oscwii.org/library?coder=\"><span style=\" text-decoration: underline; color:#0000ff;\">Profile on Website</span></a></p></body></html>", None))
         self.AppsAmountLabel.setText(QCoreApplication.translate("MainWindow", u"0 Apps", None))
         self.ReturnToMainBtn.setText(QCoreApplication.translate("MainWindow", u"Return to All Apps", None))
