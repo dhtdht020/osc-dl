@@ -16,8 +16,8 @@ from PySide6.QtGui import (QAction, QBrush, QColor, QConicalGradient,
     QIcon, QImage, QKeySequence, QLinearGradient,
     QPainter, QPalette, QPixmap, QRadialGradient,
     QTransform)
-from PySide6.QtWidgets import (QAbstractItemView, QApplication, QComboBox, QFormLayout,
-    QFrame, QGroupBox, QHBoxLayout, QLabel,
+from PySide6.QtWidgets import (QAbstractItemView, QApplication, QComboBox, QFrame,
+    QGridLayout, QGroupBox, QHBoxLayout, QLabel,
     QLineEdit, QListView, QListWidget, QListWidgetItem,
     QMainWindow, QMenu, QMenuBar, QProgressBar,
     QPushButton, QSizePolicy, QStatusBar, QTabWidget,
@@ -319,75 +319,71 @@ class Ui_MainWindow(object):
         self.statusIcon.setMaximumSize(QSize(30, 30))
         self.statusIcon.setScaledContents(True)
         self.statusIcon.setMargin(3)
-        self.formLayoutWidget = QWidget(self.GeneralTab)
-        self.formLayoutWidget.setObjectName(u"formLayoutWidget")
-        self.formLayoutWidget.setGeometry(QRect(10, 100, 223, 131))
-        self.formLayout = QFormLayout(self.formLayoutWidget)
-        self.formLayout.setObjectName(u"formLayout")
-        self.formLayout.setContentsMargins(0, 0, 0, 0)
-        self.label_appname = QLabel(self.formLayoutWidget)
+        self.gridLayoutWidget = QWidget(self.GeneralTab)
+        self.gridLayoutWidget.setObjectName(u"gridLayoutWidget")
+        self.gridLayoutWidget.setGeometry(QRect(10, 100, 223, 136))
+        self.gridLayout = QGridLayout(self.gridLayoutWidget)
+        self.gridLayout.setObjectName(u"gridLayout")
+        self.gridLayout.setContentsMargins(0, 0, 0, 0)
+        self.label_releasedate = QLabel(self.gridLayoutWidget)
+        self.label_releasedate.setObjectName(u"label_releasedate")
+
+        self.gridLayout.addWidget(self.label_releasedate, 3, 0, 1, 1)
+
+        self.label_filesize = QLabel(self.gridLayoutWidget)
+        self.label_filesize.setObjectName(u"label_filesize")
+
+        self.gridLayout.addWidget(self.label_filesize, 4, 0, 1, 1)
+
+        self.label_version = QLabel(self.gridLayoutWidget)
+        self.label_version.setObjectName(u"label_version")
+
+        self.gridLayout.addWidget(self.label_version, 1, 0, 1, 1)
+
+        self.label_developer = QLabel(self.gridLayoutWidget)
+        self.label_developer.setObjectName(u"label_developer")
+
+        self.gridLayout.addWidget(self.label_developer, 2, 0, 1, 1)
+
+        self.label_appname = QLabel(self.gridLayoutWidget)
         self.label_appname.setObjectName(u"label_appname")
 
-        self.formLayout.setWidget(0, QFormLayout.LabelRole, self.label_appname)
+        self.gridLayout.addWidget(self.label_appname, 0, 0, 1, 1)
 
-        self.appname = QLineEdit(self.formLayoutWidget)
+        self.appname = QLineEdit(self.gridLayoutWidget)
         self.appname.setObjectName(u"appname")
-        self.appname.setMinimumSize(QSize(149, 20))
         self.appname.setEchoMode(QLineEdit.Normal)
         self.appname.setReadOnly(True)
 
-        self.formLayout.setWidget(0, QFormLayout.FieldRole, self.appname)
+        self.gridLayout.addWidget(self.appname, 0, 1, 1, 1)
 
-        self.label_version = QLabel(self.formLayoutWidget)
-        self.label_version.setObjectName(u"label_version")
-
-        self.formLayout.setWidget(1, QFormLayout.LabelRole, self.label_version)
-
-        self.version = QLineEdit(self.formLayoutWidget)
+        self.version = QLineEdit(self.gridLayoutWidget)
         self.version.setObjectName(u"version")
-        self.version.setMinimumSize(QSize(149, 20))
         self.version.setEchoMode(QLineEdit.Normal)
         self.version.setReadOnly(True)
 
-        self.formLayout.setWidget(1, QFormLayout.FieldRole, self.version)
+        self.gridLayout.addWidget(self.version, 1, 1, 1, 1)
 
-        self.label_developer = QLabel(self.formLayoutWidget)
-        self.label_developer.setObjectName(u"label_developer")
-
-        self.formLayout.setWidget(2, QFormLayout.LabelRole, self.label_developer)
-
-        self.developer = QLineEdit(self.formLayoutWidget)
+        self.developer = QLineEdit(self.gridLayoutWidget)
         self.developer.setObjectName(u"developer")
         self.developer.setEchoMode(QLineEdit.Normal)
         self.developer.setReadOnly(True)
 
-        self.formLayout.setWidget(2, QFormLayout.FieldRole, self.developer)
+        self.gridLayout.addWidget(self.developer, 2, 1, 1, 1)
 
-        self.label_releasedate = QLabel(self.formLayoutWidget)
-        self.label_releasedate.setObjectName(u"label_releasedate")
-
-        self.formLayout.setWidget(3, QFormLayout.LabelRole, self.label_releasedate)
-
-        self.releasedate = QLineEdit(self.formLayoutWidget)
+        self.releasedate = QLineEdit(self.gridLayoutWidget)
         self.releasedate.setObjectName(u"releasedate")
-        self.releasedate.setMinimumSize(QSize(149, 20))
         self.releasedate.setEchoMode(QLineEdit.Normal)
         self.releasedate.setReadOnly(True)
 
-        self.formLayout.setWidget(3, QFormLayout.FieldRole, self.releasedate)
+        self.gridLayout.addWidget(self.releasedate, 3, 1, 1, 1)
 
-        self.label_filesize = QLabel(self.formLayoutWidget)
-        self.label_filesize.setObjectName(u"label_filesize")
-
-        self.formLayout.setWidget(4, QFormLayout.LabelRole, self.label_filesize)
-
-        self.filesize = QLineEdit(self.formLayoutWidget)
+        self.filesize = QLineEdit(self.gridLayoutWidget)
         self.filesize.setObjectName(u"filesize")
-        self.filesize.setMinimumSize(QSize(149, 20))
         self.filesize.setEchoMode(QLineEdit.Normal)
         self.filesize.setReadOnly(True)
 
-        self.formLayout.setWidget(4, QFormLayout.FieldRole, self.filesize)
+        self.gridLayout.addWidget(self.filesize, 4, 1, 1, 1)
 
         self.tabMetadata.addTab(self.GeneralTab, "")
         self.statusIcon.raise_()
@@ -396,7 +392,7 @@ class Ui_MainWindow(object):
         self.progressBar.raise_()
         self.HomebrewIconLabel.raise_()
         self.HomebrewCategoryLabel.raise_()
-        self.formLayoutWidget.raise_()
+        self.gridLayoutWidget.raise_()
         self.Description = QWidget()
         self.Description.setObjectName(u"Description")
         self.longDescriptionBrowser = QTextBrowser(self.Description)
@@ -564,13 +560,13 @@ class Ui_MainWindow(object):
         self.HomebrewIconLabel.setText(QCoreApplication.translate("MainWindow", u"No homebrew icon. Aw.", None))
         self.HomebrewCategoryLabel.setText(QCoreApplication.translate("MainWindow", u"Category", None))
         self.statusIcon.setText("")
+        self.label_releasedate.setText(QCoreApplication.translate("MainWindow", u"Release Date", None))
+        self.label_filesize.setText(QCoreApplication.translate("MainWindow", u"File Size", None))
+        self.label_version.setText(QCoreApplication.translate("MainWindow", u"Version", None))
+        self.label_developer.setText(QCoreApplication.translate("MainWindow", u"Developer", None))
         self.label_appname.setText(QCoreApplication.translate("MainWindow", u"App Name", None))
         self.appname.setText("")
         self.appname.setPlaceholderText("")
-        self.label_version.setText(QCoreApplication.translate("MainWindow", u"Version", None))
-        self.label_developer.setText(QCoreApplication.translate("MainWindow", u"Developer", None))
-        self.label_releasedate.setText(QCoreApplication.translate("MainWindow", u"Release Date", None))
-        self.label_filesize.setText(QCoreApplication.translate("MainWindow", u"File Size", None))
         self.tabMetadata.setTabText(self.tabMetadata.indexOf(self.GeneralTab), QCoreApplication.translate("MainWindow", u"General", None))
 #if QT_CONFIG(accessibility)
         self.Description.setAccessibleName(QCoreApplication.translate("MainWindow", u"tabcontent", None))

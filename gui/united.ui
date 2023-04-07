@@ -666,16 +666,44 @@ background-color: rgba(255, 255, 255, 0);
              <number>3</number>
             </property>
            </widget>
-           <widget class="QWidget" name="formLayoutWidget">
+           <widget class="QWidget" name="gridLayoutWidget">
             <property name="geometry">
              <rect>
               <x>10</x>
               <y>100</y>
               <width>223</width>
-              <height>131</height>
+              <height>136</height>
              </rect>
             </property>
-            <layout class="QFormLayout" name="formLayout">
+            <layout class="QGridLayout" name="gridLayout">
+             <item row="3" column="0">
+              <widget class="QLabel" name="label_releasedate">
+               <property name="text">
+                <string>Release Date</string>
+               </property>
+              </widget>
+             </item>
+             <item row="4" column="0">
+              <widget class="QLabel" name="label_filesize">
+               <property name="text">
+                <string>File Size</string>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="0">
+              <widget class="QLabel" name="label_version">
+               <property name="text">
+                <string>Version</string>
+               </property>
+              </widget>
+             </item>
+             <item row="2" column="0">
+              <widget class="QLabel" name="label_developer">
+               <property name="text">
+                <string>Developer</string>
+               </property>
+              </widget>
+             </item>
              <item row="0" column="0">
               <widget class="QLabel" name="label_appname">
                <property name="text">
@@ -685,12 +713,6 @@ background-color: rgba(255, 255, 255, 0);
              </item>
              <item row="0" column="1">
               <widget class="QLineEdit" name="appname">
-               <property name="minimumSize">
-                <size>
-                 <width>149</width>
-                 <height>20</height>
-                </size>
-               </property>
                <property name="text">
                 <string/>
                </property>
@@ -705,33 +727,13 @@ background-color: rgba(255, 255, 255, 0);
                </property>
               </widget>
              </item>
-             <item row="1" column="0">
-              <widget class="QLabel" name="label_version">
-               <property name="text">
-                <string>Version</string>
-               </property>
-              </widget>
-             </item>
              <item row="1" column="1">
               <widget class="QLineEdit" name="version">
-               <property name="minimumSize">
-                <size>
-                 <width>149</width>
-                 <height>20</height>
-                </size>
-               </property>
                <property name="echoMode">
                 <enum>QLineEdit::Normal</enum>
                </property>
                <property name="readOnly">
                 <bool>true</bool>
-               </property>
-              </widget>
-             </item>
-             <item row="2" column="0">
-              <widget class="QLabel" name="label_developer">
-               <property name="text">
-                <string>Developer</string>
                </property>
               </widget>
              </item>
@@ -745,21 +747,8 @@ background-color: rgba(255, 255, 255, 0);
                </property>
               </widget>
              </item>
-             <item row="3" column="0">
-              <widget class="QLabel" name="label_releasedate">
-               <property name="text">
-                <string>Release Date</string>
-               </property>
-              </widget>
-             </item>
              <item row="3" column="1">
               <widget class="QLineEdit" name="releasedate">
-               <property name="minimumSize">
-                <size>
-                 <width>149</width>
-                 <height>20</height>
-                </size>
-               </property>
                <property name="echoMode">
                 <enum>QLineEdit::Normal</enum>
                </property>
@@ -768,21 +757,8 @@ background-color: rgba(255, 255, 255, 0);
                </property>
               </widget>
              </item>
-             <item row="4" column="0">
-              <widget class="QLabel" name="label_filesize">
-               <property name="text">
-                <string>File Size</string>
-               </property>
-              </widget>
-             </item>
              <item row="4" column="1">
               <widget class="QLineEdit" name="filesize">
-               <property name="minimumSize">
-                <size>
-                 <width>149</width>
-                 <height>20</height>
-                </size>
-               </property>
                <property name="echoMode">
                 <enum>QLineEdit::Normal</enum>
                </property>
@@ -799,7 +775,7 @@ background-color: rgba(255, 255, 255, 0);
            <zorder>progressBar</zorder>
            <zorder>HomebrewIconLabel</zorder>
            <zorder>HomebrewCategoryLabel</zorder>
-           <zorder>formLayoutWidget</zorder>
+           <zorder>gridLayoutWidget</zorder>
           </widget>
           <widget class="QWidget" name="Description">
            <property name="accessibleName">
