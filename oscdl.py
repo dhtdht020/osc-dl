@@ -15,10 +15,6 @@ if __name__ == "__main__":
     else:
         app = QApplication([sys.argv[0], '-platform', f'windows:darkmode={sys.argv[2]}'])
 
-    # set windows style for macOS users
-    if platform.system() == "Darwin":
-        app.setStyle('Fusion')
-
     # Splash
     image = QtGui.QImage(utils.resource_path("assets/gui/splash.png"))
     splash = QSplashScreen(QtGui.QPixmap(image))
