@@ -24,22 +24,11 @@ class WiiLoadDialog(ui_SendDialog.Ui_Dialog, QDialog):
             self.send_as = "App"
 
         self.setWindowIcon(QIcon(resource_path("assets/gui/icons/send.png")))
-        self.USBDes.setText('Select the serial port for the USB Gecko adapter.<br>'
-                            f'The selected {self.send_as.lower()} will be sent through the USBGecko to your Wii.<br><br>'
-                            f'<b>{self.send_as} to send: {package["display_name"]}</b><br><br>'
-                            'Make sure the USB Gecko device is attached to Slot B.<br>'
-                            'It may appear as /dev/cu.usbserial-GECKUSB0 or COM# depending on your system.<br><br>'
-                            '<b>If the selection below is not blank, your USB Gecko is the selected device.</b>')
 
+        self.AppToSendLabel.setText(f'<b>{self.send_as} to send: {package["display_name"]}</b>')
+
+        self.AppToSendLabel.setTextFormat(Qt.TextFormat.RichText)
         self.USBDes.setTextFormat(Qt.TextFormat.RichText)
-
-        self.IPDes.setText('Enter the IP address of your Wii.<br>'
-                           f'The selected {self.send_as.lower()} will be sent through the network to your Wii.<br><br>'
-                           f'<b>{self.send_as} to send: {package["display_name"]}</b><br><br>'
-                           'To find your Wii\'s IP address:<br>'
-                           '1) Enter the Homebrew Channel.<br>'
-                           '2) Press the home button on the Wii Remote.<br>'
-                           '3) Copy the IP address written in the top left corner.')
         self.IPDes.setTextFormat(Qt.TextFormat.RichText)
 
         self.USBGeckoVIDPID = (0x403, 0x6001)  # USBGecko: VID 0x43, PID 0x6001

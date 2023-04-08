@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'ui_wiiloaddialog.ui'
+## Form generated from reading UI file 'SendDialog.ui'
 ##
-## Created by: Qt User Interface Compiler version 6.4.0
+## Created by: Qt User Interface Compiler version 6.5.0
 ##
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
@@ -24,9 +24,14 @@ class Ui_Dialog(object):
     def setupUi(self, Dialog):
         if not Dialog.objectName():
             Dialog.setObjectName(u"Dialog")
-        Dialog.resize(484, 274)
+        Dialog.resize(484, 262)
         self.verticalLayout = QVBoxLayout(Dialog)
         self.verticalLayout.setObjectName(u"verticalLayout")
+        self.AppToSendLabel = QLabel(Dialog)
+        self.AppToSendLabel.setObjectName(u"AppToSendLabel")
+
+        self.verticalLayout.addWidget(self.AppToSendLabel)
+
         self.verticalLayout_2 = QVBoxLayout()
         self.verticalLayout_2.setObjectName(u"verticalLayout_2")
         self.Tab = QTabWidget(Dialog)
@@ -116,26 +121,19 @@ class Ui_Dialog(object):
         self.buttonBox.rejected.connect(Dialog.reject)
         self.RefreshBTN.clicked.connect(Dialog.update)
 
+        self.Tab.setCurrentIndex(0)
+
+
         QMetaObject.connectSlotsByName(Dialog)
     # setupUi
 
     def retranslateUi(self, Dialog):
         Dialog.setWindowTitle(QCoreApplication.translate("Dialog", u"Wii", None))
-        self.IPDes.setText(QCoreApplication.translate("Dialog", u"Enter the IP address of your Wii.<br>\n"
-"The selected app will be sent through the network to your Wii.<br><br>\n"
-"<b>App to send:</b><br><br>\n"
-"To find your Wii's IP address:<br>\n"
-"1) Enter the Homebrew Channel.<br>\n"
-"2) Press the home button on the Wii Remote.<br>\n"
-"3) Copy the IP address written in the top left corner.", None))
+        self.AppToSendLabel.setText(QCoreApplication.translate("Dialog", u"<html><head/><body><p><span style=\" font-weight:700;\">App to send:</span></p></body></html>", None))
+        self.IPDes.setText(QCoreApplication.translate("Dialog", u"<html><head/><body><p>Enter the IP address of your Wii.<br/>The selected application/theme will be sent through the network to your Wii.<br/><br/>To find your Wii's IP address:<br/>1) Enter the Homebrew Channel.<br/>2) Press the home button on the Wii Remote.<br/>3) Copy the IP address written in the top left corner.</p></body></html>", None))
         self.label_2.setText(QCoreApplication.translate("Dialog", u"IP address (e.g. 192.168.1...):", None))
         self.Tab.setTabText(self.Tab.indexOf(self.tab), QCoreApplication.translate("Dialog", u"Network", None))
-        self.USBDes.setText(QCoreApplication.translate("Dialog", u"Select the serial port for the USB Gecko adapter.<br>\n"
-"The selected app will be sent through the USBGecko to your Wii.<br><br>\n"
-"<b>App to send:</b><br><br>\n"
-"Make sure the USB Gecko device is attached to Slot B.<br>\n"
-"It may appear as /dev/cu.usbserial-GECKUSB0 or COM# depending on your system.<br><br>\n"
-"<b>If the selection below is not blank, your USB Gecko is the selected device.</b>", None))
+        self.USBDes.setText(QCoreApplication.translate("Dialog", u"<html><head/><body><p>Select the serial port for the USB Gecko adapter.<br/>The selected application/theme will be sent through the USB Gecko to your Wii.<br/><br/>Make sure the USB Gecko device is attached to Slot B.<br/>It may appear as /dev/cu.usbserial-GECKUSB0 or COM# depending on your system.<br/><br/><span style=\" font-weight:700;\">If the selection below is not blank, your USB Gecko is the selected device.</span></p></body></html>", None))
         self.label_4.setText(QCoreApplication.translate("Dialog", u"Device port:", None))
         self.RefreshBTN.setText(QCoreApplication.translate("Dialog", u"Refresh", None))
         self.Tab.setTabText(self.Tab.indexOf(self.tab_2), QCoreApplication.translate("Dialog", u"USB Gecko", None))
