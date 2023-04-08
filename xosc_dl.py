@@ -637,8 +637,6 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
 
         self.status_message("Reloading list..")
         self.status_icon("loading")
-        index = self.ui.ReposComboBox.currentIndex()
-        repo_data = self.ui.ReposComboBox.itemData(index, Qt.UserRole)
         try:
             self.ui.CategoriesComboBox.currentIndexChanged.disconnect(self.changed_category)
         except Exception:
