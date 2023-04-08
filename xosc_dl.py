@@ -179,7 +179,13 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
 
         # Connect signals
         # Buttons
-        self.ui.actionCopy_Direct_Link.triggered.connect(self.copy_download_link_button)
+
+        # Copy app download link
+        self.ui.actionCopy_Direct_Link.triggered.connect(
+            lambda: (QApplication.clipboard().setText(self.current_app['zip_url']),
+                     self.status_message(f"Copied the download link for "
+                                         f"\"{self.current_app['display_name']}\" to clipboard")))
+
         self.ui.ViewMetadataBtn.clicked.connect(self.download_app)
         self.ui.WiiLoadButton.clicked.connect(self.wiiload_button)
         self.ui.ReturnToMainBtn.clicked.connect(self.return_to_all_apps_btn)
@@ -203,7 +209,8 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         self.ui.actionSelect_Theme.triggered.connect(self.select_theme_action)
         # -- Clients
         # ---- Homebrew Browser
-        self.ui.actionDownload_HBB_Client_Latest.triggered.connect(partial(self.download_latest_hbb_action))
+        self.ui.actionDownload_HBB_Client_Latest.triggered.connect(
+            lambda: QDesktopServices().openUrl("https://oscwii.org/"))
         # ---- OSCDL
         self.ui.actionCheck_for_Updates.triggered.connect(partial(self.check_for_updates_action))
         self.ui.actionRefresh.triggered.connect(partial(self.repopulate))
@@ -615,10 +622,6 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
             return
         gui_helpers.DATASENT = True
 
-    def copy_download_link_button(self):
-        QApplication.clipboard().setText(self.current_app['zip_url'])
-        self.status_message(f"Copied the download link for \"{self.current_app['display_name']}\" to clipboard")
-
     def changed_host(self):
         self.icons_images = None
         index = self.ui.ReposComboBox.currentIndex()
@@ -724,10 +727,6 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
     # Sort apps in app list in alphabetical, ascending order.
     def sort_list_alphabetically(self):
         self.ui.listAppsWidget.sortItems(Qt.AscendingOrder)
-
-    # Download Homebrew Browser
-    def download_latest_hbb_action(self):
-        QDesktopServices().openUrl("https://oscwii.org/")
 
     # Check for updates dialog
     def check_for_updates_action(self):
