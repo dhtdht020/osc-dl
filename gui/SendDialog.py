@@ -24,10 +24,8 @@ class WiiLoadDialog(ui_SendDialog.Ui_Dialog, QDialog):
             self.send_as = "App"
 
         self.setWindowIcon(QIcon(resource_path("assets/gui/icons/send.png")))
+        self.setWindowTitle(f"Send to Wii - {package['display_name']}")
 
-        self.AppToSendLabel.setText(f'<b>{self.send_as} to send: {package["display_name"]}</b>')
-
-        self.AppToSendLabel.setTextFormat(Qt.TextFormat.RichText)
         self.USBDes.setTextFormat(Qt.TextFormat.RichText)
         self.IPDes.setTextFormat(Qt.TextFormat.RichText)
 
@@ -55,8 +53,6 @@ class WiiLoadDialog(ui_SendDialog.Ui_Dialog, QDialog):
         self.screen = QGuiApplication.primaryScreen()
         self.package = package
         self.selection = None
-
-        self.setWindowTitle(f"Send to Wii")
 
         self.modeSelect = None
         self.address = None

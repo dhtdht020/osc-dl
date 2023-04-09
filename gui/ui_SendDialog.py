@@ -27,11 +27,6 @@ class Ui_Dialog(object):
         Dialog.resize(484, 262)
         self.verticalLayout = QVBoxLayout(Dialog)
         self.verticalLayout.setObjectName(u"verticalLayout")
-        self.AppToSendLabel = QLabel(Dialog)
-        self.AppToSendLabel.setObjectName(u"AppToSendLabel")
-
-        self.verticalLayout.addWidget(self.AppToSendLabel)
-
         self.verticalLayout_2 = QVBoxLayout()
         self.verticalLayout_2.setObjectName(u"verticalLayout_2")
         self.Tab = QTabWidget(Dialog)
@@ -109,6 +104,12 @@ class Ui_Dialog(object):
 
         self.verticalLayout.addLayout(self.verticalLayout_2)
 
+        self.label = QLabel(Dialog)
+        self.label.setObjectName(u"label")
+        self.label.setWordWrap(True)
+
+        self.verticalLayout.addWidget(self.label)
+
         self.buttonBox = QDialogButtonBox(Dialog)
         self.buttonBox.setObjectName(u"buttonBox")
         self.buttonBox.setStandardButtons(QDialogButtonBox.Cancel|QDialogButtonBox.Ok)
@@ -129,7 +130,6 @@ class Ui_Dialog(object):
 
     def retranslateUi(self, Dialog):
         Dialog.setWindowTitle(QCoreApplication.translate("Dialog", u"Wii", None))
-        self.AppToSendLabel.setText(QCoreApplication.translate("Dialog", u"<html><head/><body><p><span style=\" font-weight:700;\">App to send:</span></p></body></html>", None))
         self.IPDes.setText(QCoreApplication.translate("Dialog", u"<html><head/><body><p>Enter the IP address of your Wii.<br/>The selected application/theme will be sent through the network to your Wii.<br/><br/>To find your Wii's IP address:<br/>1) Enter the Homebrew Channel.<br/>2) Press the home button on the Wii Remote.<br/>3) Copy the IP address written in the top left corner.</p></body></html>", None))
         self.label_2.setText(QCoreApplication.translate("Dialog", u"IP address (e.g. 192.168.1...):", None))
         self.Tab.setTabText(self.Tab.indexOf(self.tab), QCoreApplication.translate("Dialog", u"Network", None))
@@ -137,5 +137,6 @@ class Ui_Dialog(object):
         self.label_4.setText(QCoreApplication.translate("Dialog", u"Device port:", None))
         self.RefreshBTN.setText(QCoreApplication.translate("Dialog", u"Refresh", None))
         self.Tab.setTabText(self.Tab.indexOf(self.tab_2), QCoreApplication.translate("Dialog", u"USB Gecko", None))
+        self.label.setText(QCoreApplication.translate("Dialog", u"The Homebrew Channel must have access to a SD card or a USB drive for a successful transfer. When prompted, accept the transfer in the Homebrew Channel.", None))
     # retranslateUi
 
