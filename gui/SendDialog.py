@@ -2,7 +2,7 @@ import logging
 
 from PySide6.QtCore import Qt
 from PySide6.QtGui import QIcon, QGuiApplication
-from PySide6.QtWidgets import QDialog, QMessageBox
+from PySide6.QtWidgets import QDialog, QMessageBox, QDialogButtonBox
 
 import gui_helpers
 import wiiload
@@ -22,6 +22,8 @@ class WiiLoadDialog(ui_SendDialog.Ui_Dialog, QDialog):
             self.send_as = self.send_type[package["package_type"]]
         except:  # Just in case, but should never happen.
             self.send_as = "App"
+
+        self.buttonBox.button(QDialogButtonBox.Ok).setText(f"Send {self.send_as}")
 
         self.setWindowIcon(QIcon(resource_path("assets/gui/icons/send.png")))
         self.setWindowTitle(f"Send to Wii - {package['display_name']}")
