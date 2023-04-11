@@ -17,14 +17,14 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QPalette, QPixmap, QRadialGradient, QTransform)
 from PySide6.QtWidgets import (QAbstractButton, QApplication, QComboBox, QDialog,
     QDialogButtonBox, QFrame, QHBoxLayout, QLabel,
-    QLineEdit, QPushButton, QSizePolicy, QTabWidget,
-    QVBoxLayout, QWidget)
+    QLineEdit, QPushButton, QSizePolicy, QSpacerItem,
+    QTabWidget, QVBoxLayout, QWidget)
 
 class Ui_Dialog(object):
     def setupUi(self, Dialog):
         if not Dialog.objectName():
             Dialog.setObjectName(u"Dialog")
-        Dialog.resize(484, 262)
+        Dialog.resize(484, 282)
         self.verticalLayout = QVBoxLayout(Dialog)
         self.verticalLayout.setObjectName(u"verticalLayout")
         self.verticalLayout_2 = QVBoxLayout()
@@ -40,6 +40,10 @@ class Ui_Dialog(object):
         self.IPDes.setObjectName(u"IPDes")
 
         self.verticalLayout_3.addWidget(self.IPDes)
+
+        self.verticalSpacer_2 = QSpacerItem(20, 40, QSizePolicy.Minimum, QSizePolicy.Expanding)
+
+        self.verticalLayout_3.addItem(self.verticalSpacer_2)
 
         self.frame = QFrame(self.tab)
         self.frame.setObjectName(u"frame")
@@ -68,6 +72,10 @@ class Ui_Dialog(object):
         self.USBDes.setObjectName(u"USBDes")
 
         self.verticalLayout_4.addWidget(self.USBDes)
+
+        self.verticalSpacer = QSpacerItem(20, 40, QSizePolicy.Minimum, QSizePolicy.Expanding)
+
+        self.verticalLayout_4.addItem(self.verticalSpacer)
 
         self.frame_2 = QFrame(self.tab_2)
         self.frame_2.setObjectName(u"frame_2")
@@ -130,7 +138,7 @@ class Ui_Dialog(object):
 
     def retranslateUi(self, Dialog):
         Dialog.setWindowTitle(QCoreApplication.translate("Dialog", u"Wii", None))
-        self.IPDes.setText(QCoreApplication.translate("Dialog", u"<html><head/><body><p>Enter the IP address of your Wii.<br/>The selected application/theme will be sent through the network to your Wii.<br/><br/>To find your Wii's IP address:<br/>1) Enter the Homebrew Channel.<br/>2) Press the home button on the Wii Remote.<br/>3) Copy the IP address written in the top left corner.</p></body></html>", None))
+        self.IPDes.setText(QCoreApplication.translate("Dialog", u"<html><head/><body><p>Enter the IP address of your Wii.<br/>The selected application/theme will be sent through the network to your Wii.<br/><br/>To find your Wii's IP address:<br/>1) Enter the Homebrew Channel.<br/>2) Press the home button on the Wii Remote.<br/>3) Copy the IP address written in the top left corner.<br/>4) IMPORTANT: Press the home button once again, to exit the home screen.</p></body></html>", None))
         self.label_2.setText(QCoreApplication.translate("Dialog", u"IP address (e.g. 192.168.1...):", None))
         self.Tab.setTabText(self.Tab.indexOf(self.tab), QCoreApplication.translate("Dialog", u"Network", None))
         self.USBDes.setText(QCoreApplication.translate("Dialog", u"<html><head/><body><p>Select the serial port for the USB Gecko adapter.<br/>The selected application/theme will be sent through the USB Gecko to your Wii.<br/><br/>Make sure the USB Gecko device is attached to Slot B.<br/>It may appear as /dev/cu.usbserial-GECKUSB0 or COM# depending on your system.<br/><br/><span style=\" font-weight:700;\">If the selection below is not blank, your USB Gecko is the selected device.</span></p></body></html>", None))

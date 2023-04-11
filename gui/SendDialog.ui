@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>484</width>
-    <height>262</height>
+    <height>282</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -32,9 +32,22 @@
          <item>
           <widget class="QLabel" name="IPDes">
            <property name="text">
-            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Enter the IP address of your Wii.&lt;br/&gt;The selected application/theme will be sent through the network to your Wii.&lt;br/&gt;&lt;br/&gt;To find your Wii's IP address:&lt;br/&gt;1) Enter the Homebrew Channel.&lt;br/&gt;2) Press the home button on the Wii Remote.&lt;br/&gt;3) Copy the IP address written in the top left corner.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Enter the IP address of your Wii.&lt;br/&gt;The selected application/theme will be sent through the network to your Wii.&lt;br/&gt;&lt;br/&gt;To find your Wii's IP address:&lt;br/&gt;1) Enter the Homebrew Channel.&lt;br/&gt;2) Press the home button on the Wii Remote.&lt;br/&gt;3) Copy the IP address written in the top left corner.&lt;br/&gt;4) IMPORTANT: Press the home button once again, to exit the home screen.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
            </property>
           </widget>
+         </item>
+         <item>
+          <spacer name="verticalSpacer_2">
+           <property name="orientation">
+            <enum>Qt::Vertical</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>20</width>
+             <height>40</height>
+            </size>
+           </property>
+          </spacer>
          </item>
          <item>
           <widget class="QFrame" name="frame">
@@ -77,6 +90,19 @@
             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Select the serial port for the USB Gecko adapter.&lt;br/&gt;The selected application/theme will be sent through the USB Gecko to your Wii.&lt;br/&gt;&lt;br/&gt;Make sure the USB Gecko device is attached to Slot B.&lt;br/&gt;It may appear as /dev/cu.usbserial-GECKUSB0 or COM# depending on your system.&lt;br/&gt;&lt;br/&gt;&lt;span style=&quot; font-weight:700;&quot;&gt;If the selection below is not blank, your USB Gecko is the selected device.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
            </property>
           </widget>
+         </item>
+         <item>
+          <spacer name="verticalSpacer">
+           <property name="orientation">
+            <enum>Qt::Vertical</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>20</width>
+             <height>40</height>
+            </size>
+           </property>
+          </spacer>
          </item>
          <item>
           <widget class="QFrame" name="frame_2">
