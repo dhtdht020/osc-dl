@@ -69,6 +69,7 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         self.current_developer = ""
         self.repo_data = None
         self.icons_images = None
+        self.long_description_cache = {}
 
         # Set GUI Icons
 
@@ -225,12 +226,20 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
     def load_long_description(self):
         self.LongDescriptionSignal.connect(self.ui.longDescriptionBrowser.setText)
 
-        self.ui.longDescriptionLoadingSpinner.setVisible(True)
-        self.LongDescriptionSignal.emit("Loading description..")
+        if self.current_app["internal_name"] in self.long_description_cache.keys():
+            self.LongDescriptionSignal.emit(self.long_description_cache[self.current_app["internal_name"]])
+        else:
+            self.ui.longDescriptionLoadingSpinner.setVisible(True)
+            self.LongDescriptionSignal.emit("Loading description..")
 
-        app_name = self.ui.listAppsWidget.currentItem().data(Qt.UserRole)["internal_name"]
-        self.LongDescriptionSignal.emit(metadata.long_description(app_name, repo=self.current_repo['host']))
-        self.ui.longDescriptionLoadingSpinner.setVisible(False)
+            long_description = metadata.long_description(self.current_app["internal_name"], repo=self.current_repo['host'])
+            self.LongDescriptionSignal.emit(long_description)
+
+            # save to long description cache
+            self.long_description_cache[self.current_app["internal_name"]] = long_description
+
+            # hide loading spinner
+            self.ui.longDescriptionLoadingSpinner.setVisible(False)
 
     # When user selects a different homebrew from the list
     def selection_changed(self):
@@ -361,6 +370,7 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
     def trugh(self, text):
         return QObject.tr(self, text)
 
+    # TODO FULL REWRITE
     def download_app(self, extract_root=False):
         gui_helpers.IN_DOWNLOAD_DIALOG = True
         self.status_message(f"Downloading {self.current_app['display_name']} from Open Shop Channel..")
@@ -624,6 +634,7 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
 
     def changed_host(self):
         self.icons_images = None
+        self.long_description_cache.clear()
         index = self.ui.ReposComboBox.currentIndex()
         self.repo_data = self.ui.ReposComboBox.itemData(index, Qt.UserRole)
         self.current_repo = self.repos.get(self.repo_data[3])
