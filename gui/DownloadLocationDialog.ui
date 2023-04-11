@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>400</width>
-    <height>317</height>
+    <height>359</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -19,7 +19,10 @@
      <item>
       <widget class="QLabel" name="label">
        <property name="text">
-        <string>Select app download location</string>
+        <string>Select app download location.</string>
+       </property>
+       <property name="wordWrap">
+        <bool>true</bool>
        </property>
       </widget>
      </item>
@@ -31,11 +34,6 @@
          <height>44</height>
         </size>
        </property>
-       <item>
-        <property name="text">
-         <string>Save on this computer (Open Save File Dialog)</string>
-        </property>
-       </item>
       </widget>
      </item>
      <item>
@@ -69,7 +67,13 @@
        <property name="minimumSize">
         <size>
          <width>0</width>
-         <height>100</height>
+         <height>120</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>16777215</width>
+         <height>120</height>
         </size>
        </property>
       </widget>
@@ -125,6 +129,16 @@
       </widget>
      </item>
     </layout>
+   </item>
+   <item>
+    <widget class="QLabel" name="label_3">
+     <property name="text">
+      <string>If a SD Card or a USB drive is selected, the application will be saved and extracted automatically to the correct location.</string>
+     </property>
+     <property name="wordWrap">
+      <bool>true</bool>
+     </property>
+    </widget>
    </item>
    <item>
     <widget class="QDialogButtonBox" name="buttonBox">

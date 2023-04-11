@@ -24,18 +24,18 @@ class Ui_Dialog(object):
     def setupUi(self, Dialog):
         if not Dialog.objectName():
             Dialog.setObjectName(u"Dialog")
-        Dialog.resize(400, 317)
+        Dialog.resize(400, 359)
         self.verticalLayout = QVBoxLayout(Dialog)
         self.verticalLayout.setObjectName(u"verticalLayout")
         self.verticalLayout_2 = QVBoxLayout()
         self.verticalLayout_2.setObjectName(u"verticalLayout_2")
         self.label = QLabel(Dialog)
         self.label.setObjectName(u"label")
+        self.label.setWordWrap(True)
 
         self.verticalLayout_2.addWidget(self.label)
 
         self.comboBox = QComboBox(Dialog)
-        self.comboBox.addItem("")
         self.comboBox.setObjectName(u"comboBox")
         self.comboBox.setMinimumSize(QSize(0, 44))
 
@@ -60,7 +60,8 @@ class Ui_Dialog(object):
 
         self.listWidget = QListWidget(Dialog)
         self.listWidget.setObjectName(u"listWidget")
-        self.listWidget.setMinimumSize(QSize(0, 100))
+        self.listWidget.setMinimumSize(QSize(0, 120))
+        self.listWidget.setMaximumSize(QSize(16777215, 120))
 
         self.verticalLayout_2.addWidget(self.listWidget)
 
@@ -90,6 +91,12 @@ class Ui_Dialog(object):
 
         self.verticalLayout.addLayout(self.verticalLayout_2)
 
+        self.label_3 = QLabel(Dialog)
+        self.label_3.setObjectName(u"label_3")
+        self.label_3.setWordWrap(True)
+
+        self.verticalLayout.addWidget(self.label_3)
+
         self.buttonBox = QDialogButtonBox(Dialog)
         self.buttonBox.setObjectName(u"buttonBox")
         self.buttonBox.setOrientation(Qt.Horizontal)
@@ -107,12 +114,11 @@ class Ui_Dialog(object):
 
     def retranslateUi(self, Dialog):
         Dialog.setWindowTitle(QCoreApplication.translate("Dialog", u"Download - Select Location", None))
-        self.label.setText(QCoreApplication.translate("Dialog", u"Select app download location", None))
-        self.comboBox.setItemText(0, QCoreApplication.translate("Dialog", u"Save on this computer (Open Save File Dialog)", None))
-
+        self.label.setText(QCoreApplication.translate("Dialog", u"Select app download location.", None))
         self.checkBox.setText(QCoreApplication.translate("Dialog", u"Remember my selection for next time", None))
         self.label_2.setText(QCoreApplication.translate("Dialog", u"The following folders will be created or updated on the selected device:", None))
         self.label_required_space.setText(QCoreApplication.translate("Dialog", u"**Required Space:** 0 MiB", None))
         self.label_available_space.setText(QCoreApplication.translate("Dialog", u"**Available Space:** 0 MiB", None))
+        self.label_3.setText(QCoreApplication.translate("Dialog", u"If a SD Card or a USB drive is selected, the application will be saved and extracted automatically to the correct location.", None))
     # retranslateUi
 
