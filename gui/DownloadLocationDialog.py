@@ -17,6 +17,7 @@ class DownloadLocationDialog(ui_DownloadLocationDialog.Ui_Dialog, QDialog):
         self.setWindowIcon(QIcon(resource_path("assets/gui/icons/downloadlocationdialog.png")))
         self.comboBox.setIconSize(QSize(32, 32))
         self.buttonBox.button(QDialogButtonBox.Ok).setText("Download")
+        self.setAttribute(QtCore.Qt.WA_DeleteOnClose)
 
         self.screen = QGuiApplication.primaryScreen()
         self.package = package
