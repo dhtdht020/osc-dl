@@ -19,8 +19,8 @@ import func_timeout
 import requests
 from PIL import Image
 from PySide6 import QtGui, QtCore
-from PySide6.QtCore import Qt, QObject, QSize
-from PySide6.QtGui import QIcon, QColor, QPixmap, QMovie, QDesktopServices
+from PySide6.QtCore import Qt, QObject, QSize, QEvent
+from PySide6.QtGui import QIcon, QColor, QPixmap, QMovie, QDesktopServices, QHoverEvent
 from PySide6.QtWidgets import QApplication, QMainWindow, QInputDialog, QLineEdit, QMessageBox, \
     QListWidgetItem, QFileDialog
 
@@ -1049,6 +1049,25 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         # complete loading
         self.reset_status()
 
+    def ongoingOperations(self):
+        return gui_helpers.CURRENTLY_SENDING or gui_helpers.IN_DOWNLOAD_DIALOG
+
+    #
+    # Event overrides
+    #
+    def event(self, event):
+        # Cancel status tip update events
+        if event.type() == QEvent.StatusTip:
+            event.ignore()
+            return True
+
+        # For debugging: print most events
+        # event_type = QEvent.type(event)
+        # event_type_name = QEvent.Type(event_type).name
+        # if event_type_name not in ["HoverMove", "Paint", "UpdateRequest"]:
+        #     print(f"Event type: {event_type_name}")
+        return super().event(event)
+
     def closeEvent(self, closeEvent):
         if self.ongoingOperations():
             # QMessageBox.warning is modal, this is not. 
@@ -1056,9 +1075,6 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
             closeEvent.ignore()
         else:
             closeEvent.accept()
-
-    def ongoingOperations(self):
-        return gui_helpers.CURRENTLY_SENDING or gui_helpers.IN_DOWNLOAD_DIALOG
 
 
 if __name__ == "__main__":
