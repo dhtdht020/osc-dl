@@ -52,14 +52,14 @@ class DownloadLocationDialog(ui_DownloadLocationDialog.Ui_Dialog, QDialog):
     # check if a volume is changed/added/removed
     def check_for_volume_changes(self):
         current_volumes = QStorageInfo.mountedVolumes()
+
+        # remove devices that aren't ready
+        for volume in current_volumes:
+            if not volume.isReady():
+                current_volumes.remove(volume)
+
         if current_volumes != self.drives:
             logging.debug("A change to mounted volumes was detected.")
-
-            # check if all devices are ready
-            for volume in current_volumes:
-                if not volume.isReady():
-                    return
-
             # update drives list once everything is ready
             self.drives = current_volumes
             self.update_volume_list()
