@@ -673,7 +673,15 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
 
             for package in self.apps.get_apps():
                 try:
-                    self.ui.listAppsWidget.addItem(f"{package['display_name']}\n"
+                    # let's check if the app celebrates its birthday today
+                    birthday = utils.app_birthday_string(package)
+                    if birthday:
+                        birthday = f" [{birthday}]"
+                    else:
+                        birthday = ""
+
+                    # add entry to applications list
+                    self.ui.listAppsWidget.addItem(f"{package['display_name']}{birthday}\n"
                                                    f"{utils.file_size(package['extracted'])} | "
                                                    f"{package['version']} | "
                                                    f"{package['coder']} | "

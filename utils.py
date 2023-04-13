@@ -3,6 +3,7 @@ import re
 
 # Escape ansi from stdout
 import sys
+from datetime import datetime
 
 
 def is_test(name):
@@ -52,3 +53,24 @@ def get_mount_point(path):
         path = os.path.dirname(path)
 
     return path
+
+# check if the app has a birthday
+def app_birthday_string(app):
+    if datetime.fromtimestamp(int(app["release_date"])).strftime('%m%d') == datetime.now().strftime('%m%d'):
+        # verify that it was not added today
+        if datetime.fromtimestamp(int(app["release_date"])).strftime('%Y%m%d') != datetime.now().strftime('%Y%m%d'):
+            # determine app age
+            age = int((datetime.now().timestamp() - int(app["release_date"])) / 31536000)
+
+            # determine st/nd/rd/th
+            if age % 10 == 1 and age % 100 != 11:
+                age = str(age) + "st"
+            elif age % 10 == 2 and age % 100 != 12:
+                age = str(age) + "nd"
+            elif age % 10 == 3 and age % 100 != 13:
+                age = str(age) + "rd"
+            else:
+                age = str(age) + "th"
+
+            return f"Happy {age} Birthday!"
+    return None
