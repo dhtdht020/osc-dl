@@ -59,7 +59,7 @@ class DownloadLocationDialog(ui_DownloadLocationDialog.Ui_Dialog, QDialog):
                 current_volumes.remove(volume)
 
         if current_volumes != self.drives:
-            logging.debug("A change to mounted volumes was detected.")
+            logging.debug("Scanned mounted volumes, as a change to mounted volumes was detected, or the dialog was initialized.")
             # update drives list once everything is ready
             self.drives = current_volumes
             self.update_volume_list()
@@ -84,11 +84,12 @@ class DownloadLocationDialog(ui_DownloadLocationDialog.Ui_Dialog, QDialog):
                 apps_exists = QDir(drive.rootPath() + "/apps").exists()
                 if apps_exists:
                     self.comboBox.addItem(f"{drive.displayName()}\nRecommended! Found apps directory! Automatically installs app.")
+                    self.comboBox.setItemIcon(i, QIcon(resource_path("assets/gui/icons/sdcard.png")))
                 else:
                     self.comboBox.addItem(f"{drive.displayName()}\nUnknown. An apps folder will be created. Automatically installs app.")
+                    self.comboBox.setItemIcon(i, QFileIconProvider().icon(QFileInfo(drive.rootPath())))
 
-                # set drive icon and data
-                self.comboBox.setItemIcon(i, QFileIconProvider().icon(QFileInfo(drive.rootPath())))
+                # set drive data
                 self.comboBox.setItemData(i, {"drive": drive, "appsdir": apps_exists})
                 i += 1
 
