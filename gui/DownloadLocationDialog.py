@@ -1,9 +1,9 @@
 import logging
 
 from PySide6 import QtCore
-from PySide6.QtCore import QSize, QStorageInfo, QDir, QTimer
+from PySide6.QtCore import QSize, QStorageInfo, QDir, QTimer, QFileInfo
 from PySide6.QtGui import QIcon, QGuiApplication
-from PySide6.QtWidgets import QDialog, QDialogButtonBox, QListWidgetItem
+from PySide6.QtWidgets import QDialog, QDialogButtonBox, QListWidgetItem, QFileIconProvider
 
 import gui_helpers
 from gui import ui_DownloadLocationDialog
@@ -84,10 +84,11 @@ class DownloadLocationDialog(ui_DownloadLocationDialog.Ui_Dialog, QDialog):
                 apps_exists = QDir(drive.rootPath() + "/apps").exists()
                 if apps_exists:
                     self.comboBox.addItem(f"{drive.displayName()}\nRecommended! Found apps directory! Automatically installs app.")
-                    self.comboBox.setItemIcon(i, QIcon(resource_path("assets/gui/icons/sdcard.png")))
                 else:
                     self.comboBox.addItem(f"{drive.displayName()}\nUnknown. An apps folder will be created. Automatically installs app.")
-                    self.comboBox.setItemIcon(i, QIcon(resource_path("assets/gui/icons/disk.png")))
+
+                # set drive icon and data
+                self.comboBox.setItemIcon(i, QFileIconProvider().icon(QFileInfo(drive.rootPath())))
                 self.comboBox.setItemData(i, {"drive": drive, "appsdir": apps_exists})
                 i += 1
 
