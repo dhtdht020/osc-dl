@@ -3,7 +3,7 @@
 ################################################################################
 ## Form generated from reading UI file 'united.ui'
 ##
-## Created by: Qt User Interface Compiler version 6.5.0
+## Created by: Qt User Interface Compiler version 6.4.2
 ##
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
@@ -16,12 +16,12 @@ from PySide6.QtGui import (QAction, QBrush, QColor, QConicalGradient,
     QIcon, QImage, QKeySequence, QLinearGradient,
     QPainter, QPalette, QPixmap, QRadialGradient,
     QTransform)
-from PySide6.QtWidgets import (QAbstractItemView, QApplication, QComboBox, QFrame,
-    QGridLayout, QGroupBox, QHBoxLayout, QLabel,
-    QLineEdit, QListView, QListWidget, QListWidgetItem,
-    QMainWindow, QMenu, QMenuBar, QProgressBar,
-    QPushButton, QSizePolicy, QStatusBar, QTabWidget,
-    QTextBrowser, QVBoxLayout, QWidget)
+from PySide6.QtWidgets import (QAbstractItemView, QApplication, QCheckBox, QComboBox,
+    QFrame, QGridLayout, QGroupBox, QHBoxLayout,
+    QLabel, QLineEdit, QListView, QListWidget,
+    QListWidgetItem, QMainWindow, QMenu, QMenuBar,
+    QProgressBar, QPushButton, QSizePolicy, QStatusBar,
+    QTabWidget, QTextBrowser, QVBoxLayout, QWidget)
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
@@ -34,6 +34,9 @@ class Ui_MainWindow(object):
         sizePolicy.setHeightForWidth(MainWindow.sizePolicy().hasHeightForWidth())
         MainWindow.setSizePolicy(sizePolicy)
         MainWindow.setMinimumSize(QSize(900, 425))
+        font = QFont()
+        font.setFamilies([u".SF NS Text"])
+        MainWindow.setFont(font)
         MainWindow.setStyleSheet(u"")
         MainWindow.setDockOptions(QMainWindow.AllowTabbedDocks|QMainWindow.AnimatedDocks)
         self.actionAbout_OSC_DL = QAction(MainWindow)
@@ -106,7 +109,6 @@ class Ui_MainWindow(object):
         self.horizontalLayout_3.addWidget(self.ReposComboBox)
 
         self.AppsAmountLabel = QLabel(self.LibraryTopFrameTop)
-        self.CategoriesComboBox.addItem("")
         self.AppsAmountLabel.setObjectName(u"AppsAmountLabel")
         self.AppsAmountLabel.setMaximumSize(QSize(60, 16777215))
         self.AppsAmountLabel.setAlignment(Qt.AlignRight|Qt.AlignTrailing|Qt.AlignVCenter)
@@ -244,9 +246,10 @@ class Ui_MainWindow(object):
         self.label_displayname.setObjectName(u"label_displayname")
         self.label_displayname.setGeometry(QRect(10, 60, 221, 16))
         self.label_displayname.setMaximumSize(QSize(221, 16777215))
-        font = QFont()
-        font.setBold(True)
-        self.label_displayname.setFont(font)
+        font1 = QFont()
+        font1.setFamilies([u".SF NS Text"])
+        font1.setBold(True)
+        self.label_displayname.setFont(font1)
         self.label_displayname.setWordWrap(True)
         self.label_displayname.setTextInteractionFlags(Qt.LinksAccessibleByMouse|Qt.TextSelectableByMouse)
         self.progressBar = QProgressBar(self.GeneralTab)
@@ -261,10 +264,11 @@ class Ui_MainWindow(object):
         self.HomebrewCategoryLabel = QLabel(self.GeneralTab)
         self.HomebrewCategoryLabel.setObjectName(u"HomebrewCategoryLabel")
         self.HomebrewCategoryLabel.setGeometry(QRect(147, 10, 81, 48))
-        font1 = QFont()
-        font1.setPointSize(11)
-        font1.setBold(True)
-        self.HomebrewCategoryLabel.setFont(font1)
+        font2 = QFont()
+        font2.setFamilies([u".SF NS Text"])
+        font2.setPointSize(11)
+        font2.setBold(True)
+        self.HomebrewCategoryLabel.setFont(font2)
         self.HomebrewCategoryLabel.setAlignment(Qt.AlignCenter)
         self.statusIcon = QLabel(self.GeneralTab)
         self.statusIcon.setObjectName(u"statusIcon")
@@ -274,7 +278,7 @@ class Ui_MainWindow(object):
         self.statusIcon.setMargin(3)
         self.gridLayoutWidget = QWidget(self.GeneralTab)
         self.gridLayoutWidget.setObjectName(u"gridLayoutWidget")
-        self.gridLayoutWidget.setGeometry(QRect(10, 100, 223, 136))
+        self.gridLayoutWidget.setGeometry(QRect(10, 100, 223, 147))
         self.gridLayout = QGridLayout(self.gridLayoutWidget)
         self.gridLayout.setObjectName(u"gridLayout")
         self.gridLayout.setContentsMargins(0, 0, 0, 0)
@@ -379,31 +383,14 @@ class Ui_MainWindow(object):
 
         self.MetadataBottomFrame = QFrame(self.SelectionInfoBox)
         self.MetadataBottomFrame.setObjectName(u"MetadataBottomFrame")
-        self.MetadataBottomFrame.setMinimumSize(QSize(0, 0))
         self.MetadataBottomFrame.setMaximumSize(QSize(16777215, 56))
         self.MetadataBottomFrame.setFrameShape(QFrame.NoFrame)
         self.MetadataBottomFrame.setLineWidth(0)
-        self.horizontalLayout_6 = QHBoxLayout(self.MetadataBottomFrame)
-        self.horizontalLayout_6.setObjectName(u"horizontalLayout_6")
-        self.horizontalLayout_6.setContentsMargins(-1, 0, -1, 0)
         self.ViewMetadataBtn = QPushButton(self.MetadataBottomFrame)
         self.ViewMetadataBtn.setObjectName(u"ViewMetadataBtn")
-        sizePolicy6 = QSizePolicy(QSizePolicy.Minimum, QSizePolicy.Expanding)
-        sizePolicy6.setHorizontalStretch(0)
-        sizePolicy6.setVerticalStretch(0)
-        sizePolicy6.setHeightForWidth(self.ViewMetadataBtn.sizePolicy().hasHeightForWidth())
-        self.ViewMetadataBtn.setSizePolicy(sizePolicy6)
-
-        self.horizontalLayout_6.addWidget(self.ViewMetadataBtn)
-
         self.ViewMetadataBtn.setGeometry(QRect(10, 29, 121, 23))
         self.WiiLoadButton = QPushButton(self.MetadataBottomFrame)
         self.WiiLoadButton.setObjectName(u"WiiLoadButton")
-        sizePolicy6.setHeightForWidth(self.WiiLoadButton.sizePolicy().hasHeightForWidth())
-        self.WiiLoadButton.setSizePolicy(sizePolicy6)
-
-        self.horizontalLayout_6.addWidget(self.WiiLoadButton)
-
         self.WiiLoadButton.setGeometry(QRect(140, 29, 121, 23))
         self.ClearMultiSelectButton = QPushButton(self.MetadataBottomFrame)
         self.ClearMultiSelectButton.setObjectName(u"ClearMultiSelectButton")
@@ -413,6 +400,9 @@ class Ui_MainWindow(object):
         self.MultiSelectToggle.setObjectName(u"MultiSelectToggle")
         self.MultiSelectToggle.setGeometry(QRect(17, 5, 121, 20))
         self.MultiSelectToggle.setChecked(False)
+        self.horizontalLayout_6 = QHBoxLayout(self.MetadataBottomFrame)
+        self.horizontalLayout_6.setObjectName(u"horizontalLayout_6")
+        self.horizontalLayout_6.setContentsMargins(-1, 0, -1, 0)
 
         self.verticalLayout_3.addWidget(self.MetadataBottomFrame)
 
@@ -512,7 +502,6 @@ class Ui_MainWindow(object):
         self.CategoriesComboBox.setItemText(3, QCoreApplication.translate("MainWindow", u"Games", None))
         self.CategoriesComboBox.setItemText(4, QCoreApplication.translate("MainWindow", u"Media", None))
         self.CategoriesComboBox.setItemText(5, QCoreApplication.translate("MainWindow", u"Demos", None))
-        self.CategoriesComboBox.setItemText(6, QCoreApplication.translate("MainWindow", u"Queued", None))
 
         self.announcementLabel.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p><span style=\" font-weight:600;\">Announcement Header: </span>Announcement Content.</p></body></html>", None))
         self.announcementURLLabel.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p><a href=\"https://google.com\"><span style=\" text-decoration: underline; color:#ffff00;\">Announcement URL</span></a></p></body></html>", None))
@@ -540,6 +529,8 @@ class Ui_MainWindow(object):
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><meta charset=\"utf-8\" /><style type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
 "hr { height: 1px; border-width: 0; }\n"
+"li.unchecked::marker { content: \"\\2610\"; }\n"
+"li.checked::marker { content: \"\\2612\"; }\n"
 "</style></head><body style=\" font-family:'.SF NS Text'; font-size:13pt; font-weight:400; font-style:normal;\">\n"
 "<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Segoe UI'; font-size:9pt;\"><br /></p></body></html>", None))
         self.longDescriptionLoadingSpinner.setText("")
