@@ -2,6 +2,7 @@ import argparse
 import configparser
 import io
 import os
+import re
 import threading
 import time
 from datetime import datetime
@@ -44,7 +45,7 @@ hosts = subparser.add_parser(name='hosts', help="List available hosts.")
 
 # Get arguments
 get.add_argument("app", type=str,
-                 help="App to download. (e.g. WiiVNC)")
+                 help="App(s) to download, can be a INI file. (e.g. WiiVNC)")
 get.add_argument("-r", "--host", type=str,
                  help="Repository name (e.g. primary)", default="primary")
 
@@ -71,6 +72,8 @@ args = parser.parse_args()
 def download(app_name, output=None, extract=False, repo="hbb1.oscwii.org"):
     if output is None:
         output = app_name + ".zip"
+    
+    print(f"Downloading '{app_name}'...")
 
     app_data = requests.get("https://" + repo + "/hbb/" + app_name + "/" + app_name + ".zip")
 
@@ -98,44 +101,47 @@ if args.cmd == "get":
         print(f"Starting download of all packages from \"{args.host}\" @ {repos.get(args.host)['host']}..")
         for package in applications.get_apps():
             download(app_name=package["internal_name"], repo=repos.get(args.host)["host"])
-    elif os.path.isfile(args.app) and ".txt" in args.app:
+    elif os.path.isfile(args.app) and ".ini" in args.app:
         config = configparser.ConfigParser(allow_no_value=True)
         config.optionxform=str
         try:
-            config.read(args.app)
+            config.read_file(open(args.app))
         except configparser.ParsingError as e:
             print("Error: Parsing failed.")
             print(e)
             exit(1)
-        print(f"Reading {config['META']['Title']} by {config['META']['Author']} (version {config['META']['Version']})")
+        print(f"READING: '{config['META']['Title']}' by {config['META']['Author']} (version {config['META']['Version']})...")
         
-        if "PRIMARY" in config:
-            for package in config['PRIMARY']:
+        for section in config.sections():
+            if section == "DEFAULT" or section == "META":
+                continue
+            try:
+                host = repos.get(section.lower())
+            except KeyError:
+                print(f"Error: No such repo '{section}', stopping.")
+                exit(1)
+            for package in config[section]:
                 if package[0] == package[-1] == "|":
                     continue
-                download(app_name=package, repo=repos.get('primary'))
-
-        if "THEMES" in config:
-            for package in config['THEMES']:
-                if package[0] == package[-1] == "|":
-                    continue
-                download(app_name=package, repo=repos.get('themes'))
+                elif package[0] == package[-1] == "~":
+                    print(f"PARSE WARNING: Downloading {package} as a ZIP, not a DOL/ELF. ")
+                    package = package.replace("~","")
+                download(app_name=package, repo=repos.get(section.lower())["host"])
     else:
         download(app_name=args.app, repo=repos.get(args.host)["host"])
 
 # Send
 if args.cmd == "send":
-    pass_for_comment = False
     config = configparser.ConfigParser(allow_no_value=True)
     config.optionxform=str
-    if os.path.isfile(args.app) and ".txt" in args.app:
+    if os.path.isfile(args.app) and ".ini" in args.app:
         try:
-            config.read(args.app)
+            config.read_file(open(args.app))
         except configparser.ParsingError as e:
             print("Error: Parsing failed.")
             print(e)
             exit(1)
-        print(f"Reading {config['META']['Title']} by {config['META']['Author']} (version {config['META']['Version']})")
+        print(f"Reading '{config['META']['Title']}' by {config['META']['Author']} (version {config['META']['Version']})")
         
     else:
         tempStr = f"[{args.host.upper()}]\n{args.app}"
@@ -149,38 +155,49 @@ if args.cmd == "send":
             print(f"Error: The address '{args.destination}' is invalid! Please correct it!")
             exit(1)
 
-    repos_used = 0
-
+    successSend = []
+    failSend = []
     for section in config.sections():
         if section == "META" or section == "DEFAULT":
             continue
-        repos_used+=1
-        for i, package in enumerate(config[section]):
+        for package in config[section]:
+            dolOnly= None
             zipped_app = zip_buf = None
-            if (i>0 or repos_used>1) and pass_for_comment == False:
-                if package[0] == package[-1] == "|":
-                    print(f'Installer note: \"{package.replace("|","")}\"')
-                    print("Press enter to continue...")
-                    input()
-                    pass_for_comment = True
+
+            if package[0] == "#":
+                continue
+            elif package[0] == package[-1] == "|":
+                print(f'Installer note: \"{package.replace("|","")}\"')
+                print("Press enter to continue...")
+                input()
+                continue
+            elif package[0] == package[-1] == "~":
+                if "<" in package and ">" not in config[section][package]:
+                    print(f"INI ERROR: You may be missing a bracket (>): '{package} = {config[section][package]}, skipping.'")
+                    failSend.append(package)
                     continue
-                else:
-                    print("Extract the file on HBC, then press enter to continue...")
-                    input()
-            else:
-                pass_for_comment = False
+
+                dolOnly = config[section][package]
+                package = package.replace("~","")
+
             url = f"https://{repos.get(section.lower())['host']}/hbb/{package}/{package}.zip"
             r = requests.get(url)
             zipped_app = io.BytesIO(r.content)
-            zip_buf = io.BytesIO()
+            preparedData = io.BytesIO()
 
             # Our zip file should only contain one directory with the app data in it,
             # but the downloaded file contains an apps/ directory. We're removing that here.
-            wiiload.organize_zip(zipped_app, zip_buf)
+            bootType, OK = wiiload.organize_zip(
+                zipped_app, preparedData, dolOnly, package)
+            
+            if not OK:
+                print(f'[PACKAGE ERROR]"{package}" is a theme, and cannot be used with ~.')
+                dolOnly = False
 
             # preparing
             print("Preparing app..")
-            prep = wiiload.prepare(zip_buf)
+            prep = wiiload.prepare(preparedData)
+
 
             file_size = prep[0]
             compressed_size = prep[1]
@@ -210,8 +227,10 @@ if args.cmd == "send":
                     f'Please check the {errmsg} and try again.')
 
                 print(f'Exception: {e}')
-                print('Error: Could not connect to the Homebrew Channel. :(')
-                exit(1)
+                failSend.append(package)
+                #print('Error: Could not connect to the Homebrew Channel. :(')
+                #exit(1)
+                continue
 
             wiiload.handshake(conn, compressed_size, file_size)
 
@@ -220,25 +239,26 @@ if args.cmd == "send":
                 print('[  0%] Sending app..')
 
                 chunk_num = 1
-                for chunk in chunks:
-                    try:
+                try:
+                    for chunk in chunks:
                         conn.send(chunk)
-                    except Exception as e:
-                        print('Error while connecting to the HBC. Operation timed out. Close any dialogs on HBC and try again.')
+                        chunk_num += 1
+                        progress = round(chunk_num / len(chunks) * 50) + 50
+                        if progress < 100:
+                            print(f'[ {progress}%] Sending app..')
+                        if progress == 100:
+                            print(f'[{progress}%] Sending app..')
+                except Exception as e:
+                    print('Error while connecting to the HBC. Operation timed out. Close any dialogs on HBC and try again.')
 
-                        print(f'Exception: {e}')
-                        print('Error: Could not connect to the Homebrew Channel. :(')
+                    print(f'Exception: {e}')
+                    print('Error: Could not connect to the Homebrew Channel. :(')
 
-                        # delete application zip file
-                        conn.close()
-                        exit(1)
-
-                    chunk_num += 1
-                    progress = round(chunk_num / len(chunks) * 50) + 50
-                    if progress < 100:
-                        print(f'[ {progress}%] Sending app..')
-                    if progress == 100:
-                        print(f'[{progress}%] Sending app..')
+                    # delete application zip file
+                    conn.close()
+                    failSend.append(package)
+                    continue
+                    
             else:
                 print('Sending app..', end="")
                 t = threading.Thread(target=wiiload.send_gecko, daemon=True, args=[c_data, conn])
@@ -248,17 +268,40 @@ if args.cmd == "send":
                     time.sleep(0.5)
                 t.join()
                 if not wiiload.DATASENT:
-                    exit(1)
+                    conn.close()
+                    failSend.append(package)
+                    continue
                 print()
-
-            file_name = f'{args.app}.zip'
-            conn.send(bytes(file_name, 'utf-8') + b'\x00')
+        
+            if (dolOnly):
+                splitArg = []
+                argList = re.findall("(<.*>)", dolOnly)
+                if len(argList) != 0:
+                    argList = argList[0]
+                    splitArg = argList[1:-1].split(",")
+                args = [f"boot.{bootType}"] + splitArg
+                args = "\x00".join(args) + "\x00"
+                conn.send(bytes(args, 'utf-8'))
+            else:
+                file_name = f'{package}.zip'
+                conn.send(bytes(file_name, 'utf-8') + b'\x00')
+        
+            
+            
             if args.gecko:
                 conn.flush()
                 conn.close()
+            print("Extract the file on HBC, then press enter to continue...")
+            input()
 
             print(f'App sent to Wii at {args.destination} successfully!')
-    print("Sending complete!")
+    if len(successSend) == 0:
+        print('Error: No apps sent. Could not connect to the Homebrew Channel. :(')
+    else:
+        print("Sending complete!")
+        if len(failSend) > 0:
+            print(f"(Could not send: [{', '.join(failSend)}])")
+
 
 # Hosts
 if args.cmd == "show":

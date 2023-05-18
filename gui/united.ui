@@ -243,6 +243,11 @@
                  <string>Demos</string>
                 </property>
                </item>
+               <item>
+                <property name="text">
+                 <string>Queued</string>
+                </property>
+               </item>
               </widget>
              </item>
             </layout>
@@ -673,8 +678,6 @@ background-color: rgba(255, 255, 255, 0);
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;meta charset=&quot;utf-8&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
 hr { height: 1px; border-width: 0; }
-li.unchecked::marker { content: &quot;\2610&quot;; }
-li.checked::marker { content: &quot;\2612&quot;; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'.SF NS Text'; font-size:13pt; font-weight:400; font-style:normal;&quot;&gt;
 &lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Segoe UI'; font-size:9pt;&quot;&gt;&lt;br /&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
             </property>
@@ -771,6 +774,12 @@ li.checked::marker { content: &quot;\2612&quot;; }
             <height>23</height>
            </rect>
           </property>
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
           <property name="text">
            <string>Download</string>
           </property>
@@ -783,6 +792,12 @@ li.checked::marker { content: &quot;\2612&quot;; }
             <width>121</width>
             <height>23</height>
            </rect>
+          </property>
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
           </property>
           <property name="text">
            <string>Send to Wii</string>
@@ -800,6 +815,12 @@ li.checked::marker { content: &quot;\2612&quot;; }
             <height>23</height>
            </rect>
           </property>
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
           <property name="text">
            <string>Clear Queue</string>
           </property>
@@ -812,6 +833,12 @@ li.checked::marker { content: &quot;\2612&quot;; }
             <width>121</width>
             <height>20</height>
            </rect>
+          </property>
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
           </property>
           <property name="text">
            <string>Add to Queue</string>
@@ -868,6 +895,9 @@ li.checked::marker { content: &quot;\2612&quot;; }
     <addaction name="actionClear_Log"/>
     <addaction name="separator"/>
     <addaction name="actionDownload_All_From_Repo"/>
+    <addaction name="separator"/>
+    <addaction name="actionGenerate_Package_INI"/>
+    <addaction name="actionRead_Package_INI"/>
     <addaction name="separator"/>
     <addaction name="menuExperimental"/>
    </widget>
@@ -976,6 +1006,16 @@ li.checked::marker { content: &quot;\2612&quot;; }
   <action name="actionDownload_All_From_Repo">
    <property name="text">
     <string>Download All From Repo</string>
+   </property>
+  </action>
+  <action name="actionGenerate_Package_INI">
+   <property name="text">
+    <string>Generate Package INI</string>
+   </property>
+  </action>
+  <action name="actionRead_Package_INI">
+   <property name="text">
+    <string>Read Package INI</string>
    </property>
   </action>
  </widget>

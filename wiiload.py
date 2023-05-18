@@ -1,3 +1,4 @@
+import io
 import re
 import zipfile
 import copy
@@ -21,14 +22,20 @@ def validate_ip_regex(ip):
     return IP_REGEX.match(ip)
 
 
-def organize_zip(zipped_app, zip_buf):
+def organize_zip(zipped_app, zip_buf,dolmode=None,internalName=None):
+    datatype=None
+    OK = True
+    tempZip = io.BytesIO()
     zip_file = zipfile.ZipFile(zipped_app, mode='r')
     app_infolist = zip_file.infolist()
 
     # Our zip file should only contain one directory with the app data in it,
     # but it will be kept, as long is it's relative to the root of the SD/USB. 
     # This creates a zip file based on relative directories to extract all files.
-    app_zip = zipfile.ZipFile(zip_buf, mode='w', compression=zipfile.ZIP_DEFLATED)
+    if dolmode:
+        app_zip = zipfile.ZipFile(tempZip, mode='w', compression=zipfile.ZIP_DEFLATED)
+    else:
+        app_zip = zipfile.ZipFile(zip_buf, mode='w', compression=zipfile.ZIP_DEFLATED)
 
     # Zip manipulation time.
     # First we need the directory name of the app.
@@ -84,11 +91,31 @@ def organize_zip(zipped_app, zip_buf):
         elif x.file_size == 0:
             with app_zip.open(x.filename, 'w') as temp: 
                 temp.write('.'.encode("utf-8"))
+    isELF = False
+    if (dolmode):
+        datatype, OK = organize_dol(internalName,app_zip,zip_buf)
     # cleanup
     zipped_app.close()
     zip_file.close()
     app_zip.close()
+    return datatype,OK
 
+
+def organize_dol(internalname, zip_file, preparedData):
+    datatype = "dol"
+    try: 
+        zip_file.getinfo(f"{internalname}/boot.elf")
+        datatype="elf"
+    except KeyError:
+        pass
+    try: 
+        zip_file.getinfo(f"{internalname}/theme.zip")
+        return datatype, False
+    except KeyError:
+        pass
+    with zip_file.open(f"{internalname}/boot.{datatype}","r") as temp:
+        preparedData.write(temp.read())
+    return datatype, True
 
 def prepare(zip_buf):
     # preparing
@@ -108,6 +135,7 @@ def prepare(zip_buf):
 
 
 def connect(ip):
+    DATASENT=True
     conn = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     conn.settimeout(2)
     conn.connect((ip, 4299))
@@ -139,6 +167,7 @@ def send_gecko(data, conn):
     try:
         conn.send(data)
     except Exception as e:
+        DATASENT=False
         print('Error while connecting to the HBC. Close any dialogs on HBC and try again.')
 
         print(f'Exception: {e}')
@@ -146,4 +175,3 @@ def send_gecko(data, conn):
 
         # delete application zip file
         conn.close()
-        exit(1)
