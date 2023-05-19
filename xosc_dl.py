@@ -224,6 +224,7 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
             self.ui.ReposComboBox.addItem(display_name)
             self.ui.ReposComboBox.setItemData(
                 n, [display_name, hostname, description, host], Qt.UserRole)
+            gui_helpers.QUEUE_SIGNAL_CACHE[host] = {}
             n += 1
             self.update_splash_status(f"Loaded {n} repositories..")
         # set current repository
@@ -648,12 +649,14 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         self.ui.ClearMultiSelectButton.setDisabled(
             state or not bool(len(gui_helpers.MULTISELECT)))
     
-    def changeQueueStatus(self, pkgData, statusType):
+    def changeQueueStatus(self, pkgData, statusType, repoChange=False):
         for bgcolor in self.ui.listAppsWidget.findItems(f"{utils.file_size(pkgData['extracted'])} | "
             f"{pkgData['version']} | "
             f"{pkgData['coder']} | "
             f"{pkgData['short_description']}", Qt.MatchContains):
             bgcolor.setBackground(QColor(gui_helpers.QUEUE_SIGNAL_COLORS[statusType]))
+        if not repoChange:
+            gui_helpers.QUEUE_SIGNAL_CACHE[pkgData["repo"]][pkgData["internal_name"]] = statusType
 
     def wiiload_button(self):
         warnText = "This app contains"
@@ -990,6 +993,10 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
                     list_item = self.ui.listAppsWidget.item(i)
 
                     list_item.setData(Qt.UserRole, package)
+
+                    if list_item.data(Qt.UserRole)["internal_name"] in gui_helpers.QUEUE_SIGNAL_CACHE[self.current_repo['id']]:
+                        self.changeQueueStatus(package,gui_helpers.QUEUE_SIGNAL_CACHE[self.current_repo['id']][list_item.data(Qt.UserRole)["internal_name"]],repoChange=True)
+
                     # Set category icon
                     category = package["category"]
 
@@ -1197,18 +1204,22 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
             gui_helpers.MULTISELECT.remove(self.current_app)
             self.ui.MultiSelectToggle.setChecked(False)
             self.ui.listAppsWidget.currentItem().setBackground(QColor(0, 0, 0, 1))
+            gui_helpers.QUEUE_SIGNAL_CACHE[self.current_repo['id']].pop(self.current_app["internal_name"])
 
         else:
             if not all_select:
                 gui_helpers.MULTISELECT.append(self.current_app)
                 self.ui.listAppsWidget.currentItem().setBackground(
                     QColor(gui_helpers.QUEUE_SIGNAL_COLORS["in queue"]))
+                gui_helpers.QUEUE_SIGNAL_CACHE[self.current_repo['id']][self.current_app["internal_name"]] = "in queue"
             else:
                 for i in range(self.ui.listAppsWidget.count()):
                     item = self.ui.listAppsWidget.item(i)
                     if item.data(Qt.UserRole) in gui_helpers.MULTISELECT:
                         item.setBackground(
                             QColor(gui_helpers.QUEUE_SIGNAL_COLORS["in queue"]))
+                        gui_helpers.QUEUE_SIGNAL_CACHE[self.current_repo['id']][item.data(Qt.UserRole)["internal_name"]] = "in queue"
+                        
             self.ui.MultiSelectToggle.setChecked(True)
             self.ui.AppsLibraryBox.setTitle(
                 "Apps Library - Multi Selection Mode")
@@ -1232,6 +1243,8 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
                 item.setBackground(QColor(0, 0, 0, 1))
         gui_helpers.MULTISELECT.clear()
         gui_helpers.MULTISELECT_INI.clear()
+        for repo in self.repos.list():
+            gui_helpers.QUEUE_SIGNAL_CACHE[repo].clear()
         self.ui.MultiSelectToggle.setChecked(False)
         self.ui.AppsLibraryBox.setTitle("Apps Library")
         self.ui.ViewMetadataBtn.setText("Download")
