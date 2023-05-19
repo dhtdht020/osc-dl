@@ -17,7 +17,7 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QPalette, QPixmap, QRadialGradient, QTransform)
 from PySide6.QtWidgets import (QAbstractButton, QAbstractScrollArea, QApplication, QDialog,
     QDialogButtonBox, QGridLayout, QGroupBox, QLabel,
-    QPlainTextEdit, QSizePolicy, QVBoxLayout, QWidget)
+    QSizePolicy, QTextEdit, QVBoxLayout, QWidget)
 
 class Ui_MSGBox(object):
     def setupUi(self, MSGBox):
@@ -37,9 +37,11 @@ class Ui_MSGBox(object):
         self.groupBox.setObjectName(u"groupBox")
         sizePolicy.setHeightForWidth(self.groupBox.sizePolicy().hasHeightForWidth())
         self.groupBox.setSizePolicy(sizePolicy)
+        self.groupBox.setFlat(False)
+        self.groupBox.setCheckable(False)
         self.gridLayout = QGridLayout(self.groupBox)
         self.gridLayout.setObjectName(u"gridLayout")
-        self.textBox = QPlainTextEdit(self.groupBox)
+        self.textBox = QTextEdit(self.groupBox)
         self.textBox.setObjectName(u"textBox")
         self.textBox.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
         self.textBox.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)

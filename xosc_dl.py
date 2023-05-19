@@ -658,11 +658,10 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
     def wiiload_button(self):
         warnText = "This app contains"
         if len(gui_helpers.MULTISELECT) > 1:
-            warnText = "Several app contain"
+            warnText = "Several apps contain"
         if not utils.app_has_extra_directories(self.current_app) and QMessageBox.question(self, "Send to Wii", f"{warnText} extra files and directories that may need configuration. Send anyway?") == QMessageBox.StandardButton.No:
             if gui_helpers.IS_IMPORTED_FILE:
                 self.cancelINI()
-            gui_helpers.IS_IMPORTED_FILE = False
             return
 
         if len(gui_helpers.MULTISELECT) == 0:
@@ -674,12 +673,11 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
                 self.clear_multi_select(user_request=False)
             if gui_helpers.IS_IMPORTED_FILE:
                 self.cancelINI()
-            gui_helpers.IS_IMPORTED_FILE = False
             return
         gui_helpers.CURRENTLY_SENDING = True
 
         self.status_message(
-            "Downloading " + self.current_app["display_name"] + " from Open Shop Channel..")
+            "Downloading " + gui_helpers.MULTISELECT[0]['display_name'] + " from Open Shop Channel..")
         self.ui.progressBar.setValue(25)
 
         # get app
@@ -1028,7 +1026,7 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
             sys.exit(1)
 
         # load app icons
-        if not gui_helpers.CURRENTLY_SENDING and not gui_helpers.IN_DOWNLOAD_DIALOG:
+        if not gui_helpers.CURRENTLY_SENDING and not gui_helpers.IN_DOWNLOAD_DIALOG and not gui_helpers.INI_ACTION:
             self.status_message("Loading app icons from server..")
             self.ui.progressBar.setMaximum(0)
         t = threading.Thread(target=self.download_app_icons, daemon=True)
@@ -1501,6 +1499,7 @@ Title = {PKName}
 Author = {Author}
 Version = {Version}
 #### Syntax: ####
+# ('packageName' -> Download/send package ZIP),
 # ('#' -> Comment), 
 # ('~packageName~' -> Send DOL/ELF only)
 ## For arguments: ('~packageName~ = <arg1,arg2,...>')
@@ -1535,7 +1534,15 @@ Version = {Version}
         self.safe_mode(True)
         config = configparser.ConfigParser(allow_no_value=True)
         config.optionxform = str
-        config.read(selectedFile)
+        try:
+            config.read(selectedFile)
+        except Exception as e:
+            QMessageBox.critical(self, "INI Error",
+                f"Reading failure: '{e}' ")
+            self.cancelINI()
+            return
+            
+
         self.status_icon("pending")
         self.status_message(
             f"Reading '{config['META']['Title']}' by {config['META']['Author']} (version {config['META']['Version']})")
