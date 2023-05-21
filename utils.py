@@ -5,6 +5,8 @@ import re
 import sys
 from datetime import datetime
 
+import gui_helpers
+
 
 def is_test(name):
     if len(sys.argv) > 1 and (name in sys.argv):
@@ -13,14 +15,15 @@ def is_test(name):
         return False
 
 
-def app_has_extra_directories(package):
+def app_has_extra_directories():
     # remove all directories under /apps
     root_directories = []
-    for directory in package["extra_directories"]:
-        if "/apps" in directory:
-            pass
-        else:
-            root_directories.append(directory)
+    for package in gui_helpers.MULTISELECT:
+        for directory in package["extra_directories"]:
+            if "/apps" in directory:
+                pass
+            else:
+                root_directories.append(directory)
 
     if len(root_directories) > 0:
         return False
@@ -53,6 +56,7 @@ def get_mount_point(path):
         path = os.path.dirname(path)
 
     return path
+
 
 # check if the app has a birthday
 def app_birthday_string(app):

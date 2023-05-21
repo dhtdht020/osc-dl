@@ -3,7 +3,7 @@
 ################################################################################
 ## Form generated from reading UI file 'united.ui'
 ##
-## Created by: Qt User Interface Compiler version 6.5.0
+## Created by: Qt User Interface Compiler version 6.4.2
 ##
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
@@ -63,6 +63,8 @@ class Ui_MainWindow(object):
         self.actionCopy_Direct_Link.setObjectName(u"actionCopy_Direct_Link")
         self.actionDeveloper_Profile = QAction(MainWindow)
         self.actionDeveloper_Profile.setObjectName(u"actionDeveloper_Profile")
+        self.actionDownload_All_From_Repo = QAction(MainWindow)
+        self.actionDownload_All_From_Repo.setObjectName(u"actionDownload_All_From_Repo")
         self.centralwidget = QWidget(MainWindow)
         self.centralwidget.setObjectName(u"centralwidget")
         self.horizontalLayout_2 = QHBoxLayout(self.centralwidget)
@@ -150,6 +152,7 @@ class Ui_MainWindow(object):
         self.horizontalLayout_5.addWidget(self.SearchBar)
 
         self.CategoriesComboBox = QComboBox(self.SearchFrame)
+        self.CategoriesComboBox.addItem("")
         self.CategoriesComboBox.addItem("")
         self.CategoriesComboBox.addItem("")
         self.CategoriesComboBox.addItem("")
@@ -271,7 +274,7 @@ class Ui_MainWindow(object):
         self.statusIcon.setMargin(3)
         self.gridLayoutWidget = QWidget(self.GeneralTab)
         self.gridLayoutWidget.setObjectName(u"gridLayoutWidget")
-        self.gridLayoutWidget.setGeometry(QRect(10, 100, 223, 136))
+        self.gridLayoutWidget.setGeometry(QRect(10, 100, 223, 147))
         self.gridLayout = QGridLayout(self.gridLayoutWidget)
         self.gridLayout.setObjectName(u"gridLayout")
         self.gridLayout.setContentsMargins(0, 0, 0, 0)
@@ -376,29 +379,31 @@ class Ui_MainWindow(object):
 
         self.MetadataBottomFrame = QFrame(self.SelectionInfoBox)
         self.MetadataBottomFrame.setObjectName(u"MetadataBottomFrame")
-        self.MetadataBottomFrame.setMaximumSize(QSize(16777215, 34))
+        self.MetadataBottomFrame.setMaximumSize(QSize(16777215, 56))
         self.MetadataBottomFrame.setFrameShape(QFrame.NoFrame)
         self.MetadataBottomFrame.setLineWidth(0)
-        self.horizontalLayout_6 = QHBoxLayout(self.MetadataBottomFrame)
-        self.horizontalLayout_6.setObjectName(u"horizontalLayout_6")
-        self.horizontalLayout_6.setContentsMargins(-1, 0, -1, 0)
         self.ViewMetadataBtn = QPushButton(self.MetadataBottomFrame)
         self.ViewMetadataBtn.setObjectName(u"ViewMetadataBtn")
+        self.ViewMetadataBtn.setGeometry(QRect(10, 29, 121, 23))
         sizePolicy6 = QSizePolicy(QSizePolicy.Minimum, QSizePolicy.Expanding)
         sizePolicy6.setHorizontalStretch(0)
         sizePolicy6.setVerticalStretch(0)
         sizePolicy6.setHeightForWidth(self.ViewMetadataBtn.sizePolicy().hasHeightForWidth())
         self.ViewMetadataBtn.setSizePolicy(sizePolicy6)
-
-        self.horizontalLayout_6.addWidget(self.ViewMetadataBtn)
-
         self.WiiLoadButton = QPushButton(self.MetadataBottomFrame)
         self.WiiLoadButton.setObjectName(u"WiiLoadButton")
+        self.WiiLoadButton.setGeometry(QRect(140, 29, 121, 23))
         sizePolicy6.setHeightForWidth(self.WiiLoadButton.sizePolicy().hasHeightForWidth())
         self.WiiLoadButton.setSizePolicy(sizePolicy6)
-
-        self.horizontalLayout_6.addWidget(self.WiiLoadButton)
-
+        self.ClearMultiSelectButton = QPushButton(self.MetadataBottomFrame)
+        self.ClearMultiSelectButton.setObjectName(u"ClearMultiSelectButton")
+        self.ClearMultiSelectButton.setEnabled(False)
+        self.ClearMultiSelectButton.setGeometry(QRect(75, 3, 121, 23))
+        sizePolicy6.setHeightForWidth(self.ClearMultiSelectButton.sizePolicy().hasHeightForWidth())
+        self.ClearMultiSelectButton.setSizePolicy(sizePolicy6)
+        self.horizontalLayout_6 = QHBoxLayout(self.MetadataBottomFrame)
+        self.horizontalLayout_6.setObjectName(u"horizontalLayout_6")
+        self.horizontalLayout_6.setContentsMargins(-1, 0, -1, 0)
 
         self.verticalLayout_3.addWidget(self.MetadataBottomFrame)
 
@@ -438,6 +443,8 @@ class Ui_MainWindow(object):
         self.menuDebug.addSeparator()
         self.menuDebug.addAction(self.actionEnable_Log_File)
         self.menuDebug.addAction(self.actionClear_Log)
+        self.menuDebug.addSeparator()
+        self.menuDebug.addAction(self.actionDownload_All_From_Repo)
         self.menuDebug.addSeparator()
         self.menuDebug.addAction(self.menuExperimental.menuAction())
         self.menuExperimental.addAction(self.menuAnnouncement_Banner.menuAction())
@@ -481,6 +488,7 @@ class Ui_MainWindow(object):
 #if QT_CONFIG(tooltip)
         self.actionDeveloper_Profile.setToolTip(QCoreApplication.translate("MainWindow", u"View Profile", None))
 #endif // QT_CONFIG(tooltip)
+        self.actionDownload_All_From_Repo.setText(QCoreApplication.translate("MainWindow", u"Download All From Repo", None))
 #if QT_CONFIG(accessibility)
         self.centralwidget.setAccessibleName(QCoreApplication.translate("MainWindow", u"centralcontainer", None))
 #endif // QT_CONFIG(accessibility)
@@ -495,6 +503,7 @@ class Ui_MainWindow(object):
         self.CategoriesComboBox.setItemText(3, QCoreApplication.translate("MainWindow", u"Games", None))
         self.CategoriesComboBox.setItemText(4, QCoreApplication.translate("MainWindow", u"Media", None))
         self.CategoriesComboBox.setItemText(5, QCoreApplication.translate("MainWindow", u"Demos", None))
+        self.CategoriesComboBox.setItemText(6, QCoreApplication.translate("MainWindow", u"Queued", None))
 
         self.announcementLabel.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p><span style=\" font-weight:600;\">Announcement Header: </span>Announcement Content.</p></body></html>", None))
         self.announcementURLLabel.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p><a href=\"https://google.com\"><span style=\" text-decoration: underline; color:#ffff00;\">Announcement URL</span></a></p></body></html>", None))
@@ -534,6 +543,7 @@ class Ui_MainWindow(object):
         self.tabMetadata.setTabText(self.tabMetadata.indexOf(self.RawTab), QCoreApplication.translate("MainWindow", u"Peripherals", None))
         self.ViewMetadataBtn.setText(QCoreApplication.translate("MainWindow", u"Download", None))
         self.WiiLoadButton.setText(QCoreApplication.translate("MainWindow", u"Send to Wii", None))
+        self.ClearMultiSelectButton.setText(QCoreApplication.translate("MainWindow", u"Clear Queue", None))
         self.menuAbout.setTitle(QCoreApplication.translate("MainWindow", u"About", None))
         self.menuDebug.setTitle(QCoreApplication.translate("MainWindow", u"Options", None))
         self.menuExperimental.setTitle(QCoreApplication.translate("MainWindow", u"Experimental", None))

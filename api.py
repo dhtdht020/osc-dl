@@ -32,6 +32,8 @@ class Applications:
 
     def update(self, host):
         response = json.loads(requests.get(f"https://api.oscwii.org/v2/{host['id']}/packages", timeout=10).text)
+        for element in response:
+            element["repo"] = host['id']
         self.__apps = response
 
     def get_apps(self):
