@@ -146,4 +146,3 @@ def send_gecko(data, conn):
 
         # delete application zip file
         conn.close()
-        exit(1)
