@@ -238,6 +238,11 @@
                  <string>Demos</string>
                 </property>
                </item>
+               <item>
+                <property name="text">
+                 <string>Queued</string>
+                </property>
+               </item>
               </widget>
              </item>
             </layout>
@@ -532,7 +537,7 @@ background-color: rgba(255, 255, 255, 0);
               <x>10</x>
               <y>100</y>
               <width>223</width>
-              <height>136</height>
+              <height>147</height>
              </rect>
             </property>
             <layout class="QGridLayout" name="gridLayout">
@@ -738,7 +743,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
          <property name="maximumSize">
           <size>
            <width>16777215</width>
-           <height>34</height>
+           <height>56</height>
           </size>
          </property>
          <property name="frameShape">
@@ -754,33 +759,67 @@ li.checked::marker { content: &quot;\2612&quot;; }
           <property name="bottomMargin">
            <number>0</number>
           </property>
-          <item>
-           <widget class="QPushButton" name="ViewMetadataBtn">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="text">
-             <string>Download</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QPushButton" name="WiiLoadButton">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="text">
-             <string>Send to Wii</string>
-            </property>
-           </widget>
-          </item>
          </layout>
+         <widget class="QPushButton" name="ViewMetadataBtn">
+          <property name="geometry">
+           <rect>
+            <x>10</x>
+            <y>29</y>
+            <width>121</width>
+            <height>23</height>
+           </rect>
+          </property>
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="text">
+           <string>Download</string>
+          </property>
+         </widget>
+         <widget class="QPushButton" name="WiiLoadButton">
+          <property name="geometry">
+           <rect>
+            <x>140</x>
+            <y>29</y>
+            <width>121</width>
+            <height>23</height>
+           </rect>
+          </property>
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="text">
+           <string>Send to Wii</string>
+          </property>
+         </widget>
+         <widget class="QPushButton" name="ClearMultiSelectButton">
+          <property name="enabled">
+           <bool>false</bool>
+          </property>
+          <property name="geometry">
+           <rect>
+            <x>75</x>
+            <y>3</y>
+            <width>121</width>
+            <height>23</height>
+           </rect>
+          </property>
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="text">
+           <string>Clear Queue</string>
+          </property>
+         </widget>
         </widget>
        </item>
       </layout>
@@ -827,6 +866,8 @@ li.checked::marker { content: &quot;\2612&quot;; }
     <addaction name="separator"/>
     <addaction name="actionEnable_Log_File"/>
     <addaction name="actionClear_Log"/>
+    <addaction name="separator"/>
+    <addaction name="actionDownload_All_From_Repo"/>
     <addaction name="separator"/>
     <addaction name="menuExperimental"/>
    </widget>
@@ -930,6 +971,11 @@ li.checked::marker { content: &quot;\2612&quot;; }
    </property>
    <property name="toolTip">
     <string>View Profile</string>
+   </property>
+  </action>
+  <action name="actionDownload_All_From_Repo">
+   <property name="text">
+    <string>Download All From Repo</string>
    </property>
   </action>
  </widget>
