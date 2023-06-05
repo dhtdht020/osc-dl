@@ -109,7 +109,7 @@ def prepare(zip_buf):
 
 def connect(ip):
     conn = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    conn.settimeout(2)
+    conn.settimeout(200)
     conn.connect((ip, 4299))
     return conn
 
