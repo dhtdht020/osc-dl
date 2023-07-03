@@ -3,6 +3,6 @@ requests~=2.30.0
 packaging~=23.1
 PyYAML~=6.0
 markdown~=3.4.3
-Pillow~=9.5.0
+Pillow~=10.0.0
 pyserial~=3.5
 func-timeout~=4.3.5
