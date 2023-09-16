@@ -84,9 +84,6 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         self.ui.actionClear_Log.setIcon(QIcon(resource_path("assets/gui/icons/clear-log.png")))
         self.ui.menuExperimental.setIcon(QIcon(resource_path("assets/gui/icons/experimental.png")))
         self.ui.actionSelect_Theme.setIcon(QIcon(resource_path("assets/gui/icons/theme.png")))
-        # OPTIONS -> EXPERIMENTAL
-        self.ui.menuAnnouncement_Banner.setIcon(QIcon(resource_path("assets/gui/icons/announcement-banner.png")))
-        self.ui.actionDisplay_Banner.setIcon(QIcon(resource_path("assets/gui/icons/announcement-banner-reload.png")))
 
         # CATEGORIES COMBOBOX
         self.ui.CategoriesComboBox.setItemIcon(1, QIcon(resource_path("assets/gui/icons/category/utility.png")))
@@ -114,9 +111,6 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         self.ui.progressBar.setHidden(False)
         self.ui.statusBar.addPermanentWidget(self.ui.progressBar)
         self.ui.statusBar.addPermanentWidget(self.ui.statusIcon)
-        # Load announcement banner
-        t = threading.Thread(target=self.load_announcement_banner, daemon=True)
-        t.start()
 
         # Close splash
         splash.finish(self)
@@ -182,7 +176,6 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         self.ui.actionAbout_OSC_DL.triggered.connect(self.about_dialog)
         # -- Debug
         self.ui.actionEnable_Log_File.triggered.connect(self.turn_log_on)
-        self.ui.actionDisplay_Banner.triggered.connect(self.load_announcement_banner)
         self.ui.actionSelect_Theme.triggered.connect(self.select_theme_action)
         # -- Clients
         # ---- Homebrew Browser
@@ -733,35 +726,6 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
                 if self.current_app["slug"] == app_name:
                     self.IconSignal.emit(QPixmap(image))
                     self.ui.HomebrewIconLabel.show()
-
-    def load_announcement_banner(self):
-        try:
-            announcement = updater.get_announcement()
-            announcement_label = announcement[0]
-            announcement_url_label = announcement[1]
-            announcement_banner_color = announcement[2]
-            announcement_banner_text_color = announcement[3]
-            announcement_website_enabled = announcement[4]
-            if announcement is not None:
-                # Un-hide banner
-                self.AnnouncementBannerHidden.connect(self.ui.announcement.setHidden)
-                self.AnnouncementBannerHidden.emit(False)
-
-                # Set banner styling
-                self.ui.announcement.setStyleSheet(f'QFrame {{'
-                                                   f'background-color: {announcement_banner_color};'
-                                                   f'color: {announcement_banner_text_color};'
-                                                   f'}}')
-
-                # Populate banner
-                self.ui.announcementLabel.setText(announcement_label)
-                self.ui.announcementURLLabel.setText(announcement_url_label)
-
-                if announcement_website_enabled is False:
-                    self.ui.announcementURLLabel.setHidden(True)
-
-        except Exception:
-            pass
 
     def search_bar(self):
         text = self.ui.SearchBar.text()

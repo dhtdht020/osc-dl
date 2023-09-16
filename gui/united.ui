@@ -801,13 +801,6 @@ li.checked::marker { content: &quot;\2612&quot;; }
      <property name="title">
       <string>Experimental</string>
      </property>
-     <widget class="QMenu" name="menuAnnouncement_Banner">
-      <property name="title">
-       <string>Announcement Banner</string>
-      </property>
-      <addaction name="actionDisplay_Banner"/>
-     </widget>
-     <addaction name="menuAnnouncement_Banner"/>
      <addaction name="actionSelect_Theme"/>
     </widget>
     <addaction name="actionCopy_Direct_Link"/>
@@ -878,11 +871,6 @@ li.checked::marker { content: &quot;\2612&quot;; }
   <action name="actionClose_the_shop">
    <property name="text">
     <string>Close the shop</string>
-   </property>
-  </action>
-  <action name="actionDisplay_Banner">
-   <property name="text">
-    <string>Reload Announcement Banner</string>
    </property>
   </action>
   <action name="actionRefresh">
