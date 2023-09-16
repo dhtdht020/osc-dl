@@ -26,11 +26,11 @@ class Hosts:
 
 
 class Applications:
-    def __init__(self, host):
+    def __init__(self):
         self.__apps = None
-        self.update(host)
+        self.update()
 
-    def update(self, host):
+    def update(self):
         response = json.loads(requests.get(f"https://hbb1.oscwii.org/api/v3/contents", timeout=10).text)
         self.__apps = response
 

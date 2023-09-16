@@ -43,9 +43,7 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
 
     def __init__(self, app=None, splash=None, test_mode=False):
         super(MainWindow, self).__init__()
-        self.repos = None
         self.apps = None
-        self.current_repo = None
         self.ui = gui.ui_united.Ui_MainWindow()
         self.ui.setupUi(self)
 
@@ -67,7 +65,6 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         self.current_app = None
         self.current_category = "all"
         self.current_developer = ""
-        self.repo_data = None
         self.icons_images = None
         self.long_description_cache = {}
 
@@ -151,27 +148,8 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
     def populate(self):
         self.update_splash_status("Loading contents..")
         self.ui.actionAbout_OSC_DL.setText(f"About OSCDL v{updater.current_version()} by dhtdht020")
-        self.populate_repositories()
         self.populate_list()
         self.assign_initial_actions()
-
-    # Populate list of repositories
-    def populate_repositories(self):
-        self.repos = api.Hosts()
-        n = 0
-        for host in self.repos.list():
-            repo = self.repos.list()[host]
-            display_name = repo["name"]
-            hostname = repo["host"]
-            description = repo["description"]
-            self.ui.ReposComboBox.addItem(display_name)
-            self.ui.ReposComboBox.setItemData(n, [display_name, hostname, description, host], Qt.UserRole)
-            n += 1
-            self.update_splash_status(f"Loaded {n} repositories..")
-        # set current repository
-        self.current_repo = self.repos.get("primary")
-        index = self.ui.ReposComboBox.currentIndex()
-        self.repo_data = self.ui.ReposComboBox.itemData(index, Qt.UserRole)
 
     def assign_initial_actions(self):
         self.update_splash_status("Finishing (1/2)..")
@@ -640,7 +618,7 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
             self.ui.listAppsWidget.setIconSize(QSize(-1, -1))
 
             # Get apps json
-            self.apps = api.Applications(self.repos.get(self.current_repo['id']))
+            self.apps = api.Applications()
             i = 0
 
             for package in self.apps.get_apps():
@@ -913,14 +891,13 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
     # load all icons from zip
     def download_app_icons(self):
         # Debug info
-        original_host = self.current_repo['host']
         logging.debug("Started download of app icons")
         start_time = time.time()
-        icons_zip = requests.get(f"https://{self.current_repo['host']}/hbb/homebrew_browser/temp_files.zip", timeout=10)
+        icons_zip = requests.get(f"https://hbb1.oscwii.org/hbb/homebrew_browser/temp_files.zip", timeout=10)
         end_time = time.time()
         logging.debug(f"Finished download of app icons in {str(end_time - start_time)}")
 
-        if icons_zip.ok and (original_host == self.current_repo['host']):
+        if icons_zip.ok:
             # prepare app icons dictionary
             self.icons_images = {}
             self.list_icons_images = {}
@@ -1007,23 +984,20 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
                 pixmap.loadFromData(icon_bytes.getvalue())
                 self.list_icons_images[app_name] = pixmap
 
-            if original_host == self.current_repo['host']:
-                QtCore.QMetaObject.invokeMethod(self, 'set_app_icons')
+            QtCore.QMetaObject.invokeMethod(self, 'set_app_icons')
         else:
             self.reset_status()
             logging.warning("Loading of app icons for list failed, continuing without them.")
 
     @QtCore.Slot()
     def set_app_icons(self):
-        original_host = self.current_repo['host']
         for i in range(self.ui.listAppsWidget.count()):
             item = self.ui.listAppsWidget.item(i)
-            if original_host == self.current_repo['host']:
-                try:
-                    item.setIcon(self.list_icons_images[item.data(Qt.UserRole)["slug"]])
-                except KeyError:
-                    self.reset_status()
-                    return
+            try:
+                item.setIcon(self.list_icons_images[item.data(Qt.UserRole)["slug"]])
+            except KeyError:
+                self.reset_status()
+                return
         # set size of icon to 171x64
         self.ui.listAppsWidget.setIconSize(QSize(171, 32))
         # complete loading
