@@ -107,6 +107,8 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         # set initial status icon
         self.status_icon("online")
 
+        self.ui.ReposComboBox.setPlaceholderText("Open Shop Channel")
+
         self.populate()
         self.selection_changed()
         self.ui.progressBar.setHidden(False)
@@ -171,7 +173,6 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         self.ui.SearchBar.textChanged.connect(self.search_bar)
 
         # Others
-        self.ui.ReposComboBox.currentIndexChanged.connect(self.changed_host)
         self.ui.CategoriesComboBox.currentIndexChanged.connect(self.changed_category)
         self.ui.listAppsWidget.currentItemChanged.connect(self.selection_changed)
         self.ui.actionDeveloper_Profile.triggered.connect(self.developer_profile)
@@ -581,16 +582,6 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
             gui_helpers.DATASENT = False
             return
         gui_helpers.DATASENT = True
-
-    def changed_host(self):
-        self.icons_images = None
-        self.long_description_cache.clear()
-        index = self.ui.ReposComboBox.currentIndex()
-        self.repo_data = self.ui.ReposComboBox.itemData(index, Qt.UserRole)
-        self.current_repo = self.repos.get(self.repo_data[3])
-        self.status_message(f"Loading {self.current_repo['host']} repository..")
-        logging.info(f"Loading {self.current_repo['host']}")
-        self.repopulate()
 
     def repopulate(self):
         # Make sure everything is hidden / shown
