@@ -234,8 +234,12 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
             self.ui.HomebrewCategoryLabel.setText(metadata.category_display_name(self.current_app["category"]))
 
             # Release Date
-            self.ui.releasedate.setText(
-                datetime.fromtimestamp(int(self.current_app["release_date"])).strftime('%B %e, %Y'))
+            if self.current_app["release_date"] == 0:
+                release_date_text = "Unknown"
+            else:
+                release_date_text = datetime.fromtimestamp(int(self.current_app["release_date"])).strftime('%B %e, %Y')
+            self.ui.releasedate.setText(release_date_text)
+
 
             # Peripherals
             peripherals = self.current_app["peripherals"]
