@@ -105,6 +105,8 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         self.status_icon("online")
 
         self.ui.ReposComboBox.setPlaceholderText("Open Shop Channel")
+        self.ui.WarningIcon.setPixmap(QPixmap(resource_path("assets/gui/icons/warning.png")))
+        self.ui.WarningIcon.setScaledContents(True)
 
         self.populate()
         self.selection_changed()
@@ -304,6 +306,9 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
 
             # Long Description
             self.ui.longDescriptionBrowser.setText(self.current_app["description"]["long"])
+
+            # Warning Banner
+            self.ui.WarningFrame.setVisible("writes_to_nand" in self.current_app["flags"])
 
         self.ui.progressBar.setValue(0)
         self.repaint()

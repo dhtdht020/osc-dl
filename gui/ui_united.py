@@ -27,13 +27,13 @@ class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         if not MainWindow.objectName():
             MainWindow.setObjectName(u"MainWindow")
-        MainWindow.resize(900, 425)
+        MainWindow.resize(900, 460)
         sizePolicy = QSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(MainWindow.sizePolicy().hasHeightForWidth())
         MainWindow.setSizePolicy(sizePolicy)
-        MainWindow.setMinimumSize(QSize(900, 425))
+        MainWindow.setMinimumSize(QSize(900, 460))
         MainWindow.setStyleSheet(u"")
         MainWindow.setDockOptions(QMainWindow.AllowTabbedDocks|QMainWindow.AnimatedDocks)
         self.actionAbout_OSC_DL = QAction(MainWindow)
@@ -369,6 +369,46 @@ class Ui_MainWindow(object):
 
         self.verticalLayout_3.addWidget(self.MetadataTabsFrame)
 
+        self.WarningFrame = QFrame(self.SelectionInfoBox)
+        self.WarningFrame.setObjectName(u"WarningFrame")
+        sizePolicy6 = QSizePolicy(QSizePolicy.Preferred, QSizePolicy.Maximum)
+        sizePolicy6.setHorizontalStretch(0)
+        sizePolicy6.setVerticalStretch(0)
+        sizePolicy6.setHeightForWidth(self.WarningFrame.sizePolicy().hasHeightForWidth())
+        self.WarningFrame.setSizePolicy(sizePolicy6)
+        self.WarningFrame.setStyleSheet(u"")
+        self.WarningFrame.setFrameShape(QFrame.StyledPanel)
+        self.WarningFrame.setFrameShadow(QFrame.Raised)
+        self.verticalLayout_4 = QVBoxLayout(self.WarningFrame)
+        self.verticalLayout_4.setObjectName(u"verticalLayout_4")
+        self.WarningBanner = QFrame(self.WarningFrame)
+        self.WarningBanner.setObjectName(u"WarningBanner")
+        self.WarningBanner.setStyleSheet(u"background-color: rgb(255, 102, 102);\n"
+"color: rgb(255, 255, 255);")
+        self.WarningBanner.setFrameShape(QFrame.StyledPanel)
+        self.WarningBanner.setFrameShadow(QFrame.Raised)
+        self.horizontalLayout = QHBoxLayout(self.WarningBanner)
+        self.horizontalLayout.setObjectName(u"horizontalLayout")
+        self.horizontalLayout.setContentsMargins(0, 0, 0, 0)
+        self.WarningIcon = QLabel(self.WarningBanner)
+        self.WarningIcon.setObjectName(u"WarningIcon")
+        self.WarningIcon.setMinimumSize(QSize(32, 32))
+        self.WarningIcon.setMaximumSize(QSize(32, 32))
+
+        self.horizontalLayout.addWidget(self.WarningIcon)
+
+        self.WarningLabel = QLabel(self.WarningBanner)
+        self.WarningLabel.setObjectName(u"WarningLabel")
+        self.WarningLabel.setWordWrap(True)
+
+        self.horizontalLayout.addWidget(self.WarningLabel)
+
+
+        self.verticalLayout_4.addWidget(self.WarningBanner)
+
+
+        self.verticalLayout_3.addWidget(self.WarningFrame)
+
         self.MetadataBottomFrame = QFrame(self.SelectionInfoBox)
         self.MetadataBottomFrame.setObjectName(u"MetadataBottomFrame")
         self.MetadataBottomFrame.setMaximumSize(QSize(16777215, 34))
@@ -379,18 +419,18 @@ class Ui_MainWindow(object):
         self.horizontalLayout_6.setContentsMargins(-1, 0, -1, 0)
         self.ViewMetadataBtn = QPushButton(self.MetadataBottomFrame)
         self.ViewMetadataBtn.setObjectName(u"ViewMetadataBtn")
-        sizePolicy6 = QSizePolicy(QSizePolicy.Minimum, QSizePolicy.Expanding)
-        sizePolicy6.setHorizontalStretch(0)
-        sizePolicy6.setVerticalStretch(0)
-        sizePolicy6.setHeightForWidth(self.ViewMetadataBtn.sizePolicy().hasHeightForWidth())
-        self.ViewMetadataBtn.setSizePolicy(sizePolicy6)
+        sizePolicy7 = QSizePolicy(QSizePolicy.Minimum, QSizePolicy.Expanding)
+        sizePolicy7.setHorizontalStretch(0)
+        sizePolicy7.setVerticalStretch(0)
+        sizePolicy7.setHeightForWidth(self.ViewMetadataBtn.sizePolicy().hasHeightForWidth())
+        self.ViewMetadataBtn.setSizePolicy(sizePolicy7)
 
         self.horizontalLayout_6.addWidget(self.ViewMetadataBtn)
 
         self.WiiLoadButton = QPushButton(self.MetadataBottomFrame)
         self.WiiLoadButton.setObjectName(u"WiiLoadButton")
-        sizePolicy6.setHeightForWidth(self.WiiLoadButton.sizePolicy().hasHeightForWidth())
-        self.WiiLoadButton.setSizePolicy(sizePolicy6)
+        sizePolicy7.setHeightForWidth(self.WiiLoadButton.sizePolicy().hasHeightForWidth())
+        self.WiiLoadButton.setSizePolicy(sizePolicy7)
 
         self.horizontalLayout_6.addWidget(self.WiiLoadButton)
 
@@ -399,6 +439,7 @@ class Ui_MainWindow(object):
 
         self.MetadataBottomFrame.raise_()
         self.MetadataTabsFrame.raise_()
+        self.WarningFrame.raise_()
 
         self.horizontalLayout_2.addWidget(self.SelectionInfoBox)
 
@@ -521,6 +562,8 @@ class Ui_MainWindow(object):
         self.RawTab.setAccessibleName(QCoreApplication.translate("MainWindow", u"tabcontent", None))
 #endif // QT_CONFIG(accessibility)
         self.tabMetadata.setTabText(self.tabMetadata.indexOf(self.RawTab), QCoreApplication.translate("MainWindow", u"Peripherals", None))
+        self.WarningIcon.setText("")
+        self.WarningLabel.setText(QCoreApplication.translate("MainWindow", u"This app makes changes to the system's NAND. Use with caution!", None))
         self.ViewMetadataBtn.setText(QCoreApplication.translate("MainWindow", u"Download", None))
         self.WiiLoadButton.setText(QCoreApplication.translate("MainWindow", u"Send to Wii", None))
         self.menuAbout.setTitle(QCoreApplication.translate("MainWindow", u"About", None))
