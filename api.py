@@ -31,7 +31,7 @@ class Applications:
         self.update(host)
 
     def update(self, host):
-        response = json.loads(requests.get(f"https://api.oscwii.org/v2/{host['id']}/packages", timeout=10).text)
+        response = json.loads(requests.get(f"https://hbb1.oscwii.org/api/v3/contents", timeout=10).text)
         self.__apps = response
 
     def get_apps(self):

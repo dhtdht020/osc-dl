@@ -24,13 +24,13 @@ class DownloadLocationDialog(ui_DownloadLocationDialog.Ui_Dialog, QDialog):
         self.selection = None
         self.drives = set()
 
-        self.setWindowTitle(f"Download \"{self.package['display_name']}\"")
+        self.setWindowTitle(f"Download \"{self.package['name']}\"")
 
         # set required space label
-        self.label_required_space.setText(f"**Required Space:** {file_size(self.package['extracted'])}")
+        self.label_required_space.setText(f"**Required Space:** {file_size(self.package['file_size']['zip_uncompressed'])}")
 
         # populate list of extra dirs
-        for directory in self.package["extra_directories"]:
+        for directory in self.package["subdirectories"]:
             if not directory.startswith("/apps"):
                 item = QListWidgetItem()
                 item.setText(directory)

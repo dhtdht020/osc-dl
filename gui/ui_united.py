@@ -3,7 +3,7 @@
 ################################################################################
 ## Form generated from reading UI file 'united.ui'
 ##
-## Created by: Qt User Interface Compiler version 6.5.0
+## Created by: Qt User Interface Compiler version 6.5.2
 ##
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
@@ -352,9 +352,6 @@ class Ui_MainWindow(object):
 "	border-style: hidden;\n"
 "}")
         self.longDescriptionBrowser.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
-        self.longDescriptionLoadingSpinner = QLabel(self.Description)
-        self.longDescriptionLoadingSpinner.setObjectName(u"longDescriptionLoadingSpinner")
-        self.longDescriptionLoadingSpinner.setGeometry(QRect(210, 210, 32, 32))
         self.tabMetadata.addTab(self.Description, "")
         self.RawTab = QWidget()
         self.RawTab.setObjectName(u"RawTab")
@@ -526,7 +523,6 @@ class Ui_MainWindow(object):
 "li.checked::marker { content: \"\\2612\"; }\n"
 "</style></head><body style=\" font-family:'Segoe UI'; font-size:9pt; font-weight:400; font-style:normal;\">\n"
 "<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br /></p></body></html>", None))
-        self.longDescriptionLoadingSpinner.setText("")
         self.tabMetadata.setTabText(self.tabMetadata.indexOf(self.Description), QCoreApplication.translate("MainWindow", u"Description", None))
 #if QT_CONFIG(accessibility)
         self.RawTab.setAccessibleName(QCoreApplication.translate("MainWindow", u"tabcontent", None))

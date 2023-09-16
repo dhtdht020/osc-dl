@@ -107,8 +107,6 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         self.spinner.setScaledSize(QSize(32, 32))
         self.spinner.start()
 
-        self.ui.longDescriptionLoadingSpinner.setMovie(self.spinner)
-
         # set initial status icon
         self.status_icon("online")
 
@@ -185,7 +183,7 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         self.ui.actionCopy_Direct_Link.triggered.connect(
             lambda: (QApplication.clipboard().setText(self.current_app['zip_url']),
                      self.status_message(f"Copied the download link for "
-                                         f"\"{self.current_app['display_name']}\" to clipboard")))
+                                         f"\"{self.current_app['name']}\" to clipboard")))
 
         self.ui.ViewMetadataBtn.clicked.connect(self.download_app)
         self.ui.WiiLoadButton.clicked.connect(self.wiiload_button)
@@ -198,7 +196,6 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         self.ui.ReposComboBox.currentIndexChanged.connect(self.changed_host)
         self.ui.CategoriesComboBox.currentIndexChanged.connect(self.changed_category)
         self.ui.listAppsWidget.currentItemChanged.connect(self.selection_changed)
-        self.ui.tabMetadata.currentChanged.connect(self.tab_changed)
         self.ui.actionDeveloper_Profile.triggered.connect(self.developer_profile)
 
         # Actions
@@ -216,38 +213,13 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         self.ui.actionCheck_for_Updates.triggered.connect(partial(self.check_for_updates_action))
         self.ui.actionRefresh.triggered.connect(partial(self.repopulate))
 
-    # When user switches to a different tab
-    def tab_changed(self):
-        if self.ui.tabMetadata.currentIndex() == 1:
-            t = threading.Thread(target=self.load_long_description, daemon=True)
-            t.start()
-
-    # Load long description
-    def load_long_description(self):
-        self.LongDescriptionSignal.connect(self.ui.longDescriptionBrowser.setText)
-
-        if self.current_app["internal_name"] in self.long_description_cache.keys():
-            self.LongDescriptionSignal.emit(self.long_description_cache[self.current_app["internal_name"]])
-        else:
-            self.ui.longDescriptionLoadingSpinner.setVisible(True)
-            self.LongDescriptionSignal.emit("Loading description..")
-
-            long_description = metadata.long_description(self.current_app["internal_name"], repo=self.current_repo['host'])
-            self.LongDescriptionSignal.emit(long_description)
-
-            # save to long description cache
-            self.long_description_cache[self.current_app["internal_name"]] = long_description
-
-            # hide loading spinner
-            self.ui.longDescriptionLoadingSpinner.setVisible(False)
-
     # When user selects a different homebrew from the list
     def selection_changed(self):
         self.update_splash_status("Finishing (2/2) - Loading first app..")
 
         try:
             self.current_app = self.ui.listAppsWidget.currentItem().data(Qt.UserRole)
-            app_name = self.current_app["internal_name"]
+            app_name = self.current_app["slug"]
         except Exception:
             app_name = None
         if app_name is not None:
@@ -266,14 +238,14 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
 
             # -- Get actual metadata
             # App Name
-            self.ui.appname.setText(self.current_app["display_name"])
-            self.ui.SelectionInfoBox.setTitle("Information: " + self.current_app["display_name"])
-            self.ui.label_displayname.setText(self.current_app["display_name"])
+            self.ui.appname.setText(self.current_app["name"])
+            self.ui.SelectionInfoBox.setTitle("Information: " + self.current_app["name"])
+            self.ui.label_displayname.setText(self.current_app["name"])
 
             # File Size
             try:
-                extracted = utils.file_size(self.current_app["extracted"])
-                compressed = utils.file_size(self.current_app["zip_size"])
+                extracted = utils.file_size(self.current_app['file_size']['zip_uncompressed'])
+                compressed = utils.file_size(self.current_app["file_size"]["zip_compressed"])
                 self.ui.filesize.setText(f"{compressed} / {extracted}")
                 self.ui.filesize.setToolTip(f"Compressed Download: {compressed}\nExtracted Size: {extracted}")
             except KeyError:
@@ -287,52 +259,52 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
                 datetime.fromtimestamp(int(self.current_app["release_date"])).strftime('%B %e, %Y'))
 
             # Peripherals
-            peripherals = metadata.parse_peripherals(self.current_app["controllers"])
+            peripherals = self.current_app["peripherals"]
             # Add icons for Wii Remotes
-            if peripherals["wii_remotes"] > 1:
+            if peripherals.count("Wii Remote") > 1:
                 item = QListWidgetItem()
-                item.setText(f"{str(peripherals['wii_remotes'])} Wii Remotes")
+                item.setText(f"{str(peripherals.count('Wii Remote'))} Wii Remotes")
                 item.setIcon(QIcon(
-                    resource_path(f"assets/gui/icons/controllers/{str(peripherals['wii_remotes'])}WiiRemote.png")))
-                item.setToolTip(f"This app supports up to {str(peripherals['wii_remotes'])} Wii Remotes.")
+                    resource_path(f"assets/gui/icons/controllers/{str(peripherals.count('Wii Remote'))}WiiRemote.png")))
+                item.setToolTip(f"This app supports up to {str(peripherals.count('Wii Remote'))} Wii Remotes.")
                 self.ui.SupportedControllersListWidget.addItem(item)
-            elif peripherals["wii_remotes"] == 1:
+            elif peripherals.count('Wii Remote') == 1:
                 item = QListWidgetItem()
                 item.setText(f"1 Wii Remote")
                 item.setIcon(QIcon(resource_path(f"assets/gui/icons/controllers/1WiiRemote.png")))
                 item.setToolTip("This app supports a single Wii Remote.")
                 self.ui.SupportedControllersListWidget.addItem(item)
-            if peripherals["nunchuk"] is True:
+            if "Nunchuk" in peripherals:
                 item = QListWidgetItem()
                 item.setText(f"Nunchuk")
                 item.setIcon(QIcon(resource_path(f"assets/gui/icons/controllers/Nunchuk.png")))
                 item.setToolTip("This app can be used with a Nunchuk.")
                 self.ui.SupportedControllersListWidget.addItem(item)
-            if peripherals["classic"] is True:
+            if "Classic Controller" in peripherals:
                 item = QListWidgetItem()
                 item.setText(f"Classic Controller")
                 item.setIcon(QIcon(resource_path(f"assets/gui/icons/controllers/ClassicController.png")))
                 item.setToolTip("This app can be used with a Classic Controller.")
                 self.ui.SupportedControllersListWidget.addItem(item)
-            if peripherals["gamecube"] is True:
+            if "GameCube Controller" in peripherals:
                 item = QListWidgetItem()
                 item.setText(f"GameCube Controller")
                 item.setIcon(QIcon(resource_path(f"assets/gui/icons/controllers/GamecubeController.png")))
                 item.setToolTip("This app can be used with a Gamecube Controller.")
                 self.ui.SupportedControllersListWidget.addItem(item)
-            if peripherals["wii_zapper"] is True:
+            if "Wii Zapper" in peripherals:
                 item = QListWidgetItem()
                 item.setText(f"Wii Zapper")
                 item.setIcon(QIcon(resource_path(f"assets/gui/icons/controllers/WiiZapper.png")))
                 item.setToolTip("This app can be used with a Wii Zapper.")
                 self.ui.SupportedControllersListWidget.addItem(item)
-            if peripherals["keyboard"] is True:
+            if "USB Keyboard" in peripherals:
                 item = QListWidgetItem()
                 item.setText(f"USB Keyboard")
                 item.setIcon(QIcon(resource_path(f"assets/gui/icons/controllers/USBKeyboard.png")))
                 item.setToolTip("This app can be used with a USB Keyboard.")
                 self.ui.SupportedControllersListWidget.addItem(item)
-            if peripherals["sdhc"] is True:
+            if "SDHC" in peripherals:
                 item = QListWidgetItem()
                 item.setText(f"SDHC Card")
                 item.setIcon(QIcon(resource_path(f"assets/gui/icons/controllers/SDHC.png")))
@@ -343,19 +315,19 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
             self.ui.version.setText(self.current_app["version"])
 
             # Coder
-            self.ui.developer.setText(self.current_app["coder"])
+            self.ui.developer.setText(self.current_app["author"])
 
             # Short Description
             self.ui.label_description.setToolTip(None)
-            if self.current_app["short_description"] == "":
+            if self.current_app["description"]["short"] == "":
                 self.ui.label_description.setText("No description specified.")
             else:
-                self.ui.label_description.setText(self.current_app["short_description"])
-                if len(self.current_app["short_description"]) >= 40:
-                    self.ui.label_description.setToolTip(self.current_app["short_description"])
+                self.ui.label_description.setText(self.current_app["description"]["short"])
+                if len(self.current_app["description"]["short"]) >= 40:
+                    self.ui.label_description.setToolTip(self.current_app["description"]["short"])
 
             # Long Description
-            self.ui.longDescriptionBrowser.setText(self.current_app["long_description"])
+            self.ui.longDescriptionBrowser.setText(self.current_app["description"]["long"])
 
         self.ui.progressBar.setValue(0)
         self.repaint()
@@ -365,7 +337,7 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
 
     def view_metadata(self):
         data = self.ui.listAppsWidget.currentItem().data(Qt.UserRole)
-        self.app_name = data["internal_name"]
+        self.app_name = data["slug"]
 
     def trugh(self, text):
         return QObject.tr(self, text)
@@ -373,7 +345,7 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
     # TODO FULL REWRITE
     def download_app(self, extract_root=False):
         gui_helpers.IN_DOWNLOAD_DIALOG = True
-        self.status_message(f"Downloading {self.current_app['display_name']} from Open Shop Channel..")
+        self.status_message(f"Downloading {self.current_app['name']} from Open Shop Channel..")
         self.status_icon("pending")
         self.ui.progressBar.setMaximum(0)
 
@@ -391,7 +363,7 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
                 logging.debug(f"Selected drive: {dialog.selection}")
                 if dialog.selection == "browse":
                     save_location, _ = QFileDialog.getSaveFileName(self, 'Save Application',
-                                                                   self.current_app["internal_name"] + ".zip")
+                                                                   self.current_app["slug"] + ".zip")
                 else:
                     if not dialog.selection["appsdir"]:
                         try:
@@ -401,7 +373,7 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
                                                  "Could not create the apps directory on the selected device.")
                             return
                     save_location = dialog.selection["drive"].rootPath() + "/apps/" + self.current_app[
-                        "internal_name"] + ".zip"
+                        "slug"] + ".zip"
                     extract_root = True
             else:
                 save_location = ''
@@ -411,13 +383,13 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
                 dir_path = '%s\\OSCDL\\' % os.environ['APPDATA']
                 if not os.path.exists(dir_path):
                     os.makedirs(dir_path)
-                save_location = f'%s{self.current_app["internal_name"]}' % dir_path
+                save_location = f'%s{self.current_app["slug"]}' % dir_path
             else:
-                save_location = f"{self.current_app['internal_name']}.zip"
+                save_location = f"{self.current_app['slug']}.zip"
         self.ui.progressBar.setValue(0)
         if save_location:
             # stream file, so we can iterate
-            response = requests.get(self.current_app["zip_url"], stream=True)
+            response = requests.get(self.current_app["url"]["zip"], stream=True)
             total_size = int(response.headers.get('content-length', 0))
 
             # set progress bar
@@ -431,7 +403,7 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
                     for data in response.iter_content(block_size):
                         self.ui.progressBar.setValue(self.ui.progressBar.value() + 1024)
                         self.status_message(
-                            f"Downloading {self.current_app['display_name']} from Open Shop Channel.. ({utils.file_size(self.ui.progressBar.value())}/{utils.file_size(total_size)})")
+                            f"Downloading {self.current_app['name']} from Open Shop Channel.. ({utils.file_size(self.ui.progressBar.value())}/{utils.file_size(total_size)})")
                         try:
                             self.app.processEvents()
                         except NameError:
@@ -451,7 +423,7 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
             self.ui.progressBar.setValue(total_size)
             if object_name != "WiiLoadButton":
                 self.safe_mode(False)
-            self.status_message(f"Download of \"{self.current_app['display_name']}\" has completed successfully")
+            self.status_message(f"Download of \"{self.current_app['name']}\" has completed successfully")
             self.status_icon("online")
             gui_helpers.IN_DOWNLOAD_DIALOG = False
             return save_location
@@ -489,7 +461,7 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
             return
         gui_helpers.CURRENTLY_SENDING = True
 
-        self.status_message("Downloading " + self.current_app["display_name"] + " from Open Shop Channel..")
+        self.status_message("Downloading " + self.current_app["name"] + " from Open Shop Channel..")
         self.ui.progressBar.setValue(25)
 
         # get app
@@ -597,7 +569,7 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
             self.ui.progressBar.setMaximum(100)
             self.ui.progressBar.setValue(100)
 
-        file_name = f'{self.current_app["internal_name"]}.zip'
+        file_name = f'{self.current_app["slug"]}.zip'
         conn.send(bytes(file_name, 'utf-8') + b'\x00')
 
         # delete application zip file
@@ -681,11 +653,11 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
                         birthday = ""
 
                     # add entry to applications list
-                    self.ui.listAppsWidget.addItem(f"{package['display_name']}{birthday}\n"
-                                                   f"{utils.file_size(package['extracted'])} | "
+                    self.ui.listAppsWidget.addItem(f"{package['name']}{birthday}\n"
+                                                   f"{utils.file_size(package['file_size']['zip_uncompressed'])} | "
                                                    f"{package['version']} | "
-                                                   f"{package['coder']} | "
-                                                   f"{package['short_description']}")
+                                                   f"{package['author']} | "
+                                                   f"{package['description']['short']}")
                     list_item = self.ui.listAppsWidget.item(i)
 
                     list_item.setData(Qt.UserRole, package)
@@ -776,7 +748,7 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         else:
             # Gets raw image data from server
             # Check if still relevant
-            if self.current_app["internal_name"] == app_name:
+            if self.current_app["slug"] == app_name:
                 data = metadata.icon(self.current_app)
 
                 # Loads image
@@ -785,7 +757,7 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
 
                 # Adds image to label
                 # Once again check if still relevant
-                if self.current_app["internal_name"] == app_name:
+                if self.current_app["slug"] == app_name:
                     self.IconSignal.emit(QPixmap(image))
                     self.ui.HomebrewIconLabel.show()
 
@@ -825,11 +797,11 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
 
         # Filter items with search term
         for i in self.ui.listAppsWidget.findItems(text, Qt.MatchContains):
-            if self.current_category == "all" and (self.current_developer in i.data(Qt.UserRole)["coder"]):
+            if self.current_category == "all" and (self.current_developer in i.data(Qt.UserRole)["author"]):
                 results.append(i.text())
                 n += 1
             elif i.data(Qt.UserRole)["category"] == self.current_category and (
-                    self.current_developer in i.data(Qt.UserRole)["coder"]):
+                    self.current_developer in i.data(Qt.UserRole)["author"]):
                 results.append(i.text())
                 n += 1
             else:
@@ -899,7 +871,7 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         # hide anything from a different coder
         for i in range(self.ui.listAppsWidget.count()):
             item = self.ui.listAppsWidget.item(i)
-            if item.data(Qt.UserRole)["coder"] != self.current_developer:
+            if item.data(Qt.UserRole)["author"] != self.current_developer:
                 item.setHidden(True)
 
         # count apps
@@ -977,7 +949,7 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
                 else:
                     continue
 
-                apps_category_icons[package["internal_name"]] = category_icon
+                apps_category_icons[package["slug"]] = category_icon
 
             for name in zip_file.namelist():
                 app_name = name.replace(".png", "")
@@ -1048,7 +1020,7 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
             item = self.ui.listAppsWidget.item(i)
             if original_host == self.current_repo['host']:
                 try:
-                    item.setIcon(self.list_icons_images[item.data(Qt.UserRole)["internal_name"]])
+                    item.setIcon(self.list_icons_images[item.data(Qt.UserRole)["slug"]])
                 except KeyError:
                     self.reset_status()
                     return

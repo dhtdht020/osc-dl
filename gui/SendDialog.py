@@ -26,7 +26,7 @@ class WiiLoadDialog(ui_SendDialog.Ui_Dialog, QDialog):
         self.buttonBox.button(QDialogButtonBox.Ok).setText(f"Send {self.send_as}")
 
         self.setWindowIcon(QIcon(resource_path("assets/gui/icons/send.png")))
-        self.setWindowTitle(f"Send to Wii - {package['display_name']}")
+        self.setWindowTitle(f"Send to Wii - {package['name']}")
 
         self.USBDes.setTextFormat(Qt.TextFormat.RichText)
         self.IPDes.setTextFormat(Qt.TextFormat.RichText)
