@@ -20,7 +20,7 @@ import requests
 from PIL import Image
 from PySide6 import QtGui, QtCore
 from PySide6.QtCore import Qt, QObject, QSize, QEvent
-from PySide6.QtGui import QIcon, QColor, QPixmap, QMovie, QDesktopServices, QHoverEvent
+from PySide6.QtGui import QIcon, QColor, QPixmap, QMovie, QDesktopServices
 from PySide6.QtWidgets import QApplication, QMainWindow, QInputDialog, QLineEdit, QMessageBox, \
     QListWidgetItem, QFileDialog
 

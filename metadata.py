@@ -1,7 +1,4 @@
-import logging
-import re
 import requests
-import lxml.etree
 from utils import resource_path
 
 

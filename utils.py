@@ -1,5 +1,4 @@
 import os
-import re
 
 # Escape ansi from stdout
 import sys
