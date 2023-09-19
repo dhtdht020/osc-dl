@@ -74,8 +74,6 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         self.ui.actionAbout_OSC_DL.setIcon(QIcon(resource_path("assets/gui/icons/about-open-version.png")))
         self.ui.actionIcons_provided_by.setIcon(QIcon(resource_path("assets/gui/icons/iconsprovider.png")))
         # CLIENTS
-        self.ui.menuHomebrew_Browser.setIcon(QIcon(resource_path("assets/gui/icons/hbb-icon.png")))
-        self.ui.actionDownload_HBB_Client_Latest.setIcon(QIcon(resource_path("assets/gui/icons/download.png")))
         self.ui.actionCheck_for_Updates.setIcon(QIcon(resource_path("assets/gui/icons/check-for-updates.png")))
         self.ui.actionRefresh.setIcon(QIcon(resource_path("assets/gui/icons/refresh.png")))
         # OPTIONS
@@ -176,16 +174,11 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         # Actions
         # -- About
         self.ui.actionAbout_OSC_DL.triggered.connect(self.about_dialog)
-        # -- Debug
-        self.ui.actionEnable_Log_File.triggered.connect(self.turn_log_on)
-        self.ui.actionSelect_Theme.triggered.connect(self.select_theme_action)
-        # -- Clients
-        # ---- Homebrew Browser
-        self.ui.actionDownload_HBB_Client_Latest.triggered.connect(
-            lambda: QDesktopServices().openUrl("https://oscwii.org/"))
-        # ---- OSCDL
+        # -- Options
         self.ui.actionCheck_for_Updates.triggered.connect(partial(self.check_for_updates_action))
         self.ui.actionRefresh.triggered.connect(partial(self.repopulate))
+        self.ui.actionEnable_Log_File.triggered.connect(self.turn_log_on)
+        self.ui.actionSelect_Theme.triggered.connect(self.select_theme_action)
 
     # When user selects a different homebrew from the list
     def selection_changed(self):

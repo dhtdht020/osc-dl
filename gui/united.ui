@@ -882,30 +882,16 @@ color: rgb(255, 255, 255);</string>
      </property>
      <addaction name="actionSelect_Theme"/>
     </widget>
+    <addaction name="actionRefresh"/>
     <addaction name="actionCopy_Direct_Link"/>
     <addaction name="separator"/>
     <addaction name="actionEnable_Log_File"/>
     <addaction name="actionClear_Log"/>
     <addaction name="separator"/>
     <addaction name="menuExperimental"/>
-   </widget>
-   <widget class="QMenu" name="menuClients">
-    <property name="title">
-     <string>Clients</string>
-    </property>
-    <widget class="QMenu" name="menuHomebrew_Browser">
-     <property name="title">
-      <string>Homebrew Browser</string>
-     </property>
-     <addaction name="actionDownload_HBB_Client_Latest"/>
-    </widget>
-    <addaction name="menuHomebrew_Browser"/>
-    <addaction name="separator"/>
     <addaction name="actionCheck_for_Updates"/>
-    <addaction name="actionRefresh"/>
    </widget>
    <addaction name="menuAbout"/>
-   <addaction name="menuClients"/>
    <addaction name="menuDebug"/>
   </widget>
   <widget class="QStatusBar" name="statusBar">
@@ -935,11 +921,6 @@ color: rgb(255, 255, 255);</string>
    </property>
    <property name="text">
     <string>Clear GUI Log</string>
-   </property>
-  </action>
-  <action name="actionDownload_HBB_Client_Latest">
-   <property name="text">
-    <string>Download Homebrew Browser</string>
    </property>
   </action>
   <action name="actionCheck_for_Updates">
