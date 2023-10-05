@@ -4,4 +4,4 @@ markdown~=3.4.4
 Pillow~=10.0.0
 pyserial~=3.5
 func-timeout~=4.3.5
-PySide6~=6.5.2 # GUI exclusive
+PySide6~=6.5.3 # GUI exclusive
