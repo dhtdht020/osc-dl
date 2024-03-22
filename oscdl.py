@@ -20,10 +20,7 @@ if __name__ == "__main__":
         logging.getLogger("PIL.PngImagePlugin").setLevel(logging.CRITICAL + 1)
 
     # Initialize app
-    if not utils.is_test("qtdark"):
-        app = QApplication()
-    else:
-        app = QApplication([sys.argv[0], '-platform', f'windows:darkmode={sys.argv[2]}'])
+    app = QApplication()
 
     # Splash
     image = QtGui.QImage(utils.resource_path("assets/gui/splash.png"))
