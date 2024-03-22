@@ -1,5 +1,6 @@
 # Entry point for OSCDL's GUI
 import logging
+import darkdetect
 
 import updater
 
@@ -21,6 +22,9 @@ if __name__ == "__main__":
 
     # Initialize app
     app = QApplication()
+
+    if darkdetect.isDark():
+        app.setStyle("fusion")
 
     # Splash
     image = QtGui.QImage(utils.resource_path("assets/gui/splash.png"))
