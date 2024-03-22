@@ -3,8 +3,6 @@ import threading
 import time
 import zipfile
 from datetime import datetime
-from os import listdir
-from os.path import isfile, join
 
 import os
 import sys
@@ -20,8 +18,8 @@ import requests
 from PIL import Image
 from PySide6 import QtGui, QtCore
 from PySide6.QtCore import Qt, QObject, QSize, QEvent
-from PySide6.QtGui import QIcon, QColor, QPixmap, QMovie, QDesktopServices
-from PySide6.QtWidgets import QApplication, QMainWindow, QInputDialog, QLineEdit, QMessageBox, \
+from PySide6.QtGui import QIcon, QColor, QPixmap, QMovie
+from PySide6.QtWidgets import QApplication, QMainWindow, QLineEdit, QMessageBox, \
     QListWidgetItem, QFileDialog
 
 import gui.ui_united
@@ -78,8 +76,6 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         self.ui.actionRefresh.setIcon(QIcon(resource_path("assets/gui/icons/refresh.png")))
         # OPTIONS
         self.ui.actionCopy_Direct_Link.setIcon(QIcon(resource_path("assets/gui/icons/copy-link.png")))
-        self.ui.menuExperimental.setIcon(QIcon(resource_path("assets/gui/icons/experimental.png")))
-        self.ui.actionSelect_Theme.setIcon(QIcon(resource_path("assets/gui/icons/theme.png")))
 
         # CATEGORIES COMBOBOX
         self.ui.CategoriesComboBox.setItemIcon(1, QIcon(resource_path("assets/gui/icons/category/utility.png")))
@@ -174,7 +170,6 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         # -- Options
         self.ui.actionCheck_for_Updates.triggered.connect(partial(self.check_for_updates_action))
         self.ui.actionRefresh.triggered.connect(partial(self.repopulate))
-        self.ui.actionSelect_Theme.triggered.connect(self.select_theme_action)
 
     # When user selects a different homebrew from the list
     def selection_changed(self):
@@ -842,19 +837,6 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
 
         # count apps
         self.search_bar()
-
-    # Select theme dialog
-    def select_theme_action(self):
-        path = resource_path("assets/themes")
-        theme_files = [f for f in listdir(path) if isfile(join(path, f))]
-
-        theme, ok = QInputDialog.getItem(self, "Experimental: Select Theme",
-                                         "Choose theme to use from the list", theme_files, 0, False)
-        if not ok:
-            return
-
-        with open(resource_path(f"assets/themes/{theme}"), "r") as fh:
-            self.setStyleSheet(fh.read())
 
     # load all icons from zip
     def download_app_icons(self):

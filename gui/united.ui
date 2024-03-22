@@ -879,16 +879,9 @@ color: rgb(255, 255, 255);</string>
     <property name="title">
      <string>Options</string>
     </property>
-    <widget class="QMenu" name="menuExperimental">
-     <property name="title">
-      <string>Experimental</string>
-     </property>
-     <addaction name="actionSelect_Theme"/>
-    </widget>
     <addaction name="actionRefresh"/>
     <addaction name="actionCopy_Direct_Link"/>
     <addaction name="separator"/>
-    <addaction name="menuExperimental"/>
     <addaction name="actionCheck_for_Updates"/>
    </widget>
    <addaction name="menuAbout"/>
@@ -915,11 +908,6 @@ color: rgb(255, 255, 255);</string>
    </property>
    <property name="shortcut">
     <string>F5</string>
-   </property>
-  </action>
-  <action name="actionSelect_Theme">
-   <property name="text">
-    <string>Select Theme</string>
    </property>
   </action>
   <action name="actionIcons_provided_by">

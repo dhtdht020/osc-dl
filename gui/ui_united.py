@@ -42,8 +42,6 @@ class Ui_MainWindow(object):
         self.actionCheck_for_Updates.setObjectName(u"actionCheck_for_Updates")
         self.actionRefresh = QAction(MainWindow)
         self.actionRefresh.setObjectName(u"actionRefresh")
-        self.actionSelect_Theme = QAction(MainWindow)
-        self.actionSelect_Theme.setObjectName(u"actionSelect_Theme")
         self.actionIcons_provided_by = QAction(MainWindow)
         self.actionIcons_provided_by.setObjectName(u"actionIcons_provided_by")
         self.actionIcons_provided_by.setEnabled(False)
@@ -442,8 +440,6 @@ class Ui_MainWindow(object):
         self.menuAbout.setObjectName(u"menuAbout")
         self.menuDebug = QMenu(self.menubar)
         self.menuDebug.setObjectName(u"menuDebug")
-        self.menuExperimental = QMenu(self.menuDebug)
-        self.menuExperimental.setObjectName(u"menuExperimental")
         MainWindow.setMenuBar(self.menubar)
         self.statusBar = QStatusBar(MainWindow)
         self.statusBar.setObjectName(u"statusBar")
@@ -457,9 +453,7 @@ class Ui_MainWindow(object):
         self.menuDebug.addAction(self.actionRefresh)
         self.menuDebug.addAction(self.actionCopy_Direct_Link)
         self.menuDebug.addSeparator()
-        self.menuDebug.addAction(self.menuExperimental.menuAction())
         self.menuDebug.addAction(self.actionCheck_for_Updates)
-        self.menuExperimental.addAction(self.actionSelect_Theme)
 
         self.retranslateUi(MainWindow)
 
@@ -478,7 +472,6 @@ class Ui_MainWindow(object):
 #if QT_CONFIG(shortcut)
         self.actionRefresh.setShortcut(QCoreApplication.translate("MainWindow", u"F5", None))
 #endif // QT_CONFIG(shortcut)
-        self.actionSelect_Theme.setText(QCoreApplication.translate("MainWindow", u"Select Theme", None))
         self.actionIcons_provided_by.setText(QCoreApplication.translate("MainWindow", u"Icons provided by https://icons8.com", None))
         self.actionCopy_Direct_Link.setText(QCoreApplication.translate("MainWindow", u"Copy Direct Link to App", None))
         self.actionDeveloper_Profile.setText(QCoreApplication.translate("MainWindow", u"Developer Profile", None))
@@ -541,6 +534,5 @@ class Ui_MainWindow(object):
         self.WiiLoadButton.setText(QCoreApplication.translate("MainWindow", u"Send to Wii", None))
         self.menuAbout.setTitle(QCoreApplication.translate("MainWindow", u"About", None))
         self.menuDebug.setTitle(QCoreApplication.translate("MainWindow", u"Options", None))
-        self.menuExperimental.setTitle(QCoreApplication.translate("MainWindow", u"Experimental", None))
     # retranslateUi
 
