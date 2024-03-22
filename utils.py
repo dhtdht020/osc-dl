@@ -55,6 +55,10 @@ def get_mount_point(path):
 
 # check if the app has a birthday
 def app_birthday_string(app):
+    # Apparently some apps have negative release dates?? (sigh)
+    if app["release_date"] < 0:
+        return None
+
     if datetime.fromtimestamp(int(app["release_date"])).strftime('%m%d') == datetime.now().strftime('%m%d'):
         # verify that it was not added today
         if datetime.fromtimestamp(int(app["release_date"])).strftime('%Y%m%d') != datetime.now().strftime('%Y%m%d'):
