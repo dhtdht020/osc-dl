@@ -187,9 +187,6 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         except Exception:
             app_name = None
         if app_name is not None:
-            # Set active tab to first
-            self.ui.tabMetadata.setCurrentIndex(0)
-
             # Set loading animation
             self.ui.HomebrewIconLabel.setMovie(self.spinner)
 
