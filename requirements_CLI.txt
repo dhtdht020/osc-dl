@@ -1,7 +1,7 @@
 requests~=2.31.0
-packaging~=23.1
-markdown~=3.4.4
-Pillow~=10.0.0
+packaging~=24.0
+markdown~=3.6
+Pillow~=10.2.0
 pyserial~=3.5
 darkdetect~=0.8.0
 func-timeout~=4.3.5
