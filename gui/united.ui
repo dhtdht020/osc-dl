@@ -393,7 +393,7 @@ background-color: rgba(255, 255, 255, 0);
             <string>tabcontent</string>
            </property>
            <attribute name="title">
-            <string>General</string>
+            <string>Info</string>
            </attribute>
            <widget class="QLabel" name="label_description">
             <property name="geometry">
@@ -412,6 +412,9 @@ background-color: rgba(255, 255, 255, 0);
             </property>
             <property name="text">
              <string>Description</string>
+            </property>
+            <property name="wordWrap">
+             <bool>true</bool>
             </property>
             <property name="textInteractionFlags">
              <set>Qt::LinksAccessibleByMouse|Qt::TextSelectableByMouse</set>
@@ -678,7 +681,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
             <string>tabcontent</string>
            </property>
            <attribute name="title">
-            <string>Peripherals</string>
+            <string>Compatibility</string>
            </attribute>
            <widget class="QListWidget" name="SupportedControllersListWidget">
             <property name="geometry">

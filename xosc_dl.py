@@ -231,8 +231,15 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
                     release_date_text = datetime.fromtimestamp(int(self.current_app["release_date"])).strftime('%B %e, %Y')
             self.ui.releasedate.setText(release_date_text)
 
-
+            #
             # Peripherals
+            #
+
+            item = QListWidgetItem()
+            item.setText("Supported Peripherals")
+            item.setFlags(item.flags() & ~Qt.ItemIsEnabled)
+            self.ui.SupportedControllersListWidget.addItem(item)
+
             peripherals = self.current_app["peripherals"]
             # Add icons for Wii Remotes
             if peripherals.count("Wii Remote") > 1:
@@ -283,6 +290,29 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
                 item.setText(f"SDHC Card")
                 item.setIcon(QIcon(resource_path(f"assets/gui/icons/controllers/SDHC.png")))
                 item.setToolTip("This app is confirmed to support SDHC cards.")
+                self.ui.SupportedControllersListWidget.addItem(item)
+
+            # Supported platforms
+            item = QListWidgetItem()
+            item.setText("Supported Platforms")
+            item.setFlags(item.flags() & ~Qt.ItemIsEnabled)
+            self.ui.SupportedControllersListWidget.addItem(item)
+
+            supported_platforms = self.current_app["supported_platforms"]
+            if "wii" in supported_platforms:
+                item = QListWidgetItem()
+                item.setText(f"Wii")
+                item.setIcon(QIcon(resource_path(f"assets/gui/icons/platforms/wii.png")))
+                self.ui.SupportedControllersListWidget.addItem(item)
+            if "vwii" in supported_platforms:
+                item = QListWidgetItem()
+                item.setText(f"Wii U (Virtual Wii)")
+                item.setIcon(QIcon(resource_path(f"assets/gui/icons/platforms/vwii.png")))
+                self.ui.SupportedControllersListWidget.addItem(item)
+            if "wii_mini" in supported_platforms:
+                item = QListWidgetItem()
+                item.setText(f"Wii Mini")
+                item.setIcon(QIcon(resource_path(f"assets/gui/icons/platforms/wii_mini.png")))
                 self.ui.SupportedControllersListWidget.addItem(item)
 
             # Version

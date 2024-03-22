@@ -3,7 +3,7 @@
 ################################################################################
 ## Form generated from reading UI file 'united.ui'
 ##
-## Created by: Qt User Interface Compiler version 6.5.2
+## Created by: Qt User Interface Compiler version 6.6.2
 ##
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
@@ -28,7 +28,7 @@ class Ui_MainWindow(object):
         if not MainWindow.objectName():
             MainWindow.setObjectName(u"MainWindow")
         MainWindow.resize(900, 460)
-        sizePolicy = QSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
+        sizePolicy = QSizePolicy(QSizePolicy.Policy.Fixed, QSizePolicy.Policy.Fixed)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(MainWindow.sizePolicy().hasHeightForWidth())
@@ -70,7 +70,7 @@ class Ui_MainWindow(object):
         self.verticalLayout.setContentsMargins(-1, 4, -1, -1)
         self.LibraryTopFrameTop = QFrame(self.AppsLibraryBox)
         self.LibraryTopFrameTop.setObjectName(u"LibraryTopFrameTop")
-        sizePolicy1 = QSizePolicy(QSizePolicy.Minimum, QSizePolicy.Maximum)
+        sizePolicy1 = QSizePolicy(QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Maximum)
         sizePolicy1.setHorizontalStretch(0)
         sizePolicy1.setVerticalStretch(0)
         sizePolicy1.setHeightForWidth(self.LibraryTopFrameTop.sizePolicy().hasHeightForWidth())
@@ -82,7 +82,7 @@ class Ui_MainWindow(object):
         self.horizontalLayout_3.setContentsMargins(0, 0, 0, 0)
         self.ViewDevWebsite = QLabel(self.LibraryTopFrameTop)
         self.ViewDevWebsite.setObjectName(u"ViewDevWebsite")
-        sizePolicy2 = QSizePolicy(QSizePolicy.Maximum, QSizePolicy.Preferred)
+        sizePolicy2 = QSizePolicy(QSizePolicy.Policy.Maximum, QSizePolicy.Policy.Preferred)
         sizePolicy2.setHorizontalStretch(0)
         sizePolicy2.setVerticalStretch(0)
         sizePolicy2.setHeightForWidth(self.ViewDevWebsite.sizePolicy().hasHeightForWidth())
@@ -123,7 +123,7 @@ class Ui_MainWindow(object):
         self.verticalLayout_2.setContentsMargins(0, 0, 0, 0)
         self.SearchFrame = QFrame(self.LibraryContentFrame)
         self.SearchFrame.setObjectName(u"SearchFrame")
-        sizePolicy3 = QSizePolicy(QSizePolicy.Preferred, QSizePolicy.Preferred)
+        sizePolicy3 = QSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Preferred)
         sizePolicy3.setHorizontalStretch(0)
         sizePolicy3.setVerticalStretch(0)
         sizePolicy3.setHeightForWidth(self.SearchFrame.sizePolicy().hasHeightForWidth())
@@ -137,7 +137,7 @@ class Ui_MainWindow(object):
         self.horizontalLayout_5.setContentsMargins(0, 0, 0, 0)
         self.SearchBar = QLineEdit(self.SearchFrame)
         self.SearchBar.setObjectName(u"SearchBar")
-        sizePolicy4 = QSizePolicy(QSizePolicy.Minimum, QSizePolicy.Minimum)
+        sizePolicy4 = QSizePolicy(QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Minimum)
         sizePolicy4.setHorizontalStretch(0)
         sizePolicy4.setVerticalStretch(0)
         sizePolicy4.setHeightForWidth(self.SearchBar.sizePolicy().hasHeightForWidth())
@@ -209,7 +209,7 @@ class Ui_MainWindow(object):
 
         self.SelectionInfoBox = QGroupBox(self.centralwidget)
         self.SelectionInfoBox.setObjectName(u"SelectionInfoBox")
-        sizePolicy5 = QSizePolicy(QSizePolicy.Fixed, QSizePolicy.Preferred)
+        sizePolicy5 = QSizePolicy(QSizePolicy.Policy.Fixed, QSizePolicy.Policy.Preferred)
         sizePolicy5.setHorizontalStretch(0)
         sizePolicy5.setVerticalStretch(0)
         sizePolicy5.setHeightForWidth(self.SelectionInfoBox.sizePolicy().hasHeightForWidth())
@@ -232,6 +232,7 @@ class Ui_MainWindow(object):
         self.label_description.setObjectName(u"label_description")
         self.label_description.setGeometry(QRect(10, 80, 221, 16))
         self.label_description.setMaximumSize(QSize(221, 16777215))
+        self.label_description.setWordWrap(True)
         self.label_description.setTextInteractionFlags(Qt.LinksAccessibleByMouse|Qt.TextSelectableByMouse)
         self.label_displayname = QLabel(self.GeneralTab)
         self.label_displayname.setObjectName(u"label_displayname")
@@ -369,7 +370,7 @@ class Ui_MainWindow(object):
 
         self.WarningFrame = QFrame(self.SelectionInfoBox)
         self.WarningFrame.setObjectName(u"WarningFrame")
-        sizePolicy6 = QSizePolicy(QSizePolicy.Preferred, QSizePolicy.Maximum)
+        sizePolicy6 = QSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Maximum)
         sizePolicy6.setHorizontalStretch(0)
         sizePolicy6.setVerticalStretch(0)
         sizePolicy6.setHeightForWidth(self.WarningFrame.sizePolicy().hasHeightForWidth())
@@ -417,7 +418,7 @@ class Ui_MainWindow(object):
         self.horizontalLayout_6.setContentsMargins(-1, 0, -1, 0)
         self.ViewMetadataBtn = QPushButton(self.MetadataBottomFrame)
         self.ViewMetadataBtn.setObjectName(u"ViewMetadataBtn")
-        sizePolicy7 = QSizePolicy(QSizePolicy.Minimum, QSizePolicy.Expanding)
+        sizePolicy7 = QSizePolicy(QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Expanding)
         sizePolicy7.setHorizontalStretch(0)
         sizePolicy7.setVerticalStretch(0)
         sizePolicy7.setHeightForWidth(self.ViewMetadataBtn.sizePolicy().hasHeightForWidth())
@@ -534,7 +535,7 @@ class Ui_MainWindow(object):
         self.label_appname.setText(QCoreApplication.translate("MainWindow", u"App Name", None))
         self.appname.setText("")
         self.appname.setPlaceholderText("")
-        self.tabMetadata.setTabText(self.tabMetadata.indexOf(self.GeneralTab), QCoreApplication.translate("MainWindow", u"General", None))
+        self.tabMetadata.setTabText(self.tabMetadata.indexOf(self.GeneralTab), QCoreApplication.translate("MainWindow", u"Info", None))
 #if QT_CONFIG(accessibility)
         self.Description.setAccessibleName(QCoreApplication.translate("MainWindow", u"tabcontent", None))
 #endif // QT_CONFIG(accessibility)
@@ -550,7 +551,7 @@ class Ui_MainWindow(object):
 #if QT_CONFIG(accessibility)
         self.RawTab.setAccessibleName(QCoreApplication.translate("MainWindow", u"tabcontent", None))
 #endif // QT_CONFIG(accessibility)
-        self.tabMetadata.setTabText(self.tabMetadata.indexOf(self.RawTab), QCoreApplication.translate("MainWindow", u"Peripherals", None))
+        self.tabMetadata.setTabText(self.tabMetadata.indexOf(self.RawTab), QCoreApplication.translate("MainWindow", u"Compatibility", None))
         self.WarningIcon.setText("")
         self.WarningLabel.setText(QCoreApplication.translate("MainWindow", u"This app makes changes to the system's NAND. Use with caution!", None))
         self.ViewMetadataBtn.setText(QCoreApplication.translate("MainWindow", u"Download", None))
