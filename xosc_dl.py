@@ -78,8 +78,6 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         self.ui.actionRefresh.setIcon(QIcon(resource_path("assets/gui/icons/refresh.png")))
         # OPTIONS
         self.ui.actionCopy_Direct_Link.setIcon(QIcon(resource_path("assets/gui/icons/copy-link.png")))
-        self.ui.actionEnable_Log_File.setIcon(QIcon(resource_path("assets/gui/icons/enable-log.png")))
-        self.ui.actionClear_Log.setIcon(QIcon(resource_path("assets/gui/icons/clear-log.png")))
         self.ui.menuExperimental.setIcon(QIcon(resource_path("assets/gui/icons/experimental.png")))
         self.ui.actionSelect_Theme.setIcon(QIcon(resource_path("assets/gui/icons/theme.png")))
 
@@ -177,7 +175,6 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         # -- Options
         self.ui.actionCheck_for_Updates.triggered.connect(partial(self.check_for_updates_action))
         self.ui.actionRefresh.triggered.connect(partial(self.repopulate))
-        self.ui.actionEnable_Log_File.triggered.connect(self.turn_log_on)
         self.ui.actionSelect_Theme.triggered.connect(self.select_theme_action)
 
     # When user selects a different homebrew from the list
@@ -694,24 +691,9 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         t = threading.Thread(target=self.download_app_icons, daemon=True)
         t.start()
 
+    #
     # Actions
-    # Enable log
-    def turn_log_on(self):
-        logging.basicConfig(filename='oscdl-gui.log', level=logging.DEBUG,
-                            format="%(asctime)s | %(levelname)s:%(name)s:%(message)s")
-        logging.info('Enabled log file. Hello!')
-        logging.info(f"OSCDL v{updater.current_version()} {updater.get_branch()}")
-        logging.info(updater.get_type())
-        self.status_message('DEBUG: Enabled log file. To disable, exit OSCDL.')
-        self.ui.actionEnable_Log_File.setDisabled(True)
-        self.ui.actionClear_Log.setEnabled(True)
-        self.ui.actionClear_Log.triggered.connect(self.clear_log)
-
-    # Clear log file
-    def clear_log(self):
-        open("oscdl-gui.log", 'w').close()
-        self.status_message('Cleared log file.')
-
+    #
     # Sort apps in app list in alphabetical, ascending order.
     def sort_list_alphabetically(self):
         self.ui.listAppsWidget.sortItems(Qt.AscendingOrder)

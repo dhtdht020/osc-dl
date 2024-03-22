@@ -888,9 +888,6 @@ color: rgb(255, 255, 255);</string>
     <addaction name="actionRefresh"/>
     <addaction name="actionCopy_Direct_Link"/>
     <addaction name="separator"/>
-    <addaction name="actionEnable_Log_File"/>
-    <addaction name="actionClear_Log"/>
-    <addaction name="separator"/>
     <addaction name="menuExperimental"/>
     <addaction name="actionCheck_for_Updates"/>
    </widget>
@@ -907,33 +904,9 @@ color: rgb(255, 255, 255);</string>
     <string>About OSC-DL</string>
    </property>
   </action>
-  <action name="actionEnable_Log_File">
-   <property name="checkable">
-    <bool>true</bool>
-   </property>
-   <property name="text">
-    <string>Enable GUI Log File</string>
-   </property>
-   <property name="shortcut">
-    <string>Ctrl+L</string>
-   </property>
-  </action>
-  <action name="actionClear_Log">
-   <property name="enabled">
-    <bool>false</bool>
-   </property>
-   <property name="text">
-    <string>Clear GUI Log</string>
-   </property>
-  </action>
   <action name="actionCheck_for_Updates">
    <property name="text">
     <string>Check for Updates</string>
-   </property>
-  </action>
-  <action name="actionClose_the_shop">
-   <property name="text">
-    <string>Close the shop</string>
    </property>
   </action>
   <action name="actionRefresh">
