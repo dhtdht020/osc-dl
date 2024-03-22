@@ -71,7 +71,7 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         # Set GUI Icons
 
         # ABOUT
-        self.ui.actionAbout_OSC_DL.setIcon(QIcon(resource_path("assets/gui/icons/about-open-version.png")))
+        self.ui.actionAbout_OSC_DL.setIcon(QIcon(resource_path("assets/gui/icons/oscdl-icon.png")))
         self.ui.actionIcons_provided_by.setIcon(QIcon(resource_path("assets/gui/icons/iconsprovider.png")))
         # CLIENTS
         self.ui.actionCheck_for_Updates.setIcon(QIcon(resource_path("assets/gui/icons/check-for-updates.png")))
