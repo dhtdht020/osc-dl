@@ -18,7 +18,7 @@ if __name__ == "__main__":
         logging.basicConfig(level=logging.DEBUG)
         logging.info(f"Open Shop Channel Downloader v{updater.current_version()} {updater.get_branch()}")
         logging.info(f"OSCDL, Open Source Software by dhtdht020. https://github.com/dhtdht020.\n\n\n")
-        logging.getLogger("PIL.PngImagePlugin").setLevel(logging.CRITICAL + 1)
+        logging.getLogger("PIL.PngImagePlugin").setLevel(logging.CRITICAL + 1) # Hide annoying spam from PIL
 
     # Initialize app
     app = QApplication()
