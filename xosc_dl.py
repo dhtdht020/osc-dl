@@ -148,7 +148,7 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
 
         # Copy app download link
         self.ui.actionCopy_Direct_Link.triggered.connect(
-            lambda: (QApplication.clipboard().setText(self.current_app['zip_url']),
+            lambda: (QApplication.clipboard().setText(self.current_app["url"]["zip"]),
                      self.status_message(f"Copied the download link for "
                                          f"\"{self.current_app['name']}\" to clipboard")))
 
