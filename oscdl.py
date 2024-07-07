@@ -23,6 +23,9 @@ if __name__ == "__main__":
     # Initialize app
     app = QApplication()
 
+    if app.style().name() == "windows11":
+        app.setStyle("windowsvista")
+
     if darkdetect.isDark():
         app.setStyle("fusion")
 
