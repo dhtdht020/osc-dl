@@ -1,6 +1,6 @@
 requests~=2.32.3
 packaging~=24.1
-markdown~=3.6
+markdown~=3.7
 Pillow~=10.4.0
 pyserial~=3.5
 darkdetect~=0.8.0
