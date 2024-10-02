@@ -859,6 +859,7 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
             game_icon = Image.open(resource_path("assets/gui/icons/category/game.png"))
             media_icon = Image.open(resource_path("assets/gui/icons/category/media.png"))
             utility_icon = Image.open(resource_path("assets/gui/icons/category/utility.png"))
+            nothing_icon = Image.open(resource_path("assets/gui/icons/category/nothing.png"))
 
             # prepare apps and their category icons dictionary
             apps_category_icons = {}
@@ -874,7 +875,7 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
                 elif package["category"] == "utilities":
                     category_icon = utility_icon
                 else:
-                    continue
+                    category_icon = nothing_icon
 
                 apps_category_icons[package["slug"]] = category_icon
 
