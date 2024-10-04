@@ -65,7 +65,7 @@ class WiiLoadDialog(ui_SendDialog.Ui_Dialog, QDialog):
             gui_helpers.settings.setValue("sendtowii/address", self.IPBox.text())
             self.address = self.IPBox.text()
 
-            if wiiload.validate_ip_regex(self.address) is None:
+            if not wiiload.validate_ip_regex(self.address):
                 logging.warning('Invalid IP Address: ' + self.address)
                 QMessageBox.warning(self, 'Invalid IP Address', 'This IP address is invalid.')
                 return
