@@ -94,7 +94,7 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         self.spinner.start()
 
         # set initial status icon
-        self.status_icon("online")
+        self.set_status_icon("online")
 
         self.ui.ReposComboBox.setPlaceholderText("Open Shop Channel")
         self.ui.WarningIcon.setPixmap(QPixmap(resource_path("assets/gui/icons/warning.png")))
@@ -109,14 +109,6 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         # Close splash
         splash.finish(self)
 
-    def update_splash_status(self, text):
-        # if anyone has a better idea how to go about this.. will be appreciated
-        try:
-            if not self.splash.isHidden():
-                self.splash.showMessage(text, color=QColor("White"))
-        except NameError:
-            pass
-
     def about_dialog(self):
         QMessageBox.about(self, f"About OSCDL",
                           f"<b>Open Shop Channel Downloader v{updater.current_version()} {updater.get_branch()}</b><br>"
@@ -126,22 +118,28 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
                           f"Using Qt {QtCore.qVersion()}<br>"
                           f"Using Python {sys.version_info.major}.{sys.version_info.minor}.{sys.version_info.micro}")
 
-    # show given status message on bottom status bar
-    def status_message(self, message):
+    def set_splash_status(self, text: str) -> None:
+        """Updates the splash screen with the provided text if the splash is visible."""
+        if self.splash and not self.splash.isHidden():
+            self.splash.showMessage(text, color=QColor("White"))
+
+    def set_status_message(self, message: str) -> None:
+        """Displays a status message in the bottom status bar of the UI."""
         self.ui.statusBar.showMessage(message)
 
-    def status_icon(self, icon):
+    def set_status_icon(self, icon: str) -> None:
+        """Updates the status icon displayed in the UI status bar."""
         self.ui.statusIcon.setPixmap(QPixmap(resource_path(f"assets/gui/icons/status/{icon}.png")))
 
     # populate UI elements
     def populate(self):
-        self.update_splash_status("Loading contents..")
+        self.set_splash_status("Loading contents..")
         self.ui.actionAbout_OSC_DL.setText(f"About OSCDL v{updater.current_version()} by dhtdht020")
         self.populate_list()
         self.assign_initial_actions()
 
     def assign_initial_actions(self):
-        self.update_splash_status("Finishing (1/2)..")
+        self.set_splash_status("Finishing (1/2)..")
 
         # Connect signals
         # Buttons
@@ -149,8 +147,7 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         # Copy app download link
         self.ui.actionCopy_Direct_Link.triggered.connect(
             lambda: (QApplication.clipboard().setText(self.current_app["url"]["zip"]),
-                     self.status_message(f"Copied the download link for "
-                                         f"\"{self.current_app['name']}\" to clipboard")))
+                     self.set_status_message(f"Copied the download link for {self.current_app['name']}\" to clipboard")))
 
         self.ui.ViewMetadataBtn.clicked.connect(self.download_app)
         self.ui.WiiLoadButton.clicked.connect(self.wiiload_button)
@@ -173,7 +170,7 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
 
     # When user selects a different homebrew from the list
     def selection_changed(self):
-        self.update_splash_status("Finishing (2/2) - Loading first app..")
+        self.set_splash_status("Finishing (2/2) - Loading first app..")
 
         try:
             self.current_app = self.ui.listAppsWidget.currentItem().data(Qt.UserRole)
@@ -330,18 +327,11 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         t = threading.Thread(target=self.load_icon, args=[app_name], daemon=True)
         t.start()
 
-    def view_metadata(self):
-        data = self.ui.listAppsWidget.currentItem().data(Qt.UserRole)
-        self.app_name = data["slug"]
-
-    def trugh(self, text):
-        return QObject.tr(self, text)
-
     # TODO FULL REWRITE
     def download_app(self, extract_root=False):
         gui_helpers.IN_DOWNLOAD_DIALOG = True
-        self.status_message(f"Downloading {self.current_app['name']} from Open Shop Channel..")
-        self.status_icon("pending")
+        self.set_status_message(f"Downloading {self.current_app['name']} from Open Shop Channel..")
+        self.set_status_icon("pending")
         self.ui.progressBar.setMaximum(0)
 
         if self.sender():
@@ -392,12 +382,12 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
             block_size = 1024
             if response.status_code == 200:
                 self.safe_mode(True)
-                self.status_icon("download")
+                self.set_status_icon("download")
 
                 with open(save_location, "wb") as app_data_file:
                     for data in response.iter_content(block_size):
                         self.ui.progressBar.setValue(self.ui.progressBar.value() + 1024)
-                        self.status_message(
+                        self.set_status_message(
                             f"Downloading {self.current_app['name']} from Open Shop Channel.. ({utils.file_size(self.ui.progressBar.value())}/{utils.file_size(total_size)})")
                         try:
                             self.app.processEvents()
@@ -406,7 +396,7 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
                         app_data_file.write(data)
 
                 if extract_root:
-                    self.status_message("Extracting..")
+                    self.set_status_message("Extracting..")
 
                     with zipfile.ZipFile(save_location, 'r') as zip_file:
                         # unzip to root_path
@@ -418,23 +408,23 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
             self.ui.progressBar.setValue(total_size)
             if object_name != "WiiLoadButton":
                 self.safe_mode(False)
-            self.status_message(f"Download of \"{self.current_app['name']}\" has completed successfully")
-            self.status_icon("online")
+            self.set_status_message(f"Download of \"{self.current_app['name']}\" has completed successfully")
+            self.set_status_icon("online")
             gui_helpers.IN_DOWNLOAD_DIALOG = False
             return save_location
         else:
             self.ui.progressBar.setMaximum(100)
             self.ui.progressBar.setValue(0)
             self.safe_mode(False)
-            self.status_message("Cancelled Download")
-            self.status_icon("online")
+            self.set_status_message("Cancelled Download")
+            self.set_status_icon("online")
             gui_helpers.IN_DOWNLOAD_DIALOG = False
 
     def reset_status(self):
         if not gui_helpers.CURRENTLY_SENDING and not gui_helpers.IN_DOWNLOAD_DIALOG:
             self.ui.progressBar.setMaximum(100)
-            self.status_message("Ready to download")
-            self.status_icon("online")
+            self.set_status_message("Ready to download")
+            self.set_status_icon("online")
 
     def safe_mode(self, state: bool):
         """
@@ -456,7 +446,7 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
             return
         gui_helpers.CURRENTLY_SENDING = True
 
-        self.status_message("Downloading " + self.current_app["name"] + " from Open Shop Channel..")
+        self.set_status_message("Downloading " + self.current_app["name"] + " from Open Shop Channel..")
         self.ui.progressBar.setValue(25)
 
         # get app
@@ -482,8 +472,8 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         c_data = prep[3]
 
         # connecting
-        self.status_message('Connecting to the HBC...')
-        self.status_icon('connecting_hbc')
+        self.set_status_message('Connecting to the HBC...')
+        self.set_status_icon('connecting_hbc')
         self.ui.progressBar.setValue(50)
 
         try:
@@ -496,7 +486,7 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
                 func_timeout.func_timeout(1, conn.open)  # Timeout: 1 sec, function: conn.open()
                 conn.send = conn.write  # Keeps the wiiload logic the same
         except (func_timeout.exceptions.FunctionTimedOut, Exception) as e:
-            self.status_icon('sad')
+            self.set_status_icon('sad')
             conn_type = ["IP address", "connection"]
             logging.error(
                 f'Error while connecting to the HBC. Please check the {conn_type[dialog.modeSelect]} and try again.')
@@ -504,8 +494,8 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
                                 f'Error while connecting to the HBC. Please check the {conn_type[dialog.modeSelect]} and try again.')
             print(f'WiiLoad: {e}')
             self.ui.progressBar.setValue(0)
-            self.status_message('Error: Could not connect to the Homebrew Channel. :(')
-            self.status_icon('online')
+            self.set_status_message('Error: Could not connect to the Homebrew Channel. :(')
+            self.set_status_icon('online')
 
             # delete application zip file
             os.remove(path_to_app)
@@ -516,8 +506,8 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         wiiload.handshake(conn, compressed_size, file_size)
 
         # Sending file
-        self.status_message('Sending app...')
-        self.status_icon('sending')
+        self.set_status_message('Sending app...')
+        self.set_status_icon('sending')
 
         chunk_num = 1
         if dialog.modeSelect == 0:  # TCP/IP
@@ -538,7 +528,7 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
                                         'Error while connecting to the HBC. Operation timed out. Close any dialogs on HBC and try again.')
                     print(f'WiiLoad: {e}')
                     self.ui.progressBar.setValue(0)
-                    self.status_message('Error: Could not connect to the Homebrew Channel. :(')
+                    self.set_status_message('Error: Could not connect to the Homebrew Channel. :(')
 
                     # delete application zip file
                     os.remove(path_to_app)
@@ -575,8 +565,8 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
             conn.close()
 
         self.ui.progressBar.setValue(100)
-        self.status_message('App transmitted!')
-        self.status_icon('online')
+        self.set_status_message('App transmitted!')
+        self.set_status_icon('online')
         logging.info(f"App transmitted to HBC at {dialog.address}")
         gui_helpers.CURRENTLY_SENDING = False
         self.safe_mode(False)
@@ -590,7 +580,7 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
                                 'Error while connecting to the HBC. Close any dialogs on HBC and try again.')
             print(f'WiiLoad: {e}')
             self.ui.progressBar.setValue(0)
-            self.status_message('Error: Could not connect to the Homebrew Channel. :(')
+            self.set_status_message('Error: Could not connect to the Homebrew Channel. :(')
 
             # delete application zip file
             os.remove(path_to_app)
@@ -606,8 +596,8 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         self.ui.ReposComboBox.setHidden(False)
         self.ui.SearchBar.setText("")
 
-        self.status_message("Reloading list..")
-        self.status_icon("loading")
+        self.set_status_message("Reloading list..")
+        self.set_status_icon("loading")
         try:
             self.ui.CategoriesComboBox.currentIndexChanged.disconnect(self.changed_category)
         except Exception:
@@ -619,7 +609,7 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
 
     def populate_list(self):
         try:
-            self.update_splash_status("Connecting to server..")
+            self.set_splash_status("Connecting to server..")
 
             # Set default icon size
             self.ui.listAppsWidget.setIconSize(QSize(-1, -1))
@@ -659,11 +649,11 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
                         list_item.setIcon(QIcon(resource_path("assets/gui/icons/category/media.png")))
                     elif category == "demos":
                         list_item.setIcon(QIcon(resource_path("assets/gui/icons/category/demo.png")))
-                    self.update_splash_status(f"Loaded {i} apps..")
+                    self.set_splash_status(f"Loaded {i} apps..")
                     i += 1
                 except IndexError:
                     pass
-            self.sort_list_alphabetically()
+            self.ui.listAppsWidget.sortItems(Qt.AscendingOrder)
             self.ui.listAppsWidget.setCurrentRow(0)
             self.ui.AppsAmountLabel.setText(str(self.ui.listAppsWidget.count()) + " Apps")
 
@@ -677,7 +667,7 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
 
         # load app icons
         if not gui_helpers.CURRENTLY_SENDING and not gui_helpers.IN_DOWNLOAD_DIALOG:
-            self.status_message("Loading app icons from server..")
+            self.set_status_message("Loading app icons from server..")
             self.ui.progressBar.setMaximum(0)
         t = threading.Thread(target=self.download_app_icons, daemon=True)
         t.start()
@@ -685,16 +675,12 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
     #
     # Actions
     #
-    # Sort apps in app list in alphabetical, ascending order.
-    def sort_list_alphabetically(self):
-        self.ui.listAppsWidget.sortItems(Qt.AscendingOrder)
-
     # Check for updates dialog
     def check_for_updates_action(self):
-        self.status_message("Checking for updates.. This will take a few moments..")
+        self.set_status_message("Checking for updates.. This will take a few moments..")
         latest = updater.latest_version()
         if updater.check_update(latest) is True:
-            self.status_message("New version available! (" + latest['tag_name'] + ") OSCDL is out of date.")
+            self.set_status_message("New version available! (" + latest['tag_name'] + ") OSCDL is out of date.")
             body = latest['body'].replace("![image]", "")
             QMessageBox.warning(self, 'OSCDL is out of date - New Release Available!',
                                 f"<a href='https://github.com/dhtdht020/osc-dl'>View on GitHub</a><br>"
@@ -704,7 +690,7 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
                                 f"Please go to the <a href='https://github.com/dhtdht020/osc-dl'>GitHub page</a> and obtain the latest release<br>"
                                 f"Newest Version: {latest['tag_name']}")
         else:
-            self.status_message("OSCDL is up to date!")
+            self.set_status_message("OSCDL is up to date!")
             QMessageBox.information(self, 'OSCDL is up to date',
                                     'You are running the latest version of OSCDL!\n')
 
@@ -954,9 +940,6 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         # complete loading
         self.reset_status()
 
-    def ongoingOperations(self):
-        return gui_helpers.CURRENTLY_SENDING or gui_helpers.IN_DOWNLOAD_DIALOG
-
     #
     # Event overrides
     #
@@ -974,7 +957,7 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         return super().event(event)
 
     def closeEvent(self, closeEvent):
-        if self.ongoingOperations():
+        if gui_helpers.CURRENTLY_SENDING or gui_helpers.IN_DOWNLOAD_DIALOG:
             # QMessageBox.warning is modal, this is not. 
             self.message.show()
             closeEvent.ignore()
