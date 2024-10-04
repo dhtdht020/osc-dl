@@ -17,35 +17,10 @@ jobs:
       with:
         python-version: '3.9.x'
     - name: Install requirements with PIP
-      run: pip install -r requirements_CLI.txt
-    - name: Install pyinstaller
-      run: pip install pyinstaller
-    - name: Build Open Shop Channel Downloader
-      run: pyinstaller --onefile --icon=oscicon.ico osc-dl.py
-    - name: Publish Build Artifacts
-      uses: actions/upload-artifact@master
-      with:
-        name: ${{ matrix.os }}
-        path: dist
-
-  BuildGUI:
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        os: [windows-latest]
-
-    steps:
-    - name: Obtain latest version of the repository
-      uses: actions/checkout@v1
-    - name: Set up Python 3
-      uses: actions/setup-python@v4
-      with:
-        python-version: '3.9.x'
-    - name: Install requirements with PIP
       run: pip install -r requirements.txt
     - name: Install pyinstaller
       run: pip install git+https://github.com/pyinstaller/pyinstaller.git@develop
-    - name: Build Graphical Open Shop Channel Downloader
+    - name: Build Open Shop Channel Downloader
       run: pyinstaller oscdl.spec
     - name: Publish Build Artifacts
       uses: actions/upload-artifact@master
