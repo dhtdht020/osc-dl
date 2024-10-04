@@ -29,7 +29,7 @@
    <string notr="true"/>
   </property>
   <property name="dockOptions">
-   <set>QMainWindow::AllowTabbedDocks|QMainWindow::AnimatedDocks</set>
+   <set>QMainWindow::DockOption::AllowTabbedDocks|QMainWindow::DockOption::AnimatedDocks</set>
   </property>
   <widget class="QWidget" name="centralwidget">
    <property name="accessibleName">
@@ -54,7 +54,7 @@
           </sizepolicy>
          </property>
          <property name="frameShape">
-          <enum>QFrame::NoFrame</enum>
+          <enum>QFrame::Shape::NoFrame</enum>
          </property>
          <property name="lineWidth">
           <number>0</number>
@@ -72,28 +72,6 @@
           <property name="bottomMargin">
            <number>0</number>
           </property>
-          <item>
-           <widget class="QLabel" name="ViewDevWebsite">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="visible">
-             <bool>false</bool>
-            </property>
-            <property name="text">
-             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;a href=&quot;https://oscwii.org/library?coder=&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;Profile on Website&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-            </property>
-            <property name="textFormat">
-             <enum>Qt::RichText</enum>
-            </property>
-            <property name="openExternalLinks">
-             <bool>true</bool>
-            </property>
-           </widget>
-          </item>
           <item>
            <widget class="QComboBox" name="ReposComboBox">
             <property name="enabled">
@@ -113,23 +91,7 @@
              <string>0 Apps</string>
             </property>
             <property name="alignment">
-             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QPushButton" name="ReturnToMainBtn">
-            <property name="maximumSize">
-             <size>
-              <width>161</width>
-              <height>16777215</height>
-             </size>
-            </property>
-            <property name="visible">
-             <bool>false</bool>
-            </property>
-            <property name="text">
-             <string>Return to All Apps</string>
+             <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
             </property>
            </widget>
           </item>
@@ -166,10 +128,10 @@
              </size>
             </property>
             <property name="frameShape">
-             <enum>QFrame::NoFrame</enum>
+             <enum>QFrame::Shape::NoFrame</enum>
             </property>
             <property name="frameShadow">
-             <enum>QFrame::Plain</enum>
+             <enum>QFrame::Shadow::Plain</enum>
             </property>
             <property name="lineWidth">
              <number>0</number>
@@ -240,6 +202,19 @@
                </item>
               </widget>
              </item>
+             <item>
+              <widget class="QPushButton" name="ResetFiltersBtn">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="text">
+                <string>Reset Filters</string>
+               </property>
+              </widget>
+             </item>
             </layout>
            </widget>
           </item>
@@ -258,77 +233,10 @@
              </size>
             </property>
             <property name="horizontalScrollBarPolicy">
-             <enum>Qt::ScrollBarAlwaysOff</enum>
+             <enum>Qt::ScrollBarPolicy::ScrollBarAlwaysOff</enum>
             </property>
             <property name="currentRow">
              <number>-1</number>
-            </property>
-           </widget>
-          </item>
-         </layout>
-        </widget>
-       </item>
-       <item>
-        <widget class="QFrame" name="announcement">
-         <property name="maximumSize">
-          <size>
-           <width>16777215</width>
-           <height>21</height>
-          </size>
-         </property>
-         <property name="visible">
-          <bool>false</bool>
-         </property>
-         <property name="styleSheet">
-          <string notr="true">QFrame {
-background-color: rgb(255, 85, 0);
-color: rgb(255, 255, 255);
-}</string>
-         </property>
-         <property name="frameShape">
-          <enum>QFrame::StyledPanel</enum>
-         </property>
-         <property name="frameShadow">
-          <enum>QFrame::Raised</enum>
-         </property>
-         <layout class="QHBoxLayout" name="horizontalLayout_4">
-          <property name="leftMargin">
-           <number>3</number>
-          </property>
-          <property name="topMargin">
-           <number>0</number>
-          </property>
-          <property name="rightMargin">
-           <number>3</number>
-          </property>
-          <property name="bottomMargin">
-           <number>0</number>
-          </property>
-          <item>
-           <widget class="QLabel" name="announcementLabel">
-            <property name="text">
-             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Announcement Header: &lt;/span&gt;Announcement Content.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-            </property>
-            <property name="openExternalLinks">
-             <bool>true</bool>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QLabel" name="announcementURLLabel">
-            <property name="styleSheet">
-             <string notr="true">QLabel {
-background-color: rgba(255, 255, 255, 0);
-}</string>
-            </property>
-            <property name="text">
-             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;a href=&quot;https://google.com&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#ffff00;&quot;&gt;Announcement URL&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-            </property>
-            <property name="alignment">
-             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-            </property>
-            <property name="openExternalLinks">
-             <bool>true</bool>
             </property>
            </widget>
           </item>
@@ -371,7 +279,7 @@ background-color: rgba(255, 255, 255, 0);
        <item>
         <widget class="QFrame" name="MetadataTabsFrame">
          <property name="frameShape">
-          <enum>QFrame::NoFrame</enum>
+          <enum>QFrame::Shape::NoFrame</enum>
          </property>
          <property name="lineWidth">
           <number>0</number>
@@ -417,7 +325,7 @@ background-color: rgba(255, 255, 255, 0);
              <bool>true</bool>
             </property>
             <property name="textInteractionFlags">
-             <set>Qt::LinksAccessibleByMouse|Qt::TextSelectableByMouse</set>
+             <set>Qt::TextInteractionFlag::LinksAccessibleByMouse|Qt::TextInteractionFlag::TextSelectableByMouse</set>
             </property>
            </widget>
            <widget class="QLabel" name="label_displayname">
@@ -447,7 +355,7 @@ background-color: rgba(255, 255, 255, 0);
              <bool>true</bool>
             </property>
             <property name="textInteractionFlags">
-             <set>Qt::LinksAccessibleByMouse|Qt::TextSelectableByMouse</set>
+             <set>Qt::TextInteractionFlag::LinksAccessibleByMouse|Qt::TextInteractionFlag::TextSelectableByMouse</set>
             </property>
            </widget>
            <widget class="QProgressBar" name="progressBar">
@@ -479,7 +387,7 @@ background-color: rgba(255, 255, 255, 0);
              <string>No homebrew icon. Aw.</string>
             </property>
             <property name="alignment">
-             <set>Qt::AlignCenter</set>
+             <set>Qt::AlignmentFlag::AlignCenter</set>
             </property>
            </widget>
            <widget class="QLabel" name="HomebrewCategoryLabel">
@@ -501,7 +409,7 @@ background-color: rgba(255, 255, 255, 0);
              <string>Category</string>
             </property>
             <property name="alignment">
-             <set>Qt::AlignCenter</set>
+             <set>Qt::AlignmentFlag::AlignCenter</set>
             </property>
            </widget>
            <widget class="QLabel" name="statusIcon">
@@ -580,7 +488,7 @@ background-color: rgba(255, 255, 255, 0);
                 <string/>
                </property>
                <property name="echoMode">
-                <enum>QLineEdit::Normal</enum>
+                <enum>QLineEdit::EchoMode::Normal</enum>
                </property>
                <property name="readOnly">
                 <bool>true</bool>
@@ -593,7 +501,7 @@ background-color: rgba(255, 255, 255, 0);
              <item row="1" column="1">
               <widget class="QLineEdit" name="version">
                <property name="echoMode">
-                <enum>QLineEdit::Normal</enum>
+                <enum>QLineEdit::EchoMode::Normal</enum>
                </property>
                <property name="readOnly">
                 <bool>true</bool>
@@ -603,7 +511,7 @@ background-color: rgba(255, 255, 255, 0);
              <item row="2" column="1">
               <widget class="QLineEdit" name="developer">
                <property name="echoMode">
-                <enum>QLineEdit::Normal</enum>
+                <enum>QLineEdit::EchoMode::Normal</enum>
                </property>
                <property name="readOnly">
                 <bool>true</bool>
@@ -613,7 +521,7 @@ background-color: rgba(255, 255, 255, 0);
              <item row="3" column="1">
               <widget class="QLineEdit" name="releasedate">
                <property name="echoMode">
-                <enum>QLineEdit::Normal</enum>
+                <enum>QLineEdit::EchoMode::Normal</enum>
                </property>
                <property name="readOnly">
                 <bool>true</bool>
@@ -623,7 +531,7 @@ background-color: rgba(255, 255, 255, 0);
              <item row="4" column="1">
               <widget class="QLineEdit" name="filesize">
                <property name="echoMode">
-                <enum>QLineEdit::Normal</enum>
+                <enum>QLineEdit::EchoMode::Normal</enum>
                </property>
                <property name="readOnly">
                 <bool>true</bool>
@@ -662,7 +570,7 @@ background-color: rgba(255, 255, 255, 0);
 }</string>
             </property>
             <property name="horizontalScrollBarPolicy">
-             <enum>Qt::ScrollBarAlwaysOff</enum>
+             <enum>Qt::ScrollBarPolicy::ScrollBarAlwaysOff</enum>
             </property>
             <property name="html">
              <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
@@ -698,10 +606,10 @@ li.checked::marker { content: &quot;\2612&quot;; }
 }</string>
             </property>
             <property name="horizontalScrollBarPolicy">
-             <enum>Qt::ScrollBarAlwaysOff</enum>
+             <enum>Qt::ScrollBarPolicy::ScrollBarAlwaysOff</enum>
             </property>
             <property name="dragDropMode">
-             <enum>QAbstractItemView::NoDragDrop</enum>
+             <enum>QAbstractItemView::DragDropMode::NoDragDrop</enum>
             </property>
             <property name="iconSize">
              <size>
@@ -710,10 +618,10 @@ li.checked::marker { content: &quot;\2612&quot;; }
              </size>
             </property>
             <property name="movement">
-             <enum>QListView::Static</enum>
+             <enum>QListView::Movement::Static</enum>
             </property>
             <property name="viewMode">
-             <enum>QListView::ListMode</enum>
+             <enum>QListView::ViewMode::ListMode</enum>
             </property>
             <property name="wordWrap">
              <bool>true</bool>
@@ -735,10 +643,10 @@ li.checked::marker { content: &quot;\2612&quot;; }
           <string notr="true"/>
          </property>
          <property name="frameShape">
-          <enum>QFrame::StyledPanel</enum>
+          <enum>QFrame::Shape::StyledPanel</enum>
          </property>
          <property name="frameShadow">
-          <enum>QFrame::Raised</enum>
+          <enum>QFrame::Shadow::Raised</enum>
          </property>
          <layout class="QVBoxLayout" name="verticalLayout_4">
           <item>
@@ -748,10 +656,10 @@ li.checked::marker { content: &quot;\2612&quot;; }
 color: rgb(255, 255, 255);</string>
             </property>
             <property name="frameShape">
-             <enum>QFrame::StyledPanel</enum>
+             <enum>QFrame::Shape::StyledPanel</enum>
             </property>
             <property name="frameShadow">
-             <enum>QFrame::Raised</enum>
+             <enum>QFrame::Shadow::Raised</enum>
             </property>
             <layout class="QHBoxLayout" name="horizontalLayout">
              <property name="leftMargin">
@@ -810,7 +718,7 @@ color: rgb(255, 255, 255);</string>
           </size>
          </property>
          <property name="frameShape">
-          <enum>QFrame::NoFrame</enum>
+          <enum>QFrame::Shape::NoFrame</enum>
          </property>
          <property name="lineWidth">
           <number>0</number>
@@ -923,12 +831,12 @@ color: rgb(255, 255, 255);</string>
     <string>Copy Direct Link to App</string>
    </property>
   </action>
-  <action name="actionDeveloper_Profile">
+  <action name="actionFilter_by_Developer">
    <property name="text">
-    <string>Developer Profile</string>
+    <string>Filter by Developer</string>
    </property>
    <property name="toolTip">
-    <string>View Profile</string>
+    <string>Filter by Developer</string>
    </property>
   </action>
  </widget>

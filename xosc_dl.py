@@ -85,8 +85,8 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         self.ui.CategoriesComboBox.setItemIcon(5, QIcon(resource_path("assets/gui/icons/category/demo.png")))
 
         # ACTIONS
-        self.ui.actionDeveloper_Profile.setIcon(QIcon(resource_path("assets/gui/icons/profile.png")))
-        self.ui.developer.addAction(self.ui.actionDeveloper_Profile, QLineEdit.TrailingPosition)
+        self.ui.actionFilter_by_Developer.setIcon(QIcon(resource_path("assets/gui/icons/filter.png")))
+        self.ui.developer.addAction(self.ui.actionFilter_by_Developer, QLineEdit.TrailingPosition)
 
         # create spinner movie
         self.spinner = QMovie(resource_path("assets/gui/icons/spinner.gif"))
@@ -100,9 +100,12 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         self.ui.WarningIcon.setPixmap(QPixmap(resource_path("assets/gui/icons/warning.png")))
         self.ui.WarningIcon.setScaledContents(True)
 
+        self.ui.ResetFiltersBtn.setIcon(QIcon(resource_path("assets/gui/icons/close.png")))
+
         self.populate()
         self.selection_changed()
         self.ui.progressBar.setHidden(False)
+        self.ui.ResetFiltersBtn.setHidden(True)
         self.ui.statusBar.addPermanentWidget(self.ui.progressBar)
         self.ui.statusBar.addPermanentWidget(self.ui.statusIcon)
 
@@ -151,7 +154,7 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
 
         self.ui.ViewMetadataBtn.clicked.connect(self.download_app)
         self.ui.WiiLoadButton.clicked.connect(self.wiiload_button)
-        self.ui.ReturnToMainBtn.clicked.connect(self.return_to_all_apps_btn)
+        self.ui.ResetFiltersBtn.clicked.connect(self.reset_filters_btn)
 
         # Search Bar
         self.ui.SearchBar.textChanged.connect(self.search_bar)
@@ -159,7 +162,7 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         # Others
         self.ui.CategoriesComboBox.currentIndexChanged.connect(self.changed_category)
         self.ui.listAppsWidget.currentItemChanged.connect(self.selection_changed)
-        self.ui.actionDeveloper_Profile.triggered.connect(self.developer_profile)
+        self.ui.actionFilter_by_Developer.triggered.connect(self.filter_by_developer)
 
         # Actions
         # -- About
@@ -591,9 +594,8 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
 
     def repopulate(self):
         # Make sure everything is hidden / shown
-        self.ui.ReturnToMainBtn.setHidden(True)
+        self.ui.ResetFiltersBtn.setHidden(True)
         self.ui.CategoriesComboBox.setHidden(False)
-        self.ui.ReposComboBox.setHidden(False)
         self.ui.SearchBar.setText("")
 
         self.set_status_message("Reloading list..")
@@ -773,46 +775,29 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         # count apps
         self.search_bar()
 
-    # Load developer profile
-    def developer_profile(self):
+    def filter_by_developer(self):
+        """
+        Filter by developer
+        """
         self.current_developer = self.ui.developer.text()
 
-        self.ui.SearchBar.setText("")
-
-        # Set category
+        # Set category and clear search bar, to display all apps
         self.ui.CategoriesComboBox.setCurrentIndex(0)
+        self.ui.SearchBar.setText("")
+        self.search_bar()
 
-        # Hide unneeded elements
-        self.ui.ReposComboBox.setHidden(True)
-        self.ui.ReturnToMainBtn.setHidden(False)
-        self.ui.ViewDevWebsite.setHidden(False)
-
-        # Set information
-        self.ui.AppsLibraryBox.setTitle(f"Developer Profile: {self.current_developer}")
-
-        # Set website URL
-        self.ui.ViewDevWebsite.setText(f'<a href="https://oscwii.org/library?coder={self.current_developer}">'
-                                       f'<span style=" text-decoration: underline; color:#0000ff;">Profile on '
-                                       f'Website</span></a>')
-
+        self.ui.ResetFiltersBtn.setHidden(False)
         # hide anything from a different coder
         for i in range(self.ui.listAppsWidget.count()):
             item = self.ui.listAppsWidget.item(i)
             if item.data(Qt.UserRole)["author"] != self.current_developer:
                 item.setHidden(True)
 
-        # count apps
-        self.search_bar()
 
-    # Return from developer view to normal view
-    def return_to_all_apps_btn(self):
+    # Return from filtering by developer to normal view
+    def reset_filters_btn(self):
         # Unhide unneeded elements
-        self.ui.ReturnToMainBtn.setHidden(True)
-        self.ui.ViewDevWebsite.setHidden(True)
-        self.ui.ReposComboBox.setHidden(False)
-
-        # set repo title and description
-        self.ui.AppsLibraryBox.setTitle("Apps Library")
+        self.ui.ResetFiltersBtn.setHidden(True)
 
         self.current_developer = ""
 

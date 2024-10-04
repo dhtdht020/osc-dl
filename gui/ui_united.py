@@ -3,7 +3,7 @@
 ################################################################################
 ## Form generated from reading UI file 'united.ui'
 ##
-## Created by: Qt User Interface Compiler version 6.6.2
+## Created by: Qt User Interface Compiler version 6.7.3
 ##
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
@@ -35,7 +35,7 @@ class Ui_MainWindow(object):
         MainWindow.setSizePolicy(sizePolicy)
         MainWindow.setMinimumSize(QSize(900, 460))
         MainWindow.setStyleSheet(u"")
-        MainWindow.setDockOptions(QMainWindow.AllowTabbedDocks|QMainWindow.AnimatedDocks)
+        MainWindow.setDockOptions(QMainWindow.DockOption.AllowTabbedDocks|QMainWindow.DockOption.AnimatedDocks)
         self.actionAbout_OSC_DL = QAction(MainWindow)
         self.actionAbout_OSC_DL.setObjectName(u"actionAbout_OSC_DL")
         self.actionCheck_for_Updates = QAction(MainWindow)
@@ -47,8 +47,8 @@ class Ui_MainWindow(object):
         self.actionIcons_provided_by.setEnabled(False)
         self.actionCopy_Direct_Link = QAction(MainWindow)
         self.actionCopy_Direct_Link.setObjectName(u"actionCopy_Direct_Link")
-        self.actionDeveloper_Profile = QAction(MainWindow)
-        self.actionDeveloper_Profile.setObjectName(u"actionDeveloper_Profile")
+        self.actionFilter_by_Developer = QAction(MainWindow)
+        self.actionFilter_by_Developer.setObjectName(u"actionFilter_by_Developer")
         self.centralwidget = QWidget(MainWindow)
         self.centralwidget.setObjectName(u"centralwidget")
         self.horizontalLayout_2 = QHBoxLayout(self.centralwidget)
@@ -65,24 +65,11 @@ class Ui_MainWindow(object):
         sizePolicy1.setVerticalStretch(0)
         sizePolicy1.setHeightForWidth(self.LibraryTopFrameTop.sizePolicy().hasHeightForWidth())
         self.LibraryTopFrameTop.setSizePolicy(sizePolicy1)
-        self.LibraryTopFrameTop.setFrameShape(QFrame.NoFrame)
+        self.LibraryTopFrameTop.setFrameShape(QFrame.Shape.NoFrame)
         self.LibraryTopFrameTop.setLineWidth(0)
         self.horizontalLayout_3 = QHBoxLayout(self.LibraryTopFrameTop)
         self.horizontalLayout_3.setObjectName(u"horizontalLayout_3")
         self.horizontalLayout_3.setContentsMargins(0, 0, 0, 0)
-        self.ViewDevWebsite = QLabel(self.LibraryTopFrameTop)
-        self.ViewDevWebsite.setObjectName(u"ViewDevWebsite")
-        sizePolicy2 = QSizePolicy(QSizePolicy.Policy.Maximum, QSizePolicy.Policy.Preferred)
-        sizePolicy2.setHorizontalStretch(0)
-        sizePolicy2.setVerticalStretch(0)
-        sizePolicy2.setHeightForWidth(self.ViewDevWebsite.sizePolicy().hasHeightForWidth())
-        self.ViewDevWebsite.setSizePolicy(sizePolicy2)
-        self.ViewDevWebsite.setVisible(False)
-        self.ViewDevWebsite.setTextFormat(Qt.RichText)
-        self.ViewDevWebsite.setOpenExternalLinks(True)
-
-        self.horizontalLayout_3.addWidget(self.ViewDevWebsite)
-
         self.ReposComboBox = QComboBox(self.LibraryTopFrameTop)
         self.ReposComboBox.setObjectName(u"ReposComboBox")
         self.ReposComboBox.setEnabled(True)
@@ -92,16 +79,9 @@ class Ui_MainWindow(object):
         self.AppsAmountLabel = QLabel(self.LibraryTopFrameTop)
         self.AppsAmountLabel.setObjectName(u"AppsAmountLabel")
         self.AppsAmountLabel.setMaximumSize(QSize(60, 16777215))
-        self.AppsAmountLabel.setAlignment(Qt.AlignRight|Qt.AlignTrailing|Qt.AlignVCenter)
+        self.AppsAmountLabel.setAlignment(Qt.AlignmentFlag.AlignRight|Qt.AlignmentFlag.AlignTrailing|Qt.AlignmentFlag.AlignVCenter)
 
         self.horizontalLayout_3.addWidget(self.AppsAmountLabel)
-
-        self.ReturnToMainBtn = QPushButton(self.LibraryTopFrameTop)
-        self.ReturnToMainBtn.setObjectName(u"ReturnToMainBtn")
-        self.ReturnToMainBtn.setMaximumSize(QSize(161, 16777215))
-        self.ReturnToMainBtn.setVisible(False)
-
-        self.horizontalLayout_3.addWidget(self.ReturnToMainBtn)
 
 
         self.verticalLayout.addWidget(self.LibraryTopFrameTop)
@@ -113,25 +93,25 @@ class Ui_MainWindow(object):
         self.verticalLayout_2.setContentsMargins(0, 0, 0, 0)
         self.SearchFrame = QFrame(self.LibraryContentFrame)
         self.SearchFrame.setObjectName(u"SearchFrame")
-        sizePolicy3 = QSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Preferred)
-        sizePolicy3.setHorizontalStretch(0)
-        sizePolicy3.setVerticalStretch(0)
-        sizePolicy3.setHeightForWidth(self.SearchFrame.sizePolicy().hasHeightForWidth())
-        self.SearchFrame.setSizePolicy(sizePolicy3)
+        sizePolicy2 = QSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Preferred)
+        sizePolicy2.setHorizontalStretch(0)
+        sizePolicy2.setVerticalStretch(0)
+        sizePolicy2.setHeightForWidth(self.SearchFrame.sizePolicy().hasHeightForWidth())
+        self.SearchFrame.setSizePolicy(sizePolicy2)
         self.SearchFrame.setMaximumSize(QSize(16777215, 20))
-        self.SearchFrame.setFrameShape(QFrame.NoFrame)
-        self.SearchFrame.setFrameShadow(QFrame.Plain)
+        self.SearchFrame.setFrameShape(QFrame.Shape.NoFrame)
+        self.SearchFrame.setFrameShadow(QFrame.Shadow.Plain)
         self.SearchFrame.setLineWidth(0)
         self.horizontalLayout_5 = QHBoxLayout(self.SearchFrame)
         self.horizontalLayout_5.setObjectName(u"horizontalLayout_5")
         self.horizontalLayout_5.setContentsMargins(0, 0, 0, 0)
         self.SearchBar = QLineEdit(self.SearchFrame)
         self.SearchBar.setObjectName(u"SearchBar")
-        sizePolicy4 = QSizePolicy(QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Minimum)
-        sizePolicy4.setHorizontalStretch(0)
-        sizePolicy4.setVerticalStretch(0)
-        sizePolicy4.setHeightForWidth(self.SearchBar.sizePolicy().hasHeightForWidth())
-        self.SearchBar.setSizePolicy(sizePolicy4)
+        sizePolicy3 = QSizePolicy(QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Minimum)
+        sizePolicy3.setHorizontalStretch(0)
+        sizePolicy3.setVerticalStretch(0)
+        sizePolicy3.setHeightForWidth(self.SearchBar.sizePolicy().hasHeightForWidth())
+        self.SearchBar.setSizePolicy(sizePolicy3)
 
         self.horizontalLayout_5.addWidget(self.SearchBar)
 
@@ -147,52 +127,30 @@ class Ui_MainWindow(object):
 
         self.horizontalLayout_5.addWidget(self.CategoriesComboBox)
 
+        self.ResetFiltersBtn = QPushButton(self.SearchFrame)
+        self.ResetFiltersBtn.setObjectName(u"ResetFiltersBtn")
+        sizePolicy4 = QSizePolicy(QSizePolicy.Policy.Maximum, QSizePolicy.Policy.Fixed)
+        sizePolicy4.setHorizontalStretch(0)
+        sizePolicy4.setVerticalStretch(0)
+        sizePolicy4.setHeightForWidth(self.ResetFiltersBtn.sizePolicy().hasHeightForWidth())
+        self.ResetFiltersBtn.setSizePolicy(sizePolicy4)
+
+        self.horizontalLayout_5.addWidget(self.ResetFiltersBtn)
+
 
         self.verticalLayout_2.addWidget(self.SearchFrame)
 
         self.listAppsWidget = QListWidget(self.LibraryContentFrame)
         self.listAppsWidget.setObjectName(u"listAppsWidget")
-        sizePolicy4.setHeightForWidth(self.listAppsWidget.sizePolicy().hasHeightForWidth())
-        self.listAppsWidget.setSizePolicy(sizePolicy4)
+        sizePolicy3.setHeightForWidth(self.listAppsWidget.sizePolicy().hasHeightForWidth())
+        self.listAppsWidget.setSizePolicy(sizePolicy3)
         self.listAppsWidget.setBaseSize(QSize(581, 281))
-        self.listAppsWidget.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
+        self.listAppsWidget.setHorizontalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
 
         self.verticalLayout_2.addWidget(self.listAppsWidget)
 
 
         self.verticalLayout.addWidget(self.LibraryContentFrame)
-
-        self.announcement = QFrame(self.AppsLibraryBox)
-        self.announcement.setObjectName(u"announcement")
-        self.announcement.setMaximumSize(QSize(16777215, 21))
-        self.announcement.setVisible(False)
-        self.announcement.setStyleSheet(u"QFrame {\n"
-"background-color: rgb(255, 85, 0);\n"
-"color: rgb(255, 255, 255);\n"
-"}")
-        self.announcement.setFrameShape(QFrame.StyledPanel)
-        self.announcement.setFrameShadow(QFrame.Raised)
-        self.horizontalLayout_4 = QHBoxLayout(self.announcement)
-        self.horizontalLayout_4.setObjectName(u"horizontalLayout_4")
-        self.horizontalLayout_4.setContentsMargins(3, 0, 3, 0)
-        self.announcementLabel = QLabel(self.announcement)
-        self.announcementLabel.setObjectName(u"announcementLabel")
-        self.announcementLabel.setOpenExternalLinks(True)
-
-        self.horizontalLayout_4.addWidget(self.announcementLabel)
-
-        self.announcementURLLabel = QLabel(self.announcement)
-        self.announcementURLLabel.setObjectName(u"announcementURLLabel")
-        self.announcementURLLabel.setStyleSheet(u"QLabel {\n"
-"background-color: rgba(255, 255, 255, 0);\n"
-"}")
-        self.announcementURLLabel.setAlignment(Qt.AlignRight|Qt.AlignTrailing|Qt.AlignVCenter)
-        self.announcementURLLabel.setOpenExternalLinks(True)
-
-        self.horizontalLayout_4.addWidget(self.announcementURLLabel)
-
-
-        self.verticalLayout.addWidget(self.announcement)
 
 
         self.horizontalLayout_2.addWidget(self.AppsLibraryBox)
@@ -211,7 +169,7 @@ class Ui_MainWindow(object):
         self.verticalLayout_3.setContentsMargins(0, 4, 0, -1)
         self.MetadataTabsFrame = QFrame(self.SelectionInfoBox)
         self.MetadataTabsFrame.setObjectName(u"MetadataTabsFrame")
-        self.MetadataTabsFrame.setFrameShape(QFrame.NoFrame)
+        self.MetadataTabsFrame.setFrameShape(QFrame.Shape.NoFrame)
         self.MetadataTabsFrame.setLineWidth(0)
         self.tabMetadata = QTabWidget(self.MetadataTabsFrame)
         self.tabMetadata.setObjectName(u"tabMetadata")
@@ -223,7 +181,7 @@ class Ui_MainWindow(object):
         self.label_description.setGeometry(QRect(10, 80, 221, 16))
         self.label_description.setMaximumSize(QSize(221, 16777215))
         self.label_description.setWordWrap(True)
-        self.label_description.setTextInteractionFlags(Qt.LinksAccessibleByMouse|Qt.TextSelectableByMouse)
+        self.label_description.setTextInteractionFlags(Qt.TextInteractionFlag.LinksAccessibleByMouse|Qt.TextInteractionFlag.TextSelectableByMouse)
         self.label_displayname = QLabel(self.GeneralTab)
         self.label_displayname.setObjectName(u"label_displayname")
         self.label_displayname.setGeometry(QRect(10, 60, 221, 16))
@@ -232,7 +190,7 @@ class Ui_MainWindow(object):
         font.setBold(True)
         self.label_displayname.setFont(font)
         self.label_displayname.setWordWrap(True)
-        self.label_displayname.setTextInteractionFlags(Qt.LinksAccessibleByMouse|Qt.TextSelectableByMouse)
+        self.label_displayname.setTextInteractionFlags(Qt.TextInteractionFlag.LinksAccessibleByMouse|Qt.TextInteractionFlag.TextSelectableByMouse)
         self.progressBar = QProgressBar(self.GeneralTab)
         self.progressBar.setObjectName(u"progressBar")
         self.progressBar.setGeometry(QRect(150, 0, 91, 23))
@@ -241,7 +199,7 @@ class Ui_MainWindow(object):
         self.HomebrewIconLabel = QLabel(self.GeneralTab)
         self.HomebrewIconLabel.setObjectName(u"HomebrewIconLabel")
         self.HomebrewIconLabel.setGeometry(QRect(10, 10, 128, 48))
-        self.HomebrewIconLabel.setAlignment(Qt.AlignCenter)
+        self.HomebrewIconLabel.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.HomebrewCategoryLabel = QLabel(self.GeneralTab)
         self.HomebrewCategoryLabel.setObjectName(u"HomebrewCategoryLabel")
         self.HomebrewCategoryLabel.setGeometry(QRect(147, 10, 81, 48))
@@ -249,7 +207,7 @@ class Ui_MainWindow(object):
         font1.setPointSize(11)
         font1.setBold(True)
         self.HomebrewCategoryLabel.setFont(font1)
-        self.HomebrewCategoryLabel.setAlignment(Qt.AlignCenter)
+        self.HomebrewCategoryLabel.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.statusIcon = QLabel(self.GeneralTab)
         self.statusIcon.setObjectName(u"statusIcon")
         self.statusIcon.setGeometry(QRect(120, 0, 16, 16))
@@ -289,35 +247,35 @@ class Ui_MainWindow(object):
 
         self.appname = QLineEdit(self.gridLayoutWidget)
         self.appname.setObjectName(u"appname")
-        self.appname.setEchoMode(QLineEdit.Normal)
+        self.appname.setEchoMode(QLineEdit.EchoMode.Normal)
         self.appname.setReadOnly(True)
 
         self.gridLayout.addWidget(self.appname, 0, 1, 1, 1)
 
         self.version = QLineEdit(self.gridLayoutWidget)
         self.version.setObjectName(u"version")
-        self.version.setEchoMode(QLineEdit.Normal)
+        self.version.setEchoMode(QLineEdit.EchoMode.Normal)
         self.version.setReadOnly(True)
 
         self.gridLayout.addWidget(self.version, 1, 1, 1, 1)
 
         self.developer = QLineEdit(self.gridLayoutWidget)
         self.developer.setObjectName(u"developer")
-        self.developer.setEchoMode(QLineEdit.Normal)
+        self.developer.setEchoMode(QLineEdit.EchoMode.Normal)
         self.developer.setReadOnly(True)
 
         self.gridLayout.addWidget(self.developer, 2, 1, 1, 1)
 
         self.releasedate = QLineEdit(self.gridLayoutWidget)
         self.releasedate.setObjectName(u"releasedate")
-        self.releasedate.setEchoMode(QLineEdit.Normal)
+        self.releasedate.setEchoMode(QLineEdit.EchoMode.Normal)
         self.releasedate.setReadOnly(True)
 
         self.gridLayout.addWidget(self.releasedate, 3, 1, 1, 1)
 
         self.filesize = QLineEdit(self.gridLayoutWidget)
         self.filesize.setObjectName(u"filesize")
-        self.filesize.setEchoMode(QLineEdit.Normal)
+        self.filesize.setEchoMode(QLineEdit.EchoMode.Normal)
         self.filesize.setReadOnly(True)
 
         self.gridLayout.addWidget(self.filesize, 4, 1, 1, 1)
@@ -338,7 +296,7 @@ class Ui_MainWindow(object):
         self.longDescriptionBrowser.setStyleSheet(u"QTextBrowser {\n"
 "	border-style: hidden;\n"
 "}")
-        self.longDescriptionBrowser.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
+        self.longDescriptionBrowser.setHorizontalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
         self.tabMetadata.addTab(self.Description, "")
         self.RawTab = QWidget()
         self.RawTab.setObjectName(u"RawTab")
@@ -348,11 +306,11 @@ class Ui_MainWindow(object):
         self.SupportedControllersListWidget.setStyleSheet(u"QListWidget {\n"
 "	border: unset;\n"
 "}")
-        self.SupportedControllersListWidget.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
-        self.SupportedControllersListWidget.setDragDropMode(QAbstractItemView.NoDragDrop)
+        self.SupportedControllersListWidget.setHorizontalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
+        self.SupportedControllersListWidget.setDragDropMode(QAbstractItemView.DragDropMode.NoDragDrop)
         self.SupportedControllersListWidget.setIconSize(QSize(30, 30))
-        self.SupportedControllersListWidget.setMovement(QListView.Static)
-        self.SupportedControllersListWidget.setViewMode(QListView.ListMode)
+        self.SupportedControllersListWidget.setMovement(QListView.Movement.Static)
+        self.SupportedControllersListWidget.setViewMode(QListView.ViewMode.ListMode)
         self.SupportedControllersListWidget.setWordWrap(True)
         self.tabMetadata.addTab(self.RawTab, "")
 
@@ -366,16 +324,16 @@ class Ui_MainWindow(object):
         sizePolicy6.setHeightForWidth(self.WarningFrame.sizePolicy().hasHeightForWidth())
         self.WarningFrame.setSizePolicy(sizePolicy6)
         self.WarningFrame.setStyleSheet(u"")
-        self.WarningFrame.setFrameShape(QFrame.StyledPanel)
-        self.WarningFrame.setFrameShadow(QFrame.Raised)
+        self.WarningFrame.setFrameShape(QFrame.Shape.StyledPanel)
+        self.WarningFrame.setFrameShadow(QFrame.Shadow.Raised)
         self.verticalLayout_4 = QVBoxLayout(self.WarningFrame)
         self.verticalLayout_4.setObjectName(u"verticalLayout_4")
         self.WarningBanner = QFrame(self.WarningFrame)
         self.WarningBanner.setObjectName(u"WarningBanner")
         self.WarningBanner.setStyleSheet(u"background-color: rgb(255, 102, 102);\n"
 "color: rgb(255, 255, 255);")
-        self.WarningBanner.setFrameShape(QFrame.StyledPanel)
-        self.WarningBanner.setFrameShadow(QFrame.Raised)
+        self.WarningBanner.setFrameShape(QFrame.Shape.StyledPanel)
+        self.WarningBanner.setFrameShadow(QFrame.Shadow.Raised)
         self.horizontalLayout = QHBoxLayout(self.WarningBanner)
         self.horizontalLayout.setObjectName(u"horizontalLayout")
         self.horizontalLayout.setContentsMargins(0, 0, 0, 0)
@@ -401,7 +359,7 @@ class Ui_MainWindow(object):
         self.MetadataBottomFrame = QFrame(self.SelectionInfoBox)
         self.MetadataBottomFrame.setObjectName(u"MetadataBottomFrame")
         self.MetadataBottomFrame.setMaximumSize(QSize(16777215, 34))
-        self.MetadataBottomFrame.setFrameShape(QFrame.NoFrame)
+        self.MetadataBottomFrame.setFrameShape(QFrame.Shape.NoFrame)
         self.MetadataBottomFrame.setLineWidth(0)
         self.horizontalLayout_6 = QHBoxLayout(self.MetadataBottomFrame)
         self.horizontalLayout_6.setObjectName(u"horizontalLayout_6")
@@ -474,17 +432,15 @@ class Ui_MainWindow(object):
 #endif // QT_CONFIG(shortcut)
         self.actionIcons_provided_by.setText(QCoreApplication.translate("MainWindow", u"Icons provided by https://icons8.com", None))
         self.actionCopy_Direct_Link.setText(QCoreApplication.translate("MainWindow", u"Copy Direct Link to App", None))
-        self.actionDeveloper_Profile.setText(QCoreApplication.translate("MainWindow", u"Developer Profile", None))
+        self.actionFilter_by_Developer.setText(QCoreApplication.translate("MainWindow", u"Filter by Developer", None))
 #if QT_CONFIG(tooltip)
-        self.actionDeveloper_Profile.setToolTip(QCoreApplication.translate("MainWindow", u"View Profile", None))
+        self.actionFilter_by_Developer.setToolTip(QCoreApplication.translate("MainWindow", u"Filter by Developer", None))
 #endif // QT_CONFIG(tooltip)
 #if QT_CONFIG(accessibility)
         self.centralwidget.setAccessibleName(QCoreApplication.translate("MainWindow", u"centralcontainer", None))
 #endif // QT_CONFIG(accessibility)
         self.AppsLibraryBox.setTitle(QCoreApplication.translate("MainWindow", u"Apps Library", None))
-        self.ViewDevWebsite.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p><a href=\"https://oscwii.org/library?coder=\"><span style=\" text-decoration: underline; color:#0000ff;\">Profile on Website</span></a></p></body></html>", None))
         self.AppsAmountLabel.setText(QCoreApplication.translate("MainWindow", u"0 Apps", None))
-        self.ReturnToMainBtn.setText(QCoreApplication.translate("MainWindow", u"Return to All Apps", None))
         self.SearchBar.setPlaceholderText(QCoreApplication.translate("MainWindow", u"Search Applications..", None))
         self.CategoriesComboBox.setItemText(0, QCoreApplication.translate("MainWindow", u"All Apps", None))
         self.CategoriesComboBox.setItemText(1, QCoreApplication.translate("MainWindow", u"Utilities", None))
@@ -493,8 +449,7 @@ class Ui_MainWindow(object):
         self.CategoriesComboBox.setItemText(4, QCoreApplication.translate("MainWindow", u"Media", None))
         self.CategoriesComboBox.setItemText(5, QCoreApplication.translate("MainWindow", u"Demos", None))
 
-        self.announcementLabel.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p><span style=\" font-weight:600;\">Announcement Header: </span>Announcement Content.</p></body></html>", None))
-        self.announcementURLLabel.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p><a href=\"https://google.com\"><span style=\" text-decoration: underline; color:#ffff00;\">Announcement URL</span></a></p></body></html>", None))
+        self.ResetFiltersBtn.setText(QCoreApplication.translate("MainWindow", u"Reset Filters", None))
         self.SelectionInfoBox.setTitle(QCoreApplication.translate("MainWindow", u"Application Metadata", None))
 #if QT_CONFIG(accessibility)
         self.GeneralTab.setAccessibleName(QCoreApplication.translate("MainWindow", u"tabcontent", None))
