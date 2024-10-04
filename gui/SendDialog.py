@@ -52,7 +52,6 @@ class WiiLoadDialog(ui_SendDialog.Ui_Dialog, QDialog):
 
         self.Tab.setCurrentIndex(int(gui_helpers.settings.value("sendtowii/previousTab")))
 
-        self.screen = QGuiApplication.primaryScreen()
         self.package = package
         self.selection = None
 

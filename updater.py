@@ -1,6 +1,5 @@
 import sys
 import requests
-import platform
 import json
 from packaging import version
 
@@ -41,9 +40,3 @@ def check_update(updated_version):
     :return: True if higher.
     """
     return version.parse(updated_version["tag_name"]) > version.parse(current_version())
-
-
-def get_type():
-    return f'System: {platform.system()}, Frozen: {is_frozen()}'
-
-

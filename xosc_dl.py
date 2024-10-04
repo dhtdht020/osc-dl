@@ -17,7 +17,7 @@ import func_timeout
 import requests
 from PIL import Image
 from PySide6 import QtGui, QtCore
-from PySide6.QtCore import Qt, QObject, QSize, QEvent
+from PySide6.QtCore import Qt, QSize, QEvent
 from PySide6.QtGui import QIcon, QColor, QPixmap, QMovie
 from PySide6.QtWidgets import QApplication, QMainWindow, QLineEdit, QMessageBox, \
     QListWidgetItem, QFileDialog
@@ -36,8 +36,6 @@ from utils import resource_path
 
 class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
     IconSignal = QtCore.Signal(QPixmap)
-    LongDescriptionSignal = QtCore.Signal(str)
-    AnnouncementBannerHidden = QtCore.Signal(bool)
 
     def __init__(self, app=None, splash=None, test_mode=False):
         super(MainWindow, self).__init__()
@@ -64,7 +62,6 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         self.current_category = "all"
         self.current_developer = ""
         self.icons_images = None
-        self.long_description_cache = {}
 
         # Set GUI Icons
 
