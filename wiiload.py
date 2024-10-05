@@ -99,10 +99,6 @@ def organize_zip(zipped_app, zip_buf):
     zip_file.close()
     app_zip.close()
 
-    # DEBUG: Save the organized zip to a file
-    with open("debug.zip", 'wb') as f_debug:
-        f_debug.write(zip_buf.getvalue())  # Save the content of zip_buf to file
-
 
 def prepare(zip_buf):
     # preparing
