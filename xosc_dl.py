@@ -681,7 +681,15 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         self.set_splash_status("Checking for updates..")
         if not silent:
             self.set_status_message("Checking for updates.. This will take a few moments..")
-        latest = updater.latest_version()
+
+        try:
+            latest = updater.latest_version()
+        except:
+            if not silent:
+                QMessageBox.critical(self, 'OSCDL updater', 'An error occurred while checking for updates.\n'
+                                                            'Please manually search for a new release!')
+            return
+
         if updater.check_update(latest) is True:
             self.set_status_message("New version available! (" + latest['tag_name'] + ") OSCDL is out of date.")
             body = latest['body'].replace("![image]", "")
