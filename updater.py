@@ -9,7 +9,7 @@ import utils
 def current_version():
     major = "1"
     minor = "4"
-    patch = "0"
+    patch = "1"
 
     version_number = f"{major}.{minor}.{patch}"
 
