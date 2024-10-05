@@ -47,6 +47,7 @@ def organize_zip(zipped_app, zip_buf):
     # HBC will check for consistant directory names, 
     # if one does not match, it gives the "Unusable zip" error.
     # This means we need the app's directory first.
+    boot_dol_found = False
     for info in app_infolist:
         if 'apps/' in info.filename:
             new_path = info.filename.replace('apps/', '')
@@ -58,6 +59,14 @@ def organize_zip(zipped_app, zip_buf):
             if f"{dirname}../../read".upper() in new_path.upper():
                 READMEFile = new_path.split(".")[-2]
                 new_path = new_path.replace(READMEFile,f'{READMEFile}_{appname}')
+
+        # Bug fix: Skip adding 'boot.elf' if 'boot.dol' is present
+        # This is done because HBC only supports receiving one or the other.
+        # boot.dol has priority as the preferred format for distribution.
+        if 'boot.elf' in new_path and boot_dol_found:
+            continue
+        if 'boot.dol' in new_path:
+            boot_dol_found = True
                 
         if not new_path:
             continue
@@ -89,6 +98,10 @@ def organize_zip(zipped_app, zip_buf):
     zipped_app.close()
     zip_file.close()
     app_zip.close()
+
+    # DEBUG: Save the organized zip to a file
+    with open("debug.zip", 'wb') as f_debug:
+        f_debug.write(zip_buf.getvalue())  # Save the content of zip_buf to file
 
 
 def prepare(zip_buf):
