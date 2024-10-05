@@ -20,10 +20,6 @@ def current_version():
     return version_number
 
 
-def get_branch():
-    return "Stable"
-
-
 def latest_version():
     return json.loads(requests.get("https://api.github.com/repos/dhtdht020/osc-dl/releases/latest").content)
 
