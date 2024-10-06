@@ -619,26 +619,26 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
             self.apps = api.Applications()
             i = 0
 
-            for package in self.apps.get_apps():
+            for app in self.apps.get_apps():
                 try:
                     # let's check if the app celebrates its birthday today
-                    birthday = utils.app_birthday_string(package)
+                    birthday = utils.app_birthday_string(app)
                     if birthday:
                         birthday = f" [{birthday}]"
                     else:
                         birthday = ""
 
                     # add entry to applications list
-                    self.ui.listAppsWidget.addItem(f"{package['name']}{birthday}\n"
-                                                   f"{utils.file_size(package['file_size']['zip_uncompressed'])} | "
-                                                   f"{package['version']} | "
-                                                   f"{package['author']} | "
-                                                   f"{package['description']['short']}")
+                    self.ui.listAppsWidget.addItem(f"{app['name']}{birthday}\n"
+                                                   f"{utils.file_size(app['file_size']['zip_uncompressed'])} | "
+                                                   f"{app['version']} | "
+                                                   f"{app['author']} | "
+                                                   f"{app['description']['short']}")
                     list_item = self.ui.listAppsWidget.item(i)
 
-                    list_item.setData(Qt.UserRole, package)
+                    list_item.setData(Qt.UserRole, app)
                     # Set category icon
-                    category = package["category"]
+                    category = app["category"]
 
                     if category == "utilities":
                         list_item.setIcon(QIcon(resource_path("assets/gui/icons/category/utility.png")))
@@ -844,21 +844,21 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
 
             # prepare apps and their category icons dictionary
             apps_category_icons = {}
-            for package in self.apps.get_apps():
-                if package["category"] == "demos":
+            for app in self.apps.get_apps():
+                if app["category"] == "demos":
                     category_icon = demo_icon
-                elif package["category"] == "emulators":
+                elif app["category"] == "emulators":
                     category_icon = emulator_icon
-                elif package["category"] == "games":
+                elif app["category"] == "games":
                     category_icon = game_icon
-                elif package["category"] == "media":
+                elif app["category"] == "media":
                     category_icon = media_icon
-                elif package["category"] == "utilities":
+                elif app["category"] == "utilities":
                     category_icon = utility_icon
                 else:
                     category_icon = nothing_icon
 
-                apps_category_icons[package["slug"]] = category_icon
+                apps_category_icons[app["slug"]] = category_icon
 
             for name in zip_file.namelist():
                 app_name = name.replace(".png", "")

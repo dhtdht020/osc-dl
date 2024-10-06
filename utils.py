@@ -12,10 +12,10 @@ def is_test(name):
         return False
 
 
-def app_has_extra_directories(package):
+def app_has_extra_directories(app):
     # remove all directories under /apps
     root_directories = []
-    for directory in package["subdirectories"]:
+    for directory in app["subdirectories"]:
         if "/apps" in directory:
             pass
         else:

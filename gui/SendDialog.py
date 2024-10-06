@@ -13,20 +13,20 @@ import serial.tools.list_ports
 
 
 class WiiLoadDialog(ui_SendDialog.Ui_Dialog, QDialog):
-    def __init__(self, package, parent=None):
+    def __init__(self, app, parent=None):
         super().__init__(parent)
         self.setupUi(self)
 
         self.send_type = {"dol": "App", "elf": "App", "thm": "Theme"}
         try:
-            self.send_as = self.send_type[package["package_type"]]
+            self.send_as = self.send_type[app["package_type"]]
         except:  # Just in case, but should never happen.
             self.send_as = "App"
 
         self.buttonBox.button(QDialogButtonBox.Ok).setText(f"Send {self.send_as}")
 
         self.setWindowIcon(QIcon(resource_path("assets/gui/icons/send.png")))
-        self.setWindowTitle(f"Send to Wii - {package['name']}")
+        self.setWindowTitle(f"Send to Wii - {app['name']}")
 
         self.USBDes.setTextFormat(Qt.TextFormat.RichText)
         self.IPDes.setTextFormat(Qt.TextFormat.RichText)
@@ -52,7 +52,7 @@ class WiiLoadDialog(ui_SendDialog.Ui_Dialog, QDialog):
 
         self.Tab.setCurrentIndex(int(gui_helpers.settings.value("sendtowii/previousTab")))
 
-        self.package = package
+        self.app = app
         self.selection = None
 
         self.modeSelect = None

@@ -11,7 +11,7 @@ from utils import resource_path, file_size
 
 
 class DownloadLocationDialog(ui_DownloadLocationDialog.Ui_Dialog, QDialog):
-    def __init__(self, package, parent=None):
+    def __init__(self, app, parent=None):
         super().__init__(parent)
         self.setupUi(self)
         self.setWindowIcon(QIcon(resource_path("assets/gui/icons/downloadlocationdialog.png")))
@@ -20,17 +20,17 @@ class DownloadLocationDialog(ui_DownloadLocationDialog.Ui_Dialog, QDialog):
         self.setAttribute(QtCore.Qt.WA_DeleteOnClose)
 
         self.screen = QGuiApplication.primaryScreen()
-        self.package = package
+        self.app = app
         self.selection = None
         self.drives = set()
 
-        self.setWindowTitle(f"Download \"{self.package['name']}\"")
+        self.setWindowTitle(f"Download \"{self.app['name']}\"")
 
         # set required space label
-        self.label_required_space.setText(f"**Required Space:** {file_size(self.package['file_size']['zip_uncompressed'])}")
+        self.label_required_space.setText(f"**Required Space:** {file_size(self.app['file_size']['zip_uncompressed'])}")
 
         # populate list of extra dirs
-        for directory in self.package["subdirectories"]:
+        for directory in self.app["subdirectories"]:
             if not directory.startswith("/apps"):
                 item = QListWidgetItem()
                 item.setText(directory)
