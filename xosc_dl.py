@@ -37,7 +37,7 @@ from utils import resource_path
 class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
     IconSignal = QtCore.Signal(QPixmap)
 
-    def __init__(self, app=None, splash=None, test_mode=False):
+    def __init__(self, app=None, splash=None):
         super(MainWindow, self).__init__()
         self.apps = None
         self.ui = gui.ui_united.Ui_MainWindow()
@@ -51,7 +51,6 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
 
         self.app = app
         self.splash = splash
-        self.test_mode = test_mode
 
         # Set title and icon of window
         self.setWindowTitle(f"Open Shop Channel Downloader v{updater.current_version()} - Library")
@@ -61,7 +60,7 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         self.current_app = None
         self.current_category = "all"
         self.current_developer = ""
-        self.icons_images = None
+        self.original_app_icons = None
 
         # Set GUI Icons
 
@@ -86,9 +85,9 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         self.ui.developer.addAction(self.ui.actionFilter_by_Developer, QLineEdit.TrailingPosition)
 
         # create spinner movie
-        self.spinner = QMovie(resource_path("assets/gui/icons/spinner.gif"))
-        self.spinner.setScaledSize(QSize(32, 32))
-        self.spinner.start()
+        self.spinner_movie = QMovie(resource_path("assets/gui/icons/spinner.gif"))
+        self.spinner_movie.setScaledSize(QSize(32, 32))
+        self.spinner_movie.start()
 
         # set initial status icon
         self.set_status_icon("online")
@@ -174,14 +173,11 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
     def selection_changed(self):
         self.set_splash_status("Finishing (2/2) - Loading first app..")
 
-        try:
-            self.current_app = self.ui.listAppsWidget.currentItem().data(Qt.UserRole)
-            app_name = self.current_app["slug"]
-        except Exception:
-            app_name = None
-        if app_name is not None:
+        self.current_app = self.ui.listAppsWidget.currentItem().data(Qt.UserRole)
+
+        if self.current_app:
             # Set loading animation
-            self.ui.HomebrewIconLabel.setMovie(self.spinner)
+            self.ui.HomebrewIconLabel.setMovie(self.spinner_movie)
 
             # Clear supported controllers listview:
             self.ui.SupportedControllersListWidget.clear()
@@ -326,7 +322,7 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         self.ui.progressBar.setValue(0)
         self.repaint()
         # Load icon
-        t = threading.Thread(target=self.load_icon, args=[app_name], daemon=True)
+        t = threading.Thread(target=self.load_icon, args=[self.current_app["slug"]], daemon=True)
         t.start()
 
     # TODO FULL REWRITE
@@ -342,7 +338,7 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
             object_name = None
 
         # determine if should ask for path
-        if (object_name != "WiiLoadButton") and not self.test_mode:
+        if (object_name != "WiiLoadButton"):
             dialog = DownloadLocationDialog(self.current_app, parent=self)
             status = dialog.exec()
 
@@ -599,10 +595,9 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
 
         self.set_status_message("Reloading list..")
         self.set_status_icon("loading")
-        try:
-            self.ui.CategoriesComboBox.currentIndexChanged.disconnect(self.changed_category)
-        except Exception:
-            pass
+
+        self.ui.CategoriesComboBox.currentIndexChanged.disconnect(self.changed_category)
+
         self.ui.CategoriesComboBox.setCurrentIndex(0)
         self.ui.listAppsWidget.clear()
         self.populate_list()
@@ -710,8 +705,8 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
     def load_icon(self, app_name):
         self.IconSignal.connect(self.ui.HomebrewIconLabel.setPixmap)
         # check if icons_images is populated, if not load from server
-        if self.icons_images and app_name in self.icons_images:
-            self.IconSignal.emit(self.icons_images[app_name])
+        if self.original_app_icons and app_name in self.original_app_icons:
+            self.IconSignal.emit(self.original_app_icons[app_name])
             self.ui.HomebrewIconLabel.show()
         else:
             # Gets raw image data from server
@@ -830,8 +825,8 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
 
         if icons_zip.ok:
             # prepare app icons dictionary
-            self.icons_images = {}
-            self.list_icons_images = {}
+            self.original_app_icons = {}
+            self.listview_app_icons = {}
             zip_file = zipfile.ZipFile(io.BytesIO(icons_zip.content))
 
             # prepare icon files
@@ -879,7 +874,7 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
                 pixmap = QPixmap()
                 pixmap.loadFromData(icon_bytes.getvalue())
                 try:
-                    self.icons_images[app_name] = pixmap
+                    self.original_app_icons[app_name] = pixmap
                 except TypeError:
                     break
 
@@ -914,7 +909,7 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
                 # create list image
                 pixmap = QPixmap()
                 pixmap.loadFromData(icon_bytes.getvalue())
-                self.list_icons_images[app_name] = pixmap
+                self.listview_app_icons[app_name] = pixmap
 
             QtCore.QMetaObject.invokeMethod(self, 'set_app_icons')
         else:
@@ -926,7 +921,7 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         for i in range(self.ui.listAppsWidget.count()):
             item = self.ui.listAppsWidget.item(i)
             try:
-                item.setIcon(self.list_icons_images[item.data(Qt.UserRole)["slug"]])
+                item.setIcon(self.listview_app_icons[item.data(Qt.UserRole)["slug"]])
             except KeyError:
                 self.reset_status()
                 return
