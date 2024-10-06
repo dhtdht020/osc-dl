@@ -31,13 +31,13 @@
   <property name="dockOptions">
    <set>QMainWindow::DockOption::AllowTabbedDocks|QMainWindow::DockOption::AnimatedDocks</set>
   </property>
-  <widget class="QWidget" name="centralwidget">
+  <widget class="QWidget" name="Central_Widget">
    <property name="accessibleName">
     <string>centralcontainer</string>
    </property>
    <layout class="QHBoxLayout" name="horizontalLayout_2">
     <item>
-     <widget class="QGroupBox" name="AppsLibraryBox">
+     <widget class="QGroupBox" name="AppsLibrary_GroupBox">
       <property name="title">
        <string>Apps Library</string>
       </property>
@@ -46,7 +46,7 @@
         <number>4</number>
        </property>
        <item>
-        <widget class="QFrame" name="LibraryTopFrameTop">
+        <widget class="QFrame" name="LibraryInfo_Frame">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Minimum" vsizetype="Maximum">
            <horstretch>0</horstretch>
@@ -73,14 +73,14 @@
            <number>0</number>
           </property>
           <item>
-           <widget class="QComboBox" name="ReposComboBox">
+           <widget class="QComboBox" name="Repositories_ComboBox">
             <property name="enabled">
              <bool>true</bool>
             </property>
            </widget>
           </item>
           <item>
-           <widget class="QLabel" name="AppsAmountLabel">
+           <widget class="QLabel" name="AppsCount_Label">
             <property name="maximumSize">
              <size>
               <width>60</width>
@@ -99,7 +99,7 @@
         </widget>
        </item>
        <item>
-        <widget class="QFrame" name="LibraryContentFrame">
+        <widget class="QFrame" name="LibraryContents_Frame">
          <layout class="QVBoxLayout" name="verticalLayout_2">
           <property name="leftMargin">
            <number>0</number>
@@ -114,7 +114,7 @@
            <number>0</number>
           </property>
           <item>
-           <widget class="QFrame" name="SearchFrame">
+           <widget class="QFrame" name="Search_Frame">
             <property name="sizePolicy">
              <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
               <horstretch>0</horstretch>
@@ -150,7 +150,7 @@
               <number>0</number>
              </property>
              <item>
-              <widget class="QLineEdit" name="SearchBar">
+              <widget class="QLineEdit" name="SearchBar_LineEdit">
                <property name="sizePolicy">
                 <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
                  <horstretch>0</horstretch>
@@ -163,7 +163,7 @@
               </widget>
              </item>
              <item>
-              <widget class="QComboBox" name="CategoriesComboBox">
+              <widget class="QComboBox" name="Categories_ComboBox">
                <property name="maximumSize">
                 <size>
                  <width>100</width>
@@ -203,7 +203,7 @@
               </widget>
              </item>
              <item>
-              <widget class="QPushButton" name="ResetFiltersBtn">
+              <widget class="QPushButton" name="ResetFilters_PushButton">
                <property name="sizePolicy">
                 <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
                  <horstretch>0</horstretch>
@@ -219,7 +219,7 @@
            </widget>
           </item>
           <item>
-           <widget class="QListWidget" name="listAppsWidget">
+           <widget class="QListWidget" name="AppsList_Widget">
             <property name="sizePolicy">
              <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
               <horstretch>0</horstretch>
@@ -247,7 +247,7 @@
      </widget>
     </item>
     <item>
-     <widget class="QGroupBox" name="SelectionInfoBox">
+     <widget class="QGroupBox" name="SelectionInfo_GroupBox">
       <property name="sizePolicy">
        <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
         <horstretch>0</horstretch>
@@ -261,7 +261,7 @@
        </size>
       </property>
       <property name="title">
-       <string>Application Metadata</string>
+       <string>Application Information</string>
       </property>
       <layout class="QVBoxLayout" name="verticalLayout_3">
        <property name="spacing">
@@ -277,14 +277,14 @@
         <number>0</number>
        </property>
        <item>
-        <widget class="QFrame" name="MetadataTabsFrame">
+        <widget class="QFrame" name="AppInformationTabs_Frame">
          <property name="frameShape">
           <enum>QFrame::Shape::NoFrame</enum>
          </property>
          <property name="lineWidth">
           <number>0</number>
          </property>
-         <widget class="QTabWidget" name="tabMetadata">
+         <widget class="QTabWidget" name="AppInformationTabs_TabWidget">
           <property name="geometry">
            <rect>
             <x>10</x>
@@ -296,14 +296,14 @@
           <property name="currentIndex">
            <number>0</number>
           </property>
-          <widget class="QWidget" name="GeneralTab">
+          <widget class="QWidget" name="InfoTab_Widget">
            <property name="accessibleName">
             <string>tabcontent</string>
            </property>
            <attribute name="title">
             <string>Info</string>
            </attribute>
-           <widget class="QLabel" name="label_description">
+           <widget class="QLabel" name="AppDescription_Label">
             <property name="geometry">
              <rect>
               <x>10</x>
@@ -328,7 +328,7 @@
              <set>Qt::TextInteractionFlag::LinksAccessibleByMouse|Qt::TextInteractionFlag::TextSelectableByMouse</set>
             </property>
            </widget>
-           <widget class="QLabel" name="label_displayname">
+           <widget class="QLabel" name="AppDisplayName_Label">
             <property name="geometry">
              <rect>
               <x>10</x>
@@ -358,7 +358,7 @@
              <set>Qt::TextInteractionFlag::LinksAccessibleByMouse|Qt::TextInteractionFlag::TextSelectableByMouse</set>
             </property>
            </widget>
-           <widget class="QProgressBar" name="progressBar">
+           <widget class="QProgressBar" name="ProgressBar">
             <property name="geometry">
              <rect>
               <x>150</x>
@@ -374,7 +374,7 @@
              <number>0</number>
             </property>
            </widget>
-           <widget class="QLabel" name="HomebrewIconLabel">
+           <widget class="QLabel" name="AppIcon_Label">
             <property name="geometry">
              <rect>
               <x>10</x>
@@ -390,7 +390,7 @@
              <set>Qt::AlignmentFlag::AlignCenter</set>
             </property>
            </widget>
-           <widget class="QLabel" name="HomebrewCategoryLabel">
+           <widget class="QLabel" name="AppCategory_Label">
             <property name="geometry">
              <rect>
               <x>147</x>
@@ -412,7 +412,7 @@
              <set>Qt::AlignmentFlag::AlignCenter</set>
             </property>
            </widget>
-           <widget class="QLabel" name="statusIcon">
+           <widget class="QLabel" name="StatusIcon">
             <property name="geometry">
              <rect>
               <x>120</x>
@@ -446,44 +446,44 @@
               <height>136</height>
              </rect>
             </property>
-            <layout class="QGridLayout" name="gridLayout">
+            <layout class="QGridLayout" name="AppMetadata_GridLayout">
              <item row="3" column="0">
-              <widget class="QLabel" name="label_releasedate">
+              <widget class="QLabel" name="AppReleaseDate_Label">
                <property name="text">
                 <string>Release Date</string>
                </property>
               </widget>
              </item>
              <item row="4" column="0">
-              <widget class="QLabel" name="label_filesize">
+              <widget class="QLabel" name="AppFileSize_Label">
                <property name="text">
                 <string>File Size</string>
                </property>
               </widget>
              </item>
              <item row="1" column="0">
-              <widget class="QLabel" name="label_version">
+              <widget class="QLabel" name="AppVersion_Label">
                <property name="text">
                 <string>Version</string>
                </property>
               </widget>
              </item>
              <item row="2" column="0">
-              <widget class="QLabel" name="label_developer">
+              <widget class="QLabel" name="AppDeveloper_Label">
                <property name="text">
                 <string>Developer</string>
                </property>
               </widget>
              </item>
              <item row="0" column="0">
-              <widget class="QLabel" name="label_appname">
+              <widget class="QLabel" name="AppName_Label">
                <property name="text">
                 <string>App Name</string>
                </property>
               </widget>
              </item>
              <item row="0" column="1">
-              <widget class="QLineEdit" name="appname">
+              <widget class="QLineEdit" name="AppName_LineEdit">
                <property name="text">
                 <string/>
                </property>
@@ -499,7 +499,7 @@
               </widget>
              </item>
              <item row="1" column="1">
-              <widget class="QLineEdit" name="version">
+              <widget class="QLineEdit" name="AppVersion_LineEdit">
                <property name="echoMode">
                 <enum>QLineEdit::EchoMode::Normal</enum>
                </property>
@@ -509,7 +509,7 @@
               </widget>
              </item>
              <item row="2" column="1">
-              <widget class="QLineEdit" name="developer">
+              <widget class="QLineEdit" name="AppDeveloper_LineEdit">
                <property name="echoMode">
                 <enum>QLineEdit::EchoMode::Normal</enum>
                </property>
@@ -519,7 +519,7 @@
               </widget>
              </item>
              <item row="3" column="1">
-              <widget class="QLineEdit" name="releasedate">
+              <widget class="QLineEdit" name="AppReleaseDate_LineEdit">
                <property name="echoMode">
                 <enum>QLineEdit::EchoMode::Normal</enum>
                </property>
@@ -529,7 +529,7 @@
               </widget>
              </item>
              <item row="4" column="1">
-              <widget class="QLineEdit" name="filesize">
+              <widget class="QLineEdit" name="AppFileSize_LineEdit">
                <property name="echoMode">
                 <enum>QLineEdit::EchoMode::Normal</enum>
                </property>
@@ -540,22 +540,22 @@
              </item>
             </layout>
            </widget>
-           <zorder>statusIcon</zorder>
-           <zorder>label_description</zorder>
-           <zorder>label_displayname</zorder>
-           <zorder>progressBar</zorder>
-           <zorder>HomebrewIconLabel</zorder>
-           <zorder>HomebrewCategoryLabel</zorder>
+           <zorder>StatusIcon</zorder>
+           <zorder>AppDescription_Label</zorder>
+           <zorder>AppDisplayName_Label</zorder>
+           <zorder>ProgressBar</zorder>
+           <zorder>AppIcon_Label</zorder>
+           <zorder>AppCategory_Label</zorder>
            <zorder>gridLayoutWidget</zorder>
           </widget>
-          <widget class="QWidget" name="Description">
+          <widget class="QWidget" name="DescriptionTab_Widget">
            <property name="accessibleName">
             <string>tabcontent</string>
            </property>
            <attribute name="title">
             <string>Description</string>
            </attribute>
-           <widget class="QTextBrowser" name="longDescriptionBrowser">
+           <widget class="QTextBrowser" name="LongDescription_TextBrowser">
             <property name="geometry">
              <rect>
               <x>-1</x>
@@ -584,14 +584,14 @@ li.checked::marker { content: &quot;\2612&quot;; }
             </property>
            </widget>
           </widget>
-          <widget class="QWidget" name="RawTab">
+          <widget class="QWidget" name="CompatibilityTab_Widget">
            <property name="accessibleName">
             <string>tabcontent</string>
            </property>
            <attribute name="title">
             <string>Compatibility</string>
            </attribute>
-           <widget class="QListWidget" name="SupportedControllersListWidget">
+           <widget class="QListWidget" name="Compatibility_ListWidget">
             <property name="geometry">
              <rect>
               <x>0</x>
@@ -632,7 +632,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
         </widget>
        </item>
        <item>
-        <widget class="QFrame" name="WarningFrame">
+        <widget class="QFrame" name="NandWarning_Frame">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
            <horstretch>0</horstretch>
@@ -650,7 +650,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
          </property>
          <layout class="QVBoxLayout" name="verticalLayout_4">
           <item>
-           <widget class="QFrame" name="WarningBanner">
+           <widget class="QFrame" name="NandWarningBanner_Frame">
             <property name="styleSheet">
              <string notr="true">background-color: rgb(255, 102, 102);
 color: rgb(255, 255, 255);</string>
@@ -675,7 +675,7 @@ color: rgb(255, 255, 255);</string>
               <number>0</number>
              </property>
              <item>
-              <widget class="QLabel" name="WarningIcon">
+              <widget class="QLabel" name="NandWarningIcon_Label">
                <property name="minimumSize">
                 <size>
                  <width>32</width>
@@ -694,7 +694,7 @@ color: rgb(255, 255, 255);</string>
               </widget>
              </item>
              <item>
-              <widget class="QLabel" name="WarningLabel">
+              <widget class="QLabel" name="NandWarningText_Label">
                <property name="text">
                 <string>This app makes changes to the system's NAND. Use with caution!</string>
                </property>
@@ -710,7 +710,7 @@ color: rgb(255, 255, 255);</string>
         </widget>
        </item>
        <item>
-        <widget class="QFrame" name="MetadataBottomFrame">
+        <widget class="QFrame" name="DownloadButtons_Frame">
          <property name="maximumSize">
           <size>
            <width>16777215</width>
@@ -731,7 +731,7 @@ color: rgb(255, 255, 255);</string>
            <number>0</number>
           </property>
           <item>
-           <widget class="QPushButton" name="ViewMetadataBtn">
+           <widget class="QPushButton" name="Download_PushButton">
             <property name="sizePolicy">
              <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
               <horstretch>0</horstretch>
@@ -744,7 +744,7 @@ color: rgb(255, 255, 255);</string>
            </widget>
           </item>
           <item>
-           <widget class="QPushButton" name="WiiLoadButton">
+           <widget class="QPushButton" name="SendToWii_PushButton">
             <property name="sizePolicy">
              <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
               <horstretch>0</horstretch>
@@ -760,14 +760,14 @@ color: rgb(255, 255, 255);</string>
         </widget>
        </item>
       </layout>
-      <zorder>MetadataBottomFrame</zorder>
-      <zorder>MetadataTabsFrame</zorder>
-      <zorder>WarningFrame</zorder>
+      <zorder>DownloadButtons_Frame</zorder>
+      <zorder>AppInformationTabs_Frame</zorder>
+      <zorder>NandWarning_Frame</zorder>
      </widget>
     </item>
    </layout>
   </widget>
-  <widget class="QMenuBar" name="menubar">
+  <widget class="QMenuBar" name="MenuBar">
    <property name="geometry">
     <rect>
      <x>0</x>
@@ -776,41 +776,41 @@ color: rgb(255, 255, 255);</string>
      <height>22</height>
     </rect>
    </property>
-   <widget class="QMenu" name="menuAbout">
+   <widget class="QMenu" name="About_Menu">
     <property name="title">
      <string>About</string>
     </property>
-    <addaction name="actionAbout_OSC_DL"/>
-    <addaction name="actionIcons_provided_by"/>
+    <addaction name="About_Action"/>
+    <addaction name="IconsByIcons8_Action"/>
    </widget>
-   <widget class="QMenu" name="menuDebug">
+   <widget class="QMenu" name="Debug_Menu">
     <property name="title">
      <string>Options</string>
     </property>
-    <addaction name="actionRefresh"/>
-    <addaction name="actionCopy_Direct_Link"/>
+    <addaction name="Refresh_Action"/>
+    <addaction name="CopyDirectLink_Action"/>
     <addaction name="separator"/>
-    <addaction name="actionCheck_for_Updates"/>
+    <addaction name="CheckForUpdates_Action"/>
    </widget>
-   <addaction name="menuAbout"/>
-   <addaction name="menuDebug"/>
+   <addaction name="About_Menu"/>
+   <addaction name="Debug_Menu"/>
   </widget>
-  <widget class="QStatusBar" name="statusBar">
+  <widget class="QStatusBar" name="StatusBar">
    <property name="sizeGripEnabled">
     <bool>false</bool>
    </property>
   </widget>
-  <action name="actionAbout_OSC_DL">
+  <action name="About_Action">
    <property name="text">
     <string>About OSC-DL</string>
    </property>
   </action>
-  <action name="actionCheck_for_Updates">
+  <action name="CheckForUpdates_Action">
    <property name="text">
     <string>Check for Updates</string>
    </property>
   </action>
-  <action name="actionRefresh">
+  <action name="Refresh_Action">
    <property name="text">
     <string>Refresh List</string>
    </property>
@@ -818,7 +818,7 @@ color: rgb(255, 255, 255);</string>
     <string>F5</string>
    </property>
   </action>
-  <action name="actionIcons_provided_by">
+  <action name="IconsByIcons8_Action">
    <property name="enabled">
     <bool>false</bool>
    </property>
@@ -826,12 +826,12 @@ color: rgb(255, 255, 255);</string>
     <string>Icons provided by https://icons8.com</string>
    </property>
   </action>
-  <action name="actionCopy_Direct_Link">
+  <action name="CopyDirectLink_Action">
    <property name="text">
     <string>Copy Direct Link to App</string>
    </property>
   </action>
-  <action name="actionFilter_by_Developer">
+  <action name="FilterByDeveloper_Action">
    <property name="text">
     <string>Filter by Developer</string>
    </property>
