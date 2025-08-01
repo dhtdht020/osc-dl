@@ -324,7 +324,7 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
             self.ui.LongDescription_TextBrowser.setText(self.current_app["description"]["long"])
 
             # Warning Banner
-            self.ui.NandWarning_Frame.setVisible("writes_to_nand" in self.current_app["flags"])
+            self.ui.NandWarning_Frame.setVisible("WRITES_TO_NAND" in self.current_app["flags"])
 
         self.ui.ProgressBar.setValue(0)
         self.repaint()
