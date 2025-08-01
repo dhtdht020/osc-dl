@@ -338,7 +338,7 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
             object_name = None
 
         # determine if should ask for path
-        if (object_name != "WiiLoadButton"):
+        if (object_name != "SendToWii_PushButton"):
             dialog = DownloadLocationDialog(self.current_app, parent=self)
             status = dialog.exec()
 
