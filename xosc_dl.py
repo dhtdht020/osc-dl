@@ -93,8 +93,8 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         self.set_status_icon("online")
 
         self.ui.Repositories_ComboBox.setPlaceholderText("Open Shop Channel")
-        self.ui.NandWarningIcon_Label.setPixmap(QPixmap(resource_path("assets/gui/icons/warning.png")))
-        self.ui.NandWarningIcon_Label.setScaledContents(True)
+        self.ui.AppWarningIcon_Label.setPixmap(QPixmap(resource_path("assets/gui/icons/warning.png")))
+        self.ui.AppWarningIcon_Label.setScaledContents(True)
 
         self.ui.ResetFilters_PushButton.setIcon(QIcon(resource_path("assets/gui/icons/close.png")))
 
@@ -324,7 +324,19 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
             self.ui.LongDescription_TextBrowser.setText(self.current_app["description"]["long"])
 
             # Warning Banner
-            self.ui.NandWarning_Frame.setVisible("WRITES_TO_NAND" in self.current_app["flags"])
+            flags = self.current_app.get("flags", [])
+            nand_warning = "WRITES_TO_NAND" in flags
+            deprecated_warning = "DEPRECATED" in flags
+
+            warning_text = (
+                "This app is deprecated AND makes changes to the system's NAND!" if nand_warning and deprecated_warning else
+                "This app makes changes to the system's NAND. Use with caution!" if nand_warning else
+                "This app is deprecated, consider alternatives!" if deprecated_warning else
+                ""
+            )
+
+            self.ui.AppWarningText_Label.setText(warning_text)
+            self.ui.AppWarning_Frame.setVisible(bool(warning_text))
 
         self.ui.ProgressBar.setValue(0)
         self.repaint()

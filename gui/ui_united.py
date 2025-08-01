@@ -316,45 +316,45 @@ class Ui_MainWindow(object):
 
         self.verticalLayout_3.addWidget(self.AppInformationTabs_Frame)
 
-        self.NandWarning_Frame = QFrame(self.SelectionInfo_GroupBox)
-        self.NandWarning_Frame.setObjectName(u"NandWarning_Frame")
+        self.AppWarning_Frame = QFrame(self.SelectionInfo_GroupBox)
+        self.AppWarning_Frame.setObjectName(u"AppWarning_Frame")
         sizePolicy6 = QSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Maximum)
         sizePolicy6.setHorizontalStretch(0)
         sizePolicy6.setVerticalStretch(0)
-        sizePolicy6.setHeightForWidth(self.NandWarning_Frame.sizePolicy().hasHeightForWidth())
-        self.NandWarning_Frame.setSizePolicy(sizePolicy6)
-        self.NandWarning_Frame.setStyleSheet(u"")
-        self.NandWarning_Frame.setFrameShape(QFrame.Shape.StyledPanel)
-        self.NandWarning_Frame.setFrameShadow(QFrame.Shadow.Raised)
-        self.verticalLayout_4 = QVBoxLayout(self.NandWarning_Frame)
+        sizePolicy6.setHeightForWidth(self.AppWarning_Frame.sizePolicy().hasHeightForWidth())
+        self.AppWarning_Frame.setSizePolicy(sizePolicy6)
+        self.AppWarning_Frame.setStyleSheet(u"")
+        self.AppWarning_Frame.setFrameShape(QFrame.Shape.StyledPanel)
+        self.AppWarning_Frame.setFrameShadow(QFrame.Shadow.Raised)
+        self.verticalLayout_4 = QVBoxLayout(self.AppWarning_Frame)
         self.verticalLayout_4.setObjectName(u"verticalLayout_4")
-        self.NandWarningBanner_Frame = QFrame(self.NandWarning_Frame)
-        self.NandWarningBanner_Frame.setObjectName(u"NandWarningBanner_Frame")
-        self.NandWarningBanner_Frame.setStyleSheet(u"background-color: rgb(255, 102, 102);\n"
+        self.AppWarningBanner_Frame = QFrame(self.AppWarning_Frame)
+        self.AppWarningBanner_Frame.setObjectName(u"AppWarningBanner_Frame")
+        self.AppWarningBanner_Frame.setStyleSheet(u"background-color: rgb(255, 102, 102);\n"
 "color: rgb(255, 255, 255);")
-        self.NandWarningBanner_Frame.setFrameShape(QFrame.Shape.StyledPanel)
-        self.NandWarningBanner_Frame.setFrameShadow(QFrame.Shadow.Raised)
-        self.horizontalLayout = QHBoxLayout(self.NandWarningBanner_Frame)
+        self.AppWarningBanner_Frame.setFrameShape(QFrame.Shape.StyledPanel)
+        self.AppWarningBanner_Frame.setFrameShadow(QFrame.Shadow.Raised)
+        self.horizontalLayout = QHBoxLayout(self.AppWarningBanner_Frame)
         self.horizontalLayout.setObjectName(u"horizontalLayout")
         self.horizontalLayout.setContentsMargins(0, 0, 0, 0)
-        self.NandWarningIcon_Label = QLabel(self.NandWarningBanner_Frame)
-        self.NandWarningIcon_Label.setObjectName(u"NandWarningIcon_Label")
-        self.NandWarningIcon_Label.setMinimumSize(QSize(32, 32))
-        self.NandWarningIcon_Label.setMaximumSize(QSize(32, 32))
+        self.AppWarningIcon_Label = QLabel(self.AppWarningBanner_Frame)
+        self.AppWarningIcon_Label.setObjectName(u"AppWarningIcon_Label")
+        self.AppWarningIcon_Label.setMinimumSize(QSize(32, 32))
+        self.AppWarningIcon_Label.setMaximumSize(QSize(32, 32))
 
-        self.horizontalLayout.addWidget(self.NandWarningIcon_Label)
+        self.horizontalLayout.addWidget(self.AppWarningIcon_Label)
 
-        self.NandWarningText_Label = QLabel(self.NandWarningBanner_Frame)
-        self.NandWarningText_Label.setObjectName(u"NandWarningText_Label")
-        self.NandWarningText_Label.setWordWrap(True)
+        self.AppWarningText_Label = QLabel(self.AppWarningBanner_Frame)
+        self.AppWarningText_Label.setObjectName(u"AppWarningText_Label")
+        self.AppWarningText_Label.setWordWrap(True)
 
-        self.horizontalLayout.addWidget(self.NandWarningText_Label)
-
-
-        self.verticalLayout_4.addWidget(self.NandWarningBanner_Frame)
+        self.horizontalLayout.addWidget(self.AppWarningText_Label)
 
 
-        self.verticalLayout_3.addWidget(self.NandWarning_Frame)
+        self.verticalLayout_4.addWidget(self.AppWarningBanner_Frame)
+
+
+        self.verticalLayout_3.addWidget(self.AppWarning_Frame)
 
         self.DownloadButtons_Frame = QFrame(self.SelectionInfo_GroupBox)
         self.DownloadButtons_Frame.setObjectName(u"DownloadButtons_Frame")
@@ -386,14 +386,14 @@ class Ui_MainWindow(object):
 
         self.DownloadButtons_Frame.raise_()
         self.AppInformationTabs_Frame.raise_()
-        self.NandWarning_Frame.raise_()
+        self.AppWarning_Frame.raise_()
 
         self.horizontalLayout_2.addWidget(self.SelectionInfo_GroupBox)
 
         MainWindow.setCentralWidget(self.Central_Widget)
         self.MenuBar = QMenuBar(MainWindow)
         self.MenuBar.setObjectName(u"MenuBar")
-        self.MenuBar.setGeometry(QRect(0, 0, 900, 22))
+        self.MenuBar.setGeometry(QRect(0, 0, 900, 33))
         self.About_Menu = QMenu(self.MenuBar)
         self.About_Menu.setObjectName(u"About_Menu")
         self.Debug_Menu = QMenu(self.MenuBar)
@@ -483,8 +483,8 @@ class Ui_MainWindow(object):
         self.CompatibilityTab_Widget.setAccessibleName(QCoreApplication.translate("MainWindow", u"tabcontent", None))
 #endif // QT_CONFIG(accessibility)
         self.AppInformationTabs_TabWidget.setTabText(self.AppInformationTabs_TabWidget.indexOf(self.CompatibilityTab_Widget), QCoreApplication.translate("MainWindow", u"Compatibility", None))
-        self.NandWarningIcon_Label.setText("")
-        self.NandWarningText_Label.setText(QCoreApplication.translate("MainWindow", u"This app makes changes to the system's NAND. Use with caution!", None))
+        self.AppWarningIcon_Label.setText("")
+        self.AppWarningText_Label.setText(QCoreApplication.translate("MainWindow", u"I am a warning", None))
         self.Download_PushButton.setText(QCoreApplication.translate("MainWindow", u"Download", None))
         self.SendToWii_PushButton.setText(QCoreApplication.translate("MainWindow", u"Send to Wii", None))
         self.About_Menu.setTitle(QCoreApplication.translate("MainWindow", u"About", None))
