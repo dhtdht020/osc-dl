@@ -147,7 +147,7 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
 
         # Copy app download link
         self.ui.CopyDirectLink_Action.triggered.connect(
-            lambda: (QApplication.clipboard().setText(self.current_app["url"]["zip"]),
+            lambda: (QApplication.clipboard().setText(self.current_app["assets"]["archive"]["url"]),
                      self.set_status_message(f"Copied the download link for {self.current_app['name']}\" to clipboard")))
 
         self.ui.Download_PushButton.clicked.connect(self.download_app)
@@ -372,7 +372,7 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         self.ui.ProgressBar.setValue(0)
         if save_location:
             # stream file, so we can iterate
-            response = requests.get(self.current_app["url"]["zip"], stream=True)
+            response = requests.get(self.current_app["assets"]["archive"]["url"], stream=True)
             total_size = int(response.headers.get('content-length', 0))
 
             # set progress bar

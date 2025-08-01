@@ -5,7 +5,7 @@ from utils import resource_path
 # Get icon image
 def icon(app):
     try:
-        request = requests.get(app["url"]["icon"])
+        request = requests.get(app["assets"]["icon"]["url"])
         icon_image = request.content
         # If icon is not there
         if str(request.status_code) != "200":
