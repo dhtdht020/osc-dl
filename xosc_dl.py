@@ -225,55 +225,62 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
 
             peripherals = self.current_app["peripherals"]
             # Add icons for Wii Remotes
-            if peripherals.count("Wii Remote") > 1:
+            wii_remotes = 0
+            for peripheral in peripherals:
+                if peripheral == "wii_remote":
+                    wii_remotes += 1
+                elif peripheral == "nunchuk":
+                    item = QListWidgetItem()
+                    item.setText(f"Nunchuk")
+                    item.setIcon(QIcon(resource_path(f"assets/gui/icons/controllers/Nunchuk.png")))
+                    item.setToolTip("This app can be used with a Nunchuk.")
+                    self.ui.Compatibility_ListWidget.addItem(item)
+                elif peripheral == "classic_controller":
+                    item = QListWidgetItem()
+                    item.setText(f"Classic Controller")
+                    item.setIcon(QIcon(resource_path(f"assets/gui/icons/controllers/ClassicController.png")))
+                    item.setToolTip("This app can be used with a Classic Controller.")
+                    self.ui.Compatibility_ListWidget.addItem(item)
+                elif peripheral == "gamecube_controller":
+                    item = QListWidgetItem()
+                    item.setText(f"GameCube Controller")
+                    item.setIcon(QIcon(resource_path(f"assets/gui/icons/controllers/GamecubeController.png")))
+                    item.setToolTip("This app can be used with a Gamecube Controller.")
+                    self.ui.Compatibility_ListWidget.addItem(item)
+                elif peripheral == "usb_keyboard":
+                    item = QListWidgetItem()
+                    item.setText(f"USB Keyboard")
+                    item.setIcon(QIcon(resource_path(f"assets/gui/icons/controllers/USBKeyboard.png")))
+                    item.setToolTip("This app can be used with a USB Keyboard.")
+                    self.ui.Compatibility_ListWidget.addItem(item)
+                elif peripheral == "wii_zapper":
+                    item = QListWidgetItem()
+                    item.setText(f"Wii Zapper")
+                    item.setIcon(QIcon(resource_path(f"assets/gui/icons/controllers/WiiZapper.png")))
+                    item.setToolTip("This app can be used with a Wii Zapper.")
+                    self.ui.Compatibility_ListWidget.addItem(item)
+                elif peripheral == "sdhc":
+                    item = QListWidgetItem()
+                    item.setText(f"SDHC Card")
+                    item.setIcon(QIcon(resource_path(f"assets/gui/icons/controllers/SDHC.png")))
+                    item.setToolTip("This app is confirmed to support SDHC cards.")
+                    self.ui.Compatibility_ListWidget.addItem(item)
+
+
+            if wii_remotes > 1:
                 item = QListWidgetItem()
                 item.setText(f"{str(peripherals.count('Wii Remote'))} Wii Remotes")
                 item.setIcon(QIcon(
                     resource_path(f"assets/gui/icons/controllers/{str(peripherals.count('Wii Remote'))}WiiRemote.png")))
                 item.setToolTip(f"This app supports up to {str(peripherals.count('Wii Remote'))} Wii Remotes.")
                 self.ui.Compatibility_ListWidget.addItem(item)
-            elif peripherals.count('Wii Remote') == 1:
+            elif wii_remotes == 1:
                 item = QListWidgetItem()
                 item.setText(f"1 Wii Remote")
                 item.setIcon(QIcon(resource_path(f"assets/gui/icons/controllers/1WiiRemote.png")))
                 item.setToolTip("This app supports a single Wii Remote.")
                 self.ui.Compatibility_ListWidget.addItem(item)
-            if "Nunchuk" in peripherals:
-                item = QListWidgetItem()
-                item.setText(f"Nunchuk")
-                item.setIcon(QIcon(resource_path(f"assets/gui/icons/controllers/Nunchuk.png")))
-                item.setToolTip("This app can be used with a Nunchuk.")
-                self.ui.Compatibility_ListWidget.addItem(item)
-            if "Classic Controller" in peripherals:
-                item = QListWidgetItem()
-                item.setText(f"Classic Controller")
-                item.setIcon(QIcon(resource_path(f"assets/gui/icons/controllers/ClassicController.png")))
-                item.setToolTip("This app can be used with a Classic Controller.")
-                self.ui.Compatibility_ListWidget.addItem(item)
-            if "GameCube Controller" in peripherals:
-                item = QListWidgetItem()
-                item.setText(f"GameCube Controller")
-                item.setIcon(QIcon(resource_path(f"assets/gui/icons/controllers/GamecubeController.png")))
-                item.setToolTip("This app can be used with a Gamecube Controller.")
-                self.ui.Compatibility_ListWidget.addItem(item)
-            if "Wii Zapper" in peripherals:
-                item = QListWidgetItem()
-                item.setText(f"Wii Zapper")
-                item.setIcon(QIcon(resource_path(f"assets/gui/icons/controllers/WiiZapper.png")))
-                item.setToolTip("This app can be used with a Wii Zapper.")
-                self.ui.Compatibility_ListWidget.addItem(item)
-            if "USB Keyboard" in peripherals:
-                item = QListWidgetItem()
-                item.setText(f"USB Keyboard")
-                item.setIcon(QIcon(resource_path(f"assets/gui/icons/controllers/USBKeyboard.png")))
-                item.setToolTip("This app can be used with a USB Keyboard.")
-                self.ui.Compatibility_ListWidget.addItem(item)
-            if "SDHC" in peripherals:
-                item = QListWidgetItem()
-                item.setText(f"SDHC Card")
-                item.setIcon(QIcon(resource_path(f"assets/gui/icons/controllers/SDHC.png")))
-                item.setToolTip("This app is confirmed to support SDHC cards.")
-                self.ui.Compatibility_ListWidget.addItem(item)
+
 
             # Supported platforms
             item = QListWidgetItem()
