@@ -27,7 +27,7 @@ class DownloadLocationDialog(ui_DownloadLocationDialog.Ui_Dialog, QDialog):
         self.setWindowTitle(f"Download \"{self.app['name']}\"")
 
         # set required space label
-        self.label_required_space.setText(f"**Required Space:** {file_size(self.app['file_size']['zip_uncompressed'])}")
+        self.label_required_space.setText(f"**Required Space:** {file_size(self.app['uncompressed_size'])}")
 
         # populate list of extra dirs
         for directory in self.app["subdirectories"]:

@@ -194,8 +194,8 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
 
             # File Size
             try:
-                extracted = utils.file_size(self.current_app['file_size']['zip_uncompressed'])
-                compressed = utils.file_size(self.current_app["file_size"]["zip_compressed"])
+                extracted = utils.file_size(self.current_app["uncompressed_size"])
+                compressed = utils.file_size(self.current_app["assets"]["archive"]["size"])
                 self.ui.AppFileSize_LineEdit.setText(f"{compressed} / {extracted}")
                 self.ui.AppFileSize_LineEdit.setToolTip(f"Compressed Download: {compressed}\nExtracted Size: {extracted}")
             except KeyError:
@@ -625,7 +625,7 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
 
                     # add entry to applications list
                     self.ui.AppsList_Widget.addItem(f"{app['name']}{birthday}\n"
-                                                   f"{utils.file_size(app['file_size']['zip_uncompressed'])} | "
+                                                   f"{utils.file_size(app['uncompressed_size'])} | "
                                                    f"{app['version']} | "
                                                    f"{app['author']} | "
                                                    f"{app['description']['short']}")
