@@ -269,9 +269,11 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
 
             if wii_remotes > 1:
                 item = QListWidgetItem()
-                item.setText(f"{str(peripherals.count('Wii Remote'))} Wii Remotes")
-                item.setIcon(QIcon(
-                    resource_path(f"assets/gui/icons/controllers/{str(peripherals.count('Wii Remote'))}WiiRemote.png")))
+                item.setText(f"{str(wii_remotes)} Wii Remotes")
+                if wii_remotes < 5:
+                    item.setIcon(QIcon(resource_path(f"assets/gui/icons/controllers/{str(wii_remotes)}WiiRemote.png")))
+                else:
+                    item.setIcon(QIcon(resource_path(f"assets/gui/icons/controllers/XWiiRemote.png")))
                 item.setToolTip(f"This app supports up to {str(peripherals.count('Wii Remote'))} Wii Remotes.")
                 self.ui.Compatibility_ListWidget.addItem(item)
             elif wii_remotes == 1:
