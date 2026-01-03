@@ -443,62 +443,35 @@
               <x>10</x>
               <y>100</y>
               <width>223</width>
-              <height>136</height>
+              <height>138</height>
              </rect>
             </property>
             <layout class="QGridLayout" name="AppMetadata_GridLayout">
-             <item row="3" column="0">
-              <widget class="QLabel" name="AppReleaseDate_Label">
-               <property name="text">
-                <string>Release Date</string>
-               </property>
-              </widget>
-             </item>
-             <item row="4" column="0">
-              <widget class="QLabel" name="AppFileSize_Label">
-               <property name="text">
-                <string>File Size</string>
-               </property>
-              </widget>
-             </item>
-             <item row="1" column="0">
+             <item row="0" column="0">
               <widget class="QLabel" name="AppVersion_Label">
                <property name="text">
                 <string>Version</string>
                </property>
               </widget>
              </item>
-             <item row="2" column="0">
-              <widget class="QLabel" name="AppDeveloper_Label">
-               <property name="text">
-                <string>Developer</string>
-               </property>
-              </widget>
-             </item>
-             <item row="0" column="0">
-              <widget class="QLabel" name="AppName_Label">
-               <property name="text">
-                <string>App Name</string>
-               </property>
-              </widget>
-             </item>
-             <item row="0" column="1">
-              <widget class="QLineEdit" name="AppName_LineEdit">
-               <property name="text">
-                <string/>
-               </property>
+             <item row="3" column="1">
+              <widget class="QLineEdit" name="AppFileSize_LineEdit">
                <property name="echoMode">
                 <enum>QLineEdit::EchoMode::Normal</enum>
                </property>
                <property name="readOnly">
                 <bool>true</bool>
                </property>
-               <property name="placeholderText">
-                <string/>
+              </widget>
+             </item>
+             <item row="1" column="0">
+              <widget class="QLabel" name="AppDeveloper_Label">
+               <property name="text">
+                <string>Developer</string>
                </property>
               </widget>
              </item>
-             <item row="1" column="1">
+             <item row="0" column="1">
               <widget class="QLineEdit" name="AppVersion_LineEdit">
                <property name="echoMode">
                 <enum>QLineEdit::EchoMode::Normal</enum>
@@ -508,17 +481,14 @@
                </property>
               </widget>
              </item>
-             <item row="2" column="1">
-              <widget class="QLineEdit" name="AppDeveloper_LineEdit">
-               <property name="echoMode">
-                <enum>QLineEdit::EchoMode::Normal</enum>
-               </property>
-               <property name="readOnly">
-                <bool>true</bool>
+             <item row="2" column="0">
+              <widget class="QLabel" name="AppReleaseDate_Label">
+               <property name="text">
+                <string>Release Date</string>
                </property>
               </widget>
              </item>
-             <item row="3" column="1">
+             <item row="2" column="1">
               <widget class="QLineEdit" name="AppReleaseDate_LineEdit">
                <property name="echoMode">
                 <enum>QLineEdit::EchoMode::Normal</enum>
@@ -528,13 +498,27 @@
                </property>
               </widget>
              </item>
-             <item row="4" column="1">
-              <widget class="QLineEdit" name="AppFileSize_LineEdit">
+             <item row="3" column="0">
+              <widget class="QLabel" name="AppFileSize_Label">
+               <property name="text">
+                <string>File Size</string>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="1">
+              <widget class="QLineEdit" name="AppDeveloper_LineEdit">
                <property name="echoMode">
                 <enum>QLineEdit::EchoMode::Normal</enum>
                </property>
                <property name="readOnly">
                 <bool>true</bool>
+               </property>
+              </widget>
+             </item>
+             <item row="4" column="1">
+              <widget class="QPushButton" name="AppExtendedInfo_PushButton">
+               <property name="text">
+                <string>Extended Information</string>
                </property>
               </widget>
              </item>

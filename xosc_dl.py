@@ -30,6 +30,7 @@ import updater
 import utils
 import wiiload
 from gui.DownloadLocationDialog import DownloadLocationDialog
+from gui.ExtendedInformationDialog import ExtendedInformationDialog
 from gui.SendDialog import WiiLoadDialog
 from utils import resource_path
 
@@ -153,6 +154,7 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         self.ui.Download_PushButton.clicked.connect(self.download_app)
         self.ui.SendToWii_PushButton.clicked.connect(self.wiiload_button)
         self.ui.ResetFilters_PushButton.clicked.connect(self.reset_filters_btn)
+        self.ui.AppExtendedInfo_PushButton.clicked.connect(self.extended_information_btn)
 
         # Search Bar
         self.ui.SearchBar_LineEdit.textChanged.connect(self.search_bar)
@@ -188,7 +190,6 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
 
             # -- Get actual metadata
             # App Name
-            self.ui.AppName_LineEdit.setText(self.current_app["name"])
             self.ui.SelectionInfo_GroupBox.setTitle("Information: " + self.current_app["name"])
             self.ui.AppDisplayName_Label.setText(self.current_app["name"])
 
@@ -333,7 +334,7 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
             warning_text = (
                 "This app is deprecated AND makes changes to the system's NAND!" if nand_warning and deprecated_warning else
                 "This app makes changes to the system's NAND. Use with caution!" if nand_warning else
-                "This app is deprecated, consider alternatives!" if deprecated_warning else
+                "This app is deprecated, please consider alternatives!" if deprecated_warning else
                 ""
             )
 
@@ -950,6 +951,10 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         self.ui.AppsList_Widget.setIconSize(QSize(171, 32))
         # complete loading
         self.reset_status()
+
+    def extended_information_btn(self):
+        dialog = ExtendedInformationDialog(self.current_app, parent=self)
+        status = dialog.exec()
 
     #
     # Event overrides

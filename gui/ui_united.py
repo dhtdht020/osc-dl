@@ -3,7 +3,7 @@
 ################################################################################
 ## Form generated from reading UI file 'united.ui'
 ##
-## Created by: Qt User Interface Compiler version 6.7.3
+## Created by: Qt User Interface Compiler version 6.9.0
 ##
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
@@ -216,69 +216,62 @@ class Ui_MainWindow(object):
         self.StatusIcon.setMargin(3)
         self.gridLayoutWidget = QWidget(self.InfoTab_Widget)
         self.gridLayoutWidget.setObjectName(u"gridLayoutWidget")
-        self.gridLayoutWidget.setGeometry(QRect(10, 100, 223, 136))
+        self.gridLayoutWidget.setGeometry(QRect(10, 100, 223, 138))
         self.AppMetadata_GridLayout = QGridLayout(self.gridLayoutWidget)
         self.AppMetadata_GridLayout.setObjectName(u"AppMetadata_GridLayout")
         self.AppMetadata_GridLayout.setContentsMargins(0, 0, 0, 0)
-        self.AppReleaseDate_Label = QLabel(self.gridLayoutWidget)
-        self.AppReleaseDate_Label.setObjectName(u"AppReleaseDate_Label")
-
-        self.AppMetadata_GridLayout.addWidget(self.AppReleaseDate_Label, 3, 0, 1, 1)
-
-        self.AppFileSize_Label = QLabel(self.gridLayoutWidget)
-        self.AppFileSize_Label.setObjectName(u"AppFileSize_Label")
-
-        self.AppMetadata_GridLayout.addWidget(self.AppFileSize_Label, 4, 0, 1, 1)
-
         self.AppVersion_Label = QLabel(self.gridLayoutWidget)
         self.AppVersion_Label.setObjectName(u"AppVersion_Label")
 
-        self.AppMetadata_GridLayout.addWidget(self.AppVersion_Label, 1, 0, 1, 1)
-
-        self.AppDeveloper_Label = QLabel(self.gridLayoutWidget)
-        self.AppDeveloper_Label.setObjectName(u"AppDeveloper_Label")
-
-        self.AppMetadata_GridLayout.addWidget(self.AppDeveloper_Label, 2, 0, 1, 1)
-
-        self.AppName_Label = QLabel(self.gridLayoutWidget)
-        self.AppName_Label.setObjectName(u"AppName_Label")
-
-        self.AppMetadata_GridLayout.addWidget(self.AppName_Label, 0, 0, 1, 1)
-
-        self.AppName_LineEdit = QLineEdit(self.gridLayoutWidget)
-        self.AppName_LineEdit.setObjectName(u"AppName_LineEdit")
-        self.AppName_LineEdit.setEchoMode(QLineEdit.EchoMode.Normal)
-        self.AppName_LineEdit.setReadOnly(True)
-
-        self.AppMetadata_GridLayout.addWidget(self.AppName_LineEdit, 0, 1, 1, 1)
-
-        self.AppVersion_LineEdit = QLineEdit(self.gridLayoutWidget)
-        self.AppVersion_LineEdit.setObjectName(u"AppVersion_LineEdit")
-        self.AppVersion_LineEdit.setEchoMode(QLineEdit.EchoMode.Normal)
-        self.AppVersion_LineEdit.setReadOnly(True)
-
-        self.AppMetadata_GridLayout.addWidget(self.AppVersion_LineEdit, 1, 1, 1, 1)
-
-        self.AppDeveloper_LineEdit = QLineEdit(self.gridLayoutWidget)
-        self.AppDeveloper_LineEdit.setObjectName(u"AppDeveloper_LineEdit")
-        self.AppDeveloper_LineEdit.setEchoMode(QLineEdit.EchoMode.Normal)
-        self.AppDeveloper_LineEdit.setReadOnly(True)
-
-        self.AppMetadata_GridLayout.addWidget(self.AppDeveloper_LineEdit, 2, 1, 1, 1)
-
-        self.AppReleaseDate_LineEdit = QLineEdit(self.gridLayoutWidget)
-        self.AppReleaseDate_LineEdit.setObjectName(u"AppReleaseDate_LineEdit")
-        self.AppReleaseDate_LineEdit.setEchoMode(QLineEdit.EchoMode.Normal)
-        self.AppReleaseDate_LineEdit.setReadOnly(True)
-
-        self.AppMetadata_GridLayout.addWidget(self.AppReleaseDate_LineEdit, 3, 1, 1, 1)
+        self.AppMetadata_GridLayout.addWidget(self.AppVersion_Label, 0, 0, 1, 1)
 
         self.AppFileSize_LineEdit = QLineEdit(self.gridLayoutWidget)
         self.AppFileSize_LineEdit.setObjectName(u"AppFileSize_LineEdit")
         self.AppFileSize_LineEdit.setEchoMode(QLineEdit.EchoMode.Normal)
         self.AppFileSize_LineEdit.setReadOnly(True)
 
-        self.AppMetadata_GridLayout.addWidget(self.AppFileSize_LineEdit, 4, 1, 1, 1)
+        self.AppMetadata_GridLayout.addWidget(self.AppFileSize_LineEdit, 3, 1, 1, 1)
+
+        self.AppDeveloper_Label = QLabel(self.gridLayoutWidget)
+        self.AppDeveloper_Label.setObjectName(u"AppDeveloper_Label")
+
+        self.AppMetadata_GridLayout.addWidget(self.AppDeveloper_Label, 1, 0, 1, 1)
+
+        self.AppVersion_LineEdit = QLineEdit(self.gridLayoutWidget)
+        self.AppVersion_LineEdit.setObjectName(u"AppVersion_LineEdit")
+        self.AppVersion_LineEdit.setEchoMode(QLineEdit.EchoMode.Normal)
+        self.AppVersion_LineEdit.setReadOnly(True)
+
+        self.AppMetadata_GridLayout.addWidget(self.AppVersion_LineEdit, 0, 1, 1, 1)
+
+        self.AppReleaseDate_Label = QLabel(self.gridLayoutWidget)
+        self.AppReleaseDate_Label.setObjectName(u"AppReleaseDate_Label")
+
+        self.AppMetadata_GridLayout.addWidget(self.AppReleaseDate_Label, 2, 0, 1, 1)
+
+        self.AppReleaseDate_LineEdit = QLineEdit(self.gridLayoutWidget)
+        self.AppReleaseDate_LineEdit.setObjectName(u"AppReleaseDate_LineEdit")
+        self.AppReleaseDate_LineEdit.setEchoMode(QLineEdit.EchoMode.Normal)
+        self.AppReleaseDate_LineEdit.setReadOnly(True)
+
+        self.AppMetadata_GridLayout.addWidget(self.AppReleaseDate_LineEdit, 2, 1, 1, 1)
+
+        self.AppFileSize_Label = QLabel(self.gridLayoutWidget)
+        self.AppFileSize_Label.setObjectName(u"AppFileSize_Label")
+
+        self.AppMetadata_GridLayout.addWidget(self.AppFileSize_Label, 3, 0, 1, 1)
+
+        self.AppDeveloper_LineEdit = QLineEdit(self.gridLayoutWidget)
+        self.AppDeveloper_LineEdit.setObjectName(u"AppDeveloper_LineEdit")
+        self.AppDeveloper_LineEdit.setEchoMode(QLineEdit.EchoMode.Normal)
+        self.AppDeveloper_LineEdit.setReadOnly(True)
+
+        self.AppMetadata_GridLayout.addWidget(self.AppDeveloper_LineEdit, 1, 1, 1, 1)
+
+        self.AppExtendedInfo_PushButton = QPushButton(self.gridLayoutWidget)
+        self.AppExtendedInfo_PushButton.setObjectName(u"AppExtendedInfo_PushButton")
+
+        self.AppMetadata_GridLayout.addWidget(self.AppExtendedInfo_PushButton, 4, 1, 1, 1)
 
         self.AppInformationTabs_TabWidget.addTab(self.InfoTab_Widget, "")
         self.StatusIcon.raise_()
@@ -459,13 +452,11 @@ class Ui_MainWindow(object):
         self.AppIcon_Label.setText(QCoreApplication.translate("MainWindow", u"No homebrew icon. Aw.", None))
         self.AppCategory_Label.setText(QCoreApplication.translate("MainWindow", u"Category", None))
         self.StatusIcon.setText("")
-        self.AppReleaseDate_Label.setText(QCoreApplication.translate("MainWindow", u"Release Date", None))
-        self.AppFileSize_Label.setText(QCoreApplication.translate("MainWindow", u"File Size", None))
         self.AppVersion_Label.setText(QCoreApplication.translate("MainWindow", u"Version", None))
         self.AppDeveloper_Label.setText(QCoreApplication.translate("MainWindow", u"Developer", None))
-        self.AppName_Label.setText(QCoreApplication.translate("MainWindow", u"App Name", None))
-        self.AppName_LineEdit.setText("")
-        self.AppName_LineEdit.setPlaceholderText("")
+        self.AppReleaseDate_Label.setText(QCoreApplication.translate("MainWindow", u"Release Date", None))
+        self.AppFileSize_Label.setText(QCoreApplication.translate("MainWindow", u"File Size", None))
+        self.AppExtendedInfo_PushButton.setText(QCoreApplication.translate("MainWindow", u"Extended Information", None))
         self.AppInformationTabs_TabWidget.setTabText(self.AppInformationTabs_TabWidget.indexOf(self.InfoTab_Widget), QCoreApplication.translate("MainWindow", u"Info", None))
 #if QT_CONFIG(accessibility)
         self.DescriptionTab_Widget.setAccessibleName(QCoreApplication.translate("MainWindow", u"tabcontent", None))
