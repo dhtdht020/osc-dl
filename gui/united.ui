@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>900</width>
-    <height>470</height>
+    <width>920</width>
+    <height>475</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -18,8 +18,8 @@
   </property>
   <property name="minimumSize">
    <size>
-    <width>900</width>
-    <height>470</height>
+    <width>920</width>
+    <height>475</height>
    </size>
   </property>
   <property name="windowTitle">
@@ -756,7 +756,7 @@ color: rgb(255, 255, 255);</string>
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>900</width>
+     <width>920</width>
      <height>33</height>
     </rect>
    </property>
