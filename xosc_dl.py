@@ -30,6 +30,7 @@ import updater
 import utils
 import wiiload
 from gui.DownloadLocationDialog import DownloadLocationDialog
+from gui.ExtendedInformationDialog import ExtendedInformationDialog
 from gui.SendDialog import WiiLoadDialog
 from utils import resource_path
 
@@ -93,12 +94,14 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         self.set_status_icon("online")
 
         self.ui.Repositories_ComboBox.setPlaceholderText("Open Shop Channel")
-        self.ui.NandWarningIcon_Label.setPixmap(QPixmap(resource_path("assets/gui/icons/warning.png")))
-        self.ui.NandWarningIcon_Label.setScaledContents(True)
+        self.ui.AppWarningIcon_Label.setPixmap(QPixmap(resource_path("assets/gui/icons/warning.png")))
+        self.ui.AppWarningIcon_Label.setScaledContents(True)
 
         self.ui.ResetFilters_PushButton.setIcon(QIcon(resource_path("assets/gui/icons/close.png")))
 
-        self.check_for_updates_action(silent=True)
+        if gui_helpers.settings.value("check_for_updates_on_launch", True, type=bool):
+            self.check_for_updates_action(silent=True)
+            self.ui.CheckForUpdatesOnLaunch_Action.setChecked(True)
 
         self.populate()
         self.selection_changed()
@@ -147,12 +150,13 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
 
         # Copy app download link
         self.ui.CopyDirectLink_Action.triggered.connect(
-            lambda: (QApplication.clipboard().setText(self.current_app["url"]["zip"]),
+            lambda: (QApplication.clipboard().setText(self.current_app["assets"]["archive"]["url"]),
                      self.set_status_message(f"Copied the download link for {self.current_app['name']}\" to clipboard")))
 
         self.ui.Download_PushButton.clicked.connect(self.download_app)
         self.ui.SendToWii_PushButton.clicked.connect(self.wiiload_button)
         self.ui.ResetFilters_PushButton.clicked.connect(self.reset_filters_btn)
+        self.ui.AppExtendedInfo_PushButton.clicked.connect(self.extended_information_btn)
 
         # Search Bar
         self.ui.SearchBar_LineEdit.textChanged.connect(self.search_bar)
@@ -168,6 +172,7 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         # -- Options
         self.ui.CheckForUpdates_Action.triggered.connect(partial(self.check_for_updates_action))
         self.ui.Refresh_Action.triggered.connect(partial(self.repopulate))
+        self.ui.CheckForUpdatesOnLaunch_Action.toggled.connect(self.check_for_updates_on_launch_toggled)
 
     # When user selects a different homebrew from the list
     def selection_changed(self):
@@ -188,14 +193,13 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
 
             # -- Get actual metadata
             # App Name
-            self.ui.AppName_LineEdit.setText(self.current_app["name"])
             self.ui.SelectionInfo_GroupBox.setTitle("Information: " + self.current_app["name"])
             self.ui.AppDisplayName_Label.setText(self.current_app["name"])
 
             # File Size
             try:
-                extracted = utils.file_size(self.current_app['file_size']['zip_uncompressed'])
-                compressed = utils.file_size(self.current_app["file_size"]["zip_compressed"])
+                extracted = utils.file_size(self.current_app["uncompressed_size"])
+                compressed = utils.file_size(self.current_app["assets"]["archive"]["size"])
                 self.ui.AppFileSize_LineEdit.setText(f"{compressed} / {extracted}")
                 self.ui.AppFileSize_LineEdit.setToolTip(f"Compressed Download: {compressed}\nExtracted Size: {extracted}")
             except KeyError:
@@ -225,55 +229,64 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
 
             peripherals = self.current_app["peripherals"]
             # Add icons for Wii Remotes
-            if peripherals.count("Wii Remote") > 1:
+            wii_remotes = 0
+            for peripheral in peripherals:
+                if peripheral == "wii_remote":
+                    wii_remotes += 1
+                elif peripheral == "nunchuk":
+                    item = QListWidgetItem()
+                    item.setText(f"Nunchuk")
+                    item.setIcon(QIcon(resource_path(f"assets/gui/icons/controllers/Nunchuk.png")))
+                    item.setToolTip("This app can be used with a Nunchuk.")
+                    self.ui.Compatibility_ListWidget.addItem(item)
+                elif peripheral == "classic_controller":
+                    item = QListWidgetItem()
+                    item.setText(f"Classic Controller")
+                    item.setIcon(QIcon(resource_path(f"assets/gui/icons/controllers/ClassicController.png")))
+                    item.setToolTip("This app can be used with a Classic Controller.")
+                    self.ui.Compatibility_ListWidget.addItem(item)
+                elif peripheral == "gamecube_controller":
+                    item = QListWidgetItem()
+                    item.setText(f"GameCube Controller")
+                    item.setIcon(QIcon(resource_path(f"assets/gui/icons/controllers/GamecubeController.png")))
+                    item.setToolTip("This app can be used with a Gamecube Controller.")
+                    self.ui.Compatibility_ListWidget.addItem(item)
+                elif peripheral == "usb_keyboard":
+                    item = QListWidgetItem()
+                    item.setText(f"USB Keyboard")
+                    item.setIcon(QIcon(resource_path(f"assets/gui/icons/controllers/USBKeyboard.png")))
+                    item.setToolTip("This app can be used with a USB Keyboard.")
+                    self.ui.Compatibility_ListWidget.addItem(item)
+                elif peripheral == "wii_zapper":
+                    item = QListWidgetItem()
+                    item.setText(f"Wii Zapper")
+                    item.setIcon(QIcon(resource_path(f"assets/gui/icons/controllers/WiiZapper.png")))
+                    item.setToolTip("This app can be used with a Wii Zapper.")
+                    self.ui.Compatibility_ListWidget.addItem(item)
+                elif peripheral == "sdhc":
+                    item = QListWidgetItem()
+                    item.setText(f"SDHC Card")
+                    item.setIcon(QIcon(resource_path(f"assets/gui/icons/controllers/SDHC.png")))
+                    item.setToolTip("This app is confirmed to support SDHC cards.")
+                    self.ui.Compatibility_ListWidget.addItem(item)
+
+
+            if wii_remotes > 1:
                 item = QListWidgetItem()
-                item.setText(f"{str(peripherals.count('Wii Remote'))} Wii Remotes")
-                item.setIcon(QIcon(
-                    resource_path(f"assets/gui/icons/controllers/{str(peripherals.count('Wii Remote'))}WiiRemote.png")))
+                item.setText(f"{str(wii_remotes)} Wii Remotes")
+                if wii_remotes < 5:
+                    item.setIcon(QIcon(resource_path(f"assets/gui/icons/controllers/{str(wii_remotes)}WiiRemote.png")))
+                else:
+                    item.setIcon(QIcon(resource_path(f"assets/gui/icons/controllers/XWiiRemote.png")))
                 item.setToolTip(f"This app supports up to {str(peripherals.count('Wii Remote'))} Wii Remotes.")
                 self.ui.Compatibility_ListWidget.addItem(item)
-            elif peripherals.count('Wii Remote') == 1:
+            elif wii_remotes == 1:
                 item = QListWidgetItem()
                 item.setText(f"1 Wii Remote")
                 item.setIcon(QIcon(resource_path(f"assets/gui/icons/controllers/1WiiRemote.png")))
                 item.setToolTip("This app supports a single Wii Remote.")
                 self.ui.Compatibility_ListWidget.addItem(item)
-            if "Nunchuk" in peripherals:
-                item = QListWidgetItem()
-                item.setText(f"Nunchuk")
-                item.setIcon(QIcon(resource_path(f"assets/gui/icons/controllers/Nunchuk.png")))
-                item.setToolTip("This app can be used with a Nunchuk.")
-                self.ui.Compatibility_ListWidget.addItem(item)
-            if "Classic Controller" in peripherals:
-                item = QListWidgetItem()
-                item.setText(f"Classic Controller")
-                item.setIcon(QIcon(resource_path(f"assets/gui/icons/controllers/ClassicController.png")))
-                item.setToolTip("This app can be used with a Classic Controller.")
-                self.ui.Compatibility_ListWidget.addItem(item)
-            if "GameCube Controller" in peripherals:
-                item = QListWidgetItem()
-                item.setText(f"GameCube Controller")
-                item.setIcon(QIcon(resource_path(f"assets/gui/icons/controllers/GamecubeController.png")))
-                item.setToolTip("This app can be used with a Gamecube Controller.")
-                self.ui.Compatibility_ListWidget.addItem(item)
-            if "Wii Zapper" in peripherals:
-                item = QListWidgetItem()
-                item.setText(f"Wii Zapper")
-                item.setIcon(QIcon(resource_path(f"assets/gui/icons/controllers/WiiZapper.png")))
-                item.setToolTip("This app can be used with a Wii Zapper.")
-                self.ui.Compatibility_ListWidget.addItem(item)
-            if "USB Keyboard" in peripherals:
-                item = QListWidgetItem()
-                item.setText(f"USB Keyboard")
-                item.setIcon(QIcon(resource_path(f"assets/gui/icons/controllers/USBKeyboard.png")))
-                item.setToolTip("This app can be used with a USB Keyboard.")
-                self.ui.Compatibility_ListWidget.addItem(item)
-            if "SDHC" in peripherals:
-                item = QListWidgetItem()
-                item.setText(f"SDHC Card")
-                item.setIcon(QIcon(resource_path(f"assets/gui/icons/controllers/SDHC.png")))
-                item.setToolTip("This app is confirmed to support SDHC cards.")
-                self.ui.Compatibility_ListWidget.addItem(item)
+
 
             # Supported platforms
             item = QListWidgetItem()
@@ -317,7 +330,19 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
             self.ui.LongDescription_TextBrowser.setText(self.current_app["description"]["long"])
 
             # Warning Banner
-            self.ui.NandWarning_Frame.setVisible("writes_to_nand" in self.current_app["flags"])
+            flags = self.current_app.get("flags", [])
+            nand_warning = "WRITES_TO_NAND" in flags
+            deprecated_warning = "DEPRECATED" in flags
+
+            warning_text = (
+                "This app is deprecated AND makes changes to the system's NAND!" if nand_warning and deprecated_warning else
+                "This app makes changes to the system's NAND. Use with caution!" if nand_warning else
+                "This app is deprecated, please consider alternatives!" if deprecated_warning else
+                ""
+            )
+
+            self.ui.AppWarningText_Label.setText(warning_text)
+            self.ui.AppWarning_Frame.setVisible(bool(warning_text))
 
         self.ui.ProgressBar.setValue(0)
         self.repaint()
@@ -372,7 +397,7 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         self.ui.ProgressBar.setValue(0)
         if save_location:
             # stream file, so we can iterate
-            response = requests.get(self.current_app["url"]["zip"], stream=True)
+            response = requests.get(self.current_app["assets"]["archive"]["url"], stream=True)
             total_size = int(response.headers.get('content-length', 0))
 
             # set progress bar
@@ -625,7 +650,7 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
 
                     # add entry to applications list
                     self.ui.AppsList_Widget.addItem(f"{app['name']}{birthday}\n"
-                                                   f"{utils.file_size(app['file_size']['zip_uncompressed'])} | "
+                                                   f"{utils.file_size(app['uncompressed_size'])} | "
                                                    f"{app['version']} | "
                                                    f"{app['author']} | "
                                                    f"{app['description']['short']}")
@@ -679,27 +704,30 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
 
         try:
             latest = updater.latest_version()
+
+            if updater.check_update(latest) is True:
+                self.set_status_message("New version available! (" + latest['tag_name'] + ") OSCDL is out of date.")
+                body = latest['body'].replace("![image]", "")
+                QMessageBox.warning(self, 'OSCDL is out of date - New release available!',
+                                    f"<hr><center><b style=\"font-size: 20px\">New Update Available</b></center><hr>"
+                                    f"<b style=\"font-size: 20px\">{latest['name']}</b><br>"
+                                    f"<b>Released on {datetime.strptime(latest['published_at'], '%Y-%m-%dT%H:%M:%SZ')}</b><br><br>"
+                                    f"<a href='https://github.com/dhtdht020/osc-dl'>View on GitHub</a><br>"
+                                    f"{markdown.markdown((body[:600] + '... <br><br><br><i>Learn more on GitHub</i>') if len(body) > 600 else body)}<hr>"
+                                    f"Please go to the <a href='https://github.com/dhtdht020/osc-dl'>GitHub page</a> and obtain the latest release.<br>"
+                                    f"Newest detected version: {latest['tag_name']}")
+            else:
+                if not silent:
+                    self.set_status_message("OSCDL is up to date!")
+                    QMessageBox.information(self, 'OSCDL is up to date', 'You are running the latest version of OSCDL!\n')
         except:
             if not silent:
-                QMessageBox.critical(self, 'OSCDL updater', 'An error occurred while checking for updates.\n'
-                                                            'Please manually search for a new release!')
+                QMessageBox.warning(self, 'OSCDL updater', 'Could not check for updates!\n'
+                                                           'It is not recommended to use old versions of OSCDL, so please manually check for a new release!')
             return
 
-        if updater.check_update(latest) is True:
-            self.set_status_message("New version available! (" + latest['tag_name'] + ") OSCDL is out of date.")
-            body = latest['body'].replace("![image]", "")
-            QMessageBox.warning(self, 'OSCDL is out of date - New release available!',
-                                f"<hr><center><b style=\"font-size: 20px\">New Update Available</b></center><hr>"
-                                f"<b style=\"font-size: 20px\">{latest['name']}</b><br>"
-                                f"<b>Released on {datetime.strptime(latest['published_at'], '%Y-%m-%dT%H:%M:%SZ')}</b><br><br>"
-                                f"<a href='https://github.com/dhtdht020/osc-dl'>View on GitHub</a><br>"
-                                f"{markdown.markdown((body[:600] + '... <br><br><br><i>Learn more on GitHub</i>') if len(body) > 600 else body)}<hr>"
-                                f"Please go to the <a href='https://github.com/dhtdht020/osc-dl'>GitHub page</a> and obtain the latest release.<br>"
-                                f"Newest detected version: {latest['tag_name']}")
-        else:
-            if not silent:
-                self.set_status_message("OSCDL is up to date!")
-                QMessageBox.information(self, 'OSCDL is up to date', 'You are running the latest version of OSCDL!\n')
+    def check_for_updates_on_launch_toggled(self, checked: bool):
+        gui_helpers.settings.setValue("check_for_updates_on_launch", checked)
 
     # Load app icon
     def load_icon(self, app_name):
@@ -929,6 +957,10 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         self.ui.AppsList_Widget.setIconSize(QSize(171, 32))
         # complete loading
         self.reset_status()
+
+    def extended_information_btn(self):
+        dialog = ExtendedInformationDialog(self.current_app, parent=self)
+        status = dialog.exec()
 
     #
     # Event overrides

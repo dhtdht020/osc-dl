@@ -3,7 +3,7 @@
 ################################################################################
 ## Form generated from reading UI file 'united.ui'
 ##
-## Created by: Qt User Interface Compiler version 6.7.3
+## Created by: Qt User Interface Compiler version 6.10.1
 ##
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
@@ -27,13 +27,13 @@ class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         if not MainWindow.objectName():
             MainWindow.setObjectName(u"MainWindow")
-        MainWindow.resize(900, 460)
+        MainWindow.resize(920, 475)
         sizePolicy = QSizePolicy(QSizePolicy.Policy.Fixed, QSizePolicy.Policy.Fixed)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(MainWindow.sizePolicy().hasHeightForWidth())
         MainWindow.setSizePolicy(sizePolicy)
-        MainWindow.setMinimumSize(QSize(900, 460))
+        MainWindow.setMinimumSize(QSize(920, 475))
         MainWindow.setStyleSheet(u"")
         MainWindow.setDockOptions(QMainWindow.DockOption.AllowTabbedDocks|QMainWindow.DockOption.AnimatedDocks)
         self.About_Action = QAction(MainWindow)
@@ -49,6 +49,9 @@ class Ui_MainWindow(object):
         self.CopyDirectLink_Action.setObjectName(u"CopyDirectLink_Action")
         self.FilterByDeveloper_Action = QAction(MainWindow)
         self.FilterByDeveloper_Action.setObjectName(u"FilterByDeveloper_Action")
+        self.CheckForUpdatesOnLaunch_Action = QAction(MainWindow)
+        self.CheckForUpdatesOnLaunch_Action.setObjectName(u"CheckForUpdatesOnLaunch_Action")
+        self.CheckForUpdatesOnLaunch_Action.setCheckable(True)
         self.Central_Widget = QWidget(MainWindow)
         self.Central_Widget.setObjectName(u"Central_Widget")
         self.horizontalLayout_2 = QHBoxLayout(self.Central_Widget)
@@ -216,69 +219,62 @@ class Ui_MainWindow(object):
         self.StatusIcon.setMargin(3)
         self.gridLayoutWidget = QWidget(self.InfoTab_Widget)
         self.gridLayoutWidget.setObjectName(u"gridLayoutWidget")
-        self.gridLayoutWidget.setGeometry(QRect(10, 100, 223, 136))
+        self.gridLayoutWidget.setGeometry(QRect(10, 100, 223, 140))
         self.AppMetadata_GridLayout = QGridLayout(self.gridLayoutWidget)
         self.AppMetadata_GridLayout.setObjectName(u"AppMetadata_GridLayout")
         self.AppMetadata_GridLayout.setContentsMargins(0, 0, 0, 0)
-        self.AppReleaseDate_Label = QLabel(self.gridLayoutWidget)
-        self.AppReleaseDate_Label.setObjectName(u"AppReleaseDate_Label")
-
-        self.AppMetadata_GridLayout.addWidget(self.AppReleaseDate_Label, 3, 0, 1, 1)
-
-        self.AppFileSize_Label = QLabel(self.gridLayoutWidget)
-        self.AppFileSize_Label.setObjectName(u"AppFileSize_Label")
-
-        self.AppMetadata_GridLayout.addWidget(self.AppFileSize_Label, 4, 0, 1, 1)
-
         self.AppVersion_Label = QLabel(self.gridLayoutWidget)
         self.AppVersion_Label.setObjectName(u"AppVersion_Label")
 
-        self.AppMetadata_GridLayout.addWidget(self.AppVersion_Label, 1, 0, 1, 1)
-
-        self.AppDeveloper_Label = QLabel(self.gridLayoutWidget)
-        self.AppDeveloper_Label.setObjectName(u"AppDeveloper_Label")
-
-        self.AppMetadata_GridLayout.addWidget(self.AppDeveloper_Label, 2, 0, 1, 1)
-
-        self.AppName_Label = QLabel(self.gridLayoutWidget)
-        self.AppName_Label.setObjectName(u"AppName_Label")
-
-        self.AppMetadata_GridLayout.addWidget(self.AppName_Label, 0, 0, 1, 1)
-
-        self.AppName_LineEdit = QLineEdit(self.gridLayoutWidget)
-        self.AppName_LineEdit.setObjectName(u"AppName_LineEdit")
-        self.AppName_LineEdit.setEchoMode(QLineEdit.EchoMode.Normal)
-        self.AppName_LineEdit.setReadOnly(True)
-
-        self.AppMetadata_GridLayout.addWidget(self.AppName_LineEdit, 0, 1, 1, 1)
-
-        self.AppVersion_LineEdit = QLineEdit(self.gridLayoutWidget)
-        self.AppVersion_LineEdit.setObjectName(u"AppVersion_LineEdit")
-        self.AppVersion_LineEdit.setEchoMode(QLineEdit.EchoMode.Normal)
-        self.AppVersion_LineEdit.setReadOnly(True)
-
-        self.AppMetadata_GridLayout.addWidget(self.AppVersion_LineEdit, 1, 1, 1, 1)
-
-        self.AppDeveloper_LineEdit = QLineEdit(self.gridLayoutWidget)
-        self.AppDeveloper_LineEdit.setObjectName(u"AppDeveloper_LineEdit")
-        self.AppDeveloper_LineEdit.setEchoMode(QLineEdit.EchoMode.Normal)
-        self.AppDeveloper_LineEdit.setReadOnly(True)
-
-        self.AppMetadata_GridLayout.addWidget(self.AppDeveloper_LineEdit, 2, 1, 1, 1)
-
-        self.AppReleaseDate_LineEdit = QLineEdit(self.gridLayoutWidget)
-        self.AppReleaseDate_LineEdit.setObjectName(u"AppReleaseDate_LineEdit")
-        self.AppReleaseDate_LineEdit.setEchoMode(QLineEdit.EchoMode.Normal)
-        self.AppReleaseDate_LineEdit.setReadOnly(True)
-
-        self.AppMetadata_GridLayout.addWidget(self.AppReleaseDate_LineEdit, 3, 1, 1, 1)
+        self.AppMetadata_GridLayout.addWidget(self.AppVersion_Label, 0, 0, 1, 1)
 
         self.AppFileSize_LineEdit = QLineEdit(self.gridLayoutWidget)
         self.AppFileSize_LineEdit.setObjectName(u"AppFileSize_LineEdit")
         self.AppFileSize_LineEdit.setEchoMode(QLineEdit.EchoMode.Normal)
         self.AppFileSize_LineEdit.setReadOnly(True)
 
-        self.AppMetadata_GridLayout.addWidget(self.AppFileSize_LineEdit, 4, 1, 1, 1)
+        self.AppMetadata_GridLayout.addWidget(self.AppFileSize_LineEdit, 3, 1, 1, 1)
+
+        self.AppDeveloper_Label = QLabel(self.gridLayoutWidget)
+        self.AppDeveloper_Label.setObjectName(u"AppDeveloper_Label")
+
+        self.AppMetadata_GridLayout.addWidget(self.AppDeveloper_Label, 1, 0, 1, 1)
+
+        self.AppVersion_LineEdit = QLineEdit(self.gridLayoutWidget)
+        self.AppVersion_LineEdit.setObjectName(u"AppVersion_LineEdit")
+        self.AppVersion_LineEdit.setEchoMode(QLineEdit.EchoMode.Normal)
+        self.AppVersion_LineEdit.setReadOnly(True)
+
+        self.AppMetadata_GridLayout.addWidget(self.AppVersion_LineEdit, 0, 1, 1, 1)
+
+        self.AppReleaseDate_Label = QLabel(self.gridLayoutWidget)
+        self.AppReleaseDate_Label.setObjectName(u"AppReleaseDate_Label")
+
+        self.AppMetadata_GridLayout.addWidget(self.AppReleaseDate_Label, 2, 0, 1, 1)
+
+        self.AppReleaseDate_LineEdit = QLineEdit(self.gridLayoutWidget)
+        self.AppReleaseDate_LineEdit.setObjectName(u"AppReleaseDate_LineEdit")
+        self.AppReleaseDate_LineEdit.setEchoMode(QLineEdit.EchoMode.Normal)
+        self.AppReleaseDate_LineEdit.setReadOnly(True)
+
+        self.AppMetadata_GridLayout.addWidget(self.AppReleaseDate_LineEdit, 2, 1, 1, 1)
+
+        self.AppFileSize_Label = QLabel(self.gridLayoutWidget)
+        self.AppFileSize_Label.setObjectName(u"AppFileSize_Label")
+
+        self.AppMetadata_GridLayout.addWidget(self.AppFileSize_Label, 3, 0, 1, 1)
+
+        self.AppDeveloper_LineEdit = QLineEdit(self.gridLayoutWidget)
+        self.AppDeveloper_LineEdit.setObjectName(u"AppDeveloper_LineEdit")
+        self.AppDeveloper_LineEdit.setEchoMode(QLineEdit.EchoMode.Normal)
+        self.AppDeveloper_LineEdit.setReadOnly(True)
+
+        self.AppMetadata_GridLayout.addWidget(self.AppDeveloper_LineEdit, 1, 1, 1, 1)
+
+        self.AppExtendedInfo_PushButton = QPushButton(self.gridLayoutWidget)
+        self.AppExtendedInfo_PushButton.setObjectName(u"AppExtendedInfo_PushButton")
+
+        self.AppMetadata_GridLayout.addWidget(self.AppExtendedInfo_PushButton, 4, 1, 1, 1)
 
         self.AppInformationTabs_TabWidget.addTab(self.InfoTab_Widget, "")
         self.StatusIcon.raise_()
@@ -316,45 +312,45 @@ class Ui_MainWindow(object):
 
         self.verticalLayout_3.addWidget(self.AppInformationTabs_Frame)
 
-        self.NandWarning_Frame = QFrame(self.SelectionInfo_GroupBox)
-        self.NandWarning_Frame.setObjectName(u"NandWarning_Frame")
+        self.AppWarning_Frame = QFrame(self.SelectionInfo_GroupBox)
+        self.AppWarning_Frame.setObjectName(u"AppWarning_Frame")
         sizePolicy6 = QSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Maximum)
         sizePolicy6.setHorizontalStretch(0)
         sizePolicy6.setVerticalStretch(0)
-        sizePolicy6.setHeightForWidth(self.NandWarning_Frame.sizePolicy().hasHeightForWidth())
-        self.NandWarning_Frame.setSizePolicy(sizePolicy6)
-        self.NandWarning_Frame.setStyleSheet(u"")
-        self.NandWarning_Frame.setFrameShape(QFrame.Shape.StyledPanel)
-        self.NandWarning_Frame.setFrameShadow(QFrame.Shadow.Raised)
-        self.verticalLayout_4 = QVBoxLayout(self.NandWarning_Frame)
+        sizePolicy6.setHeightForWidth(self.AppWarning_Frame.sizePolicy().hasHeightForWidth())
+        self.AppWarning_Frame.setSizePolicy(sizePolicy6)
+        self.AppWarning_Frame.setStyleSheet(u"")
+        self.AppWarning_Frame.setFrameShape(QFrame.Shape.StyledPanel)
+        self.AppWarning_Frame.setFrameShadow(QFrame.Shadow.Raised)
+        self.verticalLayout_4 = QVBoxLayout(self.AppWarning_Frame)
         self.verticalLayout_4.setObjectName(u"verticalLayout_4")
-        self.NandWarningBanner_Frame = QFrame(self.NandWarning_Frame)
-        self.NandWarningBanner_Frame.setObjectName(u"NandWarningBanner_Frame")
-        self.NandWarningBanner_Frame.setStyleSheet(u"background-color: rgb(255, 102, 102);\n"
+        self.AppWarningBanner_Frame = QFrame(self.AppWarning_Frame)
+        self.AppWarningBanner_Frame.setObjectName(u"AppWarningBanner_Frame")
+        self.AppWarningBanner_Frame.setStyleSheet(u"background-color: rgb(255, 102, 102);\n"
 "color: rgb(255, 255, 255);")
-        self.NandWarningBanner_Frame.setFrameShape(QFrame.Shape.StyledPanel)
-        self.NandWarningBanner_Frame.setFrameShadow(QFrame.Shadow.Raised)
-        self.horizontalLayout = QHBoxLayout(self.NandWarningBanner_Frame)
+        self.AppWarningBanner_Frame.setFrameShape(QFrame.Shape.StyledPanel)
+        self.AppWarningBanner_Frame.setFrameShadow(QFrame.Shadow.Raised)
+        self.horizontalLayout = QHBoxLayout(self.AppWarningBanner_Frame)
         self.horizontalLayout.setObjectName(u"horizontalLayout")
         self.horizontalLayout.setContentsMargins(0, 0, 0, 0)
-        self.NandWarningIcon_Label = QLabel(self.NandWarningBanner_Frame)
-        self.NandWarningIcon_Label.setObjectName(u"NandWarningIcon_Label")
-        self.NandWarningIcon_Label.setMinimumSize(QSize(32, 32))
-        self.NandWarningIcon_Label.setMaximumSize(QSize(32, 32))
+        self.AppWarningIcon_Label = QLabel(self.AppWarningBanner_Frame)
+        self.AppWarningIcon_Label.setObjectName(u"AppWarningIcon_Label")
+        self.AppWarningIcon_Label.setMinimumSize(QSize(32, 32))
+        self.AppWarningIcon_Label.setMaximumSize(QSize(32, 32))
 
-        self.horizontalLayout.addWidget(self.NandWarningIcon_Label)
+        self.horizontalLayout.addWidget(self.AppWarningIcon_Label)
 
-        self.NandWarningText_Label = QLabel(self.NandWarningBanner_Frame)
-        self.NandWarningText_Label.setObjectName(u"NandWarningText_Label")
-        self.NandWarningText_Label.setWordWrap(True)
+        self.AppWarningText_Label = QLabel(self.AppWarningBanner_Frame)
+        self.AppWarningText_Label.setObjectName(u"AppWarningText_Label")
+        self.AppWarningText_Label.setWordWrap(True)
 
-        self.horizontalLayout.addWidget(self.NandWarningText_Label)
-
-
-        self.verticalLayout_4.addWidget(self.NandWarningBanner_Frame)
+        self.horizontalLayout.addWidget(self.AppWarningText_Label)
 
 
-        self.verticalLayout_3.addWidget(self.NandWarning_Frame)
+        self.verticalLayout_4.addWidget(self.AppWarningBanner_Frame)
+
+
+        self.verticalLayout_3.addWidget(self.AppWarning_Frame)
 
         self.DownloadButtons_Frame = QFrame(self.SelectionInfo_GroupBox)
         self.DownloadButtons_Frame.setObjectName(u"DownloadButtons_Frame")
@@ -386,14 +382,14 @@ class Ui_MainWindow(object):
 
         self.DownloadButtons_Frame.raise_()
         self.AppInformationTabs_Frame.raise_()
-        self.NandWarning_Frame.raise_()
+        self.AppWarning_Frame.raise_()
 
         self.horizontalLayout_2.addWidget(self.SelectionInfo_GroupBox)
 
         MainWindow.setCentralWidget(self.Central_Widget)
         self.MenuBar = QMenuBar(MainWindow)
         self.MenuBar.setObjectName(u"MenuBar")
-        self.MenuBar.setGeometry(QRect(0, 0, 900, 22))
+        self.MenuBar.setGeometry(QRect(0, 0, 920, 33))
         self.About_Menu = QMenu(self.MenuBar)
         self.About_Menu.setObjectName(u"About_Menu")
         self.Debug_Menu = QMenu(self.MenuBar)
@@ -412,6 +408,7 @@ class Ui_MainWindow(object):
         self.Debug_Menu.addAction(self.CopyDirectLink_Action)
         self.Debug_Menu.addSeparator()
         self.Debug_Menu.addAction(self.CheckForUpdates_Action)
+        self.Debug_Menu.addAction(self.CheckForUpdatesOnLaunch_Action)
 
         self.retranslateUi(MainWindow)
 
@@ -436,6 +433,7 @@ class Ui_MainWindow(object):
 #if QT_CONFIG(tooltip)
         self.FilterByDeveloper_Action.setToolTip(QCoreApplication.translate("MainWindow", u"Filter by Developer", None))
 #endif // QT_CONFIG(tooltip)
+        self.CheckForUpdatesOnLaunch_Action.setText(QCoreApplication.translate("MainWindow", u"Check for Updates on launch", None))
 #if QT_CONFIG(accessibility)
         self.Central_Widget.setAccessibleName(QCoreApplication.translate("MainWindow", u"centralcontainer", None))
 #endif // QT_CONFIG(accessibility)
@@ -459,13 +457,11 @@ class Ui_MainWindow(object):
         self.AppIcon_Label.setText(QCoreApplication.translate("MainWindow", u"No homebrew icon. Aw.", None))
         self.AppCategory_Label.setText(QCoreApplication.translate("MainWindow", u"Category", None))
         self.StatusIcon.setText("")
-        self.AppReleaseDate_Label.setText(QCoreApplication.translate("MainWindow", u"Release Date", None))
-        self.AppFileSize_Label.setText(QCoreApplication.translate("MainWindow", u"File Size", None))
         self.AppVersion_Label.setText(QCoreApplication.translate("MainWindow", u"Version", None))
         self.AppDeveloper_Label.setText(QCoreApplication.translate("MainWindow", u"Developer", None))
-        self.AppName_Label.setText(QCoreApplication.translate("MainWindow", u"App Name", None))
-        self.AppName_LineEdit.setText("")
-        self.AppName_LineEdit.setPlaceholderText("")
+        self.AppReleaseDate_Label.setText(QCoreApplication.translate("MainWindow", u"Release Date", None))
+        self.AppFileSize_Label.setText(QCoreApplication.translate("MainWindow", u"File Size", None))
+        self.AppExtendedInfo_PushButton.setText(QCoreApplication.translate("MainWindow", u"Extended Information", None))
         self.AppInformationTabs_TabWidget.setTabText(self.AppInformationTabs_TabWidget.indexOf(self.InfoTab_Widget), QCoreApplication.translate("MainWindow", u"Info", None))
 #if QT_CONFIG(accessibility)
         self.DescriptionTab_Widget.setAccessibleName(QCoreApplication.translate("MainWindow", u"tabcontent", None))
@@ -483,8 +479,8 @@ class Ui_MainWindow(object):
         self.CompatibilityTab_Widget.setAccessibleName(QCoreApplication.translate("MainWindow", u"tabcontent", None))
 #endif // QT_CONFIG(accessibility)
         self.AppInformationTabs_TabWidget.setTabText(self.AppInformationTabs_TabWidget.indexOf(self.CompatibilityTab_Widget), QCoreApplication.translate("MainWindow", u"Compatibility", None))
-        self.NandWarningIcon_Label.setText("")
-        self.NandWarningText_Label.setText(QCoreApplication.translate("MainWindow", u"This app makes changes to the system's NAND. Use with caution!", None))
+        self.AppWarningIcon_Label.setText("")
+        self.AppWarningText_Label.setText(QCoreApplication.translate("MainWindow", u"I am a warning", None))
         self.Download_PushButton.setText(QCoreApplication.translate("MainWindow", u"Download", None))
         self.SendToWii_PushButton.setText(QCoreApplication.translate("MainWindow", u"Send to Wii", None))
         self.About_Menu.setTitle(QCoreApplication.translate("MainWindow", u"About", None))

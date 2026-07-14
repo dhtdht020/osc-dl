@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>900</width>
-    <height>460</height>
+    <width>920</width>
+    <height>475</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -18,8 +18,8 @@
   </property>
   <property name="minimumSize">
    <size>
-    <width>900</width>
-    <height>460</height>
+    <width>920</width>
+    <height>475</height>
    </size>
   </property>
   <property name="windowTitle">
@@ -443,62 +443,35 @@
               <x>10</x>
               <y>100</y>
               <width>223</width>
-              <height>136</height>
+              <height>140</height>
              </rect>
             </property>
             <layout class="QGridLayout" name="AppMetadata_GridLayout">
-             <item row="3" column="0">
-              <widget class="QLabel" name="AppReleaseDate_Label">
-               <property name="text">
-                <string>Release Date</string>
-               </property>
-              </widget>
-             </item>
-             <item row="4" column="0">
-              <widget class="QLabel" name="AppFileSize_Label">
-               <property name="text">
-                <string>File Size</string>
-               </property>
-              </widget>
-             </item>
-             <item row="1" column="0">
+             <item row="0" column="0">
               <widget class="QLabel" name="AppVersion_Label">
                <property name="text">
                 <string>Version</string>
                </property>
               </widget>
              </item>
-             <item row="2" column="0">
-              <widget class="QLabel" name="AppDeveloper_Label">
-               <property name="text">
-                <string>Developer</string>
-               </property>
-              </widget>
-             </item>
-             <item row="0" column="0">
-              <widget class="QLabel" name="AppName_Label">
-               <property name="text">
-                <string>App Name</string>
-               </property>
-              </widget>
-             </item>
-             <item row="0" column="1">
-              <widget class="QLineEdit" name="AppName_LineEdit">
-               <property name="text">
-                <string/>
-               </property>
+             <item row="3" column="1">
+              <widget class="QLineEdit" name="AppFileSize_LineEdit">
                <property name="echoMode">
                 <enum>QLineEdit::EchoMode::Normal</enum>
                </property>
                <property name="readOnly">
                 <bool>true</bool>
                </property>
-               <property name="placeholderText">
-                <string/>
+              </widget>
+             </item>
+             <item row="1" column="0">
+              <widget class="QLabel" name="AppDeveloper_Label">
+               <property name="text">
+                <string>Developer</string>
                </property>
               </widget>
              </item>
-             <item row="1" column="1">
+             <item row="0" column="1">
               <widget class="QLineEdit" name="AppVersion_LineEdit">
                <property name="echoMode">
                 <enum>QLineEdit::EchoMode::Normal</enum>
@@ -508,17 +481,14 @@
                </property>
               </widget>
              </item>
-             <item row="2" column="1">
-              <widget class="QLineEdit" name="AppDeveloper_LineEdit">
-               <property name="echoMode">
-                <enum>QLineEdit::EchoMode::Normal</enum>
-               </property>
-               <property name="readOnly">
-                <bool>true</bool>
+             <item row="2" column="0">
+              <widget class="QLabel" name="AppReleaseDate_Label">
+               <property name="text">
+                <string>Release Date</string>
                </property>
               </widget>
              </item>
-             <item row="3" column="1">
+             <item row="2" column="1">
               <widget class="QLineEdit" name="AppReleaseDate_LineEdit">
                <property name="echoMode">
                 <enum>QLineEdit::EchoMode::Normal</enum>
@@ -528,13 +498,27 @@
                </property>
               </widget>
              </item>
-             <item row="4" column="1">
-              <widget class="QLineEdit" name="AppFileSize_LineEdit">
+             <item row="3" column="0">
+              <widget class="QLabel" name="AppFileSize_Label">
+               <property name="text">
+                <string>File Size</string>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="1">
+              <widget class="QLineEdit" name="AppDeveloper_LineEdit">
                <property name="echoMode">
                 <enum>QLineEdit::EchoMode::Normal</enum>
                </property>
                <property name="readOnly">
                 <bool>true</bool>
+               </property>
+              </widget>
+             </item>
+             <item row="4" column="1">
+              <widget class="QPushButton" name="AppExtendedInfo_PushButton">
+               <property name="text">
+                <string>Extended Information</string>
                </property>
               </widget>
              </item>
@@ -632,7 +616,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
         </widget>
        </item>
        <item>
-        <widget class="QFrame" name="NandWarning_Frame">
+        <widget class="QFrame" name="AppWarning_Frame">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
            <horstretch>0</horstretch>
@@ -650,7 +634,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
          </property>
          <layout class="QVBoxLayout" name="verticalLayout_4">
           <item>
-           <widget class="QFrame" name="NandWarningBanner_Frame">
+           <widget class="QFrame" name="AppWarningBanner_Frame">
             <property name="styleSheet">
              <string notr="true">background-color: rgb(255, 102, 102);
 color: rgb(255, 255, 255);</string>
@@ -675,7 +659,7 @@ color: rgb(255, 255, 255);</string>
               <number>0</number>
              </property>
              <item>
-              <widget class="QLabel" name="NandWarningIcon_Label">
+              <widget class="QLabel" name="AppWarningIcon_Label">
                <property name="minimumSize">
                 <size>
                  <width>32</width>
@@ -694,9 +678,9 @@ color: rgb(255, 255, 255);</string>
               </widget>
              </item>
              <item>
-              <widget class="QLabel" name="NandWarningText_Label">
+              <widget class="QLabel" name="AppWarningText_Label">
                <property name="text">
-                <string>This app makes changes to the system's NAND. Use with caution!</string>
+                <string>I am a warning</string>
                </property>
                <property name="wordWrap">
                 <bool>true</bool>
@@ -762,7 +746,7 @@ color: rgb(255, 255, 255);</string>
       </layout>
       <zorder>DownloadButtons_Frame</zorder>
       <zorder>AppInformationTabs_Frame</zorder>
-      <zorder>NandWarning_Frame</zorder>
+      <zorder>AppWarning_Frame</zorder>
      </widget>
     </item>
    </layout>
@@ -772,8 +756,8 @@ color: rgb(255, 255, 255);</string>
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>900</width>
-     <height>22</height>
+     <width>920</width>
+     <height>33</height>
     </rect>
    </property>
    <widget class="QMenu" name="About_Menu">
@@ -791,6 +775,7 @@ color: rgb(255, 255, 255);</string>
     <addaction name="CopyDirectLink_Action"/>
     <addaction name="separator"/>
     <addaction name="CheckForUpdates_Action"/>
+    <addaction name="CheckForUpdatesOnLaunch_Action"/>
    </widget>
    <addaction name="About_Menu"/>
    <addaction name="Debug_Menu"/>
@@ -837,6 +822,14 @@ color: rgb(255, 255, 255);</string>
    </property>
    <property name="toolTip">
     <string>Filter by Developer</string>
+   </property>
+  </action>
+  <action name="CheckForUpdatesOnLaunch_Action">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Check for Updates on launch</string>
    </property>
   </action>
  </widget>

@@ -8,7 +8,7 @@ class Applications:
         self.update()
 
     def update(self):
-        response = json.loads(requests.get(f"https://hbb1.oscwii.org/api/v3/contents", timeout=10).text)
+        response = json.loads(requests.get(f"https://hbb1.oscwii.org/api/v4/contents", timeout=10).text)
         self.__apps = response
 
     def get_apps(self):
