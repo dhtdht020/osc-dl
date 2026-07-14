@@ -99,7 +99,9 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
 
         self.ui.ResetFilters_PushButton.setIcon(QIcon(resource_path("assets/gui/icons/close.png")))
 
-        self.check_for_updates_action(silent=True)
+        if gui_helpers.settings.value("check_for_updates_on_launch", True, type=bool):
+            self.check_for_updates_action(silent=True)
+            self.ui.CheckForUpdatesOnLaunch_Action.setChecked(True)
 
         self.populate()
         self.selection_changed()
@@ -170,6 +172,7 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         # -- Options
         self.ui.CheckForUpdates_Action.triggered.connect(partial(self.check_for_updates_action))
         self.ui.Refresh_Action.triggered.connect(partial(self.repopulate))
+        self.ui.CheckForUpdatesOnLaunch_Action.toggled.connect(self.check_for_updates_on_launch_toggled)
 
     # When user selects a different homebrew from the list
     def selection_changed(self):
@@ -722,6 +725,9 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
                 QMessageBox.warning(self, 'OSCDL updater', 'Could not check for updates!\n'
                                                            'It is not recommended to use old versions of OSCDL, so please manually check for a new release!')
             return
+
+    def check_for_updates_on_launch_toggled(self, checked: bool):
+        gui_helpers.settings.setValue("check_for_updates_on_launch", checked)
 
     # Load app icon
     def load_icon(self, app_name):

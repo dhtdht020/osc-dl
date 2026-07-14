@@ -3,7 +3,7 @@
 ################################################################################
 ## Form generated from reading UI file 'united.ui'
 ##
-## Created by: Qt User Interface Compiler version 6.9.0
+## Created by: Qt User Interface Compiler version 6.10.1
 ##
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
@@ -49,6 +49,9 @@ class Ui_MainWindow(object):
         self.CopyDirectLink_Action.setObjectName(u"CopyDirectLink_Action")
         self.FilterByDeveloper_Action = QAction(MainWindow)
         self.FilterByDeveloper_Action.setObjectName(u"FilterByDeveloper_Action")
+        self.CheckForUpdatesOnLaunch_Action = QAction(MainWindow)
+        self.CheckForUpdatesOnLaunch_Action.setObjectName(u"CheckForUpdatesOnLaunch_Action")
+        self.CheckForUpdatesOnLaunch_Action.setCheckable(True)
         self.Central_Widget = QWidget(MainWindow)
         self.Central_Widget.setObjectName(u"Central_Widget")
         self.horizontalLayout_2 = QHBoxLayout(self.Central_Widget)
@@ -216,7 +219,7 @@ class Ui_MainWindow(object):
         self.StatusIcon.setMargin(3)
         self.gridLayoutWidget = QWidget(self.InfoTab_Widget)
         self.gridLayoutWidget.setObjectName(u"gridLayoutWidget")
-        self.gridLayoutWidget.setGeometry(QRect(10, 100, 223, 138))
+        self.gridLayoutWidget.setGeometry(QRect(10, 100, 223, 140))
         self.AppMetadata_GridLayout = QGridLayout(self.gridLayoutWidget)
         self.AppMetadata_GridLayout.setObjectName(u"AppMetadata_GridLayout")
         self.AppMetadata_GridLayout.setContentsMargins(0, 0, 0, 0)
@@ -405,6 +408,7 @@ class Ui_MainWindow(object):
         self.Debug_Menu.addAction(self.CopyDirectLink_Action)
         self.Debug_Menu.addSeparator()
         self.Debug_Menu.addAction(self.CheckForUpdates_Action)
+        self.Debug_Menu.addAction(self.CheckForUpdatesOnLaunch_Action)
 
         self.retranslateUi(MainWindow)
 
@@ -429,6 +433,7 @@ class Ui_MainWindow(object):
 #if QT_CONFIG(tooltip)
         self.FilterByDeveloper_Action.setToolTip(QCoreApplication.translate("MainWindow", u"Filter by Developer", None))
 #endif // QT_CONFIG(tooltip)
+        self.CheckForUpdatesOnLaunch_Action.setText(QCoreApplication.translate("MainWindow", u"Check for Updates on launch", None))
 #if QT_CONFIG(accessibility)
         self.Central_Widget.setAccessibleName(QCoreApplication.translate("MainWindow", u"centralcontainer", None))
 #endif // QT_CONFIG(accessibility)
