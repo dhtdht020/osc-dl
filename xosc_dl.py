@@ -701,27 +701,27 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
 
         try:
             latest = updater.latest_version()
+
+            if updater.check_update(latest) is True:
+                self.set_status_message("New version available! (" + latest['tag_name'] + ") OSCDL is out of date.")
+                body = latest['body'].replace("![image]", "")
+                QMessageBox.warning(self, 'OSCDL is out of date - New release available!',
+                                    f"<hr><center><b style=\"font-size: 20px\">New Update Available</b></center><hr>"
+                                    f"<b style=\"font-size: 20px\">{latest['name']}</b><br>"
+                                    f"<b>Released on {datetime.strptime(latest['published_at'], '%Y-%m-%dT%H:%M:%SZ')}</b><br><br>"
+                                    f"<a href='https://github.com/dhtdht020/osc-dl'>View on GitHub</a><br>"
+                                    f"{markdown.markdown((body[:600] + '... <br><br><br><i>Learn more on GitHub</i>') if len(body) > 600 else body)}<hr>"
+                                    f"Please go to the <a href='https://github.com/dhtdht020/osc-dl'>GitHub page</a> and obtain the latest release.<br>"
+                                    f"Newest detected version: {latest['tag_name']}")
+            else:
+                if not silent:
+                    self.set_status_message("OSCDL is up to date!")
+                    QMessageBox.information(self, 'OSCDL is up to date', 'You are running the latest version of OSCDL!\n')
         except:
             if not silent:
-                QMessageBox.critical(self, 'OSCDL updater', 'An error occurred while checking for updates.\n'
-                                                            'Please manually search for a new release!')
+                QMessageBox.warning(self, 'OSCDL updater', 'Could not check for updates!\n'
+                                                           'It is not recommended to use old versions of OSCDL, so please manually check for a new release!')
             return
-
-        if updater.check_update(latest) is True:
-            self.set_status_message("New version available! (" + latest['tag_name'] + ") OSCDL is out of date.")
-            body = latest['body'].replace("![image]", "")
-            QMessageBox.warning(self, 'OSCDL is out of date - New release available!',
-                                f"<hr><center><b style=\"font-size: 20px\">New Update Available</b></center><hr>"
-                                f"<b style=\"font-size: 20px\">{latest['name']}</b><br>"
-                                f"<b>Released on {datetime.strptime(latest['published_at'], '%Y-%m-%dT%H:%M:%SZ')}</b><br><br>"
-                                f"<a href='https://github.com/dhtdht020/osc-dl'>View on GitHub</a><br>"
-                                f"{markdown.markdown((body[:600] + '... <br><br><br><i>Learn more on GitHub</i>') if len(body) > 600 else body)}<hr>"
-                                f"Please go to the <a href='https://github.com/dhtdht020/osc-dl'>GitHub page</a> and obtain the latest release.<br>"
-                                f"Newest detected version: {latest['tag_name']}")
-        else:
-            if not silent:
-                self.set_status_message("OSCDL is up to date!")
-                QMessageBox.information(self, 'OSCDL is up to date', 'You are running the latest version of OSCDL!\n')
 
     # Load app icon
     def load_icon(self, app_name):
