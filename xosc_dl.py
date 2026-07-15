@@ -164,6 +164,8 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
             lambda: (QApplication.clipboard().setText(self.current_app["assets"]["archive"]["url"]),
                      self.set_status_message(f"Copied the download link for {self.current_app['name']}\" to clipboard")))
 
+        self.ui.SaveAppIcon_Action.triggered.connect(self.save_app_icon)
+
         self.ui.Download_PushButton.clicked.connect(self.download_app)
         self.ui.SendToWii_PushButton.clicked.connect(self.wiiload_button)
         self.ui.ResetFilters_PushButton.clicked.connect(self.reset_filters_btn)
@@ -190,6 +192,30 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         self.ui.CheckForUpdatesOnLaunch_Action.toggled.connect(self.check_for_updates_on_launch_toggled)
         for theme, action in self.theme_actions.items():
             action.triggered.connect(partial(self.theme_changed, theme))
+
+    def save_app_icon(self):
+        save_location, _ = QFileDialog.getSaveFileName(self, 'Save App Icon',
+                                                       self.current_app["slug"] + ".png",
+                                                       "PNG Image (*.png)")
+        if not save_location:
+            return
+
+        if self.original_app_icons and self.current_app["slug"] in self.original_app_icons:
+            saved = self.original_app_icons[self.current_app["slug"]].save(save_location, "PNG")
+        else:
+            # Fetch icon from the server if not loaded
+            try:
+                with open(save_location, "wb") as icon_file:
+                    icon_file.write(metadata.icon(self.current_app))
+                saved = True
+            except OSError:
+                saved = False
+
+        if saved:
+            self.set_status_message(f"Saved \"{self.current_app['name']}\" app icon", progress=100)
+        else:
+            QMessageBox.warning(self, "Save App Icon",
+                                f"Could not save app icon for \"{self.current_app['name']}\".")
 
     def apps_list_context_menu(self, pos):
         item = self.ui.AppsList_Widget.itemAt(pos)

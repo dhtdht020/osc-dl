@@ -790,6 +790,7 @@ color: rgb(255, 255, 255);</string>
     </property>
     <addaction name="Refresh_Action"/>
     <addaction name="CopyDirectLink_Action"/>
+    <addaction name="SaveAppIcon_Action"/>
    </widget>
    <addaction name="About_Menu"/>
    <addaction name="Settings_Menu"/>
@@ -869,6 +870,11 @@ color: rgb(255, 255, 255);</string>
    </property>
    <property name="text">
     <string>System</string>
+   </property>
+  </action>
+  <action name="SaveAppIcon_Action">
+   <property name="text">
+    <string>Save App Icon</string>
    </property>
   </action>
  </widget>

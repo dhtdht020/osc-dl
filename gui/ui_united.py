@@ -61,6 +61,8 @@ class Ui_MainWindow(object):
         self.ThemeSystem_Action = QAction(MainWindow)
         self.ThemeSystem_Action.setObjectName(u"ThemeSystem_Action")
         self.ThemeSystem_Action.setCheckable(True)
+        self.SaveAppIcon_Action = QAction(MainWindow)
+        self.SaveAppIcon_Action.setObjectName(u"SaveAppIcon_Action")
         self.Central_Widget = QWidget(MainWindow)
         self.Central_Widget.setObjectName(u"Central_Widget")
         self.horizontalLayout_2 = QHBoxLayout(self.Central_Widget)
@@ -427,6 +429,7 @@ class Ui_MainWindow(object):
         self.Theme_Menu.addAction(self.ThemeSystem_Action)
         self.Options_Menu.addAction(self.Refresh_Action)
         self.Options_Menu.addAction(self.CopyDirectLink_Action)
+        self.Options_Menu.addAction(self.SaveAppIcon_Action)
 
         self.retranslateUi(MainWindow)
 
@@ -455,6 +458,7 @@ class Ui_MainWindow(object):
         self.ThemeLight_Action.setText(QCoreApplication.translate("MainWindow", u"Light", None))
         self.ThemeDark_Action.setText(QCoreApplication.translate("MainWindow", u"Dark", None))
         self.ThemeSystem_Action.setText(QCoreApplication.translate("MainWindow", u"System", None))
+        self.SaveAppIcon_Action.setText(QCoreApplication.translate("MainWindow", u"Save App Icon", None))
 #if QT_CONFIG(accessibility)
         self.Central_Widget.setAccessibleName(QCoreApplication.translate("MainWindow", u"centralcontainer", None))
 #endif // QT_CONFIG(accessibility)
