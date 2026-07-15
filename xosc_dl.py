@@ -127,9 +127,10 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         if self.splash and not self.splash.isHidden():
             self.splash.showMessage(text, color=QColor("White"))
 
-    def set_status_message(self, message: str) -> None:
+    def set_status_message(self, message: str, progress: int = 0) -> None:
         """Displays a status message in the bottom status bar of the UI."""
         self.ui.StatusBar.showMessage(message)
+        self.ui.ProgressBar.setValue(progress)
 
     def set_status_icon(self, icon: str) -> None:
         """Updates the status icon displayed in the UI status bar."""
@@ -344,7 +345,6 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
             self.ui.AppWarningText_Label.setText(warning_text)
             self.ui.AppWarning_Frame.setVisible(bool(warning_text))
 
-        self.ui.ProgressBar.setValue(0)
         self.repaint()
         # Load icon
         t = threading.Thread(target=self.load_icon, args=[self.current_app["slug"]], daemon=True)
@@ -353,9 +353,6 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
     # TODO FULL REWRITE
     def download_app(self, extract_root=False):
         gui_helpers.IN_DOWNLOAD_DIALOG = True
-        self.set_status_message(f"Downloading {self.current_app['name']} from Open Shop Channel..")
-        self.set_status_icon("pending")
-        self.ui.ProgressBar.setMaximum(0)
 
         if self.sender():
             object_name = self.sender().objectName()
@@ -394,24 +391,26 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
                 save_location = f'%s{self.current_app["slug"]}' % dir_path
             else:
                 save_location = f"{self.current_app['slug']}.zip"
-        self.ui.ProgressBar.setValue(0)
         if save_location:
+            self.set_status_message(f"Initializing download..")
+            self.set_status_icon("pending")
             # stream file, so we can iterate
             response = requests.get(self.current_app["assets"]["archive"]["url"], stream=True)
             total_size = int(response.headers.get('content-length', 0))
 
             # set progress bar
-            self.ui.ProgressBar.setMaximum(total_size)
             block_size = 1024
             if response.status_code == 200:
                 self.safe_mode(True)
                 self.set_status_icon("download")
 
                 with open(save_location, "wb") as app_data_file:
+                    downloaded_size = 0
                     for data in response.iter_content(block_size):
-                        self.ui.ProgressBar.setValue(self.ui.ProgressBar.value() + 1024)
+                        downloaded_size += 1024
                         self.set_status_message(
-                            f"Downloading {self.current_app['name']} from Open Shop Channel.. ({utils.file_size(self.ui.ProgressBar.value())}/{utils.file_size(total_size)})")
+                            f"{utils.file_size(downloaded_size)}/{utils.file_size(total_size)} | Downloading {self.current_app['name']}..",
+                            progress=(downloaded_size/total_size)*100)
                         try:
                             self.app.processEvents()
                         except NameError:
@@ -428,23 +427,21 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
 
                     os.remove(save_location)
 
-            self.ui.ProgressBar.setValue(total_size)
             if object_name != "WiiLoadButton":
                 self.safe_mode(False)
-            self.set_status_message(f"Download of \"{self.current_app['name']}\" has completed successfully")
+            self.set_status_message(f"Download of \"{self.current_app['name']}\" has completed successfully",
+                                    progress=total_size)
             self.set_status_icon("online")
             gui_helpers.IN_DOWNLOAD_DIALOG = False
             return save_location
         else:
-            self.ui.ProgressBar.setMaximum(100)
-            self.ui.ProgressBar.setValue(0)
+            # Download Cancelled
             self.safe_mode(False)
-            self.set_status_message("Cancelled Download")
             self.set_status_icon("online")
             gui_helpers.IN_DOWNLOAD_DIALOG = False
 
     def reset_status(self):
-        if not gui_helpers.CURRENTLY_SENDING and not gui_helpers.IN_DOWNLOAD_DIALOG:
+        if not gui_helpers.CURRENTLY_SENDING:
             self.ui.ProgressBar.setMaximum(100)
             self.set_status_message("Ready to download")
             self.set_status_icon("online")
@@ -470,7 +467,6 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         gui_helpers.CURRENTLY_SENDING = True
 
         self.set_status_message("Downloading " + self.current_app["name"] + " from Open Shop Channel..")
-        self.ui.ProgressBar.setValue(25)
 
         # get app
         path_to_app = self.download_app()
@@ -495,9 +491,8 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         c_data = prep[3]
 
         # connecting
-        self.set_status_message('Connecting to the HBC...')
+        self.set_status_message('Connecting to the HBC...', progress=50)
         self.set_status_icon('connecting_hbc')
-        self.ui.ProgressBar.setValue(50)
 
         try:
             if dialog.modeSelect == 0:  # TCP/IP
@@ -516,7 +511,6 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
             QMessageBox.warning(self, 'Connection error',
                                 f'Error while connecting to the HBC. Please check the {conn_type[dialog.modeSelect]} and try again.')
             print(f'WiiLoad: {e}')
-            self.ui.ProgressBar.setValue(0)
             self.set_status_message('Error: Could not connect to the Homebrew Channel. :(')
             self.set_status_icon('online')
 
@@ -550,7 +544,6 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
                     QMessageBox.warning(self, 'Connection error',
                                         'Error while connecting to the HBC. Operation timed out. Close any dialogs on HBC and try again.')
                     print(f'WiiLoad: {e}')
-                    self.ui.ProgressBar.setValue(0)
                     self.set_status_message('Error: Could not connect to the Homebrew Channel. :(')
 
                     # delete application zip file
