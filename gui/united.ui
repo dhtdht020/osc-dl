@@ -766,10 +766,12 @@ color: rgb(255, 255, 255);</string>
     </property>
     <addaction name="About_Action"/>
     <addaction name="IconsByIcons8_Action"/>
+    <addaction name="separator"/>
+    <addaction name="CheckForUpdates_Action"/>
    </widget>
-   <widget class="QMenu" name="Debug_Menu">
+   <widget class="QMenu" name="Settings_Menu">
     <property name="title">
-     <string>Options</string>
+     <string>Settings</string>
     </property>
     <widget class="QMenu" name="Theme_Menu">
      <property name="title">
@@ -779,15 +781,19 @@ color: rgb(255, 255, 255);</string>
      <addaction name="ThemeDark_Action"/>
      <addaction name="ThemeSystem_Action"/>
     </widget>
-    <addaction name="Refresh_Action"/>
-    <addaction name="CopyDirectLink_Action"/>
-    <addaction name="separator"/>
-    <addaction name="CheckForUpdates_Action"/>
     <addaction name="CheckForUpdatesOnLaunch_Action"/>
     <addaction name="Theme_Menu"/>
    </widget>
+   <widget class="QMenu" name="Options_Menu">
+    <property name="title">
+     <string>Options</string>
+    </property>
+    <addaction name="Refresh_Action"/>
+    <addaction name="CopyDirectLink_Action"/>
+   </widget>
    <addaction name="About_Menu"/>
-   <addaction name="Debug_Menu"/>
+   <addaction name="Settings_Menu"/>
+   <addaction name="Options_Menu"/>
   </widget>
   <widget class="QStatusBar" name="StatusBar">
    <property name="sizeGripEnabled">
