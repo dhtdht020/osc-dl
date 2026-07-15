@@ -29,7 +29,7 @@ Alternatively, you can run OSCDL from source (requires **Git** and **Python 3**)
 
 ### Linux and macOS
 
-Make sure **Python 3** is installed.
+Make sure **Python 3.11+** is installed.
 On some Linux distributions, you may also need to install `python3-venv`.
 
 1. `git clone https://github.com/dhtdht020/osc-dl.git`
