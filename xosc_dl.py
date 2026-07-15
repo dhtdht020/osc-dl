@@ -177,6 +177,10 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         self.ui.AppsList_Widget.currentItemChanged.connect(self.selection_changed)
         self.ui.FilterByDeveloper_Action.triggered.connect(self.filter_by_developer)
 
+        # Set options menu as context menu for apps in the list
+        self.ui.AppsList_Widget.setContextMenuPolicy(Qt.CustomContextMenu)
+        self.ui.AppsList_Widget.customContextMenuRequested.connect(self.apps_list_context_menu)
+
         # Actions
         # -- About
         self.ui.About_Action.triggered.connect(self.about_dialog)
@@ -186,6 +190,12 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         self.ui.CheckForUpdatesOnLaunch_Action.toggled.connect(self.check_for_updates_on_launch_toggled)
         for theme, action in self.theme_actions.items():
             action.triggered.connect(partial(self.theme_changed, theme))
+
+    def apps_list_context_menu(self, pos):
+        item = self.ui.AppsList_Widget.itemAt(pos)
+        if item:
+            self.ui.AppsList_Widget.setCurrentItem(item)
+            self.ui.Options_Menu.exec(self.ui.AppsList_Widget.mapToGlobal(pos))
 
     # When user selects a different homebrew from the list
     def selection_changed(self):
