@@ -3,7 +3,7 @@
 ################################################################################
 ## Form generated from reading UI file 'united.ui'
 ##
-## Created by: Qt User Interface Compiler version 6.10.1
+## Created by: Qt User Interface Compiler version 6.11.1
 ##
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
@@ -27,13 +27,13 @@ class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         if not MainWindow.objectName():
             MainWindow.setObjectName(u"MainWindow")
-        MainWindow.resize(920, 475)
+        MainWindow.resize(920, 495)
         sizePolicy = QSizePolicy(QSizePolicy.Policy.Fixed, QSizePolicy.Policy.Fixed)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(MainWindow.sizePolicy().hasHeightForWidth())
         MainWindow.setSizePolicy(sizePolicy)
-        MainWindow.setMinimumSize(QSize(920, 475))
+        MainWindow.setMinimumSize(QSize(920, 495))
         MainWindow.setStyleSheet(u"")
         MainWindow.setDockOptions(QMainWindow.DockOption.AllowTabbedDocks|QMainWindow.DockOption.AnimatedDocks)
         self.About_Action = QAction(MainWindow)
@@ -52,6 +52,15 @@ class Ui_MainWindow(object):
         self.CheckForUpdatesOnLaunch_Action = QAction(MainWindow)
         self.CheckForUpdatesOnLaunch_Action.setObjectName(u"CheckForUpdatesOnLaunch_Action")
         self.CheckForUpdatesOnLaunch_Action.setCheckable(True)
+        self.ThemeLight_Action = QAction(MainWindow)
+        self.ThemeLight_Action.setObjectName(u"ThemeLight_Action")
+        self.ThemeLight_Action.setCheckable(True)
+        self.ThemeDark_Action = QAction(MainWindow)
+        self.ThemeDark_Action.setObjectName(u"ThemeDark_Action")
+        self.ThemeDark_Action.setCheckable(True)
+        self.ThemeSystem_Action = QAction(MainWindow)
+        self.ThemeSystem_Action.setObjectName(u"ThemeSystem_Action")
+        self.ThemeSystem_Action.setCheckable(True)
         self.Central_Widget = QWidget(MainWindow)
         self.Central_Widget.setObjectName(u"Central_Widget")
         self.horizontalLayout_2 = QHBoxLayout(self.Central_Widget)
@@ -176,7 +185,7 @@ class Ui_MainWindow(object):
         self.AppInformationTabs_Frame.setLineWidth(0)
         self.AppInformationTabs_TabWidget = QTabWidget(self.AppInformationTabs_Frame)
         self.AppInformationTabs_TabWidget.setObjectName(u"AppInformationTabs_TabWidget")
-        self.AppInformationTabs_TabWidget.setGeometry(QRect(10, 0, 251, 271))
+        self.AppInformationTabs_TabWidget.setGeometry(QRect(10, 0, 251, 291))
         self.InfoTab_Widget = QWidget()
         self.InfoTab_Widget.setObjectName(u"InfoTab_Widget")
         self.AppDescription_Label = QLabel(self.InfoTab_Widget)
@@ -219,7 +228,7 @@ class Ui_MainWindow(object):
         self.StatusIcon.setMargin(3)
         self.gridLayoutWidget = QWidget(self.InfoTab_Widget)
         self.gridLayoutWidget.setObjectName(u"gridLayoutWidget")
-        self.gridLayoutWidget.setGeometry(QRect(10, 100, 223, 140))
+        self.gridLayoutWidget.setGeometry(QRect(10, 100, 223, 156))
         self.AppMetadata_GridLayout = QGridLayout(self.gridLayoutWidget)
         self.AppMetadata_GridLayout.setObjectName(u"AppMetadata_GridLayout")
         self.AppMetadata_GridLayout.setContentsMargins(0, 0, 0, 0)
@@ -394,6 +403,8 @@ class Ui_MainWindow(object):
         self.About_Menu.setObjectName(u"About_Menu")
         self.Debug_Menu = QMenu(self.MenuBar)
         self.Debug_Menu.setObjectName(u"Debug_Menu")
+        self.Theme_Menu = QMenu(self.Debug_Menu)
+        self.Theme_Menu.setObjectName(u"Theme_Menu")
         MainWindow.setMenuBar(self.MenuBar)
         self.StatusBar = QStatusBar(MainWindow)
         self.StatusBar.setObjectName(u"StatusBar")
@@ -409,6 +420,10 @@ class Ui_MainWindow(object):
         self.Debug_Menu.addSeparator()
         self.Debug_Menu.addAction(self.CheckForUpdates_Action)
         self.Debug_Menu.addAction(self.CheckForUpdatesOnLaunch_Action)
+        self.Debug_Menu.addAction(self.Theme_Menu.menuAction())
+        self.Theme_Menu.addAction(self.ThemeLight_Action)
+        self.Theme_Menu.addAction(self.ThemeDark_Action)
+        self.Theme_Menu.addAction(self.ThemeSystem_Action)
 
         self.retranslateUi(MainWindow)
 
@@ -434,6 +449,9 @@ class Ui_MainWindow(object):
         self.FilterByDeveloper_Action.setToolTip(QCoreApplication.translate("MainWindow", u"Filter by Developer", None))
 #endif // QT_CONFIG(tooltip)
         self.CheckForUpdatesOnLaunch_Action.setText(QCoreApplication.translate("MainWindow", u"Check for Updates on launch", None))
+        self.ThemeLight_Action.setText(QCoreApplication.translate("MainWindow", u"Light", None))
+        self.ThemeDark_Action.setText(QCoreApplication.translate("MainWindow", u"Dark", None))
+        self.ThemeSystem_Action.setText(QCoreApplication.translate("MainWindow", u"System", None))
 #if QT_CONFIG(accessibility)
         self.Central_Widget.setAccessibleName(QCoreApplication.translate("MainWindow", u"centralcontainer", None))
 #endif // QT_CONFIG(accessibility)
@@ -485,5 +503,6 @@ class Ui_MainWindow(object):
         self.SendToWii_PushButton.setText(QCoreApplication.translate("MainWindow", u"Send to Wii", None))
         self.About_Menu.setTitle(QCoreApplication.translate("MainWindow", u"About", None))
         self.Debug_Menu.setTitle(QCoreApplication.translate("MainWindow", u"Options", None))
+        self.Theme_Menu.setTitle(QCoreApplication.translate("MainWindow", u"Theme", None))
     # retranslateUi
 

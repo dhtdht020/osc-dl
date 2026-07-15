@@ -1,6 +1,5 @@
 # Entry point for OSCDL's GUI
 import logging
-import darkdetect
 
 import updater
 
@@ -10,6 +9,7 @@ if __name__ == "__main__":
     from PySide6 import QtGui
     from PySide6.QtWidgets import QApplication, QSplashScreen
 
+    import gui_helpers
     import utils
     import xosc_dl
 
@@ -23,11 +23,12 @@ if __name__ == "__main__":
     # Initialize app
     app = QApplication()
 
+    # Spare us from Qt's horrible design decisions
     if app.style().name() == "windows11":
         app.setStyle("windowsvista")
 
-    if darkdetect.isDark():
-        app.setStyle("fusion")
+    gui_helpers.PLATFORM_DEFAULT_QT_STYLE = app.style().name()
+    gui_helpers.apply_theme(app)
 
     # Splash
     image = QtGui.QImage(utils.resource_path("assets/gui/splash.png"))

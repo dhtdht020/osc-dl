@@ -18,7 +18,7 @@ import requests
 from PIL import Image
 from PySide6 import QtGui, QtCore
 from PySide6.QtCore import Qt, QSize, QEvent
-from PySide6.QtGui import QIcon, QColor, QPixmap, QMovie
+from PySide6.QtGui import QIcon, QColor, QPixmap, QMovie, QActionGroup
 from PySide6.QtWidgets import QApplication, QMainWindow, QLineEdit, QMessageBox, \
     QListWidgetItem, QFileDialog
 
@@ -103,6 +103,16 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
             self.check_for_updates_action(silent=True)
             self.ui.CheckForUpdatesOnLaunch_Action.setChecked(True)
 
+        # Theme selection
+        self.theme_actions = {"light": self.ui.ThemeLight_Action,
+                              "dark": self.ui.ThemeDark_Action,
+                              "system": self.ui.ThemeSystem_Action}
+        self.theme_action_group = QActionGroup(self)
+        for action in self.theme_actions.values():
+            self.theme_action_group.addAction(action)
+        current_theme = gui_helpers.settings.value("theme", "system")
+        self.theme_actions.get(current_theme, self.ui.ThemeSystem_Action).setChecked(True)
+
         self.populate()
         self.selection_changed()
         self.ui.ProgressBar.setHidden(False)
@@ -174,6 +184,8 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         self.ui.CheckForUpdates_Action.triggered.connect(partial(self.check_for_updates_action))
         self.ui.Refresh_Action.triggered.connect(partial(self.repopulate))
         self.ui.CheckForUpdatesOnLaunch_Action.toggled.connect(self.check_for_updates_on_launch_toggled)
+        for theme, action in self.theme_actions.items():
+            action.triggered.connect(partial(self.theme_changed, theme))
 
     # When user selects a different homebrew from the list
     def selection_changed(self):
@@ -721,6 +733,10 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
 
     def check_for_updates_on_launch_toggled(self, checked: bool):
         gui_helpers.settings.setValue("check_for_updates_on_launch", checked)
+
+    def theme_changed(self, theme: str):
+        gui_helpers.settings.setValue("theme", theme)
+        gui_helpers.apply_theme(self.app)
 
     # Load app icon
     def load_icon(self, app_name):
