@@ -5,9 +5,11 @@ import updater
 
 if __name__ == "__main__":
     import sys
+    import traceback
 
     from PySide6 import QtGui
-    from PySide6.QtWidgets import QApplication, QSplashScreen
+    from PySide6.QtWidgets import QApplication, QDialog, QDialogButtonBox, QLabel, \
+        QPlainTextEdit, QSplashScreen, QVBoxLayout
 
     import gui_helpers
     import utils
@@ -22,6 +24,36 @@ if __name__ == "__main__":
 
     # Initialize app
     app = QApplication()
+
+    # Display uncaught exceptions in a dialog so that we don't crash silently
+    def exception_dialog(exc_type, exc_value, exc_tb):
+        traceback_text = "".join(traceback.format_exception(exc_type, exc_value, exc_tb))
+        logging.critical(f"== Unhandled exception ==\n{traceback_text}")
+
+        dialog = QDialog()
+        dialog.setWindowTitle("Open Shop Channel Downloader - Exception")
+        layout = QVBoxLayout(dialog)
+
+        label = QLabel('A critical error occurred, please report this at '
+                       '<a href="https://github.com/dhtdht020/osc-dl/issues">github.com/dhtdht020/osc-dl/issues</a>!')
+        label.setOpenExternalLinks(True)
+        layout.addWidget(label)
+
+        traceback_textedit = QPlainTextEdit(traceback_text)
+        traceback_textedit.setReadOnly(True)
+        traceback_textedit.setFont(QtGui.QFontDatabase.systemFont(QtGui.QFontDatabase.FixedFont))
+        layout.addWidget(traceback_textedit)
+
+        buttons = QDialogButtonBox(QDialogButtonBox.Close)
+        copy_button = buttons.addButton("Copy Traceback", QDialogButtonBox.ActionRole)
+        copy_button.clicked.connect(lambda: QApplication.clipboard().setText(traceback_text))
+        buttons.rejected.connect(dialog.reject)
+        layout.addWidget(buttons)
+
+        dialog.resize(600, 400)
+        dialog.exec()
+
+    sys.excepthook = exception_dialog
 
     # Spare us from Qt's horrible design decisions
     if app.style().name() == "windows11":
