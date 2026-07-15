@@ -12,7 +12,7 @@ With OSCDL, you can download hundreds of homebrew apps and themes to your comput
 I recommend obtaining the latest release from [here](https://github.com/dhtdht020/osc-dl/releases) if you are a Windows user.
 ##### Manual Download:
 
-Make sure Python 3 is installed and used.
+Make sure Python 3.11+ is installed and used.
 
 1. `git clone https://github.com/dhtdht020/osc-dl.git`
 2. `cd osc-dl`
