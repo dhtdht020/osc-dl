@@ -1,12 +1,10 @@
 import json
-import logging
 
 from PySide6 import QtCore
-from PySide6.QtCore import QSize, QStorageInfo, QDir, QTimer, QFileInfo
 from PySide6.QtGui import QIcon, QGuiApplication, QPixmap
-from PySide6.QtWidgets import QDialog, QDialogButtonBox, QListWidgetItem, QFileIconProvider, QTreeWidgetItem
+from PySide6.QtWidgets import QDialog, QTreeWidgetItem, QMenu
 from gui import ui_ExtendedInformationDialog
-from utils import resource_path, file_size
+from utils import resource_path
 
 
 class ExtendedInformationDialog(ui_ExtendedInformationDialog.Ui_Dialog, QDialog):
@@ -24,6 +22,11 @@ class ExtendedInformationDialog(ui_ExtendedInformationDialog.Ui_Dialog, QDialog)
         self.setWindowTitle(f"\"{self.app['name']}\" - Extended Information")
 
         self.populate_information()
+
+        self.assets_treeWidget.setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
+        self.assets_treeWidget.customContextMenuRequested.connect(self.assets_tree_context_menu)
+        self.shop_treeWidget.setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
+        self.shop_treeWidget.customContextMenuRequested.connect(self.shop_tree_context_menu)
 
     def populate_information(self):
         # Application
@@ -65,3 +68,29 @@ class ExtendedInformationDialog(ui_ExtendedInformationDialog.Ui_Dialog, QDialog)
 
         # Raw Tab
         self.raw_textBrowser.setText(json.dumps(self.app, indent=2))
+
+    def assets_tree_context_menu(self, pos):
+        item = self.assets_treeWidget.itemAt(pos)
+        if not item:
+            return
+        value = item.text(2)
+        if not value:
+            return
+
+        menu = QMenu(self.assets_treeWidget)
+        copy_action = menu.addAction("Copy Value")
+        copy_action.triggered.connect(lambda: QGuiApplication.clipboard().setText(value))
+        menu.exec(self.assets_treeWidget.viewport().mapToGlobal(pos))
+
+    def shop_tree_context_menu(self, pos):
+        item = self.shop_treeWidget.itemAt(pos)
+        if not item:
+            return
+        value = item.text(1)
+        if not value:
+            return
+
+        menu = QMenu(self.shop_treeWidget)
+        copy_action = menu.addAction("Copy Value")
+        copy_action.triggered.connect(lambda: QGuiApplication.clipboard().setText(value))
+        menu.exec(self.shop_treeWidget.viewport().mapToGlobal(pos))
