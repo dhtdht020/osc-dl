@@ -545,7 +545,7 @@
               <x>-1</x>
               <y>-1</y>
               <width>247</width>
-              <height>244</height>
+              <height>261</height>
              </rect>
             </property>
             <property name="styleSheet">
@@ -581,7 +581,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
               <x>0</x>
               <y>0</y>
               <width>245</width>
-              <height>244</height>
+              <height>261</height>
              </rect>
             </property>
             <property name="styleSheet">

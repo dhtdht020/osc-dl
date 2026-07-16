@@ -299,7 +299,7 @@ class Ui_MainWindow(object):
         self.DescriptionTab_Widget.setObjectName(u"DescriptionTab_Widget")
         self.LongDescription_TextBrowser = QTextBrowser(self.DescriptionTab_Widget)
         self.LongDescription_TextBrowser.setObjectName(u"LongDescription_TextBrowser")
-        self.LongDescription_TextBrowser.setGeometry(QRect(-1, -1, 247, 244))
+        self.LongDescription_TextBrowser.setGeometry(QRect(-1, -1, 247, 261))
         self.LongDescription_TextBrowser.setStyleSheet(u"QTextBrowser {\n"
 "	border-style: hidden;\n"
 "}")
@@ -309,7 +309,7 @@ class Ui_MainWindow(object):
         self.CompatibilityTab_Widget.setObjectName(u"CompatibilityTab_Widget")
         self.Compatibility_ListWidget = QListWidget(self.CompatibilityTab_Widget)
         self.Compatibility_ListWidget.setObjectName(u"Compatibility_ListWidget")
-        self.Compatibility_ListWidget.setGeometry(QRect(0, 0, 245, 244))
+        self.Compatibility_ListWidget.setGeometry(QRect(0, 0, 245, 261))
         self.Compatibility_ListWidget.setStyleSheet(u"QListWidget {\n"
 "	border: unset;\n"
 "}")
