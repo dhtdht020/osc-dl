@@ -19,6 +19,7 @@ class ExtendedInformationDialog(ui_ExtendedInformationDialog.Ui_Dialog, QDialog)
         self.selection = None
         self.drives = set()
 
+        self.setWindowIcon(QIcon(resource_path("assets/gui/icons/icons8-about-16.png")))
         self.setWindowTitle(f"\"{self.app['name']}\" - Extended Information")
 
         self.populate_information()
@@ -35,15 +36,15 @@ class ExtendedInformationDialog(ui_ExtendedInformationDialog.Ui_Dialog, QDialog)
 
         category = self.app["category"]
         if category == "utilities":
-            self.CategoryIcon_Label.setPixmap(QPixmap(resource_path("assets/gui/icons/category/utility.png")))
+            self.CategoryIcon_Label.setPixmap(QPixmap(resource_path("assets/gui/icons/category/utility-30.png")))
         elif category == "games":
-            self.CategoryIcon_Label.setPixmap(QPixmap(resource_path("assets/gui/icons/category/game.png")))
+            self.CategoryIcon_Label.setPixmap(QPixmap(resource_path("assets/gui/icons/category/game-30.png")))
         elif category == "emulators":
-            self.CategoryIcon_Label.setPixmap(QPixmap(resource_path("assets/gui/icons/category/emulator.png")))
+            self.CategoryIcon_Label.setPixmap(QPixmap(resource_path("assets/gui/icons/category/emulator-30.png")))
         elif category == "media":
-            self.CategoryIcon_Label.setPixmap(QPixmap(resource_path("assets/gui/icons/category/media.png")))
+            self.CategoryIcon_Label.setPixmap(QPixmap(resource_path("assets/gui/icons/category/media-30.png")))
         elif category == "demos":
-            self.CategoryIcon_Label.setPixmap(QPixmap(resource_path("assets/gui/icons/category/demo.png")))
+            self.CategoryIcon_Label.setPixmap(QPixmap(resource_path("assets/gui/icons/category/demo-30.png")))
         self.CategoryIcon_Label.setScaledContents(True)
 
         # Assets Tab

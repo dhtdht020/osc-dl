@@ -68,22 +68,24 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
 
         # ABOUT
         self.ui.About_Action.setIcon(QIcon(resource_path("assets/gui/icons/oscdl-icon.png")))
-        self.ui.IconsByIcons8_Action.setIcon(QIcon(resource_path("assets/gui/icons/iconsprovider.png")))
-        # CLIENTS
-        self.ui.CheckForUpdates_Action.setIcon(QIcon(resource_path("assets/gui/icons/check-for-updates.png")))
-        self.ui.Refresh_Action.setIcon(QIcon(resource_path("assets/gui/icons/refresh.png")))
+        self.ui.IconsByIcons8_Action.setIcon(QIcon(resource_path("assets/gui/icons/icons8-icons8-16.png")))
+        self.ui.CheckForUpdates_Action.setIcon(QIcon(resource_path("assets/gui/icons/icons8-update-16.png")))
+        # SETTINGS
+        self.ui.Theme_Menu.setIcon(QIcon(resource_path("assets/gui/icons/icons8-change-theme-16.png")))
         # OPTIONS
-        self.ui.CopyDirectLink_Action.setIcon(QIcon(resource_path("assets/gui/icons/copy-link.png")))
+        self.ui.Refresh_Action.setIcon(QIcon(resource_path("assets/gui/icons/icons8-refresh-16.png")))
+        self.ui.CopyDirectLink_Action.setIcon(QIcon(resource_path("assets/gui/icons/icons8-copy-link-16.png")))
+        self.ui.SaveAppIcon_Action.setIcon(QIcon(resource_path("assets/gui/icons/icons8-save-as-16.png")))
 
         # CATEGORIES COMBOBOX
-        self.ui.Categories_ComboBox.setItemIcon(1, QIcon(resource_path("assets/gui/icons/category/utility.png")))
-        self.ui.Categories_ComboBox.setItemIcon(2, QIcon(resource_path("assets/gui/icons/category/emulator.png")))
-        self.ui.Categories_ComboBox.setItemIcon(3, QIcon(resource_path("assets/gui/icons/category/game.png")))
-        self.ui.Categories_ComboBox.setItemIcon(4, QIcon(resource_path("assets/gui/icons/category/media.png")))
-        self.ui.Categories_ComboBox.setItemIcon(5, QIcon(resource_path("assets/gui/icons/category/demo.png")))
+        self.ui.Categories_ComboBox.setItemIcon(1, QIcon(resource_path("assets/gui/icons/category/utility-16.png")))
+        self.ui.Categories_ComboBox.setItemIcon(2, QIcon(resource_path("assets/gui/icons/category/emulator-16.png")))
+        self.ui.Categories_ComboBox.setItemIcon(3, QIcon(resource_path("assets/gui/icons/category/game-16.png")))
+        self.ui.Categories_ComboBox.setItemIcon(4, QIcon(resource_path("assets/gui/icons/category/media-16.png")))
+        self.ui.Categories_ComboBox.setItemIcon(5, QIcon(resource_path("assets/gui/icons/category/demo-16.png")))
 
         # ACTIONS
-        self.ui.FilterByDeveloper_Action.setIcon(QIcon(resource_path("assets/gui/icons/filter.png")))
+        self.ui.FilterByDeveloper_Action.setIcon(QIcon(resource_path("assets/gui/icons/icons8-filter-16.png")))
         self.ui.AppDeveloper_LineEdit.addAction(self.ui.FilterByDeveloper_Action, QLineEdit.TrailingPosition)
 
         # create spinner movie
@@ -95,10 +97,10 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         self.set_status_icon("online")
 
         self.ui.Repositories_ComboBox.setPlaceholderText("Open Shop Channel")
-        self.ui.AppWarningIcon_Label.setPixmap(QPixmap(resource_path("assets/gui/icons/warning.png")))
+        self.ui.AppWarningIcon_Label.setPixmap(QPixmap(resource_path("assets/gui/icons/icons8-error-30.png")))
         self.ui.AppWarningIcon_Label.setScaledContents(True)
 
-        self.ui.ResetFilters_PushButton.setIcon(QIcon(resource_path("assets/gui/icons/close.png")))
+        self.ui.ResetFilters_PushButton.setIcon(QIcon(resource_path("assets/gui/icons/icons8-close-16.png")))
 
         if gui_helpers.settings.value("check_for_updates_on_launch", True, type=bool):
             self.check_for_updates_action(silent=True)
@@ -187,12 +189,13 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         # Actions
         # -- About
         self.ui.About_Action.triggered.connect(self.about_dialog)
+        self.ui.CheckForUpdatesOnLaunch_Action.toggled.connect(self.check_for_updates_on_launch_toggled)
+        # -- Settings
+        for theme, action in self.theme_actions.items():
+            action.triggered.connect(partial(self.theme_changed, theme))
         # -- Options
         self.ui.CheckForUpdates_Action.triggered.connect(partial(self.check_for_updates_action))
         self.ui.Refresh_Action.triggered.connect(partial(self.repopulate))
-        self.ui.CheckForUpdatesOnLaunch_Action.toggled.connect(self.check_for_updates_on_launch_toggled)
-        for theme, action in self.theme_actions.items():
-            action.triggered.connect(partial(self.theme_changed, theme))
 
     def save_app_icon(self):
         save_location, _ = QFileDialog.getSaveFileName(self, 'Save App Icon',
@@ -234,7 +237,7 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
             # Set loading animation
             self.ui.AppIcon_Label.setMovie(self.spinner_movie)
 
-            # Clear supported controllers listview:
+            # Clear supported peripherals listview:
             self.ui.Compatibility_ListWidget.clear()
 
             # Enable Send to Wii button
@@ -272,6 +275,12 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
             # Peripherals
             #
 
+            # Peripheral icons differ between light and dark themes
+            if self.app.styleHints().colorScheme() == Qt.ColorScheme.Dark:
+                peripheral_icons_dir = "assets/gui/icons/peripherals/dark"
+            else:
+                peripheral_icons_dir = "assets/gui/icons/peripherals/light"
+
             item = QListWidgetItem()
             item.setText("Supported Peripherals")
             item.setFlags(item.flags() & ~Qt.ItemIsEnabled)
@@ -286,37 +295,37 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
                 elif peripheral == "nunchuk":
                     item = QListWidgetItem()
                     item.setText(f"Nunchuk")
-                    item.setIcon(QIcon(resource_path(f"assets/gui/icons/controllers/Nunchuk.png")))
+                    item.setIcon(QIcon(resource_path(f"{peripheral_icons_dir}/Nunchuk-32.png")))
                     item.setToolTip("This app can be used with a Nunchuk.")
                     self.ui.Compatibility_ListWidget.addItem(item)
                 elif peripheral == "classic_controller":
                     item = QListWidgetItem()
                     item.setText(f"Classic Controller")
-                    item.setIcon(QIcon(resource_path(f"assets/gui/icons/controllers/ClassicController.png")))
+                    item.setIcon(QIcon(resource_path(f"{peripheral_icons_dir}/ClassicController-32.png")))
                     item.setToolTip("This app can be used with a Classic Controller.")
                     self.ui.Compatibility_ListWidget.addItem(item)
                 elif peripheral == "gamecube_controller":
                     item = QListWidgetItem()
                     item.setText(f"GameCube Controller")
-                    item.setIcon(QIcon(resource_path(f"assets/gui/icons/controllers/GamecubeController.png")))
+                    item.setIcon(QIcon(resource_path(f"{peripheral_icons_dir}/GamecubeController-32.png")))
                     item.setToolTip("This app can be used with a Gamecube Controller.")
                     self.ui.Compatibility_ListWidget.addItem(item)
                 elif peripheral == "usb_keyboard":
                     item = QListWidgetItem()
                     item.setText(f"USB Keyboard")
-                    item.setIcon(QIcon(resource_path(f"assets/gui/icons/controllers/USBKeyboard.png")))
+                    item.setIcon(QIcon(resource_path(f"{peripheral_icons_dir}/USBKeyboard-32.png")))
                     item.setToolTip("This app can be used with a USB Keyboard.")
                     self.ui.Compatibility_ListWidget.addItem(item)
                 elif peripheral == "wii_zapper":
                     item = QListWidgetItem()
                     item.setText(f"Wii Zapper")
-                    item.setIcon(QIcon(resource_path(f"assets/gui/icons/controllers/WiiZapper.png")))
+                    item.setIcon(QIcon(resource_path(f"{peripheral_icons_dir}/WiiZapper-32.png")))
                     item.setToolTip("This app can be used with a Wii Zapper.")
                     self.ui.Compatibility_ListWidget.addItem(item)
                 elif peripheral == "sdhc":
                     item = QListWidgetItem()
                     item.setText(f"SDHC Card")
-                    item.setIcon(QIcon(resource_path(f"assets/gui/icons/controllers/SDHC.png")))
+                    item.setIcon(QIcon(resource_path(f"{peripheral_icons_dir}/SDHC-32.png")))
                     item.setToolTip("This app is confirmed to support SDHC cards.")
                     self.ui.Compatibility_ListWidget.addItem(item)
 
@@ -325,15 +334,15 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
                 item = QListWidgetItem()
                 item.setText(f"{str(wii_remotes)} Wii Remotes")
                 if wii_remotes < 5:
-                    item.setIcon(QIcon(resource_path(f"assets/gui/icons/controllers/{str(wii_remotes)}WiiRemote.png")))
+                    item.setIcon(QIcon(resource_path(f"{peripheral_icons_dir}/WiiRemote{wii_remotes}-32.png")))
                 else:
-                    item.setIcon(QIcon(resource_path(f"assets/gui/icons/controllers/XWiiRemote.png")))
+                    item.setIcon(QIcon(resource_path(f"{peripheral_icons_dir}/WiiRemoteX-32.png")))
                 item.setToolTip(f"This app supports up to {str(peripherals.count('Wii Remote'))} Wii Remotes.")
                 self.ui.Compatibility_ListWidget.addItem(item)
             elif wii_remotes == 1:
                 item = QListWidgetItem()
                 item.setText(f"1 Wii Remote")
-                item.setIcon(QIcon(resource_path(f"assets/gui/icons/controllers/1WiiRemote.png")))
+                item.setIcon(QIcon(resource_path(f"{peripheral_icons_dir}/WiiRemote1-32.png")))
                 item.setToolTip("This app supports a single Wii Remote.")
                 self.ui.Compatibility_ListWidget.addItem(item)
 
@@ -706,15 +715,15 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
                     category = app["category"]
 
                     if category == "utilities":
-                        list_item.setIcon(QIcon(resource_path("assets/gui/icons/category/utility.png")))
+                        list_item.setIcon(QIcon(resource_path("assets/gui/icons/category/utility-16.png")))
                     elif category == "games":
-                        list_item.setIcon(QIcon(resource_path("assets/gui/icons/category/game.png")))
+                        list_item.setIcon(QIcon(resource_path("assets/gui/icons/category/game-16.png")))
                     elif category == "emulators":
-                        list_item.setIcon(QIcon(resource_path("assets/gui/icons/category/emulator.png")))
+                        list_item.setIcon(QIcon(resource_path("assets/gui/icons/category/emulator-16.png")))
                     elif category == "media":
-                        list_item.setIcon(QIcon(resource_path("assets/gui/icons/category/media.png")))
+                        list_item.setIcon(QIcon(resource_path("assets/gui/icons/category/media-16.png")))
                     elif category == "demos":
-                        list_item.setIcon(QIcon(resource_path("assets/gui/icons/category/demo.png")))
+                        list_item.setIcon(QIcon(resource_path("assets/gui/icons/category/demo-16.png")))
                     self.set_splash_status(f"Loaded {i} apps..")
                     i += 1
                 except IndexError:
@@ -777,6 +786,8 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
     def theme_changed(self, theme: str):
         gui_helpers.settings.setValue("theme", theme)
         gui_helpers.apply_theme(self.app)
+        # reload the app information pane, as the peripheral icons depend on the theme
+        self.selection_changed()
 
     # Load app icon
     def load_icon(self, app_name):
@@ -906,13 +917,20 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
             self.listview_app_icons = {}
             zip_file = zipfile.ZipFile(io.BytesIO(icons_zip.content))
 
+            if self.app.style().name() == "fusion":
+                padding = 30
+                category_icon_size = 24
+            else:
+                padding = 22
+                category_icon_size = 16
+
             # prepare icon files
-            demo_icon = Image.open(resource_path("assets/gui/icons/category/demo.png"))
-            emulator_icon = Image.open(resource_path("assets/gui/icons/category/emulator.png"))
-            game_icon = Image.open(resource_path("assets/gui/icons/category/game.png"))
-            media_icon = Image.open(resource_path("assets/gui/icons/category/media.png"))
-            utility_icon = Image.open(resource_path("assets/gui/icons/category/utility.png"))
-            nothing_icon = Image.open(resource_path("assets/gui/icons/category/nothing.png"))
+            demo_icon = Image.open(resource_path(f"assets/gui/icons/category/demo-{category_icon_size}.png"))
+            emulator_icon = Image.open(resource_path(f"assets/gui/icons/category/emulator-{category_icon_size}.png"))
+            game_icon = Image.open(resource_path(f"assets/gui/icons/category/game-{category_icon_size}.png"))
+            media_icon = Image.open(resource_path(f"assets/gui/icons/category/media-{category_icon_size}.png"))
+            utility_icon = Image.open(resource_path(f"assets/gui/icons/category/utility-{category_icon_size}.png"))
+            nothing_icon = Image.open(resource_path(f"assets/gui/icons/category/nothing.png"))
 
             # prepare apps and their category icons dictionary
             apps_category_icons = {}
@@ -955,20 +973,18 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
                 except TypeError:
                     break
 
-                # per platform sizing
-                padding = 33
-                category_icon_size = 24
-                if self.app.style().name() == "fusion":
-                    padding = int(padding * 1.5) - 4
-                    category_icon_size = int(category_icon_size * 1.5)
+                # Per platform scaling
+                display_height = 32
+                display_width = round(pillow_icon.width * display_height / pillow_icon.height)
+                scaled_icon = pillow_icon.resize((display_width, display_height), Image.LANCZOS)
 
                 # Add transparent pixels on the left
-                prepared_icon = Image.new('RGBA', (pillow_icon.width + padding, pillow_icon.height))
-                prepared_icon.alpha_composite(pillow_icon, (padding, 0))
+                prepared_icon = Image.new('RGBA', (scaled_icon.width + padding, scaled_icon.height))
+                prepared_icon.alpha_composite(scaled_icon, (padding, 0))
 
-                # add category icon
+                # Add category icon
                 try:
-                    category_icon = apps_category_icons[app_name].resize((category_icon_size, category_icon_size))
+                    category_icon = apps_category_icons[app_name]
                 except KeyError:
                     # in a scenario where an app has icon but does not exist on repo
                     continue

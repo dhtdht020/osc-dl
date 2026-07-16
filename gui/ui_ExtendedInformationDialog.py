@@ -3,7 +3,7 @@
 ################################################################################
 ## Form generated from reading UI file 'ExtendedInformationDialog.ui'
 ##
-## Created by: Qt User Interface Compiler version 6.9.0
+## Created by: Qt User Interface Compiler version 6.11.1
 ##
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
@@ -57,8 +57,8 @@ class Ui_Dialog(object):
         sizePolicy1.setVerticalStretch(0)
         sizePolicy1.setHeightForWidth(self.CategoryIcon_Label.sizePolicy().hasHeightForWidth())
         self.CategoryIcon_Label.setSizePolicy(sizePolicy1)
-        self.CategoryIcon_Label.setMinimumSize(QSize(32, 32))
-        self.CategoryIcon_Label.setMaximumSize(QSize(32, 32))
+        self.CategoryIcon_Label.setMinimumSize(QSize(30, 30))
+        self.CategoryIcon_Label.setMaximumSize(QSize(30, 30))
 
         self.horizontalLayout_4.addWidget(self.CategoryIcon_Label)
 
@@ -165,13 +165,13 @@ class Ui_Dialog(object):
         self.AppDisplayName_Label.setText(QCoreApplication.translate("Dialog", u"Title", None))
         self.AppDescription_Label.setText(QCoreApplication.translate("Dialog", u"Short Description", None))
         ___qtreewidgetitem = self.assets_treeWidget.headerItem()
-        ___qtreewidgetitem.setText(2, QCoreApplication.translate("Dialog", u"Value", None));
-        ___qtreewidgetitem.setText(1, QCoreApplication.translate("Dialog", u"Key", None));
-        ___qtreewidgetitem.setText(0, QCoreApplication.translate("Dialog", u"Asset", None));
+        ___qtreewidgetitem.setText(2, QCoreApplication.translate("Dialog", u"Value", None))
+        ___qtreewidgetitem.setText(1, QCoreApplication.translate("Dialog", u"Key", None))
+        ___qtreewidgetitem.setText(0, QCoreApplication.translate("Dialog", u"Asset", None))
         self.Information_tabWidget.setTabText(self.Information_tabWidget.indexOf(self.assets_tab), QCoreApplication.translate("Dialog", u"Assets", None))
         ___qtreewidgetitem1 = self.shop_treeWidget.headerItem()
-        ___qtreewidgetitem1.setText(1, QCoreApplication.translate("Dialog", u"Value", None));
-        ___qtreewidgetitem1.setText(0, QCoreApplication.translate("Dialog", u"Key", None));
+        ___qtreewidgetitem1.setText(1, QCoreApplication.translate("Dialog", u"Value", None))
+        ___qtreewidgetitem1.setText(0, QCoreApplication.translate("Dialog", u"Key", None))
         self.Information_tabWidget.setTabText(self.Information_tabWidget.indexOf(self.shop_tab), QCoreApplication.translate("Dialog", u"Shop", None))
         self.Information_tabWidget.setTabText(self.Information_tabWidget.indexOf(self.raw_tab), QCoreApplication.translate("Dialog", u"Raw", None))
     # retranslateUi

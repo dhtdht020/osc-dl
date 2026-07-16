@@ -75,14 +75,14 @@
               </property>
               <property name="minimumSize">
                <size>
-                <width>32</width>
-                <height>32</height>
+                <width>30</width>
+                <height>30</height>
                </size>
               </property>
               <property name="maximumSize">
                <size>
-                <width>32</width>
-                <height>32</height>
+                <width>30</width>
+                <height>30</height>
                </size>
               </property>
               <property name="text">

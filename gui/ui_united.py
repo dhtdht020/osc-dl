@@ -346,8 +346,8 @@ class Ui_MainWindow(object):
         self.horizontalLayout.setContentsMargins(0, 0, 0, 0)
         self.AppWarningIcon_Label = QLabel(self.AppWarningBanner_Frame)
         self.AppWarningIcon_Label.setObjectName(u"AppWarningIcon_Label")
-        self.AppWarningIcon_Label.setMinimumSize(QSize(32, 32))
-        self.AppWarningIcon_Label.setMaximumSize(QSize(32, 32))
+        self.AppWarningIcon_Label.setMinimumSize(QSize(30, 30))
+        self.AppWarningIcon_Label.setMaximumSize(QSize(30, 30))
 
         self.horizontalLayout.addWidget(self.AppWarningIcon_Label)
 

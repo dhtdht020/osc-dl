@@ -14,8 +14,8 @@ class DownloadLocationDialog(ui_DownloadLocationDialog.Ui_Dialog, QDialog):
     def __init__(self, app, parent=None):
         super().__init__(parent)
         self.setupUi(self)
-        self.setWindowIcon(QIcon(resource_path("assets/gui/icons/downloadlocationdialog.png")))
-        self.comboBox.setIconSize(QSize(32, 32))
+        self.setWindowIcon(QIcon(resource_path("assets/gui/icons/icons8-download-16.png")))
+        self.comboBox.setIconSize(QSize(40, 40))
         self.buttonBox.button(QDialogButtonBox.Ok).setText("Download")
         self.setAttribute(QtCore.Qt.WA_DeleteOnClose)
 
@@ -34,7 +34,7 @@ class DownloadLocationDialog(ui_DownloadLocationDialog.Ui_Dialog, QDialog):
             if not directory.startswith("/apps"):
                 item = QListWidgetItem()
                 item.setText(directory)
-                item.setIcon(QIcon(resource_path("assets/gui/icons/directory.png")))
+                item.setIcon(QIcon(resource_path("assets/gui/icons/icons8-folder-16.png")))
                 self.listWidget.addItem(item)
 
         # initialize volumes, set timer for checking for changes to volumes once per second
@@ -74,7 +74,7 @@ class DownloadLocationDialog(ui_DownloadLocationDialog.Ui_Dialog, QDialog):
         # create browse location
         self.comboBox.addItem("Manual Save\n"
                               "Save this app as a ZIP to a custom path using the system dialog.")
-        self.comboBox.setItemIcon(0, QIcon(resource_path("assets/gui/icons/browse.png")))
+        self.comboBox.setItemIcon(0, QIcon(resource_path("assets/gui/icons/icons8-browse-folder-40.png")))
         self.comboBox.setItemData(0, "browse")
 
         # add volumes to locations list
@@ -84,7 +84,7 @@ class DownloadLocationDialog(ui_DownloadLocationDialog.Ui_Dialog, QDialog):
                 apps_exists = QDir(drive.rootPath() + "/apps").exists()
                 if apps_exists:
                     self.comboBox.addItem(f"{drive.displayName()}\nRecommended! Found apps directory! Automatically installs app.")
-                    self.comboBox.setItemIcon(i, QIcon(resource_path("assets/gui/icons/sdcard.png")))
+                    self.comboBox.setItemIcon(i, QIcon(resource_path("assets/gui/icons/icons8-sd-40.png")))
                 else:
                     self.comboBox.addItem(f"{drive.displayName()}\nUnknown. An apps folder will be created. Automatically installs app.")
                     self.comboBox.setItemIcon(i, QFileIconProvider().icon(QFileInfo(drive.rootPath())))
