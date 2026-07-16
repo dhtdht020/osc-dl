@@ -5,7 +5,8 @@ block_cipher = None
 
 a = Analysis(['oscdl.py'],
              binaries=[],
-             datas=[('assets/gui/icons/controllers/*.png', './assets/gui/icons/controllers/'),
+             datas=[('assets/gui/icons/peripherals/light/*.png', './assets/gui/icons/peripherals/light/'),
+                    ('assets/gui/icons/peripherals/dark/*.png', './assets/gui/icons/peripherals/dark/'),
                     ('assets/gui/icons/platforms/*.png', './assets/gui/icons/platforms/'),
                     ('assets/gui/icons/category/*.png', './assets/gui/icons/category/'),
                     ('assets/gui/*.png', './assets/gui/'),
