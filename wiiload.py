@@ -149,7 +149,8 @@ def send_gecko(data, conn):
     try:
         conn.send(data)
     except Exception as e:
-        print('Error while connecting to the HBC. Close any dialogs on HBC and try again.')
+        print('Error while connecting to the HBC.\n'
+              'Please make sure you are not in the Homebrew Channel pause screen and that there are no open dialogs, then try again.')
 
         print(f'Exception: {e}')
         print('Error: Could not connect to the Homebrew Channel. :(')

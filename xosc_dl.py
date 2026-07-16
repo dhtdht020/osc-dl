@@ -1,4 +1,5 @@
 import io
+import tempfile
 import threading
 import time
 import zipfile
@@ -398,95 +399,92 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         t = threading.Thread(target=self.load_icon, args=[self.current_app["slug"]], daemon=True)
         t.start()
 
-    # TODO FULL REWRITE
-    def download_app(self, extract_root=False):
+    def download_app(self):
         gui_helpers.IN_DOWNLOAD_DIALOG = True
 
-        if self.sender():
-            object_name = self.sender().objectName()
-        else:
-            object_name = None
-
-        # determine if should ask for path
-        if (object_name != "SendToWii_PushButton"):
-            dialog = DownloadLocationDialog(self.current_app, parent=self)
-            status = dialog.exec()
-
-            if status:
-                logging.debug(f"Selected drive: {dialog.selection}")
-                if dialog.selection == "browse":
-                    save_location, _ = QFileDialog.getSaveFileName(self, 'Save Application',
-                                                                   self.current_app["slug"] + ".zip")
-                else:
-                    if not dialog.selection["appsdir"]:
-                        try:
-                            os.mkdir(dialog.selection["drive"].rootPath() + "/apps")
-                        except PermissionError:
-                            QMessageBox.critical(self, "Permission Error",
-                                                 "Could not create the apps directory on the selected device.")
-                            return
-                    save_location = dialog.selection["drive"].rootPath() + "/apps/" + self.current_app[
-                        "slug"] + ".zip"
-                    extract_root = True
+        try:
+            # WiiLoad downloads immediately to a temp file, everything else asks the user for location
+            if self.sender() and self.sender().objectName() == "SendToWii_PushButton":
+                temp_file = tempfile.NamedTemporaryFile(prefix=f"{self.current_app['slug']}-", suffix=".zip",
+                                                        delete=False)
+                temp_file.close()
+                save_location = temp_file.name
+                extract_root = False
             else:
-                save_location = ''
-        else:
-            # create output dir
-            if os.name == 'nt':
-                dir_path = '%s\\OSCDL\\' % os.environ['APPDATA']
-                if not os.path.exists(dir_path):
-                    os.makedirs(dir_path)
-                save_location = f'%s{self.current_app["slug"]}' % dir_path
-            else:
-                save_location = f"{self.current_app['slug']}.zip"
-        if save_location:
-            self.set_status_message(f"Initializing download..")
+                save_location, extract_root = self.ask_download_location()
+
+            # Download cancelled
+            if not save_location:
+                return None
+
+            self.safe_mode(True)
+            self.set_status_message("Initializing download..")
             self.set_status_icon("pending")
-            # stream file, so we can iterate
-            response = requests.get(self.current_app["assets"]["archive"]["url"], stream=True)
-            total_size = int(response.headers.get('content-length', 0))
 
-            # set progress bar
-            block_size = 1024
-            if response.status_code == 200:
-                self.safe_mode(True)
-                self.set_status_icon("download")
+            try:
+                self.download_file(self.current_app["assets"]["archive"]["url"], save_location)
 
-                with open(save_location, "wb") as app_data_file:
-                    downloaded_size = 0
-                    for data in response.iter_content(block_size):
-                        downloaded_size += 1024
-                        self.set_status_message(
-                            f"{utils.file_size(downloaded_size)}/{utils.file_size(total_size)} | Downloading {self.current_app['name']}..",
-                            progress=(downloaded_size/total_size)*100)
-                        try:
-                            self.app.processEvents()
-                        except NameError:
-                            pass
-                        app_data_file.write(data)
-
+                # When downloading directly to a SD card / USB drive, extract the app to it
                 if extract_root:
                     self.set_status_message("Extracting..")
-
                     with zipfile.ZipFile(save_location, 'r') as zip_file:
-                        # unzip to root_path
-                        root_path = utils.get_mount_point(save_location)
-                        zip_file.extractall(root_path)
-
+                        zip_file.extractall(utils.get_mount_point(save_location))
                     os.remove(save_location)
+            except (requests.RequestException, zipfile.BadZipFile, OSError) as e:
+                logging.error(f"Download of \"{self.current_app['name']}\" failed: {e}")
+                QMessageBox.critical(self, "Download Error",
+                                     f"Could not download \"{self.current_app['name']}\":\n{e}")
+                self.set_status_message(f"Download of \"{self.current_app['name']}\" failed")
+                return None
 
-            if object_name != "WiiLoadButton":
-                self.safe_mode(False)
             self.set_status_message(f"Download of \"{self.current_app['name']}\" has completed successfully",
-                                    progress=total_size)
-            self.set_status_icon("online")
-            gui_helpers.IN_DOWNLOAD_DIALOG = False
+                                    progress=100)
             return save_location
-        else:
-            # Download Cancelled
+        finally:
             self.safe_mode(False)
             self.set_status_icon("online")
             gui_helpers.IN_DOWNLOAD_DIALOG = False
+
+    def ask_download_location(self):
+        dialog = DownloadLocationDialog(self.current_app, parent=self)
+        if not dialog.exec():
+            return None, False
+
+        logging.debug(f"Selected drive: {dialog.selection}")
+
+        # Download to manual save location
+        if dialog.selection == "browse":
+            save_location, _ = QFileDialog.getSaveFileName(self, 'Save Application',
+                                                           self.current_app["slug"] + ".zip")
+            return save_location, False
+
+        # Download to the apps directory of the selected SD/USB storage device
+        if not dialog.selection["appsdir"]:
+            try:
+                os.mkdir(dialog.selection["drive"].rootPath() + "/apps")
+            except OSError:
+                QMessageBox.critical(self, "Permission Error",
+                                     "Could not create the apps directory on the selected device.")
+                return None, False
+        return dialog.selection["drive"].rootPath() + "/apps/" + self.current_app["slug"] + ".zip", True
+
+    def download_file(self, url, save_location):
+        response = requests.get(url, stream=True)
+        response.raise_for_status()
+        total_size = int(response.headers.get('content-length', 0))
+
+        self.set_status_icon("download")
+        downloaded_size = 0
+        with open(save_location, "wb") as save_file:
+            for data in response.iter_content(1024):
+                save_file.write(data)
+                downloaded_size += len(data)
+                progress = int(downloaded_size / total_size * 100) if total_size else 0
+                self.set_status_message(
+                    f"{utils.file_size(downloaded_size)}/{utils.file_size(total_size)} | Downloading {self.current_app['name']}..",
+                    progress=progress)
+                if self.app:
+                    self.app.processEvents()
 
     def reset_status(self):
         if not gui_helpers.CURRENTLY_SENDING:
@@ -518,6 +516,9 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
 
         # get app
         path_to_app = self.download_app()
+        if not path_to_app:
+            gui_helpers.CURRENTLY_SENDING = False
+            return
         self.ui.ProgressBar.setMaximum(100)
 
         with open(path_to_app, 'rb') as f:
@@ -593,6 +594,7 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
                                         'Error while connecting to the HBC. Operation timed out. Close any dialogs on HBC and try again.')
                     print(f'WiiLoad: {e}')
                     self.set_status_message('Error: Could not connect to the Homebrew Channel. :(')
+                    self.set_status_icon('online')
 
                     # delete application zip file
                     os.remove(path_to_app)
@@ -612,6 +614,8 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
                     pass
             t.join()
             if not gui_helpers.DATASENT:
+                self.ui.ProgressBar.setMaximum(100)
+                self.set_status_icon('online')
                 gui_helpers.CURRENTLY_SENDING = False
                 self.safe_mode(False)
                 return
