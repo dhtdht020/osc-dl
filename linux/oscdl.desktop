@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Name=Open Shop Channel Downloader
+Comment=Download Wii homebrew apps from the Open Shop Channel
+Exec=oscdl
+Icon=oscdl
+Categories=Utility;
+Terminal=false
