@@ -24,11 +24,33 @@ jobs:
       run: '@{ commit = "${{ github.sha }}".Substring(0, 7); branch = "${{ github.ref_name }}" } | ConvertTo-Json | Set-Content build_info.json'
     - name: Build Open Shop Channel Downloader
       run: pyinstaller oscdl.spec
+    - name: Write installer patch notes
+      run: |
+        $commit = "${{ github.sha }}".Substring(0, 7)
+        $lines = "Open Shop Channel Downloader by dhtdht020",
+                 "Development build #${{ github.run_number }} (${{ github.ref_name }}@$commit)",
+                 ("Built " + (Get-Date -Format "MMMM d, yyyy")),
+                 "",
+                 "https://github.com/dhtdht020/osc-dl",
+                 "",
+                 "Open Source Software. GPL 3.0."
+        $lines | Set-Content installer\patchnotes.txt
+    - name: Install Inno Setup
+      run: choco install innosetup -y --no-progress
+    - name: Compile installer
+      run: |
+        $version = python -c "import updater; print(updater.current_version())"
+        & "C:\Program Files (x86)\Inno Setup 6\ISCC.exe" /DMyAppVersion=$version installer\setup.iss
     - name: Publish Build Artifacts
       uses: actions/upload-artifact@master
       with:
         name: '${{ matrix.os }}-GUI'
         path: dist/oscdl
+    - name: Publish Installer Artifact
+      uses: actions/upload-artifact@master
+      with:
+        name: '${{ matrix.os }}-installer'
+        path: dist/installer/oscdl-setup.exe
     - uses: dhtdht020/openshop-status-discord@master
       name: Send discord webhook
       if: always()
