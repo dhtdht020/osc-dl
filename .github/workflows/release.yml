@@ -50,3 +50,36 @@ jobs:
       env:
         GH_TOKEN: ${{ github.token }}
       run: gh release upload ${{ github.event.release.tag_name }} dist\oscdl-windows.zip dist\installer\oscdl-setup.exe
+
+  Release-Linux:
+    runs-on: ubuntu-22.04
+    permissions:
+      contents: write
+
+    steps:
+    - name: Obtain the repository at the release tag
+      uses: actions/checkout@v1
+    - name: Set up Python 3
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11.x'
+    - name: Install requirements with PIP
+      run: pip install -r requirements.txt
+    - name: Install pyinstaller
+      run: pip install pyinstaller
+    - name: Build Open Shop Channel Downloader
+      run: pyinstaller oscdl.spec
+    - name: Build AppImage
+      run: |
+        wget -q https://github.com/AppImage/appimagetool/releases/download/continuous/appimagetool-x86_64.AppImage
+        chmod +x appimagetool-x86_64.AppImage
+        mkdir AppDir
+        cp -r dist/oscdl/. AppDir/
+        cp linux/oscdl.desktop AppDir/
+        cp assets/gui/windowicon.png AppDir/oscdl.png
+        ln -s oscdl AppDir/AppRun
+        ./appimagetool-x86_64.AppImage --appimage-extract-and-run AppDir dist/oscdl-x86_64.AppImage
+    - name: Upload release assets
+      env:
+        GH_TOKEN: ${{ github.token }}
+      run: gh release upload ${{ github.event.release.tag_name }} dist/oscdl-x86_64.AppImage

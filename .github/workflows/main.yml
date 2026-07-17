@@ -63,3 +63,36 @@ jobs:
         nodetail: true
         username: OSCDL
 
+  Build-Linux:
+    runs-on: ubuntu-22.04
+
+    steps:
+    - name: Obtain latest version of the repository
+      uses: actions/checkout@v1
+    - name: Set up Python 3
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11.x'
+    - name: Install requirements with PIP
+      run: pip install -r requirements.txt
+    - name: Install pyinstaller
+      run: pip install pyinstaller
+    - name: Write build info
+      run: echo "{\"commit\":\"${GITHUB_SHA:0:7}\",\"branch\":\"$GITHUB_REF_NAME\"}" > build_info.json
+    - name: Build Open Shop Channel Downloader
+      run: pyinstaller oscdl.spec
+    - name: Build AppImage
+      run: |
+        wget -q https://github.com/AppImage/appimagetool/releases/download/continuous/appimagetool-x86_64.AppImage
+        chmod +x appimagetool-x86_64.AppImage
+        mkdir AppDir
+        cp -r dist/oscdl/. AppDir/
+        cp linux/oscdl.desktop AppDir/
+        cp assets/gui/windowicon.png AppDir/oscdl.png
+        ln -s oscdl AppDir/AppRun
+        ./appimagetool-x86_64.AppImage --appimage-extract-and-run AppDir dist/oscdl-x86_64.AppImage
+    - name: Publish Build Artifacts
+      uses: actions/upload-artifact@master
+      with:
+        name: 'linux-AppImage'
+        path: dist/oscdl-x86_64.AppImage
