@@ -19,14 +19,14 @@ jobs:
     - name: Install requirements with PIP
       run: pip install -r requirements.txt
     - name: Install pyinstaller
-      run: pip install git+https://github.com/pyinstaller/pyinstaller.git@develop
+      run: pip install pyinstaller
     - name: Build Open Shop Channel Downloader
       run: pyinstaller oscdl.spec
     - name: Publish Build Artifacts
       uses: actions/upload-artifact@master
       with:
         name: '${{ matrix.os }}-GUI'
-        path: dist
+        path: dist/oscdl
     - uses: dhtdht020/openshop-status-discord@master
       name: Send discord webhook
       if: always()
