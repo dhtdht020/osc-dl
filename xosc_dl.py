@@ -55,7 +55,7 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         self.splash = splash
 
         # Set title and icon of window
-        self.setWindowTitle(f"Open Shop Channel Downloader v{updater.current_version()} - Library")
+        self.setWindowTitle(f"Open Shop Channel Downloader {updater.version_string()} - Library")
         app_icon = QIcon(resource_path("assets/gui/windowicon.png"))
         self.setWindowIcon(app_icon)
 
@@ -128,7 +128,7 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
 
     def about_dialog(self):
         QMessageBox.about(self, f"About OSCDL",
-                          f"<b>Open Shop Channel Downloader v{updater.current_version()}</b><br>"
+                          f"<b>Open Shop Channel Downloader {updater.version_string()}</b><br>"
                           f"by dhtdht020<br><br>"
                           f"<a href=\"https://github.com/dhtdht020/osc-dl\">https://github.com/dhtdht020/osc-dl</a><br>"
                           f"Many icons provided by <a href=\"https://icons8.com/\">icons8.com</a><br><br>"

@@ -20,6 +20,8 @@ jobs:
       run: pip install -r requirements.txt
     - name: Install pyinstaller
       run: pip install pyinstaller
+    - name: Write build info to file
+      run: '@{ commit = "${{ github.sha }}".Substring(0, 7); branch = "${{ github.ref_name }}" } | ConvertTo-Json | Set-Content build_info.json'
     - name: Build Open Shop Channel Downloader
       run: pyinstaller oscdl.spec
     - name: Publish Build Artifacts

@@ -1,4 +1,5 @@
 # -*- mode: python ; coding: utf-8 -*-
+import os
 
 datas = [('assets/gui/icons/peripherals/light/*.png', './assets/gui/icons/peripherals/light/'),
          ('assets/gui/icons/peripherals/dark/*.png', './assets/gui/icons/peripherals/dark/'),
@@ -9,6 +10,9 @@ datas = [('assets/gui/icons/peripherals/light/*.png', './assets/gui/icons/periph
          ('assets/gui/icons/*.gif', './assets/gui/icons/'),
          ('assets/gui/icons/*.png', './assets/gui/icons/'),
          ('assets/gui/icons/status/*.png', './assets/gui/icons/status')]
+
+if os.path.exists('build_info.json'):
+    datas.append(('build_info.json', '.'))
 
 a = Analysis(['oscdl.py'],
              binaries=[],

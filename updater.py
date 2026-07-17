@@ -29,6 +29,26 @@ def is_frozen():
     return getattr(sys, 'frozen', False) and hasattr(sys, '_MEIPASS')
 
 
+def version_string():
+    """Returns OSCDL display version"""
+    build = build_info()
+    if build:
+        return f"v{current_version()} ({build['branch']}@{build['commit']})"
+    return f"v{current_version()}"
+
+
+def build_info():
+    """
+    Returns the commit and branch the build was made against, from build_info.json provided by the CI pipeline.
+    Returns None if not applicable
+    """
+    try:
+        with open(utils.resource_path("build_info.json")) as file:
+            return json.load(file)
+    except (OSError, json.JSONDecodeError):
+        return None
+
+
 def check_update(updated_version):
     """
     Checks if updated_version is higher than current OSCDL version
