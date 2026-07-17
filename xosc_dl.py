@@ -917,20 +917,15 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
             self.listview_app_icons = {}
             zip_file = zipfile.ZipFile(io.BytesIO(icons_zip.content))
 
-            if self.app.style().name() == "fusion":
-                padding = 30
-                category_icon_size = 24
-            else:
-                padding = 22
-                category_icon_size = 16
+            padding = 22
 
             # prepare icon files
-            demo_icon = Image.open(resource_path(f"assets/gui/icons/category/demo-{category_icon_size}.png"))
-            emulator_icon = Image.open(resource_path(f"assets/gui/icons/category/emulator-{category_icon_size}.png"))
-            game_icon = Image.open(resource_path(f"assets/gui/icons/category/game-{category_icon_size}.png"))
-            media_icon = Image.open(resource_path(f"assets/gui/icons/category/media-{category_icon_size}.png"))
-            utility_icon = Image.open(resource_path(f"assets/gui/icons/category/utility-{category_icon_size}.png"))
-            nothing_icon = Image.open(resource_path(f"assets/gui/icons/category/nothing.png"))
+            demo_icon = Image.open(resource_path("assets/gui/icons/category/demo-16.png"))
+            emulator_icon = Image.open(resource_path("assets/gui/icons/category/emulator-16.png"))
+            game_icon = Image.open(resource_path("assets/gui/icons/category/game-16.png"))
+            media_icon = Image.open(resource_path("assets/gui/icons/category/media-16.png"))
+            utility_icon = Image.open(resource_path("assets/gui/icons/category/utility-16.png"))
+            nothing_icon = Image.open(resource_path("assets/gui/icons/category/nothing-16.png"))
 
             # prepare apps and their category icons dictionary
             apps_category_icons = {}
