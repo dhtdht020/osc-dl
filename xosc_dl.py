@@ -433,7 +433,7 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
             try:
                 self.download_file(self.current_app["assets"]["archive"]["url"], save_location)
 
-                # When downloading directly to a SD card / USB drive, extract the app to it
+                # When downloading directly to a SD Card / USB drive, extract the app to it
                 if extract_root:
                     self.set_status_message("Extracting..")
                     with zipfile.ZipFile(save_location, 'r') as zip_file:

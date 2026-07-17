@@ -145,6 +145,6 @@ class Ui_Dialog(object):
         self.label_4.setText(QCoreApplication.translate("Dialog", u"Device port:", None))
         self.RefreshBTN.setText(QCoreApplication.translate("Dialog", u"Refresh", None))
         self.Tab.setTabText(self.Tab.indexOf(self.tab_2), QCoreApplication.translate("Dialog", u"USB Gecko", None))
-        self.label.setText(QCoreApplication.translate("Dialog", u"The Homebrew Channel must have access to a SD card or a USB drive for a successful transfer. When prompted, accept the transfer in the Homebrew Channel.", None))
+        self.label.setText(QCoreApplication.translate("Dialog", u"The Homebrew Channel must have access to a SD Card or a USB drive for a successful transfer. When prompted, accept the transfer in the Homebrew Channel.", None))
     # retranslateUi
 

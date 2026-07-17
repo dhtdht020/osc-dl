@@ -155,7 +155,7 @@
    <item>
     <widget class="QLabel" name="label">
      <property name="text">
-      <string>The Homebrew Channel must have access to a SD card or a USB drive for a successful transfer. When prompted, accept the transfer in the Homebrew Channel.</string>
+      <string>The Homebrew Channel must have access to a SD Card or a USB drive for a successful transfer. When prompted, accept the transfer in the Homebrew Channel.</string>
      </property>
      <property name="wordWrap">
       <bool>true</bool>
