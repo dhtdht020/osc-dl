@@ -19,7 +19,7 @@ import requests
 from PIL import Image
 from PySide6 import QtGui, QtCore
 from PySide6.QtCore import Qt, QSize, QEvent
-from PySide6.QtGui import QIcon, QColor, QPixmap, QMovie, QActionGroup
+from PySide6.QtGui import QIcon, QColor, QPixmap, QMovie, QActionGroup, QImage, QColorSpace
 from PySide6.QtWidgets import QApplication, QMainWindow, QLineEdit, QMessageBox, \
     QListWidgetItem, QFileDialog
 
@@ -34,6 +34,14 @@ from gui.DownloadLocationDialog import DownloadLocationDialog
 from gui.ExtendedInformationDialog import ExtendedInformationDialog
 from gui.SendDialog import WiiLoadDialog
 from utils import resource_path
+
+
+def _menu_safe_icon(path):
+    # Qt 6.11 on macOS 27 crashes (CGImageCreate color space check) when a menu
+    # action's icon carries an embedded color profile. Dropping it avoids the crash.
+    img = QImage(path).convertToFormat(QImage.Format.Format_ARGB32)
+    img.setColorSpace(QColorSpace())
+    return QIcon(QPixmap.fromImage(img))
 
 
 class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
@@ -67,15 +75,15 @@ class MainWindow(gui.ui_united.Ui_MainWindow, QMainWindow):
         # Set GUI Icons
 
         # ABOUT
-        self.ui.About_Action.setIcon(QIcon(resource_path("assets/gui/icons/oscdl-icon.png")))
-        self.ui.IconsByIcons8_Action.setIcon(QIcon(resource_path("assets/gui/icons/icons8-icons8-16.png")))
-        self.ui.CheckForUpdates_Action.setIcon(QIcon(resource_path("assets/gui/icons/icons8-update-16.png")))
+        self.ui.About_Action.setIcon(_menu_safe_icon(resource_path("assets/gui/icons/oscdl-icon.png")))
+        self.ui.IconsByIcons8_Action.setIcon(_menu_safe_icon(resource_path("assets/gui/icons/icons8-icons8-16.png")))
+        self.ui.CheckForUpdates_Action.setIcon(_menu_safe_icon(resource_path("assets/gui/icons/icons8-update-16.png")))
         # SETTINGS
-        self.ui.Theme_Menu.setIcon(QIcon(resource_path("assets/gui/icons/icons8-change-theme-16.png")))
+        self.ui.Theme_Menu.setIcon(_menu_safe_icon(resource_path("assets/gui/icons/icons8-change-theme-16.png")))
         # OPTIONS
-        self.ui.Refresh_Action.setIcon(QIcon(resource_path("assets/gui/icons/icons8-refresh-16.png")))
-        self.ui.CopyDirectLink_Action.setIcon(QIcon(resource_path("assets/gui/icons/icons8-copy-link-16.png")))
-        self.ui.SaveAppIcon_Action.setIcon(QIcon(resource_path("assets/gui/icons/icons8-save-as-16.png")))
+        self.ui.Refresh_Action.setIcon(_menu_safe_icon(resource_path("assets/gui/icons/icons8-refresh-16.png")))
+        self.ui.CopyDirectLink_Action.setIcon(_menu_safe_icon(resource_path("assets/gui/icons/icons8-copy-link-16.png")))
+        self.ui.SaveAppIcon_Action.setIcon(_menu_safe_icon(resource_path("assets/gui/icons/icons8-save-as-16.png")))
 
         # CATEGORIES COMBOBOX
         self.ui.Categories_ComboBox.setItemIcon(1, QIcon(resource_path("assets/gui/icons/category/utility-16.png")))
